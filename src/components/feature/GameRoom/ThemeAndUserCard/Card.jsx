@@ -7,6 +7,8 @@ function Card() {
   const videoRef = useRef(null);
   const muteBtn = useRef(null);
   const cameraBtn = useRef(null);
+  const camerasSelect = useRef(null);
+  const cameraOption = useRef(null);
   let muted = false;
   let cameraOff = false;
 
@@ -37,25 +39,52 @@ function Card() {
 
   async function getCameras() {
     try {
+      //유저의 장치를 얻어옵니다
       const devices = await navigator.mediaDevices.enumerateDevices();
+      //얻어온 유저의 장치들에서 카메라장치만 필터링 합니다
+      const cameras = devices.filter((device) => device.kind === 'videoinput');
+      //현재내가 사용중인 카메라의 label명을 셀렉트란에 보여주기위한 과정입니다.
+      //  아래의 if문과 이어서 확인 해주세요
+      const currentCamera = stream.getVideoTracks()[0];
+      cameras.forEach((camera) => {
+        cameraOption.current.value = camera.deviceId;
+        cameraOption.current.innerText = camera.label;
+        if (currentCamera.label == camera.label) {
+          cameraOption.current.selected = true;
+        }
+        camerasSelect.current.appendChild(cameraOption.current);
+      });
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {
-    const getUserMedia = async () => {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
-        videoRef.current.srcObject = stream;
-        await getCameras();
-      } catch (err) {
-        console.log(err);
-      }
+  async function onInputCameraChange() {
+    await getUserMedia(camerasSelect.current.value);
+  }
+
+  async function getUserMedia(deviceId) {
+    const initialConstrains = {
+      video: { facingMode: 'user' },
+      audio: true,
     };
+    const cameraConstrains = {
+      audio: true,
+      video: { deviceId: { exact: deviceId } },
+    };
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(
+        deviceId ? cameraConstrains : initialConstrains,
+      );
+      videoRef.current.srcObject = stream;
+      if (!deviceId) {
+        await getCameras();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  useEffect(() => {
     getUserMedia();
   }, []);
 
@@ -81,6 +110,10 @@ function Card() {
         <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
           camera OFF
         </button>
+        <select ref={camerasSelect} onInput={onInputCameraChange}>
+          <option>기본</option>
+          <option ref={cameraOption} value="device"></option>
+        </select>
       </div>
       <button>방장일 경우 시작버튼?</button>
     </StCard>
