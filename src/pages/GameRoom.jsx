@@ -2,7 +2,7 @@ import React from "react";
 //내부모듈
 import ThemeAndUserCard from "../components/feature/GameRoom/ThemeAndUserCard/ThemeAndUserCard";
 import Timer from "../components/feature/GameRoom/Timer/Timer";
-import ChatBox from "../components/feature/GameRoom/ChatBox/ChatBox";
+import ChatBox from "../components/feature/GameRoom/ForChatBox/ChatBox";
 //외부모듈
 import styled from "styled-components";
 
@@ -13,7 +13,7 @@ function GameRoom() {
     <StGameRoom>
         <ThemeAndUserCard/>
         <Timer/>
-        {/* <ChatBox/> */}
+        <ChatBox/>
     </StGameRoom>
     </>
   );

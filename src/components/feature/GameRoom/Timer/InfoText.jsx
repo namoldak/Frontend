@@ -6,7 +6,11 @@ import styled from "styled-components";
 function InfoText() {
 
     return(
-        <StInfoText>InfoText</StInfoText>
+        <StInfoText>InfoText
+            <div>
+                <p> ex) 게임이 시작되었습니다</p>
+            </div>
+        </StInfoText>
     )
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 //내부모듈
-import ChatScreen from "./ChatScreen";
 import InputChat from "./InputChat";
+import ChatScreen from "./ChatScreen"
 //외부모듈
 import styled from "styled-components";
 

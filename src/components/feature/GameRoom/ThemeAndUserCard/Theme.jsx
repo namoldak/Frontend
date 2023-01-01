@@ -6,7 +6,10 @@ import styled from "styled-components";
 function Theme() {
 
     return(
-        <StTheme>Theme</StTheme>
+        <StTheme>Theme
+            <button>방나가기</button>
+            <h2>주제 : 사람이름 </h2>
+        </StTheme>
     )
 }
 

@@ -6,7 +6,13 @@ import styled from "styled-components";
 function Time() {
 
     return(
-        <StTime>Time</StTime>
+        <StTime>Time
+            <div>
+                <p>
+                    남은시간 :20초
+                </p>
+            </div>
+        </StTime>
     )
 }
 

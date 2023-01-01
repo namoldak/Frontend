@@ -11,7 +11,7 @@ function Timer() {
     return(
         <>
         <StTimer>
-            Timer
+          
             <Time/>
             <InfoText/>
         </StTimer>
