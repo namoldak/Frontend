@@ -12,9 +12,7 @@ function ChatScreen() {
                 채팅로그
                 <li>안녕하세요</li>
                 <li>반가워요!</li>
-                <p>
-            
-                </p>
+                
                 <li>OOO 님이 입장하셨습니다.</li>
        
             </div>
