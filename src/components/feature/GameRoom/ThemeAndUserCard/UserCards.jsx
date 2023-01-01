@@ -11,9 +11,7 @@ function UserCards() {
         UserCards
         <StUserCards>
             <Card/>
-            <Card/>
-            <Card/>
-            <Card/>
+      
         </StUserCards>
         </>
     )
