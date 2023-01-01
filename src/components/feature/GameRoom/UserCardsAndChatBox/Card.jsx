@@ -2,7 +2,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { useRef, useEffect } from 'react';
-let stream;
+
 function Card() {
   const videoRef = useRef(null);
   const muteBtn = useRef(null);
@@ -11,6 +11,7 @@ function Card() {
   const cameraOption = useRef(null);
   let muted = false;
   let cameraOff = false;
+  let stream;
 
   function onClickCameraOffHandler() {
     stream
@@ -123,5 +124,6 @@ function Card() {
 export default Card;
 
 const StCard = styled.div`
+  margin: 20px;
   border: 1px solid green;
 `;
