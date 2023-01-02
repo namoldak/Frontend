@@ -1,7 +1,13 @@
+// 외부 모듈
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
-const rootReducer = combineReducers({});
+// 내부 모듈
+import rooms from '../modules/roomSlice';
+
+const rootReducer = combineReducers({
+  rooms: rooms,
+});
 
 const store = configureStore({
   reducer: rootReducer,
