@@ -51,6 +51,7 @@ module.exports = {
         track: ['Track'],
       },
     ], // media caption 규칙 해제
+    'no-useless-escape': 0,
   },
   settings: {
     'import/resolver': {
