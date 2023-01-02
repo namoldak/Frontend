@@ -42,6 +42,15 @@ module.exports = {
     'arrow-body-style': ['off'], // arrow function 사용 시 return 키워드 및 중괄호를 사용하지 말고 바로 값을 반환하도록 선언하는 규칙 해제
     'prefer-arrow-callback': ['off'], // 결과를 변경하지 않고 화살표 함수로 대체할 수 있는 항목에 대해 오류가 발생하는 규칙 해제
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }], // 확장자가 js인 파일에서 jsx 허용되지 않는 규칙 해제
+    'react/button-has-type': 'off', // 버튼 타입 지정 에러 해제
+    'jsx-a11y/media-has-caption': [
+      2,
+      {
+        audio: ['Audio'],
+        video: ['Video'],
+        track: ['Track'],
+      },
+    ], // media caption 규칙 해제
   },
   settings: {
     'import/resolver': {
