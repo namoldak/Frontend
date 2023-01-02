@@ -1,12 +1,13 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 // 내부 모듈
+import { postSignup } from '../../../core/api/authAsync';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -38,18 +39,28 @@ const schema = yup.object().shape({
 });
 
 function Signup() {
+  const navigate = useNavigate();
+
   const {
     register,
+    handleSubmit,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
 
+  async function onClickSignup(data) {
+    await postSignup(data).then(
+      alert('회원가입이 완료되었습니다. 다시 로그인 해 주세요.'),
+      navigate('/login'),
+    );
+  }
+
   return (
     <StTopContainer>
       <StElementBox>
-        <form>
+        <form onSubmit={handleSubmit(onClickSignup)}>
           <h1>NaMan-MoRunDark</h1>
           <h3>Sign Up</h3>
           <StInputCon>

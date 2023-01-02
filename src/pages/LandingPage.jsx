@@ -2,7 +2,7 @@
 import React from 'react';
 
 // 내부 모듈
-import Landing from '../components/feature/landing/Landing';
+import Landing from '../components/feature/Landing/Landing';
 
 function LandingPage() {
   return <Landing />;
