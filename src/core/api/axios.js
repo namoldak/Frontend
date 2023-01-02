@@ -1,26 +1,33 @@
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 
-// 테스트용 파일입니다 instance baseURL 모두 baseURL 수정 필요합니다.
-
+// 인스턴스 생성
+// eslint-disable-next-line import/prefer-default-export
 export const instance = axios.create({
-  baseURL: 'http://54.180.86.147:80',
+  baseURL: 'http://15.164.233.135',
+  withCredentials: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
   },
 });
 
-export const baseURL = axios.create({
-  baseURL: 'http://54.180.86.147:80',
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-  },
-});
+// 요청 타임아웃
+instance.defaults.timeout = 2500;
 
-baseURL.interceptors.request.use((config) => {
+// 인스턴스 request header Authorization 설정
+instance.interceptors.request.use((config) => {
   if (config.headers === undefined) return;
   const cookies = new Cookies();
   const token = cookies.get('accessToken');
   config.headers.Authorization = `${token}`;
+  // eslint-disable-next-line consistent-return
   return config;
+});
+
+// Unauthorized Error 처리
+axios.interceptors.response.use((error) => {
+  if (error.response.status === 401) {
+    alert('로그인이 만료되었습니다.', 'error');
+    window.location.href('/login');
+  }
 });
