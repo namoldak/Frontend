@@ -20,6 +20,20 @@ export const createRoom = createAsyncThunk(
   },
 );
 
+export const readAllRooms = createAsyncThunk(
+  'room/readAllRooms',
+  async (thunkAPI) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/rooms`);
+      console.log('read rooms:', response);
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log('read rooms error:', error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 export const roomSlice = createSlice({
   name: 'rooms',
   initialState,
@@ -27,6 +41,15 @@ export const roomSlice = createSlice({
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
       state.room.push(action.payload);
+    },
+    [createRoom.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [readAllRooms.fulfilled]: (state, action) => {
+      state.rooms = action.payload;
+    },
+    [readAllRooms.rejected]: (state, action) => {
+      state.error = action.payload;
     },
   },
 });

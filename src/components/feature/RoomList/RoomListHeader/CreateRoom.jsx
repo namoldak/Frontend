@@ -10,9 +10,7 @@ function CreateRoom() {
   const [isModalOn, setIsModalOn] = useState(false);
 
   function onClickModal() {
-    console.log('왜 안돼');
     setIsModalOn(true);
-    console.log('되나');
   }
 
   return (

@@ -1,22 +1,40 @@
-import React from 'react';
+// 외부 모듈
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+// 내부 모듈
 import test from '../../../../assets/img/test.png';
+import { readAllRooms } from '../../../../redux/modules/roomSlice';
 
 function RoomListCard() {
+  const roomList = useSelector((state) => state.rooms.rooms);
+  console.log('roomList 전역 상태', roomList);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(readAllRooms());
+  }, [dispatch]);
   return (
     <StRoomListCard>
       <StRoomListCardCon>
         <StRoomListCardBox>
-          <Title>방제목</Title>
-          <ImageBox>
-            <img src={test} alt="test" />
-            <RoomInfo>
-              <UserCount>3</UserCount>
-              <CountSlash>/</CountSlash>
-              <UserMaxCount>4</UserMaxCount>
-            </RoomInfo>
-          </ImageBox>
+          {roomList.map((room) => {
+            return (
+              <div key={room.id}>
+                <Title>{room.title}</Title>
+                <ImageBox>
+                  <img src={test} alt="test" />
+                  <RoomInfo>
+                    <UserCount>3</UserCount>
+                    <CountSlash>/</CountSlash>
+                    <UserMaxCount>4</UserMaxCount>
+                  </RoomInfo>
+                </ImageBox>
+              </div>
+            );
+          })}
         </StRoomListCardBox>
       </StRoomListCardCon>
     </StRoomListCard>
