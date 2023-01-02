@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-//내부모듈
-import Card from './Card';
-//외부모듈
+// 내부모듈
 import styled from 'styled-components';
+import Card from './Card';
+// 외부모듈
 
 function UserCards() {
   return (

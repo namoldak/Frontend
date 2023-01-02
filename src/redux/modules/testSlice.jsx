@@ -1,18 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { authInstance } from "../../core/api/axios";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { authInstance } from '../../core/api/axios';
 
+// 해당 파일은 예시용 파일입니다
+// Slice 파일 작성전 참고용으로만 사용해주세요 :)
 
-
-//해당 파일은 예시용 파일입니다 
-//Slice 파일 작성전 참고용으로만 사용해주세요 :)
-
-
-const initialState = {
- 
-};
+const initialState = {};
 
 export const readBeforeChat = createAsyncThunk(
-  "chat/READ_BEFORE_CHAT",
+  'chat/READ_BEFORE_CHAT',
   async (payload, thunkAPI) => {
     try {
       const response = await authInstance.get(`/chat/room/join/${payload}`);
@@ -20,11 +15,11 @@ export const readBeforeChat = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 const chatSlice = createSlice({
-  name: "chat",
+  name: 'chat',
   initialState,
   reducers: {},
   extraReducers: {

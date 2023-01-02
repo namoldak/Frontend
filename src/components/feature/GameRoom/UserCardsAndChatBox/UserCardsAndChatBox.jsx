@@ -1,9 +1,9 @@
-//내부모듈
-import UserCards from './UserCards';
-import ChatBox from './ChatBox';
-//외부모듈
+// 내부모듈
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import UserCards from './UserCards';
+import ChatBox from './ChatBox';
+// 외부모듈
 
 function UserCardsAndChatBox() {
   return (
