@@ -1,11 +1,23 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Cookies, useCookies } from 'react-cookie';
 
 // 내부 모듈
+import { postSignup } from '../../../core/api/authAsync';
 
 function Signup() {
+  const navigate = useNavigate();
+  const [cookies, setCookies] = useCookies(['id']);
+
+  async function onClickSignup(data) {
+    await postSignup(data).then(
+      alert('회원가입이 완료되었습니다. 다시 로그인 해 주세요".'),
+      navigate('/login'),
+    );
+  }
+
   return (
     <StTopContainer>
       <StElementBox>
@@ -29,7 +41,7 @@ function Signup() {
             <button>Sign up</button>
           </div>
           <Link to="/login">
-            <button>로그인하러 가기</button>
+            <button onClick={onClickSignup(data)}>로그인하러 가기</button>
           </Link>
         </StBtnBox>
       </StElementBox>

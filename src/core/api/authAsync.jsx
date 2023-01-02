@@ -1,8 +1,11 @@
-import axios from 'axios';
+// 외부 모듈
+
+// 내부 모듈
+import { instance } from './axios';
 
 export const postSignup = async (data) => {
   try {
-    const response = await axios.post('/signup', data);
+    const response = await instance.post('/auth/signup', data);
     console.log('postSignup response:', response);
     return response;
   } catch (error) {
@@ -14,7 +17,7 @@ export const postSignup = async (data) => {
 
 export const postLogin = async (data) => {
   try {
-    const response = await axios.post('/signup', data);
+    const response = await instance.post('/auth/login', data);
     console.log('postLogin response:', response);
     return response;
   } catch (error) {
