@@ -29,7 +29,7 @@ function Login() {
   const [cookies, setCookies] = useCookies(['id']);
 
   async function onClickLogin(data) {
-    await postLogin(date).then(
+    await postLogin(data).then(
       (response) => alert('로그인 되었습니다.'),
       setCookies('id', response.data.token),
     );
