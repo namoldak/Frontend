@@ -5,15 +5,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Cookies, useCookies } from 'react-cookie';
 
 // 내부 모듈
+import { postLogin } from '../../../core/api/authAsync';
 
 function Login() {
   const navigate = useNavigate();
   const [cookies, setCookies] = useCookies(['id']);
 
   async function onClickLogin(data) {
-    await postLogin(date).then(
-      (response) => alert('로그인 되었습니다.'),
-      setCookies('id', response.data.token),
+    await postLogin(data).then(
+      (response) => setCookies('id', response.data.token),
+      alert('로그인 되었습니다.'),
+      navigate('/'),
     );
   }
 
