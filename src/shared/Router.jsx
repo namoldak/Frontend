@@ -7,11 +7,13 @@ import GameRoom from '../pages/GameRoom';
 import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
+import RoomList from '../pages/RoomList';
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/rooms" element={<RoomList />} />
         <Route path="/gameroom" element={<GameRoom />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
