@@ -1,11 +1,22 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Cookies, useCookies } from 'react-cookie';
 
 // 내부 모듈
 
 function Login() {
+  const navigate = useNavigate();
+  const [cookies, setCookies] = useCookies(['id']);
+
+  async function onClickLogin(data) {
+    await postLogin(date).then(
+      (response) => alert('로그인 되었습니다.'),
+      setCookies('id', response.data.token),
+    );
+  }
+
   return (
     <StTopContainer>
       <StElementBox>
@@ -26,7 +37,7 @@ function Login() {
             <button>Login</button>
           </div>
           <Link to="/signup">
-            <button>회원가입 하기</button>
+            <button onClick={onClickLogin(data)}>회원가입 하기</button>
           </Link>
         </StBtnBox>
       </StElementBox>
