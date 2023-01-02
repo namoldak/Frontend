@@ -1,7 +1,6 @@
-//외부모듈
+// 외부모듈
 import styled from 'styled-components';
-import React from 'react';
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 function Card() {
   const videoRef = useRef(null);
@@ -14,9 +13,9 @@ function Card() {
   let stream;
 
   function onClickCameraOffHandler() {
-    stream
-      .getVideoTracks()
-      .forEach((track) => (track.enabled = !track.enabled));
+    stream.getVideoTracks().forEach((track) => {
+      track.enabled = !track.enabled;
+    });
     if (!cameraOff) {
       cameraBtn.current.innerText = 'OFF';
       cameraOff = !cameraOff;
@@ -26,9 +25,9 @@ function Card() {
     }
   }
   function onClickMuteHandler() {
-    stream
-      .getAudioTracks()
-      .forEach((track) => (track.enabled = !track.enabled));
+    stream.getAudioTracks().forEach((track) => {
+      track.enabled = !track.enabled;
+    });
     if (!muted) {
       muteBtn.current.innerText = 'Unmute';
       muted = !muted;
@@ -40,17 +39,17 @@ function Card() {
 
   async function getCameras() {
     try {
-      //유저의 장치를 얻어옵니다
+      // 유저의 장치를 얻어옵니다
       const devices = await navigator.mediaDevices.enumerateDevices();
-      //얻어온 유저의 장치들에서 카메라장치만 필터링 합니다
+      // 얻어온 유저의 장치들에서 카메라장치만 필터링 합니다
       const cameras = devices.filter((device) => device.kind === 'videoinput');
-      //현재내가 사용중인 카메라의 label명을 셀렉트란에 보여주기위한 과정입니다.
+      // 현재내가 사용중인 카메라의 label명을 셀렉트란에 보여주기위한 과정입니다.
       //  아래의 if문과 이어서 확인 해주세요
       const currentCamera = stream.getVideoTracks()[0];
       cameras.forEach((camera) => {
         cameraOption.current.value = camera.deviceId;
         cameraOption.current.innerText = camera.label;
-        if (currentCamera.label == camera.label) {
+        if (currentCamera.label === camera.label) {
           cameraOption.current.selected = true;
         }
         camerasSelect.current.appendChild(cameraOption.current);
@@ -58,10 +57,6 @@ function Card() {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  async function onInputCameraChange() {
-    await getUserMedia(camerasSelect.current.value);
   }
 
   async function getUserMedia(deviceId) {
@@ -85,8 +80,14 @@ function Card() {
       console.log(err);
     }
   }
+
+  async function onInputCameraChange() {
+    await getUserMedia(camerasSelect.current.value);
+  }
+
   useEffect(() => {
     getUserMedia();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -95,6 +96,7 @@ function Card() {
       <h4>키워드</h4>
       <span>OOO님</span>
       <div>
+        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <video
           ref={videoRef}
           id="myFace"
@@ -113,7 +115,8 @@ function Card() {
         </button>
         <select ref={camerasSelect} onInput={onInputCameraChange}>
           <option>기본</option>
-          <option ref={cameraOption} value="device"></option>
+          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+          <option ref={cameraOption} value="device" />
         </select>
       </div>
       <button>방장일 경우 시작버튼?</button>

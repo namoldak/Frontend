@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-//내부모듈
+// 내부모듈
+import styled from 'styled-components';
 import InputChat from './InputChat';
 import ChatScreen from './ChatScreen';
-//외부모듈
-import styled from 'styled-components';
+// 외부모듈
 
 function ChatBox() {
   return (

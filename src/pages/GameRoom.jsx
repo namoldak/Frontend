@@ -1,9 +1,9 @@
 import React from 'react';
-//내부모듈
+// 내부모듈
+import styled from 'styled-components';
 import TitleAndTimer from '../components/feature/GameRoom/TitleAndTimer/TitleAndTimer';
 import UserCardsAndChatBox from '../components/feature/GameRoom/UserCardsAndChatBox/UserCardsAndChatBox';
-//외부모듈
-import styled from 'styled-components';
+// 외부모듈
 
 function GameRoom() {
   return (

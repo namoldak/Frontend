@@ -1,7 +1,7 @@
 // 외부 모듈
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // 내부 모듈
 
@@ -15,20 +15,20 @@ function Signup() {
         </div>
         <StInputBox>
           <div>
-            <input placeholder="Nickname 입력"></input>
+            <input placeholder="Nickname 입력" />
           </div>
           <div>
-            <input placeholder="Email 입력"></input>
+            <input placeholder="Email 입력" />
           </div>
           <div>
-            <input placeholder="비밀번호 입력"></input>
+            <input placeholder="비밀번호 입력" />
           </div>
         </StInputBox>
         <StBtnBox>
           <div>
             <button>Sign up</button>
           </div>
-          <Link to={"/login"}>
+          <Link to="/login">
             <button>로그인하러 가기</button>
           </Link>
         </StBtnBox>
