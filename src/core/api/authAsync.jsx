@@ -11,3 +11,14 @@ export const postSignup = async (data) => {
     window.location.reload();
   }
 };
+
+export const postLogin = async (data) => {
+  try {
+    const response = await axios.post('/signup', data);
+    console.log('postLogin response:', response);
+    return response;
+  } catch (error) {
+    console.log('postLogin response error:', error);
+    alert('로그인에 실패했습니다. 다시 한번 시도해주세요.');
+  }
+};
