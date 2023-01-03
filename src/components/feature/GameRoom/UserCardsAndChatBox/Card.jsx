@@ -1,16 +1,27 @@
+/* eslint-disable no-plusplus */
 // 외부모듈
 import styled from 'styled-components';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
+import { useParams } from 'react-router-dom';
 
 function Card() {
+  let SockJs = new SockJS('http://sangt.shop/ws/chat');
+  let ws = Stomp.over(SockJs);
+  let reconnect = 0;
   const videoRef = useRef(null);
   const muteBtn = useRef(null);
   const cameraBtn = useRef(null);
   const camerasSelect = useRef(null);
   const cameraOption = useRef(null);
+  const param = useParams();
+  const [messages, setMessages] = useState([]);
+  const messageArray = [];
   let muted = false;
   let cameraOff = false;
   let stream;
+  let myPeerConnection;
 
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
@@ -81,12 +92,112 @@ function Card() {
     }
   }
 
+  async function onMessageReceived(payload) {
+    const message = JSON.parse(payload.body);
+    if (message.type === 'welcome') {
+      const offer = await myPeerConnection.createOffer();
+      myPeerConnection.setLocalDescription(offer);
+      ws.send(
+        '/app/chat/message',
+        {},
+        JSON.stringify({
+          type: 'offer',
+          offer,
+          roomName: param.roomName,
+        }),
+      );
+    } else if (message.type === 'offer') {
+      myPeerConnection.setRmoteDescription(message.offer);
+      const answer = await myPeerConnection.createAnswer();
+      myPeerConnection.setLocalDescription(answer);
+      ws.send(
+        '/app/chat/message',
+        {},
+        JSON.stringify({
+          type: 'answer',
+          answer,
+          roomName: param.roomName,
+        }),
+      );
+    } else if (message.type === 'answer') {
+      myPeerConnection.setRemoteDescription(message.answer);
+    } else if (message.type === 'ice') {
+      myPeerConnection.addICECandidae(message.ice);
+    }
+    // messageArray.push(message);
+    // setMessages([...messageArray]);
+  }
+
+  function onConnected(frame) {
+    ws.subscribe(`/topic/chat/room/${param.roomName}`, onMessageReceived);
+    ws.send(
+      '/app/chat/message',
+      {},
+      JSON.stringify({
+        type: 'JOIN',
+        roomName: param.roomName,
+      }),
+    );
+  }
+
+  function onError(error) {
+    if (reconnect <= 5) {
+      // eslint-disable-next-line func-names
+      setTimeout(function () {
+        console.log('connection reconnect');
+        SockJs = new SockJS('/ws/chat');
+        ws = Stomp.over(SockJs);
+        reconnect++;
+        // eslint-disable-next-line no-use-before-define
+        roomSubscribe();
+      }, 10 * 1000);
+    }
+  }
+
+  function roomSubscribe(event) {
+    ws.connect({}, onConnected(), onError());
+    event.preventDefault();
+  }
+
   async function onInputCameraChange() {
     await getUserMedia(camerasSelect.current.value);
   }
 
+  function handleIce(data) {
+    ws.send(
+      '/app/chat/message',
+      {},
+      JSON.stringify({
+        type: 'ice',
+        candidate: data.candidate,
+        roomName: param.roomName,
+      }),
+    );
+    console.log('got ice candidate');
+    console.log(data);
+  }
+
+  function handleAddStream(data) {
+    console.log('got an stream from my peer');
+    console.log("Peer's Stream", data.stream);
+    console.log('My stream', stream);
+  }
+  function makeConnection() {
+    myPeerConnection = new RTCPeerConnection();
+    myPeerConnection.addEventListener('icecandidate', handleIce);
+    myPeerConnection.addEventListener('addstream', handleAddStream);
+    stream.getTracks().forEach((track) => {
+      myPeerConnection.addTrack(track, stream);
+    });
+  }
+
   useEffect(() => {
-    getUserMedia();
+    async function fetchData() {
+      await getUserMedia();
+      await makeConnection();
+      await roomSubscribe();
+    }
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
