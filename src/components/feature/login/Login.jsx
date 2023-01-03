@@ -5,10 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Cookies, useCookies } from 'react-cookie';
+import { setCookie } from '../../../utils/cookies';
 
 // 내부 모듈
-import { postLogin } from '../../../core/api/authAsync';
+import authAPI from '../../../api/authAsync';
 
 const schema = yup.object().shape({
   email: yup.string().email('올바른 이메일을 입력해주세요.').required(''),
@@ -16,6 +16,8 @@ const schema = yup.object().shape({
 });
 
 function Login() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,14 +27,14 @@ function Login() {
     mode: 'onChange',
   });
 
-  const navigate = useNavigate();
-  const [cookies, setCookies] = useCookies(['id']);
-
   async function onClickLogin(data) {
-    await postLogin(data).then(
-      (response) => alert('로그인 되었습니다.'),
-      // setCookies('id', response.data.token),
-    );
+    // console.log('로그인 data', data);
+    await authAPI.Login(data).then((response) => {
+      // console.log('로그인 response', response);
+      setCookie(response.headers.authorization);
+      alert('로그인 되었습니다.');
+      navigate('/');
+    });
   }
 
   return (
