@@ -5,13 +5,14 @@ import { Link } from 'react-router-dom';
 
 // 내부 모듈
 import Button from '../../common/Button';
+import TextButton from '../../common/TextButton';
 
 function Landing() {
   return (
     <StTopContainer>
       <StHeader>
         <Link to="/login">
-          <button>로그인</button>
+          <TextButton>로그인</TextButton>
         </Link>
         <div>Guest님 안녕하세요.</div>
       </StHeader>
