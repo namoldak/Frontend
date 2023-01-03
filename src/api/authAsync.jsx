@@ -26,9 +26,22 @@ const Login = async (data) => {
   return null;
 };
 
+// 카카오 로그인
+// code: 카카오 인증 코드
+const KakaoLogin = async (code) => {
+  try {
+    const response = await instance.post(`/api/user/loginKakao?code=${code}`);
+    return response;
+  } catch (error) {
+    alert('에러가 발생했습니다', 'error');
+  }
+  return null;
+};
+
 const authAPI = {
   Login,
   SignUp,
+  KakaoLogin,
 };
 
 export default authAPI;
