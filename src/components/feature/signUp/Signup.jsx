@@ -90,7 +90,7 @@ function Signup() {
             <HelpText>{errors.confirmPw?.message}</HelpText>
           </StInputCon>
           <StBtnBox>
-            <button>Sign up</button>
+            <input type="submit" value="회원가입" />
             <Link to="/login">
               <button>로그인하러 가기</button>
             </Link>
