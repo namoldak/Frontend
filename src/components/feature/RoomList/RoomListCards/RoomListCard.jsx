@@ -1,7 +1,7 @@
 // 외부 모듈
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 // 내부 모듈
@@ -9,21 +9,27 @@ import test from '../../../../assets/img/test.png';
 import { readAllRooms } from '../../../../redux/modules/roomSlice';
 
 function RoomListCard() {
-  const roomList = useSelector((state) => state.rooms.rooms);
-  console.log('roomList 전역 상태', roomList);
+  const { rooms, roomPage } = useSelector((state) => state.rooms);
+  console.log('rooms 전역 상태', rooms);
+  console.log('page 전역 상태', roomPage);
+
+  const initalPage = 1;
+  const [page, setpage] = useState(initalPage);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(readAllRooms());
-  }, [dispatch]);
+    dispatch(readAllRooms({ page }));
+  }, [dispatch, page]);
+
   return (
     <StRoomListCard>
       <StRoomListCardCon>
         <StRoomListCardBox>
-          {roomList.map((room) => {
+          {rooms.map((room) => {
             return (
-              <div key={room.id}>
-                <Title>{room.title}</Title>
+              <div key={room.roomId}>
+                <Title>{room.roomName}</Title>
                 <ImageBox>
                   <img src={test} alt="test" />
                   <RoomInfo>

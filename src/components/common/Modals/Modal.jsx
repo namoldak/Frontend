@@ -24,13 +24,14 @@ function Modal({ onClose, content }) {
 
   return (
     <ModalPortal>
-      <StBackground>
+      <StBackground onClick={onClose}>
         <StModalBorder>
           <div>
             <button onClick={onClose}>X</button>
           </div>
           <div>
             <div
+              role="presentation"
               onClick={(event) => {
                 event.stopPropagation();
               }}

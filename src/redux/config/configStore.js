@@ -6,7 +6,7 @@ import { combineReducers } from 'redux';
 import rooms from '../modules/roomSlice';
 
 const rootReducer = combineReducers({
-  rooms: rooms,
+  rooms,
 });
 
 const store = configureStore({

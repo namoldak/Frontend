@@ -1,8 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { instance } from '../../core/api/axios';
 
 const initialState = {
-  rooms: [],
+  rooms: [{}],
+  userInfo: {
+    username: '',
+    nickname: '',
+  },
+  roomPage: 1,
   error: null,
 };
 
@@ -10,7 +15,7 @@ export const createRoom = createAsyncThunk(
   'room/createRoom',
   async (newRoom, thunkAPI) => {
     try {
-      const response = await axios.post(`http://localhost:3001/rooms`, newRoom);
+      const response = await instance.post(`/rooms`, newRoom);
       console.log('create room:', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
@@ -22,9 +27,9 @@ export const createRoom = createAsyncThunk(
 
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
-  async (thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(`http://localhost:3001/rooms`);
+      const response = await instance.get(`/rooms?page=${payload.page}&size=4`);
       console.log('read rooms:', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
