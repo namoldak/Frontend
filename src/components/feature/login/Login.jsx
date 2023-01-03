@@ -1,12 +1,13 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 // 내부 모듈
+import { postLogin } from '../../../core/api/authAsync';
 
 const schema = yup.object().shape({
   email: yup.string().email('올바른 이메일을 입력해주세요.').required(''),
@@ -16,16 +17,27 @@ const schema = yup.object().shape({
 function Login() {
   const {
     register,
+    handleSubmit,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
+  
+  const navigate = useNavigate();
+  const [cookies, setCookies] = useCookies(['id']);
+
+  async function onClickLogin(data) {
+    await postLogin(data).then(
+      (response) => alert('로그인 되었습니다.'),
+      setCookies('id', response.data.token),
+    );
+  }
 
   return (
     <StTopContainer>
       <StElementBox>
-        <form>
+        <form onSubmit={handleSubmit(onClickLogin)}>
           <h1>NaMan-MoRunDark</h1>
           <h3>Login</h3>
           <StInputBox>
@@ -42,7 +54,7 @@ function Login() {
             <HelpText>{errors.password?.message}</HelpText>
           </StInputBox>
           <StBtnBox>
-            <Button>Login</Button>
+            <input type="submit" value="로그인">
             <Link to="/signup">
               <Button>회원가입 하기</Button>
             </Link>
