@@ -30,7 +30,7 @@ const Login = async (data) => {
 // code: 카카오 인증 코드
 const KakaoLogin = async (code) => {
   try {
-    const response = await instance.post(`/api/user/loginKakao?code=${code}`);
+    const response = await instance.post(`auth/kakao/callback?code=${code}`);
     return response;
   } catch (error) {
     alert('에러가 발생했습니다', 'error');
