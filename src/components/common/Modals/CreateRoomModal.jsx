@@ -11,7 +11,8 @@ function CreateRoomModal() {
   const dispatch = useDispatch();
 
   function onClickRoomCreate() {
-    const newRoom = { title };
+    const newRoom = { title, password: '1234' };
+    console.log('newRoom', newRoom);
     if (title === '') {
       alert('제목을 입력해주세요');
     } else {
