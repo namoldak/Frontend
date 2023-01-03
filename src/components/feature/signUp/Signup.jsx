@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 // 내부 모듈
-import { postSignup } from '../../../core/api/authAsync';
+import authAPI from '../../../api/authAsync';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -51,10 +51,12 @@ function Signup() {
   });
 
   async function onClickSignup(data) {
-    await postSignup(data).then(
-      alert('회원가입이 완료되었습니다. 다시 로그인 해 주세요.'),
-      navigate('/login'),
-    );
+    await authAPI
+      .SignUp(data)
+      .then(
+        alert('회원가입이 완료되었습니다. 다시 로그인 해 주세요.'),
+        navigate('/login'),
+      );
   }
 
   return (

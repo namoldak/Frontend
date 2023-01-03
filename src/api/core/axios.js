@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { Cookies } from 'react-cookie';
+import { getCookie } from '../../utils/cookies';
 
 // 인스턴스 생성
 // eslint-disable-next-line import/prefer-default-export
 export const instance = axios.create({
   baseURL: 'http://52.79.248.2:8080',
-//   withCredentials: true,
+  withCredentials: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
   },
@@ -17,8 +17,7 @@ instance.defaults.timeout = 2500;
 // 인스턴스 request header Authorization 설정
 instance.interceptors.request.use((config) => {
   if (config.headers === undefined) return;
-  const cookies = new Cookies();
-  const token = cookies.get('accessToken');
+  const token = getCookie();
   config.headers.Authorization = `${token}`;
   // eslint-disable-next-line consistent-return
   return config;
