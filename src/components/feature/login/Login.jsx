@@ -54,7 +54,7 @@ function Login() {
             <HelpText>{errors.password?.message}</HelpText>
           </StInputBox>
           <StBtnBox>
-            <input type="submit" value="로그인">
+            <input type="submit" value="로그인" />
             <Link to="/signup">
               <Button>회원가입 하기</Button>
             </Link>
