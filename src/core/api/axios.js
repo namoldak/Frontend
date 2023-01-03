@@ -5,7 +5,7 @@ import { Cookies } from 'react-cookie';
 // eslint-disable-next-line import/prefer-default-export
 export const instance = axios.create({
   baseURL: 'http://52.79.248.2:8080',
-  withCredentials: true,
+//   withCredentials: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
   },
