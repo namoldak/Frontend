@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
+import Button from '../../common/Button';
 
 function Landing() {
   return (
@@ -21,7 +22,7 @@ function Landing() {
         </StRuleText>
       </StRuleBox>
       <div>
-        <button>게임 시작</button>
+        <Button>게임 시작</Button>
       </div>
     </StTopContainer>
   );
