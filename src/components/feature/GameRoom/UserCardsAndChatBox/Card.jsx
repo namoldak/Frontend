@@ -7,7 +7,7 @@ import { Stomp } from '@stomp/stompjs';
 import { useParams } from 'react-router-dom';
 
 function Card() {
-  let SockJs = new SockJS('http://sangt.shop/ws/chat');
+  let SockJs = new SockJS('http://52.79.248.2:8080/ws-stomp');
   let ws = Stomp.over(SockJs);
   let reconnect = 0;
   const videoRef = useRef(null);
@@ -98,7 +98,7 @@ function Card() {
       const offer = await myPeerConnection.createOffer();
       myPeerConnection.setLocalDescription(offer);
       ws.send(
-        '/app/chat/message',
+        '/pub/message',
         {},
         JSON.stringify({
           type: 'offer',
@@ -111,7 +111,7 @@ function Card() {
       const answer = await myPeerConnection.createAnswer();
       myPeerConnection.setLocalDescription(answer);
       ws.send(
-        '/app/chat/message',
+        '/pub/message',
         {},
         JSON.stringify({
           type: 'answer',
@@ -129,9 +129,9 @@ function Card() {
   }
 
   function onConnected(frame) {
-    ws.subscribe(`/topic/chat/room/${param.roomName}`, onMessageReceived);
+    ws.subscribe(`/sub/${param.roomName}`, onMessageReceived);
     ws.send(
-      '/app/chat/message',
+      '/pub/message',
       {},
       JSON.stringify({
         type: 'JOIN',
@@ -161,6 +161,13 @@ function Card() {
 
   async function onInputCameraChange() {
     await getUserMedia(camerasSelect.current.value);
+    if (myPeerConnection) {
+      const videoTrack = stream.getVideoTracks()[0];
+      const videoSender = myPeerConnection
+        .getSenders()
+        .find((sender) => sender.track.kind === 'video');
+      videoSender.replaceTrack(videoTrack);
+    }
   }
 
   function handleIce(data) {
@@ -190,13 +197,12 @@ function Card() {
       myPeerConnection.addTrack(track, stream);
     });
   }
-
+  async function fetchData() {
+    await getUserMedia();
+    await makeConnection();
+    await roomSubscribe();
+  }
   useEffect(() => {
-    async function fetchData() {
-      await getUserMedia();
-      await makeConnection();
-      await roomSubscribe();
-    }
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
