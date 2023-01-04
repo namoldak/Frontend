@@ -2,12 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { instance } from '../../api/core/axios';
 
 const initialState = {
-  rooms: [{}],
-  userInfo: {
-    username: '',
-    nickname: '',
-  },
-  roomPage: 1,
+  rooms: [],
   error: null,
 };
 
@@ -17,7 +12,7 @@ export const createRoom = createAsyncThunk(
     try {
       const response = await instance.post(`/rooms`, newRoom);
       console.log('create room:', response);
-      return thunkAPI.fulfillWithValue(response.data);
+      return thunkAPI.fulfillWithValue(response.data.body.data);
     } catch (error) {
       console.log('create room error:', error);
       return thunkAPI.rejectWithValue(error);
@@ -28,8 +23,11 @@ export const createRoom = createAsyncThunk(
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
   async (payload, thunkAPI) => {
+    console.log('payload', payload);
     try {
-      const response = await instance.get(`/rooms?page=${payload.page}&size=4`);
+      const response = await instance.get(
+        `/rooms?page=${payload.page}&size=${payload.limit}`,
+      );
       console.log('read rooms:', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
@@ -45,12 +43,14 @@ export const roomSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      state.room.push(action.payload);
+      console.log('action payload', action.payload);
+      state.rooms.push(action.payload);
     },
     [createRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
     [readAllRooms.fulfilled]: (state, action) => {
+      console.log('action payload readAllRooms', action.payload);
       state.rooms = action.payload;
     },
     [readAllRooms.rejected]: (state, action) => {

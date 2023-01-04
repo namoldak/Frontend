@@ -1,74 +1,85 @@
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 // 내부 모듈
 import test from '../../../../assets/img/test.png';
 import { readAllRooms } from '../../../../redux/modules/roomSlice';
+import leftArrow from '../../../../assets/img/leftArrow.png';
+import rightArrow from '../../../../assets/img/rightArrow.png';
 
 function RoomListCard() {
-  const { rooms, roomPage } = useSelector((state) => state.rooms);
-  console.log('rooms 전역 상태', rooms);
-  console.log('page 전역 상태', roomPage);
+  const { rooms } = useSelector((state) => state.rooms);
 
-  const initalPage = 1;
-  const [page, setpage] = useState(initalPage);
+  const max = rooms.length;
+  const startPage = 1;
+  const [page, setPage] = useState(startPage);
+  const [limit, setLimit] = useState(4);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(readAllRooms({ page }));
-  }, [dispatch, page]);
+    dispatch(readAllRooms({ page, limit }));
+  }, [dispatch, page, limit]);
+
+  function enterRoom(roomId) {
+    navigate(`/gameroom/${roomId}`);
+  }
 
   return (
     <StRoomListCard>
-      <StRoomListCardCon>
-        <StRoomListCardBox>
-          {rooms.map((room) => {
-            return (
-              <div key={room.roomId}>
-                <Title>{room.roomName}</Title>
-                <ImageBox>
-                  <img src={test} alt="test" />
-                  <RoomInfo>
-                    <UserCount>3</UserCount>
-                    <CountSlash>/</CountSlash>
-                    <UserMaxCount>4</UserMaxCount>
-                  </RoomInfo>
-                </ImageBox>
-              </div>
-            );
-          })}
-        </StRoomListCardBox>
-      </StRoomListCardCon>
+      <StRoomListCardBox>
+        <StLeftArrowBox
+          onClick={() => {
+            setPage(page - 1);
+          }}
+        >
+          <PrevBtn>
+            {page < 1 ? <img src={leftArrow} alt="leftArrow icon" /> : ''}
+          </PrevBtn>
+        </StLeftArrowBox>
+        {rooms.map((room) => {
+          return (
+            <div key={room.roomId}>
+              <Title>{room.roomName}</Title>
+              <ImageBox
+                onClick={() => {
+                  enterRoom(room.roomId);
+                }}
+              >
+                <img src={test} alt="test" />
+              </ImageBox>
+              <div>{room.member.length}/4</div>
+            </div>
+          );
+        })}
+        <StRightArrowBox
+          onClick={() => {
+            setPage(page + 1);
+          }}
+        >
+          <NextBtn>
+            <img src={rightArrow} alt="rigntArrow icon" />
+          </NextBtn>
+        </StRightArrowBox>
+      </StRoomListCardBox>
     </StRoomListCard>
   );
 }
 
 const StRoomListCard = styled.div`
-  width: 90%;
+  width: 100%;
   height: 100%;
   margin: 0 auto;
 `;
 
-const StRoomListCardCon = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  max-width: 700px;
-  height: 400px;
-  border: 1px solid #000;
-`;
-
 const StRoomListCardBox = styled.div`
-  width: 90%;
-  height: 90%;
+  display: flex;
+  flex-direction: row;
   align-self: center;
-  margin: 0 auto;
-  padding: 10px;
-  border: 1px solid #000;
 `;
 
 const Title = styled.div`
@@ -85,6 +96,31 @@ const ImageBox = styled.div`
   img {
     width: 100%;
     height: 100%;
+  }
+`;
+
+const PrevBtn = styled.div`
+  border: 0;
+  background: none;
+  cursor: pointer;
+`;
+
+const StLeftArrowBox = styled.div`
+  img {
+    height: 100px;
+  }
+`;
+
+const NextBtn = styled.div`
+  border: 0;
+  background: none;
+  cursor: pointer;
+`;
+
+const StRightArrowBox = styled.div`
+  img {
+    height: 100px;
+    transform: rotate(180deg);
   }
 `;
 
