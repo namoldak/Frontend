@@ -43,7 +43,7 @@ export const roomSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      console.log('action payload', action.payload);
+      console.log('action payload create', action.payload);
       state.rooms.push(action.payload);
     },
     [createRoom.rejected]: (state, action) => {

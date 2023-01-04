@@ -11,10 +11,10 @@ import leftArrow from '../../../../assets/img/leftArrow.png';
 import rightArrow from '../../../../assets/img/rightArrow.png';
 
 function RoomListCard() {
-  const { rooms } = useSelector((state) => state.rooms);
+  const rooms = useSelector((state) => state.rooms.rooms);
+  // console.log('rooms 전역', rooms);
 
-  const max = rooms.length;
-  const startPage = 1;
+  const startPage = 0;
   const [page, setPage] = useState(startPage);
   const [limit, setLimit] = useState(4);
 
@@ -38,12 +38,13 @@ function RoomListCard() {
           }}
         >
           <PrevBtn>
-            {page < 1 ? <img src={leftArrow} alt="leftArrow icon" /> : ''}
+            {page > 0 ? <img src={leftArrow} alt="leftArrow icon" /> : ''}
           </PrevBtn>
         </StLeftArrowBox>
-        {rooms.map((room) => {
+        {rooms.slice(0, 4).map((room) => {
+          console.log('room', room);
           return (
-            <div key={room.roomId}>
+            <div key={room.id}>
               <Title>{room.roomName}</Title>
               <ImageBox
                 onClick={() => {
@@ -52,7 +53,7 @@ function RoomListCard() {
               >
                 <img src={test} alt="test" />
               </ImageBox>
-              <div>{room.member.length}/4</div>
+              {/* <div>{room.member}/4</div> */}
             </div>
           );
         })}
