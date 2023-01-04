@@ -14,7 +14,7 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/rooms" element={<RoomList />} />
-        <Route path="/gameroom" element={<GameRoom />} />
+        <Route path="/gameroom/:id" element={<GameRoom />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/" element={<LandingPage />} />
