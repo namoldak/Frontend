@@ -1,6 +1,7 @@
 // 외부 모듈
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
@@ -9,6 +10,10 @@ import { createRoom } from '../../../redux/modules/roomSlice';
 function CreateRoomModal() {
   const [gameRoomName, setGameRoomName] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const param = useParams();
+
+  const roomId = param.id;
 
   function onClickRoomCreate() {
     const newRoom = { gameRoomName, gameRoomPassword: '1234' };
@@ -17,6 +22,7 @@ function CreateRoomModal() {
       alert('제목을 입력해주세요');
     } else {
       dispatch(createRoom(newRoom));
+      navigate(`/gameroom/${roomId}`);
       setGameRoomName('');
     }
   }

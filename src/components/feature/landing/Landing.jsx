@@ -23,7 +23,7 @@ function Landing() {
         </StRuleText>
       </StRuleBox>
       <Link to="/rooms">
-        <Button>게임 시작</Button>
+        <Button>게임하러 가기</Button>
       </Link>
     </StTopContainer>
   );
