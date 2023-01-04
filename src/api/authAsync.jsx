@@ -38,10 +38,23 @@ const KakaoLogin = async (code) => {
   return null;
 };
 
+const checkNickName = async (data) => {
+  try {
+    console.log('서버 nick', data);
+    const response = await instance.post(`/auth/signup`, data);
+    console.log('서버 nick response', response);
+    return response;
+  } catch (error) {
+    alert('에러가 발생했습니다', 'error');
+  }
+  return null;
+};
+
 const authAPI = {
   Login,
   SignUp,
   KakaoLogin,
+  checkNickName,
 };
 
 export default authAPI;
