@@ -1,5 +1,5 @@
 // 외부 모듈
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import * as yup from 'yup';
 
 // 내부 모듈
 import authAPI from '../../../api/authAsync';
+import useDidMountEffect from '../../../hooks/useDidMountEffect';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -39,17 +40,25 @@ const schema = yup.object().shape({
 });
 
 function Signup() {
+  // 회원가입 후 로그인 페이지로
   const navigate = useNavigate();
+  // 닉네임 중목 true/false
+  const [nickValid, setNickValid] = useState(false);
 
+  // 유효성 검사
   const {
     register,
     handleSubmit,
+    getValues,
+    setError,
+    clearErrors,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
 
+  // 회원가입 api
   async function onClickSignup(data) {
     await authAPI
       .SignUp(data)
@@ -58,6 +67,33 @@ function Signup() {
         navigate('/login'),
       );
   }
+
+  // 닉네임 확인
+  async function onClickCheckNickName() {
+    const data = getValues('nickname');
+    console.log('닉네임확인 nick', data);
+    await authAPI.checkNickName(data).then((response) => {
+      console.log('닉네임확인 response', response);
+      if (response.data) {
+        alert('사용가능한 닉네임입니다');
+      } else {
+        alert('이미 사용중인 닉네임입니다');
+      }
+      setNickValid(response.data);
+    });
+  }
+
+  // 첫번째 렌더링 시 실행 안 됨
+  useDidMountEffect(() => {
+    if (!nickValid) {
+      setError('nickname', {
+        type: 'custom',
+        message: '사용중인 이메일입니다.',
+      });
+    } else {
+      clearErrors('nickname', { type: 'custom' });
+    }
+  }, [nickValid]);
 
   return (
     <StTopContainer>
@@ -72,7 +108,13 @@ function Signup() {
                 placeholder="닉네임을 입력해주세요."
                 {...register('nickname', { required: true })}
               />
-              <Button>중복확인</Button>
+              <Button
+                disabled={!getValues('email') || errors.email}
+                className="checkNickName"
+                onClick={() => onClickCheckNickName}
+              >
+                중복확인
+              </Button>
             </InputBox>
             <HelpText>
               {errors.nicknameCheck?.message || errors.nickname?.message}
@@ -160,6 +202,16 @@ const Button = styled.button`
   cursor: pointer;
   max-width: 80px;
   margin-left: 10px;
+
+  &:disabled {
+    background-color: #f2f4f7;
+    color: #333;
+  }
+
+  &.checknickname {
+    background-color: #ffd440;
+    color: #333;
+  }
 `;
 
 const HelpText = styled.p`
