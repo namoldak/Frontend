@@ -47,10 +47,9 @@ function Login() {
   // 카카오 로그인 api
   const KakaoLogin = async (code) => {
     await authAPI.KakaoLogin(code).then((response) => {
-      console.log(response);
       setCookie(response.headers.authorization);
       alert(`${response.data.msg}`, '카카오 로그인 성공');
-      navigate('/');
+      // navigate('/');
     });
   };
 
