@@ -8,9 +8,9 @@ function UserCards() {
   return (
     <StUserCards>
       <Card />
+      {/* <Card />
       <Card />
-      <Card />
-      <Card />
+      <Card /> */}
     </StUserCards>
   );
 }
