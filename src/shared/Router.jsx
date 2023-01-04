@@ -13,7 +13,7 @@ function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/gameroom/:roomName" element={<GameRoom />} />
+        <Route path="/gameroom/:roomId" element={<GameRoom />} />
         <Route path="/rooms" element={<RoomList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
