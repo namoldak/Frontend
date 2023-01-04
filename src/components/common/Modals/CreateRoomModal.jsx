@@ -7,17 +7,17 @@ import styled from 'styled-components';
 import { createRoom } from '../../../redux/modules/roomSlice';
 
 function CreateRoomModal() {
-  const [title, setTitle] = useState('');
+  const [gameRoomName, setGameRoomName] = useState('');
   const dispatch = useDispatch();
 
   function onClickRoomCreate() {
-    const newRoom = { title, password: '1234' };
+    const newRoom = { gameRoomName, gameRoomPassword: '1234' };
     console.log('newRoom', newRoom);
-    if (title === '') {
+    if (gameRoomName === '') {
       alert('제목을 입력해주세요');
     } else {
       dispatch(createRoom(newRoom));
-      setTitle('');
+      setGameRoomName('');
     }
   }
 
@@ -25,9 +25,9 @@ function CreateRoomModal() {
     <StModalContainer>
       <input
         placeholder="제목을 입력해주세요"
-        value={title}
+        value={gameRoomName}
         onChange={(e) => {
-          setTitle(e.target.value);
+          setGameRoomName(e.target.value);
         }}
       />
       <button onClick={onClickRoomCreate}>생성하기</button>
