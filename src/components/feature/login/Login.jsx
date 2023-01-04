@@ -48,8 +48,8 @@ function Login() {
   const KakaoLogin = async (code) => {
     await authAPI.KakaoLogin(code).then((response) => {
       setCookie(response.headers.authorization);
-      alert(`${response.data.msg}`, '카카오 로그인 성공');
-      // navigate('/');
+      alert(`${response.data.statusMsg}`, '카카오 로그인 성공');
+      navigate('/');
     });
   };
 
