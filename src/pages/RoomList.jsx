@@ -13,8 +13,6 @@ function RoomList() {
     <StRoomList>
       <RoomListHeaderLayout />
       <RoomListCard />
-      {/* <RoomListCardLayout />
-      <RoomListSliderLayout /> */}
     </StRoomList>
   );
 }

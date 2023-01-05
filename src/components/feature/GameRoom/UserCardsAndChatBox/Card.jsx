@@ -23,6 +23,9 @@ function Card() {
   let stream;
   let myPeerConnection;
 
+  const sender = sessionStorage.getItem('nickname');
+  console.log('sender', sender);
+
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
       track.enabled = !track.enabled;
