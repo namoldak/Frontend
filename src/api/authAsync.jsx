@@ -6,9 +6,9 @@ const SignUp = async (data) => {
     // console.log('postSignup response:', response);
     return response;
   } catch (error) {
-    console.log('postSignup response error:', error);
-    // alert('회원가입이 실패했습니다. 다시 시도해주세요.');
-    window.location.reload();
+    // console.log('postSignup response error:', error);
+    alert('회원가입이 실패했습니다. 다시 시도해주세요.');
+    // window.location.reload();
   }
   return null;
 };
@@ -38,11 +38,25 @@ const KakaoLogin = async (code) => {
   return null;
 };
 
-const checkNickName = async (data) => {
+// 닉네임 중복 확인
+const checkNickName = async (nickname) => {
   try {
-    console.log('서버 nick', data);
-    const response = await instance.post(`/auth/signup`, data);
-    console.log('서버 nick response', response);
+    // console.log('서버 nick', nickname);
+    const response = await instance.post(`/auth/nicknameCheck`, nickname);
+    // console.log('서버 nick response', response);
+    return response;
+  } catch (error) {
+    alert('에러가 발생했습니다', 'error');
+  }
+  return null;
+};
+
+// 이메일 중복 확인
+const checkEmail = async (email) => {
+  try {
+    // console.log('서버 email', email);
+    const response = await instance.post(`/auth/emailCheck`, email);
+    // console.log('서버 nick response', response);
     return response;
   } catch (error) {
     alert('에러가 발생했습니다', 'error');
@@ -55,6 +69,7 @@ const authAPI = {
   SignUp,
   KakaoLogin,
   checkNickName,
+  checkEmail,
 };
 
 export default authAPI;

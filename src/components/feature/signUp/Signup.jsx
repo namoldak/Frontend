@@ -19,7 +19,7 @@ const schema = yup.object().shape({
       /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/,
       '닉네임은 한글, 영문, 숫자만 가능합니다.',
     )
-    .required('닉네임을 입력해주세요'),
+    .required('닉네임을 인증해주세요'),
   email: yup
     .string()
     .email('올바른 이메일을 입력해주세요.')
@@ -44,6 +44,7 @@ function Signup() {
   const navigate = useNavigate();
   // 닉네임 중목 true/false
   const [nickValid, setNickValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
 
   // 유효성 검사
   const {
@@ -68,18 +69,35 @@ function Signup() {
       );
   }
 
-  // 닉네임 확인
-  async function onClickCheckNickName() {
-    const data = getValues('nickname');
-    console.log('닉네임확인 nick', data);
-    await authAPI.checkNickName(data).then((response) => {
-      console.log('닉네임확인 response', response);
+  // 닉네임 중복확인
+  function onClickCheckNickName() {
+    const jsonData = getValues('nickname');
+    const data = { jsonData }; // json 형식으로 보내야 함
+    // console.log('닉네임확인 nick', data);
+
+    authAPI.checkNickName(data).then((response) => {
+      // console.log('닉네임확인 response', response);
       if (response.data) {
-        alert('사용가능한 닉네임입니다');
+        alert('유효한 닉네임입니다.');
       } else {
-        alert('이미 사용중인 닉네임입니다');
+        alert('이미 사용 중인 닉네임입니다.');
       }
       setNickValid(response.data);
+    });
+  }
+
+  // 이메일 중복 확인
+  function onClickCheckEmail() {
+    const jsonData = getValues('email');
+    const data = { jsonData };
+
+    authAPI.checkEmail(data).then((response) => {
+      if (response.data) {
+        alert('유효한 이메일입니다.');
+      } else {
+        alert('이미 사용중인 이메일입니다.');
+      }
+      setEmailValid(response.data);
     });
   }
 
@@ -88,12 +106,23 @@ function Signup() {
     if (!nickValid) {
       setError('nickname', {
         type: 'custom',
-        message: '사용중인 이메일입니다.',
+        message: '사용 중인 닉네임입니다.',
       });
     } else {
       clearErrors('nickname', { type: 'custom' });
     }
   }, [nickValid]);
+
+  useDidMountEffect(() => {
+    if (!emailValid) {
+      setError('email', {
+        type: 'custom',
+        message: '사용 중인 이메일입니다.',
+      });
+    } else {
+      clearErrors('email', { type: 'custom' });
+    }
+  }, [emailValid]);
 
   return (
     <StTopContainer>
@@ -106,12 +135,14 @@ function Signup() {
             <InputBox>
               <Input
                 placeholder="닉네임을 입력해주세요."
+                className={errors.nickname ? 'error' : ''}
                 {...register('nickname', { required: true })}
               />
               <Button
-                disabled={!getValues('email') || errors.email}
+                // disabled={!getValues('nickname')}
                 className="checkNickName"
-                onClick={() => onClickCheckNickName}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onClickCheckNickName}
               >
                 중복확인
               </Button>
@@ -125,7 +156,14 @@ function Signup() {
                 placeholder="이메일을 입력해주세요"
                 {...register('email', { required: true })}
               />
-              <Button>중복확인</Button>
+              <Button
+                // disabled={!getValues('email') || errors.email}
+                className="checkEmail"
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onClickCheckEmail}
+              >
+                중복확인
+              </Button>
             </InputBox>
             <HelpText>
               {errors.emailCheck?.message || errors.email?.message}
@@ -145,9 +183,9 @@ function Signup() {
             <HelpText>{errors.confirmPw?.message}</HelpText>
           </StInputCon>
           <StBtnBox>
-            <input type="submit" value="회원가입" />
+            <input type="submit" value="회원가입" disabled={!isValid} />
             <Link to="/login">
-              <button>로그인하러 가기</button>
+              <Button>로그인하러 가기</Button>
             </Link>
           </StBtnBox>
         </form>
@@ -193,6 +231,10 @@ const InputBox = styled.div`
 const Input = styled.input`
   width: 100%;
   height: 20px;
+
+  &.error {
+    border: 1px solid #fe415c;
+  }
 `;
 
 const Button = styled.button`
@@ -208,7 +250,12 @@ const Button = styled.button`
     color: #333;
   }
 
-  &.checknickname {
+  &.checkNickName {
+    background-color: #ffd440;
+    color: #333;
+  }
+
+  &.checkEmail {
     background-color: #ffd440;
     color: #333;
   }
