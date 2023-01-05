@@ -7,7 +7,7 @@ import { Stomp } from '@stomp/stompjs';
 import { useParams } from 'react-router-dom';
 
 function Card() {
-  let SockJs = new SockJS('http://52.79.248.2:8080/ws-stomp');
+  let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
   let ws = Stomp.over(SockJs);
   let reconnect = 0;
   const videoRef = useRef(null);
@@ -171,7 +171,9 @@ function Card() {
   }
 
   async function recvMessage(recv) {
+    console.log('메세지 수신');
     if (recv.type === 'ENTER') {
+      console.log(recv.message);
       const offer = await myPeerConnection.createOffer();
       myPeerConnection.setLocalDescription(offer);
       ws.send(
@@ -199,7 +201,7 @@ function Card() {
     } else if (recv.type === 'ANSWER') {
       myPeerConnection.setRemoteDescription(recv.answer);
     } else if (recv.type === 'ICE') {
-      myPeerConnection.addICECandidae(recv.ice);
+      myPeerConnection.addICECandidate(recv.ice);
     }
   }
 
@@ -217,6 +219,7 @@ function Card() {
           JSON.stringify({
             type: 'ENTER',
             roomId: param.roomId,
+            sender: 'JM',
           }),
         );
       },
@@ -224,7 +227,7 @@ function Card() {
         if (reconnect++ <= 5) {
           setTimeout(function () {
             console.log('connection reconnect');
-            SockJs = new SockJS('http://52.79.248.2:8080/ws-stomp');
+            SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
             ws = Stomp.over(SockJs);
             roomSubscribe();
           }, 10 * 1000);
