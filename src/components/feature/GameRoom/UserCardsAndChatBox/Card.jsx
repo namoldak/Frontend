@@ -1,16 +1,30 @@
+/* eslint-disable no-plusplus */
 // 외부모듈
 import styled from 'styled-components';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
+import { useParams } from 'react-router-dom';
 
 function Card() {
+  let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+  let ws = Stomp.over(SockJs);
+  let reconnect = 0;
   const videoRef = useRef(null);
   const muteBtn = useRef(null);
   const cameraBtn = useRef(null);
   const camerasSelect = useRef(null);
   const cameraOption = useRef(null);
+  const param = useParams();
+  const [messages, setMessages] = useState([]);
+  const messageArray = [];
   let muted = false;
   let cameraOff = false;
   let stream;
+  let myPeerConnection;
+
+  const sender = sessionStorage.getItem('nickname');
+  console.log('sender', sender);
 
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
@@ -81,12 +95,154 @@ function Card() {
     }
   }
 
+  // async function onMessageReceived(payload) {
+  //   const message = JSON.parse(payload.body);
+  //   if (message.type === 'welcome') {
+  //     const offer = await myPeerConnection.createOffer();
+  //     myPeerConnection.setLocalDescription(offer);
+  //     ws.send(
+  //       '/pub/message',
+  //       {},
+  //       JSON.stringify({
+  //         type: 'offer',
+  //         offer,
+  //         roomId: param.roomId,
+  //       }),
+  //     );
+  //   } else if (message.type === 'offer') {
+  //     myPeerConnection.setRmoteDescription(message.offer);
+  //     const answer = await myPeerConnection.createAnswer();
+  //     myPeerConnection.setLocalDescription(answer);
+  //     ws.send(
+  //       '/pub/message',
+  //       {},
+  //       JSON.stringify({
+  //         type: 'answer',
+  //         answer,
+  //         roomId: param.roomId,
+  //       }),
+  //     );
+  //   } else if (message.type === 'answer') {
+  //     myPeerConnection.setRemoteDescription(message.answer);
+  //   } else if (message.type === 'ice') {
+  //     myPeerConnection.addICECandidae(message.ice);
+  //   }
+  //   // messageArray.push(message);
+  //   // setMessages([...messageArray]);
+  // }
+
   async function onInputCameraChange() {
     await getUserMedia(camerasSelect.current.value);
+    if (myPeerConnection) {
+      const videoTrack = stream.getVideoTracks()[0];
+      const videoSender = myPeerConnection
+        .getSenders()
+        .find((sender) => sender.track.kind === 'video');
+      videoSender.replaceTrack(videoTrack);
+    }
   }
 
+  function handleIce(data) {
+    ws.send(
+      '/pub/chat/message',
+      {},
+      JSON.stringify({
+        type: 'ICE',
+        ice: data.candidate,
+        roomId: param.roomId,
+      }),
+    );
+    console.log('got ice candidate');
+    console.log(data);
+  }
+
+  function handleAddStream(data) {
+    console.log('got an stream from my peer');
+    console.log("Peer's Stream", data.stream);
+    console.log('My stream', stream);
+  }
+  function makeConnection() {
+    myPeerConnection = new RTCPeerConnection();
+    myPeerConnection.addEventListener('icecandidate', handleIce);
+    myPeerConnection.addEventListener('addstream', handleAddStream);
+    stream.getTracks().forEach((track) => {
+      myPeerConnection.addTrack(track, stream);
+    });
+  }
+
+  async function recvMessage(recv) {
+    console.log('메세지 수신');
+    if (recv.type === 'ENTER') {
+      console.log(recv.message);
+      const offer = await myPeerConnection.createOffer();
+      myPeerConnection.setLocalDescription(offer);
+      ws.send(
+        '/pub/chat/message',
+        {},
+        JSON.stringify({
+          type: 'OFFER',
+          offer,
+          roomId: param.roomId,
+        }),
+      );
+    } else if (recv.type === 'OFFER') {
+      myPeerConnection.setRmoteDescription(recv.offer);
+      const answer = await myPeerConnection.createAnswer();
+      myPeerConnection.setLocalDescription(answer);
+      ws.send(
+        '/pub/chat/message',
+        {},
+        JSON.stringify({
+          type: 'ANSWER',
+          answer,
+          roomId: param.roomId,
+        }),
+      );
+    } else if (recv.type === 'ANSWER') {
+      myPeerConnection.setRemoteDescription(recv.answer);
+    } else if (recv.type === 'ICE') {
+      myPeerConnection.addICECandidate(recv.ice);
+    }
+  }
+
+  function roomSubscribe(event) {
+    ws.connect(
+      {},
+      function (frame) {
+        ws.subscribe(`/sub/gameroom/${param.roomId}`, function (response) {
+          const recv = JSON.parse(response.body);
+          recvMessage(recv);
+        });
+        ws.send(
+          '/pub/chat/message',
+          {},
+          JSON.stringify({
+            type: 'ENTER',
+            roomId: param.roomId,
+            sender: 'JM',
+          }),
+        );
+      },
+      function (error) {
+        if (reconnect++ <= 5) {
+          setTimeout(function () {
+            console.log('connection reconnect');
+            SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+            ws = Stomp.over(SockJs);
+            roomSubscribe();
+          }, 10 * 1000);
+        }
+      },
+    );
+  }
+
+  async function fetchData() {
+    await getUserMedia();
+    await makeConnection();
+    await roomSubscribe();
+  }
   useEffect(() => {
-    getUserMedia();
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -9,10 +9,6 @@ import CreateRoomModal from '../../../common/Modals/CreateRoomModal';
 function CreateRoom() {
   const [isModalOn, setIsModalOn] = useState(false);
 
-  function onClickModal() {
-    setIsModalOn(true);
-  }
-
   return (
     <StCreateRoom>
       {isModalOn && (
@@ -23,8 +19,13 @@ function CreateRoom() {
           content={<CreateRoomModal />}
         />
       )}
-      {/* eslint-disable-next-line react/jsx-no-bind */}
-      <CreateRoomBtn onClick={onClickModal}>방 만들기</CreateRoomBtn>
+      <CreateRoomBtn
+        onClick={() => {
+          setIsModalOn(true);
+        }}
+      >
+        방 만들기
+      </CreateRoomBtn>
     </StCreateRoom>
   );
 }
