@@ -15,6 +15,7 @@ export const createRoom = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data.body.data);
     } catch (error) {
       console.log('create room error:', error);
+      alert('방 생성에 실패했습니다.');
       return thunkAPI.rejectWithValue(error);
     }
   },
@@ -43,14 +44,14 @@ export const roomSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      console.log('action payload', action.payload);
       state.rooms.push(action.payload);
+      window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [createRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
     [readAllRooms.fulfilled]: (state, action) => {
-      console.log('action payload readAllRooms', action.payload);
+      // console.log('action payload readAllRooms', action.payload);
       state.rooms = action.payload;
     },
     [readAllRooms.rejected]: (state, action) => {

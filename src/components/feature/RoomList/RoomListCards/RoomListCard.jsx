@@ -9,11 +9,12 @@ import test from '../../../../assets/img/test.png';
 import { readAllRooms } from '../../../../redux/modules/roomSlice';
 import leftArrow from '../../../../assets/img/leftArrow.png';
 import rightArrow from '../../../../assets/img/rightArrow.png';
+import Room from './Room';
 
 function RoomListCard() {
-  const { rooms } = useSelector((state) => state.rooms);
+  const rooms = useSelector((state) => state.rooms.rooms);
+  // console.log('rooms 전역', rooms);
 
-  const max = rooms.length;
   const startPage = 0;
   const [page, setPage] = useState(startPage);
   const [limit, setLimit] = useState(4);
@@ -25,79 +26,80 @@ function RoomListCard() {
     dispatch(readAllRooms({ page, limit }));
   }, [dispatch, page, limit]);
 
-  function enterRoom(roomId) {
-    navigate(`/gameroom/${roomId}`);
-  }
-
   return (
     <StRoomListCard>
       <StRoomListCardBox>
-        <StLeftArrowBox
-          onClick={() => {
-            setPage(page - 1);
-          }}
-        >
-          <PrevBtn>
-            {page > 0 ? <img src={leftArrow} alt="leftArrow icon" /> : ''}
-          </PrevBtn>
-        </StLeftArrowBox>
-        {rooms.map((room) => {
-          console.log(room);
-          return (
-            <div key={room.roomId}>
-              <Title>{room.roomName}</Title>
-              <ImageBox
-                onClick={() => {
-                  enterRoom(room.id);
-                }}
-              >
-                <img src={test} alt="test" />
-              </ImageBox>
-              <div>{room.member.length}/4</div>
-            </div>
-          );
-        })}
-        <StRightArrowBox
-          onClick={() => {
-            setPage(page + 1);
-          }}
-        >
-          <NextBtn>
-            <img src={rightArrow} alt="rigntArrow icon" />
-          </NextBtn>
-        </StRightArrowBox>
+        {!rooms.length ? (
+          <div>
+            <StLeftArrowBox
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              <PrevBtn>
+                {page > 0 ? <img src={leftArrow} alt="leftArrow icone" /> : ''}
+              </PrevBtn>
+            </StLeftArrowBox>
+            <span>아무것도 없닭...</span>
+            <StRightArrowBox
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              <NextBtn>
+                <img src={rightArrow} alt="rightArrow icon" />
+              </NextBtn>
+            </StRightArrowBox>
+          </div>
+        ) : (
+          <div>
+            <StLeftArrowBox
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              <PrevBtn>
+                {page > 0 ? <img src={leftArrow} alt="leftArrow icone" /> : ''}
+              </PrevBtn>
+            </StLeftArrowBox>
+            {rooms.slice(0, 4).map((room) => {
+              return (
+                <RoomInfo key={room.id}>
+                  <Room roomInfo={room} />
+                </RoomInfo>
+              );
+            })}
+            <StRightArrowBox
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              <NextBtn>
+                <img src={rightArrow} alt="rightArrow icon" />
+              </NextBtn>
+            </StRightArrowBox>
+          </div>
+        )}
       </StRoomListCardBox>
     </StRoomListCard>
   );
 }
 
 const StRoomListCard = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  margin: 0 auto;
 `;
 
 const StRoomListCardBox = styled.div`
   display: flex;
   flex-direction: row;
   align-self: center;
-`;
 
-const Title = styled.div`
-  font-size: 26px;
-  text-align: center;
-  margin-bottom: 10px;
-`;
-
-const ImageBox = styled.div`
-  position: relative;
-  width: 100%;
-  height: 90%;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
+  width: fit-content;
+  height: fit-content;
 `;
 
 const PrevBtn = styled.div`
@@ -126,7 +128,16 @@ const StRightArrowBox = styled.div`
 `;
 
 const RoomInfo = styled.div`
-  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 400px;
+  height: 400px;
+
+  margin: auto;
+  /* position: absolute;
   bottom: 10px;
   right: 10px;
   width: 60px;
@@ -134,7 +145,7 @@ const RoomInfo = styled.div`
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.6);
   font-size: 22px;
-  font-weight: bold;
+  font-weight: bold; */
 `;
 
 const UserCount = styled.div`

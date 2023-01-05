@@ -1,6 +1,7 @@
 // 외부 모듈
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
@@ -9,6 +10,7 @@ import { createRoom } from '../../../redux/modules/roomSlice';
 function CreateRoomModal() {
   const [gameRoomName, setGameRoomName] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function onClickRoomCreate() {
     const newRoom = { gameRoomName, gameRoomPassword: '1234' };

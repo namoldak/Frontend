@@ -5,6 +5,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+// import Cookies from 'universal-cookie';
 import { setCookie } from '../../../utils/cookies';
 
 // 내부 모듈
@@ -39,6 +40,8 @@ function Login() {
     await authAPI.Login(data).then((response) => {
       // console.log('로그인 response', response);
       setCookie(response.headers.authorization);
+      sessionStorage.setItem('email', response.data.email);
+      sessionStorage.setItem('nickname', response.data.nickname);
       alert('로그인 되었습니다.');
       navigate('/');
     });
