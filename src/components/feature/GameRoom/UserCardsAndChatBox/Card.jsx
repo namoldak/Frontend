@@ -7,7 +7,7 @@ import { Stomp } from '@stomp/stompjs';
 import { useParams } from 'react-router-dom';
 
 function Card() {
-  let SockJs = new SockJS('http://52.79.248.2:8080/ws-stomp');
+  let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
   let ws = Stomp.over(SockJs);
   let reconnect = 0;
   const videoRef = useRef(null);
@@ -22,6 +22,9 @@ function Card() {
   let cameraOff = false;
   let stream;
   let myPeerConnection;
+
+  const sender = sessionStorage.getItem('nickname');
+  console.log('sender', sender);
 
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
@@ -92,72 +95,41 @@ function Card() {
     }
   }
 
-  async function onMessageReceived(payload) {
-    const message = JSON.parse(payload.body);
-    if (message.type === 'welcome') {
-      const offer = await myPeerConnection.createOffer();
-      myPeerConnection.setLocalDescription(offer);
-      ws.send(
-        '/pub/message',
-        {},
-        JSON.stringify({
-          type: 'offer',
-          offer,
-          roomName: param.roomName,
-        }),
-      );
-    } else if (message.type === 'offer') {
-      myPeerConnection.setRmoteDescription(message.offer);
-      const answer = await myPeerConnection.createAnswer();
-      myPeerConnection.setLocalDescription(answer);
-      ws.send(
-        '/pub/message',
-        {},
-        JSON.stringify({
-          type: 'answer',
-          answer,
-          roomName: param.roomName,
-        }),
-      );
-    } else if (message.type === 'answer') {
-      myPeerConnection.setRemoteDescription(message.answer);
-    } else if (message.type === 'ice') {
-      myPeerConnection.addICECandidae(message.ice);
-    }
-    // messageArray.push(message);
-    // setMessages([...messageArray]);
-  }
-
-  function onConnected(frame) {
-    ws.subscribe(`/sub/${param.roomName}`, onMessageReceived);
-    ws.send(
-      '/pub/message',
-      {},
-      JSON.stringify({
-        type: 'JOIN',
-        roomName: param.roomName,
-      }),
-    );
-  }
-
-  function onError(error) {
-    if (reconnect <= 5) {
-      // eslint-disable-next-line func-names
-      setTimeout(function () {
-        console.log('connection reconnect');
-        SockJs = new SockJS('/ws/chat');
-        ws = Stomp.over(SockJs);
-        reconnect++;
-        // eslint-disable-next-line no-use-before-define
-        roomSubscribe();
-      }, 10 * 1000);
-    }
-  }
-
-  function roomSubscribe(event) {
-    ws.connect({}, onConnected(), onError());
-    event.preventDefault();
-  }
+  // async function onMessageReceived(payload) {
+  //   const message = JSON.parse(payload.body);
+  //   if (message.type === 'welcome') {
+  //     const offer = await myPeerConnection.createOffer();
+  //     myPeerConnection.setLocalDescription(offer);
+  //     ws.send(
+  //       '/pub/message',
+  //       {},
+  //       JSON.stringify({
+  //         type: 'offer',
+  //         offer,
+  //         roomId: param.roomId,
+  //       }),
+  //     );
+  //   } else if (message.type === 'offer') {
+  //     myPeerConnection.setRmoteDescription(message.offer);
+  //     const answer = await myPeerConnection.createAnswer();
+  //     myPeerConnection.setLocalDescription(answer);
+  //     ws.send(
+  //       '/pub/message',
+  //       {},
+  //       JSON.stringify({
+  //         type: 'answer',
+  //         answer,
+  //         roomId: param.roomId,
+  //       }),
+  //     );
+  //   } else if (message.type === 'answer') {
+  //     myPeerConnection.setRemoteDescription(message.answer);
+  //   } else if (message.type === 'ice') {
+  //     myPeerConnection.addICECandidae(message.ice);
+  //   }
+  //   // messageArray.push(message);
+  //   // setMessages([...messageArray]);
+  // }
 
   async function onInputCameraChange() {
     await getUserMedia(camerasSelect.current.value);
@@ -172,12 +144,12 @@ function Card() {
 
   function handleIce(data) {
     ws.send(
-      '/app/chat/message',
+      '/pub/chat/message',
       {},
       JSON.stringify({
-        type: 'ice',
-        candidate: data.candidate,
-        roomName: param.roomName,
+        type: 'ICE',
+        ice: data.candidate,
+        roomId: param.roomId,
       }),
     );
     console.log('got ice candidate');
@@ -197,6 +169,73 @@ function Card() {
       myPeerConnection.addTrack(track, stream);
     });
   }
+
+  async function recvMessage(recv) {
+    console.log('메세지 수신');
+    if (recv.type === 'ENTER') {
+      console.log(recv.message);
+      const offer = await myPeerConnection.createOffer();
+      myPeerConnection.setLocalDescription(offer);
+      ws.send(
+        '/pub/chat/message',
+        {},
+        JSON.stringify({
+          type: 'OFFER',
+          offer,
+          roomId: param.roomId,
+        }),
+      );
+    } else if (recv.type === 'OFFER') {
+      myPeerConnection.setRmoteDescription(recv.offer);
+      const answer = await myPeerConnection.createAnswer();
+      myPeerConnection.setLocalDescription(answer);
+      ws.send(
+        '/pub/chat/message',
+        {},
+        JSON.stringify({
+          type: 'ANSWER',
+          answer,
+          roomId: param.roomId,
+        }),
+      );
+    } else if (recv.type === 'ANSWER') {
+      myPeerConnection.setRemoteDescription(recv.answer);
+    } else if (recv.type === 'ICE') {
+      myPeerConnection.addICECandidate(recv.ice);
+    }
+  }
+
+  function roomSubscribe(event) {
+    ws.connect(
+      {},
+      function (frame) {
+        ws.subscribe(`/sub/gameroom/${param.roomId}`, function (response) {
+          const recv = JSON.parse(response.body);
+          recvMessage(recv);
+        });
+        ws.send(
+          '/pub/chat/message',
+          {},
+          JSON.stringify({
+            type: 'ENTER',
+            roomId: param.roomId,
+            sender: 'JM',
+          }),
+        );
+      },
+      function (error) {
+        if (reconnect++ <= 5) {
+          setTimeout(function () {
+            console.log('connection reconnect');
+            SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+            ws = Stomp.over(SockJs);
+            roomSubscribe();
+          }, 10 * 1000);
+        }
+      },
+    );
+  }
+
   async function fetchData() {
     await getUserMedia();
     await makeConnection();

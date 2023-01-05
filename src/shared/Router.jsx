@@ -7,17 +7,17 @@ import GameRoom from '../pages/GameRoom';
 import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
-import RoomListTest from '../pages/RoomListTest';
+import RoomList from '../pages/RoomList';
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/gameroom/:roomName" element={<GameRoom />} />
+        <Route path="/gameroom/:roomId" element={<GameRoom />} />
+        <Route path="/rooms" element={<RoomList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/" element={<LandingPage />} />
-        <Route path="/roomlist" element={<RoomListTest />} />
       </Routes>
     </BrowserRouter>
   );
