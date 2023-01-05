@@ -44,14 +44,14 @@ export const roomSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      console.log('action payload create', action.payload);
       state.rooms.push(action.payload);
+      window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [createRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
     [readAllRooms.fulfilled]: (state, action) => {
-      console.log('action payload readAllRooms', action.payload);
+      // console.log('action payload readAllRooms', action.payload);
       state.rooms = action.payload;
     },
     [readAllRooms.rejected]: (state, action) => {
