@@ -21,6 +21,22 @@ export const createRoom = createAsyncThunk(
   },
 );
 
+export const enterRoom = createAsyncThunk(
+  'room/enterRoom',
+  async (roomInfo, thunkAPI) => {
+    console.log('roomInfo', roomInfo);
+    try {
+      const response = await instance.post(`/rooms/${roomInfo.id}`);
+      console.log('enterroom respose', response);
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log(error);
+      alert('마음의 준비가 안됐닭! 다시 입장 시도를 해야겠닭!');
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
   async (payload, thunkAPI) => {
@@ -49,6 +65,12 @@ export const roomSlice = createSlice({
     },
     [createRoom.rejected]: (state, action) => {
       state.error = action.payload;
+    },
+    [enterRoom.fulfilled]: (state, action) => {
+      console.log('enter state', state);
+      console.log('enter action', action);
+      console.log('enterRoom payload', action.payload);
+      state.rooms = action.payload;
     },
     [readAllRooms.fulfilled]: (state, action) => {
       // console.log('action payload readAllRooms', action.payload);
