@@ -2,7 +2,7 @@
 import React from 'react';
 
 // 내부 모듈
-import Login from '../components/feature/Login/Login';
+import Login from '../components/feature/login/Login';
 
 function LoginPage() {
   return <Login />;

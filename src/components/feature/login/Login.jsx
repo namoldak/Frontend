@@ -1,7 +1,7 @@
 // 외부 모듈
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -10,6 +10,7 @@ import { setCookie } from '../../../utils/cookies';
 
 // 내부 모듈
 import authAPI from '../../../api/authAsync';
+import KaKaoBtn from './KaKaoBtn';
 
 const schema = yup.object().shape({
   email: yup.string().email('올바른 이메일을 입력해주세요.').required(''),
@@ -17,8 +18,13 @@ const schema = yup.object().shape({
 });
 
 function Login() {
+  // 로그인 후 랜딩페이지로
   const navigate = useNavigate();
+  // 카카오 로그인 인증 code
+  const [searchParams] = useSearchParams(); // URL 내의 GET 디코딩 된 쿼리 매개변수에 접근
+  const code = searchParams.get('code'); // 인가 코드 Redirect_URI 뒤 파라미터 ?code={코드 내용}
 
+  // 유효성 검사
   const {
     register,
     handleSubmit,
@@ -28,6 +34,7 @@ function Login() {
     mode: 'onChange',
   });
 
+  // 로그인 api
   async function onClickLogin(data) {
     // console.log('로그인 data', data);
     await authAPI.Login(data).then((response) => {
@@ -39,6 +46,22 @@ function Login() {
       navigate('/');
     });
   }
+
+  // 카카오 로그인 api
+  const KakaoLogin = async (code) => {
+    await authAPI.KakaoLogin(code).then((response) => {
+      setCookie(response.headers.authorization);
+      alert(`${response.data.statusMsg}`, '카카오 로그인 성공');
+      navigate('/');
+    });
+  };
+
+  // 위에서 선언한 변수 code
+  useEffect(() => {
+    if (code) {
+      KakaoLogin(code);
+    }
+  }, [code]);
 
   return (
     <StTopContainer>
@@ -61,6 +84,7 @@ function Login() {
           </StInputBox>
           <StBtnBox>
             <input type="submit" value="로그인" />
+            <KaKaoBtn />
             <Link to="/signup">
               <Button>회원가입 하기</Button>
             </Link>
