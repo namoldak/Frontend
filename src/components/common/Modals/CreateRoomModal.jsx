@@ -15,7 +15,7 @@ function CreateRoomModal() {
   function onClickRoomCreate() {
     const newRoom = { gameRoomName, gameRoomPassword: '1234' };
     console.log('newRoom', newRoom);
-    if (gameRoomName === '') {
+    if (gameRoomName.trim() === '') {
       alert('제목을 입력해주세요');
     } else {
       dispatch(createRoom(newRoom));
