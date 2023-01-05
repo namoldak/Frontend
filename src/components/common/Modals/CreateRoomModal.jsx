@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { createRoom, readAllRooms } from '../../../redux/modules/roomSlice';
+import { createRoom } from '../../../redux/modules/roomSlice';
 
 function CreateRoomModal() {
   const [gameRoomName, setGameRoomName] = useState('');
