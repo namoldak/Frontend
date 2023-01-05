@@ -70,14 +70,13 @@ function Signup() {
   }
 
   // 닉네임 중복확인
-  function onClickCheckNickName() {
-    const jsonData = getValues('nickname');
-    const data = { jsonData }; // json 형식으로 보내야 함
+  async function onClickCheckNickName() {
+    const data = getValues('nickname');
     // console.log('닉네임확인 nick', data);
 
-    authAPI.checkNickName(data).then((response) => {
-      // console.log('닉네임확인 response', response);
-      if (response.data) {
+    await authAPI.checkNickName(data).then((response) => {
+      // console.log('닉네임확인 response', response.data);
+      if (response.data === false) {
         alert('유효한 닉네임입니다.');
       } else {
         alert('이미 사용 중인 닉네임입니다.');
@@ -87,12 +86,11 @@ function Signup() {
   }
 
   // 이메일 중복 확인
-  function onClickCheckEmail() {
-    const jsonData = getValues('email');
-    const data = { jsonData };
+  async function onClickCheckEmail() {
+    const data = getValues('email');
 
-    authAPI.checkEmail(data).then((response) => {
-      if (response.data) {
+    await authAPI.checkEmail(data).then((response) => {
+      if (response.data === false) {
         alert('유효한 이메일입니다.');
       } else {
         alert('이미 사용중인 이메일입니다.');
@@ -103,10 +101,10 @@ function Signup() {
 
   // 첫번째 렌더링 시 실행 안 됨
   useDidMountEffect(() => {
-    if (!nickValid) {
+    if (nickValid) {
       setError('nickname', {
         type: 'custom',
-        message: '사용 중인 닉네임입니다.',
+        message: '이미 사용 중인 닉네임입니다.',
       });
     } else {
       clearErrors('nickname', { type: 'custom' });
@@ -114,10 +112,10 @@ function Signup() {
   }, [nickValid]);
 
   useDidMountEffect(() => {
-    if (!emailValid) {
+    if (emailValid) {
       setError('email', {
         type: 'custom',
-        message: '사용 중인 이메일입니다.',
+        message: '이미 사용 중인 이메일입니다.',
       });
     } else {
       clearErrors('email', { type: 'custom' });
@@ -139,8 +137,7 @@ function Signup() {
                 {...register('nickname', { required: true })}
               />
               <Button
-                // disabled={!getValues('nickname')}
-                className="checkNickName"
+                disabled={errors.nickname || !getValues('nickname')}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onClickCheckNickName}
               >
@@ -157,8 +154,7 @@ function Signup() {
                 {...register('email', { required: true })}
               />
               <Button
-                // disabled={!getValues('email') || errors.email}
-                className="checkEmail"
+                disabled={errors.email || !getValues('email')}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onClickCheckEmail}
               >
@@ -185,7 +181,7 @@ function Signup() {
           <StBtnBox>
             <input type="submit" value="회원가입" disabled={!isValid} />
             <Link to="/login">
-              <Button>로그인하러 가기</Button>
+              <button>로그인하러 가기</button>
             </Link>
           </StBtnBox>
         </form>
@@ -231,10 +227,6 @@ const InputBox = styled.div`
 const Input = styled.input`
   width: 100%;
   height: 20px;
-
-  &.error {
-    border: 1px solid #fe415c;
-  }
 `;
 
 const Button = styled.button`
@@ -247,16 +239,6 @@ const Button = styled.button`
 
   &:disabled {
     background-color: #f2f4f7;
-    color: #333;
-  }
-
-  &.checkNickName {
-    background-color: #ffd440;
-    color: #333;
-  }
-
-  &.checkEmail {
-    background-color: #ffd440;
     color: #333;
   }
 `;

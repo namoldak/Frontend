@@ -42,7 +42,9 @@ const KakaoLogin = async (code) => {
 const checkNickName = async (nickname) => {
   try {
     // console.log('서버 nick', nickname);
-    const response = await instance.post(`/auth/nicknameCheck`, nickname);
+    const response = await instance.post(
+      `/auth/nicknameCheck?nickname=${nickname}`,
+    );
     // console.log('서버 nick response', response);
     return response;
   } catch (error) {
@@ -54,9 +56,7 @@ const checkNickName = async (nickname) => {
 // 이메일 중복 확인
 const checkEmail = async (email) => {
   try {
-    // console.log('서버 email', email);
-    const response = await instance.post(`/auth/emailCheck`, email);
-    // console.log('서버 nick response', response);
+    const response = await instance.post(`/auth/emailCheck?email=${email}`);
     return response;
   } catch (error) {
     alert('에러가 발생했습니다', 'error');
