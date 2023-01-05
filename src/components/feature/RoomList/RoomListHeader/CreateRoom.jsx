@@ -23,6 +23,7 @@ function CreateRoom() {
           content={<CreateRoomModal />}
         />
       )}
+      {/* eslint-disable-next-line react/jsx-no-bind */}
       <CreateRoomBtn onClick={onClickModal}>방 만들기</CreateRoomBtn>
     </StCreateRoom>
   );
