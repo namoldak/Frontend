@@ -70,11 +70,11 @@ function Signup() {
   }
 
   // 닉네임 중복확인
-  async function onClickCheckNickName() {
+  function onClickCheckNickName() {
     const data = getValues('nickname');
     // console.log('닉네임확인 nick', data);
 
-    await authAPI.checkNickName(data).then((response) => {
+    authAPI.checkNickName(data).then((response) => {
       // console.log('닉네임확인 response', response.data);
       if (response.data === false) {
         alert('유효한 닉네임입니다.');
@@ -86,10 +86,10 @@ function Signup() {
   }
 
   // 이메일 중복 확인
-  async function onClickCheckEmail() {
+  function onClickCheckEmail() {
     const data = getValues('email');
 
-    await authAPI.checkEmail(data).then((response) => {
+    authAPI.checkEmail(data).then((response) => {
       if (response.data === false) {
         alert('유효한 이메일입니다.');
       } else {
