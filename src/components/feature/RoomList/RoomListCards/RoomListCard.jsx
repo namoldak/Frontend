@@ -1,95 +1,143 @@
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 // 내부 모듈
 import test from '../../../../assets/img/test.png';
 import { readAllRooms } from '../../../../redux/modules/roomSlice';
+import leftArrow from '../../../../assets/img/leftArrow.png';
+import rightArrow from '../../../../assets/img/rightArrow.png';
+import Room from './Room';
 
 function RoomListCard() {
-  const { rooms, roomPage } = useSelector((state) => state.rooms);
-  console.log('rooms 전역 상태', rooms);
-  console.log('page 전역 상태', roomPage);
+  const rooms = useSelector((state) => state.rooms.rooms);
+  // console.log('rooms 전역', rooms);
 
-  const initalPage = 1;
-  const [page, setpage] = useState(initalPage);
+  const startPage = 0;
+  const [page, setPage] = useState(startPage);
+  const [limit, setLimit] = useState(4);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(readAllRooms({ page }));
-  }, [dispatch, page]);
+    dispatch(readAllRooms({ page, limit }));
+  }, [dispatch, page, limit]);
 
   return (
     <StRoomListCard>
-      <StRoomListCardCon>
-        <StRoomListCardBox>
-          {rooms.map((room) => {
-            return (
-              <div key={room.roomId}>
-                <Title>{room.roomName}</Title>
-                <ImageBox>
-                  <img src={test} alt="test" />
-                  <RoomInfo>
-                    <UserCount>3</UserCount>
-                    <CountSlash>/</CountSlash>
-                    <UserMaxCount>4</UserMaxCount>
-                  </RoomInfo>
-                </ImageBox>
-              </div>
-            );
-          })}
-        </StRoomListCardBox>
-      </StRoomListCardCon>
+      <StRoomListCardBox>
+        {!rooms.length ? (
+          <div>
+            <StLeftArrowBox
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              <PrevBtn>
+                {page > 0 ? <img src={leftArrow} alt="leftArrow icone" /> : ''}
+              </PrevBtn>
+            </StLeftArrowBox>
+            <span>아무것도 없닭...</span>
+            <StRightArrowBox
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              <NextBtn>
+                <img src={rightArrow} alt="rightArrow icon" />
+              </NextBtn>
+            </StRightArrowBox>
+          </div>
+        ) : (
+          <div>
+            <StLeftArrowBox
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              <PrevBtn>
+                {page > 0 ? <img src={leftArrow} alt="leftArrow icone" /> : ''}
+              </PrevBtn>
+            </StLeftArrowBox>
+            {rooms.slice(0, 4).map((room) => {
+              return (
+                <RoomInfo key={room.id}>
+                  <Room roomInfo={room} />
+                </RoomInfo>
+              );
+            })}
+            <StRightArrowBox
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              <NextBtn>
+                <img src={rightArrow} alt="rightArrow icon" />
+              </NextBtn>
+            </StRightArrowBox>
+          </div>
+        )}
+      </StRoomListCardBox>
     </StRoomListCard>
   );
 }
 
 const StRoomListCard = styled.div`
-  width: 90%;
-  height: 100%;
-  margin: 0 auto;
-`;
-
-const StRoomListCardCon = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  flex-direction: column;
-  max-width: 700px;
-  height: 400px;
-  border: 1px solid #000;
+  width: 100%;
+  height: 100%;
 `;
 
 const StRoomListCardBox = styled.div`
-  width: 90%;
-  height: 90%;
+  display: flex;
+  flex-direction: row;
   align-self: center;
-  margin: 0 auto;
-  padding: 10px;
-  border: 1px solid #000;
+
+  width: fit-content;
+  height: fit-content;
 `;
 
-const Title = styled.div`
-  font-size: 26px;
-  text-align: center;
-  margin-bottom: 10px;
+const PrevBtn = styled.div`
+  border: 0;
+  background: none;
+  cursor: pointer;
 `;
 
-const ImageBox = styled.div`
-  position: relative;
-  width: 100%;
-  height: 90%;
-
+const StLeftArrowBox = styled.div`
   img {
-    width: 100%;
-    height: 100%;
+    height: 100px;
+  }
+`;
+
+const NextBtn = styled.div`
+  border: 0;
+  background: none;
+  cursor: pointer;
+`;
+
+const StRightArrowBox = styled.div`
+  img {
+    height: 100px;
+    transform: rotate(180deg);
   }
 `;
 
 const RoomInfo = styled.div`
-  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  width: 400px;
+  height: 400px;
+
+  margin: auto;
+  /* position: absolute;
   bottom: 10px;
   right: 10px;
   width: 60px;
@@ -97,7 +145,7 @@ const RoomInfo = styled.div`
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.6);
   font-size: 22px;
-  font-weight: bold;
+  font-weight: bold; */
 `;
 
 const UserCount = styled.div`
