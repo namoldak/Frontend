@@ -12,6 +12,9 @@ function Card() {
   let cameraOff = false;
   let stream;
 
+  const sender = sessionStorage.getItem('nickname');
+  console.log('sender', sender);
+
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
       track.enabled = !track.enabled;

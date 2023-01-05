@@ -1,15 +1,20 @@
+// 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
+
+// 내부 모듈
 import RoomListHeaderLayout from '../components/feature/RoomList/RoomListHeader/RoomListHeaderLayout';
 import RoomListSliderLayout from '../components/feature/RoomList/RoomListSlider/RoomListSliderLayout';
 import RoomListCardLayout from '../components/feature/RoomList/RoomListCards/RoomListCardLayout';
+import RoomListCard from '../components/feature/RoomList/RoomListCards/RoomListCard';
 
 function RoomList() {
   return (
     <StRoomList>
       <RoomListHeaderLayout />
-      <RoomListCardLayout />
-      <RoomListSliderLayout />
+      <RoomListCard />
+      {/* <RoomListCardLayout />
+      <RoomListSliderLayout /> */}
     </StRoomList>
   );
 }
