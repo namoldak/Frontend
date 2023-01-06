@@ -1,8 +1,6 @@
 // 외부모듈
 import styled from 'styled-components';
 import React, { useRef, useEffect, useState } from 'react';
-import SockJS from 'sockjs-client';
-import { Stomp } from '@stomp/stompjs';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import * as SockJs from 'sockjs-client';
