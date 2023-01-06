@@ -33,7 +33,7 @@ function Landing() {
       <StHeader>
         {isLoggedIn ? (
           <div>
-            <TextButton onClick={onClickLogOut}>로그아웃</TextButton>
+            <button onClick={onClickLogOut}>로그아웃</button>
             <div>{nickname}님 안녕하세요</div>
           </div>
         ) : (
