@@ -224,7 +224,19 @@ function Card() {
     console.log('My stream', stream);
   }
   function makeConnection() {
-    myPeerConnection = new RTCPeerConnection();
+    myPeerConnection = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: [
+            'stun:stun.l.google.com:19302',
+            'stun:stun1.l.google.com:19302',
+            'stun:stun2.l.google.com:19302',
+            'stun:stun3.l.google.com:19302',
+            'stun:stun4.l.google.com:19302',
+          ],
+        },
+      ],
+    });
     myPeerConnection.addEventListener('icecandidate', handleIce);
     myPeerConnection.addEventListener('addstream', handleAddStream);
     stream.getTracks().forEach((track) => {
@@ -291,19 +303,7 @@ function Card() {
           >
             비디오
           </video>
-          <button ref={muteBtn} onClick={onClickMuteHandler}>
-            mute
-          </button>
-          <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
-            camera OFF
-          </button>
-          <select ref={camerasSelect} onInput={onInputCameraChange}>
-            <option>기본</option>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-            <option ref={cameraOption} value="device" />
-          </select>
         </div>
-        <button>방장일 경우 시작버튼?</button>
       </StCard>
     </>
   );
