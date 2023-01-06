@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import Cookies from 'universal-cookie';
-import { setCookie } from '../../../utils/cookies';
+import { setCookie, setNicknameCookie } from '../../../utils/cookies';
 
 // 내부 모듈
 import authAPI from '../../../api/authAsync';
@@ -40,7 +40,7 @@ function Login() {
     await authAPI.Login(data).then((response) => {
       // console.log('로그인 response', response);
       setCookie(response.headers.authorization);
-      sessionStorage.setItem('nickname', response.data.nickname);
+      setNicknameCookie(response.data.nickname);
       alert('로그인 되었습니다.');
       navigate('/');
     });

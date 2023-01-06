@@ -9,6 +9,7 @@ import { useCookies } from 'react-cookie';
 
 import * as SockJs from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
+import { getNicknameCookie } from '../../../../utils/cookies';
 
 function Card() {
   // let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
@@ -37,7 +38,7 @@ function Card() {
   let stream;
   let myPeerConnection;
 
-  const sender = sessionStorage.getItem('nickname');
+  const sender = getNicknameCookie('nickname');
   console.log('sender', sender);
 
   const subscribe = () => {
@@ -286,6 +287,24 @@ function Card() {
           </select>
         </div>
         <button>방장일 경우 시작버튼?</button>
+      </StCard>
+      <StCard>
+        Card
+        <h4>키워드</h4>
+        <span>OOO님</span>
+        <div>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            ref={anotherVideoRef}
+            id="myFace"
+            autoPlay
+            playsInline
+            width={200}
+            height={200}
+          >
+            비디오
+          </video>
+        </div>
       </StCard>
       <StCard>
         Card
