@@ -352,8 +352,6 @@ function GameRoomAll() {
   );
 }
 
-export default GameRoomAll;
-
 const StGameRoomOuter = styled.div`
   border: 5px solid black;
   display: grid;
@@ -413,3 +411,5 @@ const StUserChatBox = styled.div`
 const StSendChat = styled.div`
   border: 1px solid black;
 `;
+
+export default GameRoomAll;

@@ -14,10 +14,10 @@ function UserCardsAndChatBox() {
   );
 }
 
-export default UserCardsAndChatBox;
-
 const StUserCardsAndChatBox = styled.div`
   border: 2px solid red;
   display: grid;
   grid-template-columns: 1fr 1fr;
 `;
+
+export default UserCardsAndChatBox;
