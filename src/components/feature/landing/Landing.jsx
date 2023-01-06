@@ -44,19 +44,6 @@ function Landing() {
             <div>Guest님 안녕하세요</div>
           </div>
         )}
-        {/* {!isLoggedIn ? (
-          <div>
-            <Link to="/login">
-              <TextButton>로그인</TextButton>
-            </Link>
-            <div>Guest님 안녕하세요.</div>
-          </div>
-        ) : (
-          <div>
-            <TextButton onClick={onClickLogOut}>로그아웃</TextButton>
-            <div>{nickname}님 안녕하세요.</div>
-          </div>
-        )} */}
       </StHeader>
       <StRuleBox>
         <h3>나만 모른 닭 Game Rule:</h3>
