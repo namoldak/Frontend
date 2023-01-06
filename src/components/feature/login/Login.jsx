@@ -50,7 +50,8 @@ function Login() {
   const KakaoLogin = async (code) => {
     await authAPI.KakaoLogin(code).then((response) => {
       setCookie(response.headers.authorization);
-      sessionStorage.setItem('nickname', response.data);
+      // console.log('클라이언트 카카오 data', response.data);
+      setNicknameCookie(response.data);
       alert('카카오 로그인 성공');
       navigate('/');
     });
