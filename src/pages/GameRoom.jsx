@@ -1,20 +1,12 @@
-import React from 'react';
 // 내부모듈
-import styled from 'styled-components';
-import TitleAndTimer from '../components/feature/GameRoom/TitleAndTimer/TitleAndTimer';
-import UserCardsAndChatBox from '../components/feature/GameRoom/UserCardsAndChatBox/UserCardsAndChatBox';
+import GameRoomAll from '../components/feature/GameRoom/UserCardsAndChatBox/GameRoomAll';
+
 // 외부모듈
+import React from 'react';
+import styled from 'styled-components';
 
 function GameRoom() {
-  return (
-    <>
-      Game Room
-      <StGameRoom>
-        <TitleAndTimer />
-        <UserCardsAndChatBox />
-      </StGameRoom>
-    </>
-  );
+  return <GameRoomAll />;
 }
 
 export default GameRoom;

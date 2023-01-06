@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 // 외부모듈
 import styled from 'styled-components';
 import React, { useRef, useEffect, useState } from 'react';
@@ -6,14 +5,13 @@ import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
-
 import * as SockJs from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 
-function Card() {
-  // let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
-  // let ws = Stomp.over(SockJs);
+// 내부모듈
+import { instance } from '../../../../api/core/axios';
 
+function GameRoomAll() {
   const reconnect = 0;
   const videoRef = useRef(null);
   const anotherVideoRef = useRef(null);
@@ -127,20 +125,18 @@ function Card() {
   const disconnect = () => {
     client.current.deactivate();
   };
-
   const leaveRoom = async () => {
     disconnect();
-    noheaderInstance
-      .delete(`/lier/room/${Number(id)}/exit`, { data: { value: nickname } })
+    await instance
+      .delete(`rooms/${param.roomId}/exit`)
       .then((res) => {
-        navigate('/lobby');
+        navigate('/rooms');
       })
       .catch((error) => {
         alert(error.data.message);
-        navigate('/lobby');
+        navigate('/rooms');
       });
   };
-
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
       track.enabled = !track.enabled;
@@ -270,83 +266,152 @@ function Card() {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
-    <>
-      {' '}
-      <StCard>
-        Card
-        <h4>키워드</h4>
-        <span>OOO님</span>
-        <div>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <video
-            ref={videoRef}
-            id="myFace"
-            autoPlay
-            playsInline
-            width={200}
-            height={200}
+    <StGameRoomOuter>
+      <StGameRoomHeader>
+        <Link to="/rooms">
+          <button>뒤로가기</button>
+        </Link>
+        <Link to="/rooms">
+          <button
+            onClick={() => {
+              leaveRoom();
+            }}
           >
-            비디오
-          </video>
-          <button ref={muteBtn} onClick={onClickMuteHandler}>
-            mute
+            방나가기
           </button>
-          <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
-            camera OFF
-          </button>
-          <select ref={camerasSelect} onInput={onInputCameraChange}>
-            <option>기본</option>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-            <option ref={cameraOption} value="device" />
-          </select>
-        </div>
-        <button>방장일 경우 시작버튼?</button>
-      </StCard>
-      <StCard>
-        Card
-        <h4>키워드</h4>
-        <span>OOO님</span>
-        <div>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <video
-            ref={anotherVideoRef}
-            id="myFace"
-            autoPlay
-            playsInline
-            width={200}
-            height={200}
-          >
-            비디오
-          </video>
-        </div>
-      </StCard>
-      <StCard>
-        Card
-        <h4>키워드</h4>
-        <span>OOO님</span>
-        <div>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <video
-            ref={anotherVideoRef}
-            id="myFace"
-            autoPlay
-            playsInline
-            width={200}
-            height={200}
-          >
-            비디오
-          </video>
-        </div>
-      </StCard>
-    </>
+        </Link>
+        <button>설정</button>
+      </StGameRoomHeader>
+      <StGameRoomMain>
+        <StGameTitleAndUserCards>
+          <StTitle>
+            <h1>주제</h1>
+          </StTitle>
+          <StUserCards>
+            <StCard>
+              {' '}
+              Card
+              <h4>키워드</h4>
+              <span>OOO님</span>
+              <div>
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video
+                  ref={videoRef}
+                  id="myFace"
+                  autoPlay
+                  playsInline
+                  width={200}
+                  height={200}
+                >
+                  비디오
+                </video>
+                <button ref={muteBtn} onClick={onClickMuteHandler}>
+                  mute
+                </button>
+                <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
+                  camera OFF
+                </button>
+                <select ref={camerasSelect} onInput={onInputCameraChange}>
+                  <option>기본</option>
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                  <option ref={cameraOption} value="device" />
+                </select>
+              </div>
+              <button>방장일 경우 시작버튼?</button>
+            </StCard>
+            <StCard>
+              Card
+              <h4>키워드</h4>
+              <span>OOO님</span>
+              <div>
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video
+                  ref={anotherVideoRef}
+                  id="myFace"
+                  autoPlay
+                  playsInline
+                  width={200}
+                  height={200}
+                >
+                  비디오
+                </video>
+              </div>
+            </StCard>
+          </StUserCards>
+        </StGameTitleAndUserCards>
+        <StTimer>타이머:남은시간20초</StTimer>
+        <StChatBox>
+          <StNotice>공지내용</StNotice>
+          <StUserChatBox>채팅내용</StUserChatBox>
+          <StSendChat>
+            <input placeholder="채팅내용" />
+            <button>전송</button>
+          </StSendChat>
+        </StChatBox>
+      </StGameRoomMain>
+    </StGameRoomOuter>
   );
 }
 
-export default Card;
+export default GameRoomAll;
+
+const StGameRoomOuter = styled.div`
+  border: 5px solid black;
+  display: grid;
+
+  grid-template-rows: 100px 1fr;
+`;
+const StGameRoomHeader = styled.div`
+  border: 3px solid red;
+`;
+
+const StGameRoomMain = styled.div`
+  margin-top: 30px;
+  border: 3px solid blue;
+  display: grid;
+  grid-template-columns: 1fr 150px 1fr;
+`;
+
+const StGameTitleAndUserCards = styled.div`
+  border: 2px solid black;
+`;
+
+const StTimer = styled.div`
+  border: 2px solid black;
+`;
+
+const StChatBox = styled.div`
+  border: 2px solid black;
+  display: grid;
+  grid-template-rows: 30px 1fr 30px;
+`;
+
+const StTitle = styled.div`
+  border: 1px solid black;
+  display: grid;
+  grid-template-rows: 120px 1fr;
+`;
+
+const StUserCards = styled.div`
+  border: 1px solid black;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+`;
 
 const StCard = styled.div`
-  margin: 20px;
-  border: 1px solid green;
+  border: 1px solid black;
+`;
+
+const StNotice = styled.div`
+  border: 1px solid black;
+`;
+
+const StUserChatBox = styled.div`
+  border: 1px solid black;
+`;
+
+const StSendChat = styled.div`
+  border: 1px solid black;
 `;
