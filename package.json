@@ -17,6 +17,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.41.3",
     "react-redux": "^8.0.5",
+    "react-router": "^6.6.1",
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
@@ -24,6 +25,7 @@
     "styled-components": "^5.3.6",
     "use-search-params": "^1.0.4",
     "web-vitals": "^2.1.0",
+    "webrtc-adapter": "^8.2.0",
     "yup": "^0.32.11"
   },
   "scripts": {

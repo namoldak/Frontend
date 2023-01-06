@@ -16,3 +16,7 @@ export const setCookie = (token) => {
 export const getCookie = () => {
   return cookies.get(TOKEN_ID);
 };
+
+export const removeCookie = () => {
+  return cookies.remove('my_token');
+};

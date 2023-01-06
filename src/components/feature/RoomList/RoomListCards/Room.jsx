@@ -13,9 +13,11 @@ function Room({ roomInfo }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // eslint-disable-next-line consistent-return
   function clickRoom(roomInfo) {
-    if (roomInfo.memeber.length === 4) {
-      alert('');
+    if (roomInfo.member.length >= 4) {
+      alert('꽉 차서 못 들어간닭...');
+      return null;
     }
     console.log('enter roominfo', roomInfo);
     dispatch(enterRoom(roomInfo));

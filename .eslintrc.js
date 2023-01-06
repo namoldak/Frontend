@@ -36,7 +36,7 @@ module.exports = {
     'no-alert': 0, // alert 제한 규칙 해제
     'import/no-extraneous-dependencies': [
       'error',
-      { devDependencies: ['**/mocks/*'] },
+      { devDependencies: ['**/mocks/*', '**/*.test.js', '**/*.spec.js'] },
     ], // mock server devdependency 사용 제한 규칙 해제
     'prettier/prettier': ['error', { endOfLine: 'auto' }], //  End Line Sequnce 규칙 해체
     'arrow-body-style': ['off'], // arrow function 사용 시 return 키워드 및 중괄호를 사용하지 말고 바로 값을 반환하도록 선언하는 규칙 해제
