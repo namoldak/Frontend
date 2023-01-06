@@ -24,7 +24,7 @@ function Landing() {
   function onClickLogOut() {
     removeCookie('my_token');
     sessionStorage.removeItem('nickname');
-    alert('로그아웃 완료');
+    alert('재밌었닭!');
     setIsLoggedIn(false);
   }
 
@@ -34,14 +34,14 @@ function Landing() {
         {isLoggedIn ? (
           <div>
             <button onClick={onClickLogOut}>로그아웃</button>
-            <div>{nickname}님 안녕하세요</div>
+            <div>반갑닭, {nickname}</div>
           </div>
         ) : (
           <div>
             <Link to="/login">
               <TextButton>로그인</TextButton>
             </Link>
-            <div>Guest님 안녕하세요</div>
+            <div>Guest는 로그인하고 이용해야한닭</div>
           </div>
         )}
       </StHeader>

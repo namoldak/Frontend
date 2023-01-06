@@ -305,6 +305,24 @@ function Card() {
           </video>
         </div>
       </StCard>
+      <StCard>
+        Card
+        <h4>키워드</h4>
+        <span>OOO님</span>
+        <div>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            ref={anotherVideoRef}
+            id="myFace"
+            autoPlay
+            playsInline
+            width={200}
+            height={200}
+          >
+            비디오
+          </video>
+        </div>
+      </StCard>
     </>
   );
 }
