@@ -1,20 +1,49 @@
 // 외부 모듈
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // 내부 모듈
 import Button from '../../common/Button';
 import TextButton from '../../common/TextButton';
+import { getCookie, removeCookie } from '../../../utils/cookies';
 
 function Landing() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const nickname = sessionStorage.getItem('nickname');
+  console.log('nickname', nickname);
+  console.log(isLoggedIn);
+
+  useEffect(() => {
+    if (getCookie('my_token')) {
+      console.log('cookie');
+      setIsLoggedIn(true);
+    }
+  }, [getCookie]);
+
+  function onClickLogOut() {
+    removeCookie('my_token');
+    sessionStorage.removeItem('nickname');
+    alert('로그아웃 완료');
+    setIsLoggedIn(false);
+  }
+
   return (
     <StTopContainer>
       <StHeader>
-        <Link to="/login">
-          <TextButton>로그인</TextButton>
-        </Link>
-        <div>Guest님 안녕하세요.</div>
+        {isLoggedIn ? (
+          <div>
+            <button onClick={onClickLogOut}>로그아웃</button>
+            <div>{nickname}님 안녕하세요</div>
+          </div>
+        ) : (
+          <div>
+            <Link to="/login">
+              <TextButton>로그인</TextButton>
+            </Link>
+            <div>Guest님 안녕하세요</div>
+          </div>
+        )}
       </StHeader>
       <StRuleBox>
         <h3>나만 모른 닭 Game Rule:</h3>
