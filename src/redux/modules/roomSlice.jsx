@@ -11,11 +11,16 @@ export const createRoom = createAsyncThunk(
   async (newRoom, thunkAPI) => {
     try {
       const response = await instance.post(`/rooms`, newRoom);
-      console.log('create room:', response);
+      // console.log('create room:', response);
       return thunkAPI.fulfillWithValue(response.data.body.data);
     } catch (error) {
-      console.log('create room error:', error);
-      alert('방 생성에 실패했습니다.');
+      if (error.response.status === 403) {
+        alert('로그인이 안되어있닭! 로그인을 하고와야한닭!');
+        window.location.href = `/login`;
+      } else {
+        // console.log('create room error:', error);
+        alert('지금은 만들 수 없닭... 시도해야한닭');
+      }
       return thunkAPI.rejectWithValue(error);
     }
   },
@@ -24,14 +29,19 @@ export const createRoom = createAsyncThunk(
 export const enterRoom = createAsyncThunk(
   'room/enterRoom',
   async (roomInfo, thunkAPI) => {
-    console.log('roomInfo', roomInfo);
+    // console.log('roomInfo', roomInfo);
     try {
       const response = await instance.post(`/rooms/${roomInfo.id}`);
-      console.log('enterroom respose', response);
+      // console.log('enterroom respose', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error);
-      alert('마음의 준비가 안됐닭! 다시 입장 시도를 해야겠닭!');
+      // console.log(error);
+      if (error.response.status === 403) {
+        alert('로그인이 안되어있닭! 로그인을 하고와야한닭!');
+        window.location.href = `/login`;
+      } else {
+        alert('마음의 준비가 안됐닭! 다시 입장 시도를 해야겠닭!');
+      }
       return thunkAPI.rejectWithValue(error);
     }
   },
@@ -40,15 +50,15 @@ export const enterRoom = createAsyncThunk(
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
   async (payload, thunkAPI) => {
-    console.log('payload', payload);
+    // console.log('payload', payload);
     try {
       const response = await instance.get(
         `/rooms?page=${payload.page}&size=${payload.limit}`,
       );
-      console.log('read rooms:', response);
+      // console.log('read rooms:', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log('read rooms error:', error);
+      // console.log('read rooms error:', error);
       return thunkAPI.rejectWithValue(error);
     }
   },
@@ -67,9 +77,7 @@ export const roomSlice = createSlice({
       state.error = action.payload;
     },
     [enterRoom.fulfilled]: (state, action) => {
-      console.log('enter state', state);
-      console.log('enter action', action);
-      console.log('enterRoom payload', action.payload);
+      // console.log('enterRoom payload', action.payload);
       state.rooms = action.payload;
     },
     [readAllRooms.fulfilled]: (state, action) => {

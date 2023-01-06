@@ -6,11 +6,15 @@ import { Link, useNavigate } from 'react-router-dom';
 // 내부 모듈
 import Button from '../../common/Button';
 import TextButton from '../../common/TextButton';
-import { getCookie, removeCookie } from '../../../utils/cookies';
+import {
+  getCookie,
+  getNicknameCookie,
+  removeCookie,
+} from '../../../utils/cookies';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const nickname = sessionStorage.getItem('nickname');
+  const nickname = getNicknameCookie('nickname');
   console.log('nickname', nickname);
   console.log(isLoggedIn);
 
@@ -22,9 +26,8 @@ function Landing() {
   }, [getCookie]);
 
   function onClickLogOut() {
-    removeCookie('my_token');
-    sessionStorage.removeItem('nickname');
-    alert('로그아웃 완료');
+    removeCookie('my_token', 'nickname');
+    alert('재밌었닭!');
     setIsLoggedIn(false);
   }
 
@@ -34,14 +37,14 @@ function Landing() {
         {isLoggedIn ? (
           <div>
             <button onClick={onClickLogOut}>로그아웃</button>
-            <div>{nickname}님 안녕하세요</div>
+            <div>반갑닭, {nickname}</div>
           </div>
         ) : (
           <div>
             <Link to="/login">
               <TextButton>로그인</TextButton>
             </Link>
-            <div>Guest님 안녕하세요</div>
+            <div>Guest는 로그인하고 이용해야한닭</div>
           </div>
         )}
       </StHeader>
