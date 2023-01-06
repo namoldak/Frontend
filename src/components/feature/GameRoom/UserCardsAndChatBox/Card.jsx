@@ -5,16 +5,29 @@ import React, { useRef, useEffect, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { useParams } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
+import * as SockJs from 'sockjs-client';
+import * as StompJs from '@stomp/stompjs';
 function Card() {
-  let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
-  let ws = Stomp.over(SockJs);
+  // let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+  // let ws = Stomp.over(SockJs);
+
   let reconnect = 0;
   const videoRef = useRef(null);
+  const anotherVideoRef = useRef(null);
   const muteBtn = useRef(null);
   const cameraBtn = useRef(null);
   const camerasSelect = useRef(null);
   const cameraOption = useRef(null);
+
+  const [cookie] = useCookies();
+  const client = useRef({});
+  const connectHeaders = {
+    Authorization: cookie.access_token,
+    'Refresh-Token': cookie.refresh_token,
+  };
+
   const param = useParams();
   const [messages, setMessages] = useState([]);
   const messageArray = [];
@@ -25,6 +38,90 @@ function Card() {
 
   const sender = sessionStorage.getItem('nickname');
   console.log('sender', sender);
+
+  const subscribe = () => {
+    client.current.subscribe(
+      `/sub/gameroom/${param.roomId}`,
+      async ({ body }) => {
+        const data = JSON.parse(body);
+        // console.log(data);
+        switch (data.type) {
+          case 'ENTER':
+            if (data.sender !== sender) {
+              console.log(data);
+              const offer = await myPeerConnection.createOffer();
+              myPeerConnection.setLocalDescription(offer);
+              client.current.publish({
+                destination: `/sub/gameroom/${param.roomId}`,
+                body: JSON.stringify({
+                  type: 'OFFER',
+                  roomId: param.roomId,
+                  sender,
+                  offer,
+                }),
+              });
+              console.log('오퍼전송');
+            }
+            break;
+
+          case 'OFFER':
+            if (data.sender !== sender) {
+              console.log('오퍼수신');
+              myPeerConnection.setRemoteDescription(data.offer);
+              const answer = await myPeerConnection.createAnswer();
+              myPeerConnection.setLocalDescription(answer);
+              client.current.publish({
+                destination: `/sub/gameroom/${param.roomId}`,
+                body: JSON.stringify({
+                  type: 'ANSWER',
+                  roomId: param.roomId,
+                  sender,
+                  answer,
+                }),
+              });
+              console.log('엔서전송');
+            }
+            break;
+          case 'ANSWER':
+            if (data.sender !== sender) {
+              console.log('엔서수신');
+              myPeerConnection.setRemoteDescription(data.answer);
+            }
+            break;
+          case 'ICE':
+            if (data.sender !== sender) {
+              console.log('아이스수신');
+              myPeerConnection.addIceCandidate(data.ice);
+            }
+            break;
+          default:
+        }
+      },
+    );
+  };
+  const connect = () => {
+    client.current = new StompJs.Client({
+      webSocketFactory: () => new SockJs(`http://13.209.84.31:8080/ws-stomp`),
+      connectHeaders,
+      debug() {},
+      onConnect: () => {
+        subscribe();
+        client.current.publish({
+          destination: `/sub/gameroom/${param.roomId}`,
+          body: JSON.stringify({
+            type: 'ENTER',
+            roomId: param.roomId,
+            sender,
+          }),
+        });
+      },
+      onStompError: (frame) => {
+        console.log(`Broker reported error: ${frame.headers.message}`);
+        console.log(`Additional details: ${frame.body}`);
+      },
+    });
+    client.current.activate();
+  };
 
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
@@ -95,42 +192,6 @@ function Card() {
     }
   }
 
-  // async function onMessageReceived(payload) {
-  //   const message = JSON.parse(payload.body);
-  //   if (message.type === 'welcome') {
-  //     const offer = await myPeerConnection.createOffer();
-  //     myPeerConnection.setLocalDescription(offer);
-  //     ws.send(
-  //       '/pub/message',
-  //       {},
-  //       JSON.stringify({
-  //         type: 'offer',
-  //         offer,
-  //         roomId: param.roomId,
-  //       }),
-  //     );
-  //   } else if (message.type === 'offer') {
-  //     myPeerConnection.setRmoteDescription(message.offer);
-  //     const answer = await myPeerConnection.createAnswer();
-  //     myPeerConnection.setLocalDescription(answer);
-  //     ws.send(
-  //       '/pub/message',
-  //       {},
-  //       JSON.stringify({
-  //         type: 'answer',
-  //         answer,
-  //         roomId: param.roomId,
-  //       }),
-  //     );
-  //   } else if (message.type === 'answer') {
-  //     myPeerConnection.setRemoteDescription(message.answer);
-  //   } else if (message.type === 'ice') {
-  //     myPeerConnection.addICECandidae(message.ice);
-  //   }
-  //   // messageArray.push(message);
-  //   // setMessages([...messageArray]);
-  // }
-
   async function onInputCameraChange() {
     await getUserMedia(camerasSelect.current.value);
     if (myPeerConnection) {
@@ -143,20 +204,20 @@ function Card() {
   }
 
   function handleIce(data) {
-    ws.send(
-      '/pub/chat/message',
-      {},
-      JSON.stringify({
+    client.current.publish({
+      destination: `/sub/gameroom/${param.roomId}`,
+      body: JSON.stringify({
         type: 'ICE',
-        ice: data.candidate,
         roomId: param.roomId,
+        sender,
+        ice: data.candidate,
       }),
-    );
-    console.log('got ice candidate');
-    console.log(data);
+    });
+    console.log('아이스전송');
   }
 
   function handleAddStream(data) {
+    anotherVideoRef.current.srcObject = data.stream;
     console.log('got an stream from my peer');
     console.log("Peer's Stream", data.stream);
     console.log('My stream', stream);
@@ -170,76 +231,10 @@ function Card() {
     });
   }
 
-  async function recvMessage(recv) {
-    console.log('메세지 수신');
-    if (recv.type === 'ENTER') {
-      console.log(recv.message);
-      const offer = await myPeerConnection.createOffer();
-      myPeerConnection.setLocalDescription(offer);
-      ws.send(
-        '/pub/chat/message',
-        {},
-        JSON.stringify({
-          type: 'OFFER',
-          offer,
-          roomId: param.roomId,
-        }),
-      );
-    } else if (recv.type === 'OFFER') {
-      myPeerConnection.setRmoteDescription(recv.offer);
-      const answer = await myPeerConnection.createAnswer();
-      myPeerConnection.setLocalDescription(answer);
-      ws.send(
-        '/pub/chat/message',
-        {},
-        JSON.stringify({
-          type: 'ANSWER',
-          answer,
-          roomId: param.roomId,
-        }),
-      );
-    } else if (recv.type === 'ANSWER') {
-      myPeerConnection.setRemoteDescription(recv.answer);
-    } else if (recv.type === 'ICE') {
-      myPeerConnection.addICECandidate(recv.ice);
-    }
-  }
-
-  function roomSubscribe(event) {
-    ws.connect(
-      {},
-      function (frame) {
-        ws.subscribe(`/sub/gameroom/${param.roomId}`, function (response) {
-          const recv = JSON.parse(response.body);
-          recvMessage(recv);
-        });
-        ws.send(
-          '/pub/chat/message',
-          {},
-          JSON.stringify({
-            type: 'ENTER',
-            roomId: param.roomId,
-            sender: 'JM',
-          }),
-        );
-      },
-      function (error) {
-        if (reconnect++ <= 5) {
-          setTimeout(function () {
-            console.log('connection reconnect');
-            SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
-            ws = Stomp.over(SockJs);
-            roomSubscribe();
-          }, 10 * 1000);
-        }
-      },
-    );
-  }
-
   async function fetchData() {
     await getUserMedia();
     await makeConnection();
-    await roomSubscribe();
+    await connect();
   }
   useEffect(() => {
     fetchData();
@@ -247,36 +242,69 @@ function Card() {
   }, []);
 
   return (
-    <StCard>
-      Card
-      <h4>키워드</h4>
-      <span>OOO님</span>
-      <div>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <video
-          ref={videoRef}
-          id="myFace"
-          autoPlay
-          playsInline
-          width={200}
-          height={200}
-        >
-          비디오
-        </video>
-        <button ref={muteBtn} onClick={onClickMuteHandler}>
-          mute
-        </button>
-        <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
-          camera OFF
-        </button>
-        <select ref={camerasSelect} onInput={onInputCameraChange}>
-          <option>기본</option>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <option ref={cameraOption} value="device" />
-        </select>
-      </div>
-      <button>방장일 경우 시작버튼?</button>
-    </StCard>
+    <>
+      {' '}
+      <StCard>
+        Card
+        <h4>키워드</h4>
+        <span>OOO님</span>
+        <div>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            ref={videoRef}
+            id="myFace"
+            autoPlay
+            playsInline
+            width={200}
+            height={200}
+          >
+            비디오
+          </video>
+          <button ref={muteBtn} onClick={onClickMuteHandler}>
+            mute
+          </button>
+          <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
+            camera OFF
+          </button>
+          <select ref={camerasSelect} onInput={onInputCameraChange}>
+            <option>기본</option>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <option ref={cameraOption} value="device" />
+          </select>
+        </div>
+        <button>방장일 경우 시작버튼?</button>
+      </StCard>
+      <StCard>
+        Card
+        <h4>키워드</h4>
+        <span>OOO님</span>
+        <div>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            ref={anotherVideoRef}
+            id="myFace"
+            autoPlay
+            playsInline
+            width={200}
+            height={200}
+          >
+            비디오
+          </video>
+          <button ref={muteBtn} onClick={onClickMuteHandler}>
+            mute
+          </button>
+          <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
+            camera OFF
+          </button>
+          <select ref={camerasSelect} onInput={onInputCameraChange}>
+            <option>기본</option>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <option ref={cameraOption} value="device" />
+          </select>
+        </div>
+        <button>방장일 경우 시작버튼?</button>
+      </StCard>
+    </>
   );
 }
 

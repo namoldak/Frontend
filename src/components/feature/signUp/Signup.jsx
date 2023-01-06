@@ -97,15 +97,14 @@ function Signup() {
       }
       setEmailValid(response.data);
     });
-  }
-
+  };
+  
   // 첫번째 렌더링 시 실행 안 됨
   useDidMountEffect(() => {
     if (nickValid) {
       setError('nickname', {
         type: 'custom',
         message: '이미 사용 중인 닉네임입니다.',
-      });
     } else {
       clearErrors('nickname', { type: 'custom' });
     }
@@ -116,7 +115,6 @@ function Signup() {
       setError('email', {
         type: 'custom',
         message: '이미 사용 중인 이메일입니다.',
-      });
     } else {
       clearErrors('email', { type: 'custom' });
     }
@@ -181,7 +179,7 @@ function Signup() {
           <StBtnBox>
             <input type="submit" value="회원가입" disabled={!isValid} />
             <Link to="/login">
-              <button>로그인하러 가기</button>
+              <Button>로그인하러 가기</Button>
             </Link>
           </StBtnBox>
         </form>
@@ -195,10 +193,8 @@ const StTopContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   margin: 100px auto;
   padding: 30px;
-
   border: 1px solid gray;
   max-width: 500px;
 `;
@@ -211,10 +207,8 @@ const StElementBox = styled.div`
 const StInputCon = styled.div`
   display: flex;
   flex-direction: column;
-
   border: 1px solid rgb(157, 145, 145);
   padding: 30px;
-
   gap: 20px;
 `;
 
@@ -227,6 +221,9 @@ const InputBox = styled.div`
 const Input = styled.input`
   width: 100%;
   height: 20px;
+  &.error {
+    border: 1px solid #fe415c;
+  }
 `;
 
 const Button = styled.button`
@@ -236,7 +233,7 @@ const Button = styled.button`
   cursor: pointer;
   max-width: 80px;
   margin-left: 10px;
-
+  
   &:disabled {
     background-color: #f2f4f7;
     color: #333;
@@ -254,10 +251,8 @@ const HelpText = styled.p`
 const StBtnBox = styled.div`
   display: flex;
   flex-direction: column;
-
   border: 1px solid rgb(111, 92, 92);
   padding: 30px;
-
   gap: 20px;
 `;
 
