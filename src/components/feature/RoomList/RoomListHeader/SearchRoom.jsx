@@ -14,7 +14,7 @@ function SearchRoom() {
   const [keyword, setKeyword] = useState('');
 
   function onClickSearchRoom() {
-    if (roomName.find((x) => x.includes(keyword))) {
+    if (roomName.find((x) => x.includes(keyword.trim()))) {
       alert('찾았닭');
       dispatch(searchRoom(keyword));
     } else {
