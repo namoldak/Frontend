@@ -97,14 +97,15 @@ function Signup() {
       }
       setEmailValid(response.data);
     });
-  };
-  
+  }
+
   // 첫번째 렌더링 시 실행 안 됨
   useDidMountEffect(() => {
     if (nickValid) {
       setError('nickname', {
         type: 'custom',
         message: '이미 사용 중인 닉네임입니다.',
+      });
     } else {
       clearErrors('nickname', { type: 'custom' });
     }
@@ -115,6 +116,7 @@ function Signup() {
       setError('email', {
         type: 'custom',
         message: '이미 사용 중인 이메일입니다.',
+      });
     } else {
       clearErrors('email', { type: 'custom' });
     }
@@ -233,7 +235,7 @@ const Button = styled.button`
   cursor: pointer;
   max-width: 80px;
   margin-left: 10px;
-  
+
   &:disabled {
     background-color: #f2f4f7;
     color: #333;

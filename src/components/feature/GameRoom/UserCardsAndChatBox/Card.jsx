@@ -9,11 +9,12 @@ import { useCookies } from 'react-cookie';
 
 import * as SockJs from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
+
 function Card() {
   // let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
   // let ws = Stomp.over(SockJs);
 
-  let reconnect = 0;
+  const reconnect = 0;
   const videoRef = useRef(null);
   const anotherVideoRef = useRef(null);
   const muteBtn = useRef(null);
