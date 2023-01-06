@@ -1,22 +1,27 @@
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
 import test from '../../../../assets/img/test.png';
+import { enterRoom } from '../../../../redux/modules/roomSlice';
 
 function Room({ roomInfo }) {
   console.log('roomInfo', roomInfo);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  function enterRoom(roomId) {
-    if (roomInfo.member.length === 4) {
-      alert('너무 좁아서 못 들어간닭!');
-    } else {
-      console.log('roomId', roomId);
-      navigate(`/gameroom/${roomId}`);
+  // eslint-disable-next-line consistent-return
+  function clickRoom(roomInfo) {
+    if (roomInfo.member.length >= 4) {
+      alert('꽉 차서 못 들어간닭...');
+      return null;
     }
+    console.log('enter roominfo', roomInfo);
+    dispatch(enterRoom(roomInfo));
+    navigate(`/gameroom/${roomInfo.id}`);
   }
 
   return (
@@ -25,7 +30,7 @@ function Room({ roomInfo }) {
         <Title>{roomInfo.roomName}</Title>
         <ImageBox
           onClick={() => {
-            enterRoom(roomInfo.id);
+            clickRoom(roomInfo);
           }}
         >
           <img src={test} alt="test" />

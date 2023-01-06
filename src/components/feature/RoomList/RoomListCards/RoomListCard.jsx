@@ -5,7 +5,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 // 내부 모듈
-import test from '../../../../assets/img/test.png';
 import { readAllRooms } from '../../../../redux/modules/roomSlice';
 import leftArrow from '../../../../assets/img/leftArrow.png';
 import rightArrow from '../../../../assets/img/rightArrow.png';

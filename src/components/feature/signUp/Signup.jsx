@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
 // 내부 모듈
 import authAPI from '../../../api/authAsync';
 import useDidMountEffect from '../../../hooks/useDidMountEffect';
@@ -37,22 +38,14 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('password'), null], '비밀번호가 일치하지 않습니다')
     .required('비밀번호를 한번 더 입력해주세요'),
 });
-function Signup() {
-  const [inputVal, setInputVal] = useState('');
-  const [set, setSet] = useState(true);
 
-  function setting() {
-    if (inputVal === '') {
-      setSet(true);
-    } else if (inputVal !== '') {
-      setSet(false);
-    }
-  }
+function Signup() {
   // 회원가입 후 로그인 페이지로
   const navigate = useNavigate();
   // 닉네임 중목 true/false
   const [nickValid, setNickValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
+
   // 유효성 검사
   const {
     register,
@@ -65,6 +58,7 @@ function Signup() {
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
+
   // 회원가입 api
   async function onClickSignup(data) {
     await authAPI
@@ -74,39 +68,29 @@ function Signup() {
         navigate('/login'),
       );
   }
+
   // 닉네임 중복확인
-  // async function onClickCheckNickName() {
-  //   const data = getValues('nickname');
-  //   console.log('닉네임확인 nick', data);
-  //   await authAPI.checkNickName(data).then((response) => {
-  //     // console.log('닉네임확인 response', response);
-  //     if (response.data) {
-  //       alert('유효한 닉네임입니다.');
-  //     } else {
-  //       alert('이미 사용 중인 닉네임입니다.');
-  //     }
-  //     setNickValid(response.data);
-  //   });
-  // }
   function onClickCheckNickName() {
-    console.log('왜그래');
-    // const data = getValues('nickname');
+    const data = getValues('nickname');
     // console.log('닉네임확인 nick', data);
-    // authAPI.checkNickName(data).then((response) => {
-    //   // console.log('닉네임확인 response', response);
-    //   if (response.data) {
-    //     alert('유효한 닉네임입니다.');
-    //   } else {
-    //     alert('이미 사용 중인 닉네임입니다.');
-    //   }
-    //   setNickValid(response.data);
-    // });
+
+    authAPI.checkNickName(data).then((response) => {
+      // console.log('닉네임확인 response', response.data);
+      if (response.data === false) {
+        alert('유효한 닉네임입니다.');
+      } else {
+        alert('이미 사용 중인 닉네임입니다.');
+      }
+      setNickValid(response.data);
+    });
   }
+
   // 이메일 중복 확인
-  const onClickCheckEmail = async () => {
+  function onClickCheckEmail() {
     const data = getValues('email');
-    await authAPI.emailValidCheck(data).then((response) => {
-      if (response.data) {
+
+    authAPI.checkEmail(data).then((response) => {
+      if (response.data === false) {
         alert('유효한 이메일입니다.');
       } else {
         alert('이미 사용중인 이메일입니다.');
@@ -114,27 +98,28 @@ function Signup() {
       setEmailValid(response.data);
     });
   };
+  
   // 첫번째 렌더링 시 실행 안 됨
   useDidMountEffect(() => {
-    if (!nickValid) {
+    if (nickValid) {
       setError('nickname', {
         type: 'custom',
-        message: '사용 중인 닉네임입니다.',
-      });
+        message: '이미 사용 중인 닉네임입니다.',
     } else {
       clearErrors('nickname', { type: 'custom' });
     }
   }, [nickValid]);
+
   useDidMountEffect(() => {
-    if (!emailValid) {
+    if (emailValid) {
       setError('email', {
         type: 'custom',
-        message: '사용 중인 이메일입니다.',
-      });
+        message: '이미 사용 중인 이메일입니다.',
     } else {
       clearErrors('email', { type: 'custom' });
     }
   }, [emailValid]);
+
   return (
     <StTopContainer>
       <StElementBox>
@@ -150,15 +135,9 @@ function Signup() {
                 {...register('nickname', { required: true })}
               />
               <Button
-                // disabled
-                disabled={set}
-                className="checkNickName"
+                disabled={errors.nickname || !getValues('nickname')}
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onClickCheckNickName}
-                onChange={(e) => {
-                  setInputVal(e.target.value);
-                  setting();
-                }}
               >
                 중복확인
               </Button>
@@ -169,15 +148,13 @@ function Signup() {
             {/* 이메일 유효성 검사 */}
             <InputBox>
               <Input
-                id="email"
-                name="email"
                 placeholder="이메일을 입력해주세요"
                 {...register('email', { required: true })}
               />
               <Button
-                disabled={!getValues('email') || errors.email}
-                className="checkEmail"
-                onClick={() => onClickCheckEmail}
+                disabled={errors.email || !getValues('email')}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onClickCheckEmail}
               >
                 중복확인
               </Button>
@@ -210,6 +187,7 @@ function Signup() {
     </StTopContainer>
   );
 }
+
 const StTopContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -220,10 +198,12 @@ const StTopContainer = styled.div`
   border: 1px solid gray;
   max-width: 500px;
 `;
+
 const StElementBox = styled.div`
   border: 1px solid rgb(195, 195, 195);
   padding: 30px;
 `;
+
 const StInputCon = styled.div`
   display: flex;
   flex-direction: column;
@@ -231,11 +211,13 @@ const StInputCon = styled.div`
   padding: 30px;
   gap: 20px;
 `;
+
 const InputBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
 `;
+
 const Input = styled.input`
   width: 100%;
   height: 20px;
@@ -243,6 +225,7 @@ const Input = styled.input`
     border: 1px solid #fe415c;
   }
 `;
+
 const Button = styled.button`
   width: 100%;
   cursor: default;
@@ -250,19 +233,13 @@ const Button = styled.button`
   cursor: pointer;
   max-width: 80px;
   margin-left: 10px;
+  
   &:disabled {
     background-color: #f2f4f7;
     color: #333;
   }
-  &.checkNickName {
-    background-color: #ffd440;
-    color: #333;
-  }
-  &.checkEmail {
-    background-color: #ffd440;
-    color: #333;
-  }
 `;
+
 const HelpText = styled.p`
   font-size: 13px;
   font-weight: 400;
@@ -270,6 +247,7 @@ const HelpText = styled.p`
   text-align: left;
   color: #fe415c;
 `;
+
 const StBtnBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -277,4 +255,5 @@ const StBtnBox = styled.div`
   padding: 30px;
   gap: 20px;
 `;
+
 export default Signup;
