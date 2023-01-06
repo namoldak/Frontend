@@ -9,6 +9,7 @@ import { useCookies } from 'react-cookie';
 
 import * as SockJs from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
+import { getNicknameCookie } from '../../../../utils/cookies';
 
 function Card() {
   // let SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
@@ -37,7 +38,7 @@ function Card() {
   let stream;
   let myPeerConnection;
 
-  const sender = sessionStorage.getItem('nickname');
+  const sender = getNicknameCookie('nickname');
   console.log('sender', sender);
 
   const subscribe = () => {
