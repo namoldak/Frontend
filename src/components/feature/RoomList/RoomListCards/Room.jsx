@@ -27,7 +27,7 @@ function Room({ roomInfo }) {
   return (
     <StRoomCardBox>
       <div key={roomInfo.id}>
-        <Title>{roomInfo.roomName}</Title>
+        <StTitle>{roomInfo.roomName}</StTitle>
         <ImageBox
           onClick={() => {
             clickRoom(roomInfo);
@@ -43,7 +43,7 @@ function Room({ roomInfo }) {
 
 export default Room;
 
-const Title = styled.div`
+const StTitle = styled.div`
   font-size: 26px;
   text-align: center;
   margin-bottom: 10px;
@@ -53,8 +53,8 @@ const ImageBox = styled.div`
   display: flex;
   flex-direction: row;
   position: relative;
-  width: 40%;
-  height: 40%;
+  width: 100%;
+  height: 100%;
 
   img {
     width: 100%;
@@ -67,9 +67,7 @@ const StRoomCardBox = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
+  text-align: center;
   width: fit-content;
   height: fit-content;
-
-  margin: auto;
 `;
