@@ -42,6 +42,7 @@ export const enterRoom = createAsyncThunk(
         window.location.href = `/login`;
       } else {
         alert('마음의 준비가 안됐닭! 다시 입장 시도를 해야겠닭!');
+        window.location.href = `/rooms`;
       }
       return thunkAPI.rejectWithValue(error);
     }
