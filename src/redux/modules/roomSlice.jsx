@@ -64,6 +64,21 @@ export const readAllRooms = createAsyncThunk(
   },
 );
 
+export const searchRoom = createAsyncThunk(
+  'room/searchRoom',
+  async (keyword, thunkAPI) => {
+    console.log('keyword', keyword);
+    try {
+      const response = await instance.get(`/rooms/search?keyword=${keyword}`);
+      console.log('search room', response);
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log('search room error', error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 export const roomSlice = createSlice({
   name: 'rooms',
   initialState,
@@ -85,6 +100,13 @@ export const roomSlice = createSlice({
       state.rooms = action.payload;
     },
     [readAllRooms.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [searchRoom.fulfilled]: (state, action) => {
+      console.log('action payload searchRoom', action.payload);
+      state.rooms = action.payload;
+    },
+    [searchRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
   },
