@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import Modal from '../../../common/Modals/Modal';
 import GameAnswerModal from '../../../common/Modals/GameAnswerModal';
+import GameModal from '../../../common/Modals/GameModal';
 
-function GameRoomChoice(children) {
+function GameRoomChoice(param) {
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [isMyMic, setIsMyMic] = useState(false);
   const [isModalOn, setIsModalOn] = useState(false);
@@ -21,9 +21,9 @@ function GameRoomChoice(children) {
         modal
       </button>
       {isModalOn && (
-        <Modal
+        <GameModal
           onClose={() => setIsModalOn(false)}
-          content={<GameAnswerModal gameInfo={children} />}
+          content={<GameAnswerModal gameInfo={param} />}
         />
       )}
     </div>

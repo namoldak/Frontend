@@ -137,12 +137,13 @@ function GameRoomAll() {
     disconnect();
     await instance
       .delete(`rooms/${param.roomId}/exit`)
-      .then((res) => {
-        navigate('/rooms');
+      .then(async (res) => {
+        console.log('res', res);
+        await navigate('/rooms');
       })
-      .catch((error) => {
+      .catch(async (error) => {
         alert(error.data.message);
-        navigate('/rooms');
+        await navigate('/rooms');
       });
   };
   function onClickCameraOffHandler() {
