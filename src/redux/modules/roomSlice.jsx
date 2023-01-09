@@ -11,7 +11,7 @@ export const createRoom = createAsyncThunk(
   async (newRoom, thunkAPI) => {
     try {
       const response = await instance.post(`/rooms`, newRoom);
-      // console.log('create room:', response);
+      console.log('create room:', response);
       return thunkAPI.fulfillWithValue(response.data.body.data);
     } catch (error) {
       if (error.response.status === 403) {
