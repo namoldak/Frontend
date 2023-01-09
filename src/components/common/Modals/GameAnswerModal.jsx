@@ -25,8 +25,14 @@ function GameAnswerModal(param) {
     await instance.post(`/pub/game/${gameRoomId}/skip`);
   }
 
+  function onKeyUpEnter(event) {
+    if (event.keyCode === 13) {
+      onClickAnswer();
+    }
+  }
+
   return (
-    <StModalContainer>
+    <StModalContainer onKeyUp={onKeyUpEnter}>
       <Input
         placeholder="정답을 입력해주세요."
         value={answerValue}
