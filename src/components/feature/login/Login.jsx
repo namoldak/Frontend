@@ -57,12 +57,6 @@ function Login() {
     });
   };
 
-  function onKeyUpEnter(event) {
-    if (event.key === 'Enter') {
-      onClickLogin();
-    }
-  }
-
   // 위에서 선언한 변수 code
   useEffect(() => {
     if (code) {
@@ -90,7 +84,7 @@ function Login() {
             <HelpText>{errors.password?.message}</HelpText>
           </StInputBox>
           <StBtnBox>
-            <input type="submit" value="로그인" onKeyUp={onKeyUpEnter} />
+            <input type="submit" value="로그인" />
             <KaKaoBtn />
             <Link to="/signup">
               <Button>회원가입 하기</Button>

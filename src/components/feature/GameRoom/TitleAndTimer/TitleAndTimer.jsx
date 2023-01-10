@@ -14,8 +14,8 @@ function TitleAndTimer() {
   );
 }
 
+export default TitleAndTimer;
+
 const StTitleAndTimer = styled.div`
   border: 2px solid red;
 `;
-
-export default TitleAndTimer;

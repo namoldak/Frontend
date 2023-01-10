@@ -5,26 +5,27 @@ const initialState = {
   rooms: [],
   error: null,
 };
+
 export const createRoom = createAsyncThunk(
   'room/createRoom',
   async (newRoom, thunkAPI) => {
     try {
       const response = await instance.post(`/rooms`, newRoom);
       // console.log('create room:', response);
-      // console.log('roomId', response.data.data);
-      return thunkAPI.fulfillWithValue(response.data.data);
+      return thunkAPI.fulfillWithValue(response.data.body.data);
     } catch (error) {
       if (error.response.status === 403) {
         alert('로그인이 안되어있닭! 로그인을 하고와야한닭!');
         window.location.href = `/login`;
       } else {
         // console.log('create room error:', error);
-        alert('지금은 만들 수 없닭... 다시 시도해야한닭');
+        alert('지금은 만들 수 없닭... 시도해야한닭');
       }
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
+
 export const enterRoom = createAsyncThunk(
   'room/enterRoom',
   async (roomInfo, thunkAPI) => {
@@ -40,12 +41,12 @@ export const enterRoom = createAsyncThunk(
         window.location.href = `/login`;
       } else {
         alert('마음의 준비가 안됐닭! 다시 입장 시도를 해야겠닭!');
-        window.location.href = `/rooms`;
       }
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
+
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
   async (payload, thunkAPI) => {
@@ -62,6 +63,7 @@ export const readAllRooms = createAsyncThunk(
     }
   },
 );
+
 export const searchRoom = createAsyncThunk(
   'room/searchRoom',
   async (keyword, thunkAPI) => {
@@ -72,19 +74,18 @@ export const searchRoom = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       console.log('search room error', error);
-      alert(error.response.data.statusMsg);
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
+
 export const roomSlice = createSlice({
   name: 'rooms',
   initialState,
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      console.log('action payload', action.payload);
-      state.rooms.gameRoomResponseDtoList.push(action.payload);
+      state.rooms.push(action.payload);
       window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [createRoom.rejected]: (state, action) => {
@@ -102,12 +103,13 @@ export const roomSlice = createSlice({
       state.error = action.payload;
     },
     [searchRoom.fulfilled]: (state, action) => {
-      console.log('action payload searchRoom', action);
-      state.rooms.gameRoomResponseDtoList = action.payload;
+      console.log('action payload searchRoom', action.payload);
+      state.rooms = action.payload;
     },
     [searchRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
   },
 });
+
 export default roomSlice.reducer;
