@@ -13,6 +13,8 @@ function Input({ type, placeholder, onChange, value, width }) {
   );
 }
 
+export default Input;
+
 const StyledInput = styled.input`
   width: ${(props) => props.width || '400px'};
   height: 30px;
@@ -26,5 +28,3 @@ const StyledInput = styled.input`
     border-color: #ffd440;
   }
 `;
-
-export default Input;
