@@ -9,10 +9,10 @@ function GameRoom() {
   return <GameRoomAll />;
 }
 
-export default GameRoom;
-
 const StGameRoom = styled.div`
   border: 3px solid black;
   display: grid;
   grid-template-rows: 100px 1fr;
 `;
+
+export default GameRoom;

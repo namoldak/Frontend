@@ -33,10 +33,10 @@ const schema = yup.object().shape({
       '공백을 제외한 특수문자, 알파벳, 숫자를 포함하여 입력해주세요',
     )
     .required('비밀번호를 입력해주세요'),
-  confirmPw: yup
-    .string()
-    .oneOf([yup.ref('password'), null], '비밀번호가 일치하지 않습니다')
-    .required('비밀번호를 한번 더 입력해주세요'),
+  // confirmPw: yup
+  //   .string()
+  //   .oneOf([yup.ref('password'), null], '비밀번호가 일치하지 않습니다')
+  //   .required('비밀번호를 한번 더 입력해주세요'),
 });
 
 function Signup() {
@@ -171,12 +171,12 @@ function Signup() {
               {...register('password', { required: true })}
             />
             <HelpText>{errors.password?.message}</HelpText>
-            <Input
+            {/* <Input
               type="password"
               placeholder="비밀번호를 다시 입력해주세요."
               {...register('confirmPw', { required: true })}
             />
-            <HelpText>{errors.confirmPw?.message}</HelpText>
+            <HelpText>{errors.confirmPw?.message}</HelpText> */}
           </StInputCon>
           <StBtnBox>
             <input type="submit" value="회원가입" disabled={!isValid} />
