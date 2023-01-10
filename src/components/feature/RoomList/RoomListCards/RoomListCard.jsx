@@ -10,6 +10,8 @@ import rightArrow from '../../../../assets/img/rightArrow.png';
 import Room from './Room';
 
 function RoomListCard() {
+  const rooms = useSelector((state) => state.rooms);
+  console.log('rooms', rooms);
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
@@ -23,7 +25,7 @@ function RoomListCard() {
 
   useEffect(() => {
     dispatch(readAllRooms({ page, limit }));
-  }, [dispatch, page, limit]);
+  }, [page, limit]);
 
   return (
     <StRoomListCardBox>

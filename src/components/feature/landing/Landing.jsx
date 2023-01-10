@@ -1,7 +1,7 @@
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // 내부 모듈
 import Button from '../../common/Button';
@@ -9,16 +9,13 @@ import TextButton from '../../common/TextButton';
 import {
   getCookie,
   getNicknameCookie,
-  // getEmailCookie,
   removeCookie,
 } from '../../../utils/cookies';
-import authAPI from '../../../api/authAsync';
+import MySetting from './MySetting';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const nickname = getNicknameCookie('nickname');
-  // const email = getEmailCookie('email');
-  // console.log('email', email);
   console.log('nickname', nickname);
   console.log(isLoggedIn);
 
@@ -35,14 +32,6 @@ function Landing() {
     setIsLoggedIn(false);
   }
 
-  // async function onClickDeleteAccount() {
-  //   console.log('userInfo', { nickname, email });
-  //   await authAPI.deleteAccount({ nickname, email }).then((response) => {
-  //     console.log('response', response);
-  //     alert(response.data.msg);
-  //   });
-  // }
-
   return (
     <StTopContainer>
       <StHeader>
@@ -50,6 +39,7 @@ function Landing() {
           <div>
             <button onClick={onClickLogOut}>로그아웃</button>
             <div>반갑닭, {nickname}</div>
+            <MySetting />
           </div>
         ) : (
           <div>
@@ -60,7 +50,6 @@ function Landing() {
           </div>
         )}
       </StHeader>
-      {/* <TextButton onClick={onClickDeleteAccount}>회원탈퇴</TextButton> */}
       <StRuleBox>
         <h3>나만 모른 닭 Game Rule:</h3>
         <StRuleText>

@@ -5,7 +5,6 @@ const initialState = {
   rooms: [],
   error: null,
 };
-
 export const createRoom = createAsyncThunk(
   'room/createRoom',
   async (newRoom, thunkAPI) => {
@@ -26,7 +25,6 @@ export const createRoom = createAsyncThunk(
     }
   },
 );
-
 export const enterRoom = createAsyncThunk(
   'room/enterRoom',
   async (roomInfo, thunkAPI) => {
@@ -48,7 +46,6 @@ export const enterRoom = createAsyncThunk(
     }
   },
 );
-
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
   async (payload, thunkAPI) => {
@@ -65,7 +62,6 @@ export const readAllRooms = createAsyncThunk(
     }
   },
 );
-
 export const searchRoom = createAsyncThunk(
   'room/searchRoom',
   async (keyword, thunkAPI) => {
@@ -81,15 +77,14 @@ export const searchRoom = createAsyncThunk(
     }
   },
 );
-
 export const roomSlice = createSlice({
   name: 'rooms',
   initialState,
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      // console.log('action payload', action.payload);
-      state.rooms.push(action.payload);
+      console.log('action payload', action.payload);
+      state.rooms.gameRoomResponseDtoList.push(action.payload);
       window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [createRoom.rejected]: (state, action) => {
@@ -107,13 +102,12 @@ export const roomSlice = createSlice({
       state.error = action.payload;
     },
     [searchRoom.fulfilled]: (state, action) => {
-      console.log('action payload searchRoom', action.payload);
-      state.rooms = action.payload;
+      console.log('action payload searchRoom', action);
+      state.rooms.gameRoomResponseDtoList = action.payload;
     },
     [searchRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
   },
 });
-
 export default roomSlice.reducer;
