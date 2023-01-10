@@ -12,7 +12,7 @@ export const createRoom = createAsyncThunk(
     try {
       const response = await instance.post(`/rooms`, newRoom);
       // console.log('create room:', response);
-      return thunkAPI.fulfillWithValue(response.data.body.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       if (error.response.status === 403) {
         alert('로그인이 안되어있닭! 로그인을 하고와야한닭!');

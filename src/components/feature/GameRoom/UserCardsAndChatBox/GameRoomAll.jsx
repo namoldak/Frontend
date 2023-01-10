@@ -10,29 +10,28 @@ import * as StompJs from '@stomp/stompjs';
 import { instance } from '../../../../api/core/axios';
 
 function GameRoomAll() {
-  const reconnect = 0;
   const videoRef = useRef(null);
   const anotherVideoRef = useRef(null);
   const muteBtn = useRef(null);
   const cameraBtn = useRef(null);
   const camerasSelect = useRef(null);
   const cameraOption = useRef(null);
+  const client = useRef({});
 
   const navigate = useNavigate();
   const [cookie] = useCookies();
-  const client = useRef({});
+  const param = useParams();
+
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
 
-  const param = useParams();
-  const [messages, setMessages] = useState([]);
-  const messageArray = [];
   let muted = false;
   let cameraOff = false;
   let stream;
   let myPeerConnection;
+  let dataChannel;
 
   const sender = sessionStorage.getItem('nickname');
   console.log('sender', sender);
@@ -288,7 +287,6 @@ function GameRoomAll() {
           </StTitle>
           <StUserCards>
             <StCard>
-              {' '}
               Card
               <h4>키워드</h4>
               <span>OOO님</span>

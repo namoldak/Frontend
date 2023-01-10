@@ -3,10 +3,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 내부모듈
-import GameRoomAll from '../components/feature/GameRoom/UserCardsAndChatBox/GameRoomAll';
+// import GameRoomAll from '../components/feature/GameRoom/UserCardsAndChatBox/GameRoomAll';
+// import ConnectTest from '../components/feature/GameRoom/UserCardsAndChatBox/ConnectTest';
+import SignalingTest from '../components/feature/GameRoom/UserCardsAndChatBox/SignalingTest';
 
 function GameRoom() {
-  return <GameRoomAll />;
+  return <SignalingTest />;
 }
 
 export default GameRoom;
