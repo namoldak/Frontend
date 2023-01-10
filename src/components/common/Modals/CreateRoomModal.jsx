@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { createRoom } from '../../../redux/modules/roomSlice';
+import Input from '../Input';
 
 function CreateRoomModal() {
   const [gameRoomName, setGameRoomName] = useState('');
@@ -23,9 +24,15 @@ function CreateRoomModal() {
     }
   }
 
+  function onKeyUpEnter(event) {
+    if (event.key === 'Enter') {
+      onClickRoomCreate();
+    }
+  }
+
   return (
-    <StModalContainer>
-      <input
+    <StModalContainer onKeyUp={onKeyUpEnter}>
+      <Input
         placeholder="제목을 입력해주세요"
         value={gameRoomName}
         onChange={(e) => {
