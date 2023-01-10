@@ -9,10 +9,17 @@ import search from '../../../../assets/img/search.png';
 
 function SearchRoom() {
   const dispatch = useDispatch();
+  const roomList = useSelector((state) => state.rooms.rooms);
+  const roomName = roomList.map((room) => room.roomName);
   const [keyword, setKeyword] = useState('');
 
   function onClickSearchRoom() {
-    dispatch(searchRoom(keyword));
+    if (roomName.find((x) => x.includes(keyword.trim()))) {
+      alert('찾았닭');
+      dispatch(searchRoom(keyword));
+    } else {
+      alert('찾는 방이 없닭');
+    }
     setKeyword('');
   }
 

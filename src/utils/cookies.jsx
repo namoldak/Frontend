@@ -8,7 +8,7 @@ const cookies = new Cookies();
 
 export const setCookie = (token) => {
   const expireDate = new Date();
-  expireDate.setHours(expireDate.getHours() + 10);
+  expireDate.setMinutes(expireDate.getMinutes() + 60);
   cookies.set(TOKEN_ID, token, {
     path: '/',
     expires: expireDate,
@@ -17,7 +17,7 @@ export const setCookie = (token) => {
 
 export const setNicknameCookie = (nick) => {
   const expireDate = new Date();
-  expireDate.setHours(expireDate.getHours() + 10);
+  expireDate.setMinutes(expireDate.getMinutes() + 60);
   cookies.set(NICKNAME, nick, {
     path: '/',
     expires: expireDate,
@@ -33,6 +33,5 @@ export const getNicknameCookie = () => {
 };
 
 export const removeCookie = () => {
-  cookies.remove('my_token');
-  cookies.remove('nickname');
+  return cookies.remove('my_token', 'nickname');
 };
