@@ -9,12 +9,16 @@ import TextButton from '../../common/TextButton';
 import {
   getCookie,
   getNicknameCookie,
+  // getEmailCookie,
   removeCookie,
 } from '../../../utils/cookies';
+import authAPI from '../../../api/authAsync';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const nickname = getNicknameCookie('nickname');
+  // const email = getEmailCookie('email');
+  // console.log('email', email);
   console.log('nickname', nickname);
   console.log(isLoggedIn);
 
@@ -30,6 +34,14 @@ function Landing() {
     alert('재밌었닭!');
     setIsLoggedIn(false);
   }
+
+  // async function onClickDeleteAccount() {
+  //   console.log('userInfo', { nickname, email });
+  //   await authAPI.deleteAccount({ nickname, email }).then((response) => {
+  //     console.log('response', response);
+  //     alert(response.data.msg);
+  //   });
+  // }
 
   return (
     <StTopContainer>
@@ -48,6 +60,7 @@ function Landing() {
           </div>
         )}
       </StHeader>
+      {/* <TextButton onClick={onClickDeleteAccount}>회원탈퇴</TextButton> */}
       <StRuleBox>
         <h3>나만 모른 닭 Game Rule:</h3>
         <StRuleText>

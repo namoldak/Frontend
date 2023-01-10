@@ -75,7 +75,6 @@ export const searchRoom = createAsyncThunk(
       console.log('search room', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      console.log(error.response);
       console.log('search room error', error);
       alert(error.response.data.statusMsg);
       return thunkAPI.rejectWithValue(error);
