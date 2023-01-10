@@ -8,6 +8,7 @@ import MyPageModal from '../../common/Modals/MyPageModal';
 
 function MySetting() {
   const [isModalOn, setIsModalOn] = useState(false);
+
   return (
     <div>
       {isModalOn && (
