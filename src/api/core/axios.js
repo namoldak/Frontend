@@ -4,8 +4,13 @@ import { getCookie } from '../../utils/cookies';
 // 인스턴스 생성
 // eslint-disable-next-line import/prefer-default-export
 export const instance = axios.create({
+<<<<<<< HEAD
   baseURL: 'http://52.79.248.2:8080',
   // baseURL: 'http://13.209.84.31:8080',
+=======
+  // baseURL: 'http://15.164.233.135:8080',
+  baseURL: 'http://52.79.248.2:8080',
+>>>>>>> 10f40f1a188e87cb0067ca42c10458e13799ebb2
   withCredentials: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
