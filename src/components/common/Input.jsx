@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Input({ type, placeholder, onChange, value, width }) {
+function Input({ type, placeholder, onChange, value, width, onFocus }) {
   return (
     <StyledInput
       type={type}
@@ -9,6 +9,7 @@ function Input({ type, placeholder, onChange, value, width }) {
       onChange={onChange}
       value={value}
       width={width}
+      onFocus={onFocus}
     />
   );
 }
