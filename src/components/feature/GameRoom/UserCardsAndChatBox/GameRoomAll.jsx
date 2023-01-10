@@ -131,7 +131,7 @@ function GameRoomAll() {
     client.current.activate();
   };
   const disconnect = () => {
-    client.current.deactivate();
+    // client.current.deactivate();
   };
   const leaveRoom = async () => {
     disconnect();
@@ -142,7 +142,9 @@ function GameRoomAll() {
         await navigate('/rooms');
       })
       .catch(async (error) => {
-        alert(error.data.message);
+        console.log(error);
+        console.log(error.data.message);
+        // alert(error.data.message);
         await navigate('/rooms');
       });
   };
