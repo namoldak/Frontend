@@ -1,7 +1,7 @@
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 // 내부 모듈
 import Button from '../../common/Button';
@@ -11,6 +11,7 @@ import {
   getNicknameCookie,
   removeCookie,
 } from '../../../utils/cookies';
+import MySetting from './MySetting';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +39,7 @@ function Landing() {
           <div>
             <button onClick={onClickLogOut}>로그아웃</button>
             <div>반갑닭, {nickname}</div>
+            <MySetting />
           </div>
         ) : (
           <div>
