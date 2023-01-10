@@ -50,11 +50,18 @@ function Login() {
   const KakaoLogin = async (code) => {
     await authAPI.KakaoLogin(code).then((response) => {
       setCookie(response.headers.authorization);
-      sessionStorage.setItem('nickname', response.data);
+      // console.log('클라이언트 카카오 data', response.data);
+      setNicknameCookie(response.data);
       alert('카카오 로그인 성공');
       navigate('/');
     });
   };
+
+  function onKeyUpEnter(event) {
+    if (event.key === 'Enter') {
+      onClickLogin();
+    }
+  }
 
   // 위에서 선언한 변수 code
   useEffect(() => {
@@ -83,7 +90,7 @@ function Login() {
             <HelpText>{errors.password?.message}</HelpText>
           </StInputBox>
           <StBtnBox>
-            <input type="submit" value="로그인" />
+            <input type="submit" value="로그인" onKeyUp={onKeyUpEnter} />
             <KaKaoBtn />
             <Link to="/signup">
               <Button>회원가입 하기</Button>

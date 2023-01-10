@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { instance } from '../../api/core/axios';
 
 const initialState = {
-  rooms: [],
+  totalPage: 0,
+  gameRoomResponseDtoList: [],
   error: null,
 };
 
@@ -12,6 +13,7 @@ export const createRoom = createAsyncThunk(
     try {
       const response = await instance.post(`/rooms`, newRoom);
       // console.log('create room:', response);
+      // console.log('roomId', response.data.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       if (error.response.status === 403) {
@@ -19,7 +21,7 @@ export const createRoom = createAsyncThunk(
         window.location.href = `/login`;
       } else {
         // console.log('create room error:', error);
-        alert('지금은 만들 수 없닭... 시도해야한닭');
+        alert('지금은 만들 수 없닭... 다시 시도해야한닭');
       }
       return thunkAPI.rejectWithValue(error);
     }
@@ -41,6 +43,7 @@ export const enterRoom = createAsyncThunk(
         window.location.href = `/login`;
       } else {
         alert('마음의 준비가 안됐닭! 다시 입장 시도를 해야겠닭!');
+        window.location.href = `/rooms`;
       }
       return thunkAPI.rejectWithValue(error);
     }
@@ -55,10 +58,27 @@ export const readAllRooms = createAsyncThunk(
       const response = await instance.get(
         `/rooms?page=${payload.page}&size=${payload.limit}`,
       );
-      // console.log('read rooms:', response);
+      console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       // console.log('read rooms error:', error);
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const searchRoom = createAsyncThunk(
+  'room/searchRoom',
+  async (keyword, thunkAPI) => {
+    console.log('keyword', keyword);
+    try {
+      const response = await instance.get(`/rooms/search?keyword=${keyword}`);
+      console.log('search room', response);
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      console.log(error.response);
+      console.log('search room error', error);
+      alert(error.response.data.statusMsg);
       return thunkAPI.rejectWithValue(error);
     }
   },
@@ -70,6 +90,7 @@ export const roomSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
+      // console.log('action payload', action.payload);
       state.rooms.push(action.payload);
       window.location.href = `/gameroom/${action.payload.roomId}`;
     },
@@ -78,13 +99,21 @@ export const roomSlice = createSlice({
     },
     [enterRoom.fulfilled]: (state, action) => {
       // console.log('enterRoom payload', action.payload);
-      state.rooms = action.payload;
+      state.gameRoomResponseDtoList = action.payload;
     },
     [readAllRooms.fulfilled]: (state, action) => {
       // console.log('action payload readAllRooms', action.payload);
-      state.rooms = action.payload;
+      state.gameRoomResponseDtoList = action.payload.gameRoomResponseDtoList;
+      state.totalPage = action.payload.totalPage;
     },
     [readAllRooms.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [searchRoom.fulfilled]: (state, action) => {
+      console.log('action payload searchRoom', action.payload);
+      state.gameRoomResponseDtoList = action.payload;
+    },
+    [searchRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
   },

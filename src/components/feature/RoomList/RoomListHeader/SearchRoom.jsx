@@ -1,12 +1,30 @@
-import React from 'react';
+// 외부 모듈
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+// 내부 모듈
+import { searchRoom } from '../../../../redux/modules/roomSlice';
 import search from '../../../../assets/img/search.png';
 
 function SearchRoom() {
+  const dispatch = useDispatch();
+  const [keyword, setKeyword] = useState('');
+
+  function onClickSearchRoom() {
+    dispatch(searchRoom(keyword));
+    setKeyword('');
+  }
+
   return (
     <StSearchRoom>
-      <SearchInput />
-      <SearchBtn>
+      <SearchInput
+        placeholder="방 제목을 검색하닭"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+      />
+      {/* eslint-disable-next-line react/jsx-no-bind */}
+      <SearchBtn disabled={!keyword} onClick={onClickSearchRoom}>
         <img src={search} alt="search icon" />
       </SearchBtn>
     </StSearchRoom>

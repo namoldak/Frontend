@@ -41,8 +41,6 @@ function Room({ roomInfo }) {
   );
 }
 
-export default Room;
-
 const StTitle = styled.div`
   font-size: 26px;
   text-align: center;
@@ -71,3 +69,5 @@ const StRoomCardBox = styled.div`
   width: fit-content;
   height: fit-content;
 `;
+
+export default Room;

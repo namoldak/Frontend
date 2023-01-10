@@ -11,10 +11,10 @@ import rightArrow from '../../../../assets/img/rightArrow.png';
 import Room from './Room';
 
 function RoomListCard() {
-  const rooms = useSelector((state) => state.rooms.rooms);
+  const rooms = useSelector((state) => state.rooms.gameRoomResponseDtoList);
+  console.log('rooms', rooms);
 
-  const startPage = 0;
-  const [page, setPage] = useState(startPage);
+  const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(4);
 
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ function RoomListCard() {
   return (
     <StRoomListCardBox>
       {!rooms.length ? (
-        <StTetDiv>
+        <StTestDiv>
           {page > 0 ? (
             <StLeftImg
               width="100px"
@@ -43,18 +43,9 @@ function RoomListCard() {
           <StEmptyDiv />
           <span>아무것도 없닭...</span>
           <StEmptyDiv />
-          <StEmptyDiv />
-          <StRightImg
-            width="100px"
-            src={rightArrow}
-            alt="rightArrow icon"
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          />
-        </StTetDiv>
+        </StTestDiv>
       ) : (
-        <StTetDiv>
+        <StTestDiv>
           {page > 0 ? (
             <StLeftImg
               width="100px"
@@ -74,16 +65,19 @@ function RoomListCard() {
               </RoomInfo>
             );
           })}
-
-          <StRightImg
-            width="100px"
-            src={rightArrow}
-            alt="rightArrow icon"
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          />
-        </StTetDiv>
+          {page < 5 ? (
+            <StRightImg
+              width="100px"
+              src={rightArrow}
+              alt="rightArrow icon"
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            />
+          ) : (
+            <StEmptyDiv />
+          )}
+        </StTestDiv>
       )}
     </StRoomListCardBox>
   );
@@ -97,10 +91,19 @@ const StLeftImg = styled.img`
   display: flex;
   align-items: center;
   cursor: pointer;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
 `;
 const StRightImg = styled.img`
+  display: grid;
   transform: rotate(180deg);
   cursor: pointer;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
 `;
 const RoomInfo = styled.div`
   display: flex;
@@ -111,10 +114,11 @@ const RoomInfo = styled.div`
   margin: auto;
 `;
 
-const StTetDiv = styled.div`
+const StTestDiv = styled.div`
   display: grid;
   border: 1px solid black;
-  grid-template-columns: 100px 1fr 1fr 1fr 1fr 100px;
+  /* grid-template-columns: 100px 1fr 1fr 1fr 1fr 100px; */
+  grid-template-columns: repeat(6, 1fr);
   max-width: 100%;
   column-gap: 40px;
   place-items: center;
