@@ -1,6 +1,6 @@
 // 외부모듈
 import styled from 'styled-components';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, Children } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import * as SockJs from 'sockjs-client';
@@ -8,6 +8,8 @@ import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
 import { instance } from '../../../../api/core/axios';
+import { getNicknameCookie } from '../../../../utils/cookies';
+import GameRoomChoice from './GameRoomChoice';
 
 function GameRoomAll() {
   const reconnect = 0;
@@ -34,20 +36,20 @@ function GameRoomAll() {
   let stream;
   let myPeerConnection;
 
-  const sender = sessionStorage.getItem('nickname');
-  console.log('sender', sender);
+  const sender = getNicknameCookie('nickname');
+  // console.log('sender', sender);
 
   const subscribe = () => {
     client.current.subscribe(
       `/sub/gameroom/${param.roomId}`,
       async ({ body }) => {
         const data = JSON.parse(body);
-        // console.log(data);
+        console.log('subscribe data', data);
         switch (data.type) {
           case 'ENTER':
             if (data.sender !== sender) {
-              console.log(data);
               const offer = await myPeerConnection.createOffer();
+              console.log('case enter', data);
               myPeerConnection.setLocalDescription(offer);
               client.current.publish({
                 destination: `/sub/gameroom/${param.roomId}`,
@@ -58,15 +60,18 @@ function GameRoomAll() {
                   offer,
                 }),
               });
-              console.log('오퍼전송');
+              // console.log('오퍼전송');
+              console.log('offer body', body);
             }
             break;
 
           case 'OFFER':
             if (data.sender !== sender) {
-              console.log('오퍼수신');
+              // console.log('오퍼수신');
+              console.log('case offer data', data);
               myPeerConnection.setRemoteDescription(data.offer);
               const answer = await myPeerConnection.createAnswer();
+              console.log('case offer answer', answer);
               myPeerConnection.setLocalDescription(answer);
               client.current.publish({
                 destination: `/sub/gameroom/${param.roomId}`,
@@ -77,18 +82,23 @@ function GameRoomAll() {
                   answer,
                 }),
               });
-              console.log('엔서전송');
+              // console.log('엔서전송');
+              console.log('publish body', body);
             }
             break;
           case 'ANSWER':
             if (data.sender !== sender) {
-              console.log('엔서수신');
+              // console.log('엔서수신');
+              console.log('case answer data', data);
+              console.log('case answer data.answer', data.answer);
               myPeerConnection.setRemoteDescription(data.answer);
             }
             break;
           case 'ICE':
             if (data.sender !== sender) {
               console.log('아이스수신');
+              console.log('case ice data', data);
+              console.log('case ice data.ice', data.ice);
               myPeerConnection.addIceCandidate(data.ice);
             }
             break;
@@ -127,12 +137,13 @@ function GameRoomAll() {
     disconnect();
     await instance
       .delete(`rooms/${param.roomId}/exit`)
-      .then((res) => {
-        navigate('/rooms');
+      .then(async (res) => {
+        console.log('res', res);
+        await navigate('/rooms');
       })
-      .catch((error) => {
+      .catch(async (error) => {
         alert(error.data.message);
-        navigate('/rooms');
+        await navigate('/rooms');
       });
   };
   function onClickCameraOffHandler() {
@@ -281,6 +292,7 @@ function GameRoomAll() {
         </Link>
         <button>설정</button>
       </StGameRoomHeader>
+      <GameRoomChoice props={param} />
       <StGameRoomMain>
         <StGameTitleAndUserCards>
           <StTitle>
