@@ -10,6 +10,7 @@ import * as StompJs from '@stomp/stompjs';
 import { instance } from '../../../../api/core/axios';
 import { getNicknameCookie } from '../../../../utils/cookies';
 import GameRoomChoice from './GameRoomChoice';
+import ChatBox from './ChatBox';
 
 function GameRoomAll() {
   const reconnect = 0;
@@ -44,7 +45,7 @@ function GameRoomAll() {
       `/sub/gameroom/${param.roomId}`,
       async ({ body }) => {
         const data = JSON.parse(body);
-        console.log('subscribe data', data);
+        // console.log('subscribe data', data);
         switch (data.type) {
           case 'ENTER':
             if (data.sender !== sender) {
@@ -131,18 +132,19 @@ function GameRoomAll() {
     client.current.activate();
   };
   const disconnect = () => {
-    client.current.deactivate();
+    // client.current.deactivate();
   };
   const leaveRoom = async () => {
     disconnect();
     await instance
       .delete(`rooms/${param.roomId}/exit`)
       .then(async (res) => {
-        console.log('res', res);
+        console.log('방나가기 res', res);
         await navigate('/rooms');
       })
       .catch(async (error) => {
-        alert(error.data.message);
+        // console.log(error.data.message);
+        // alert(error.data.message);
         await navigate('/rooms');
       });
   };
@@ -351,14 +353,15 @@ function GameRoomAll() {
           </StUserCards>
         </StGameTitleAndUserCards>
         <StTimer>타이머:남은시간20초</StTimer>
-        <StChatBox>
+        <ChatBox />
+        {/* <StChatBox>
           <StNotice>공지내용</StNotice>
           <StUserChatBox>채팅내용</StUserChatBox>
           <StSendChat>
             <input placeholder="채팅내용" />
             <button>전송</button>
           </StSendChat>
-        </StChatBox>
+        </StChatBox> */}
       </StGameRoomMain>
     </StGameRoomOuter>
   );
@@ -389,11 +392,11 @@ const StTimer = styled.div`
   border: 2px solid black;
 `;
 
-const StChatBox = styled.div`
-  border: 2px solid black;
-  display: grid;
-  grid-template-rows: 30px 1fr 30px;
-`;
+// const StChatBox = styled.div`
+//   border: 2px solid black;
+//   display: grid;
+//   grid-template-rows: 30px 1fr 30px;
+// `;
 
 const StTitle = styled.div`
   border: 1px solid black;
@@ -412,16 +415,16 @@ const StCard = styled.div`
   border: 1px solid black;
 `;
 
-const StNotice = styled.div`
-  border: 1px solid black;
-`;
+// const StNotice = styled.div`
+//   border: 1px solid black;
+// `;
 
-const StUserChatBox = styled.div`
-  border: 1px solid black;
-`;
+// const StUserChatBox = styled.div`
+//   border: 1px solid black;
+// `;
 
-const StSendChat = styled.div`
-  border: 1px solid black;
-`;
+// const StSendChat = styled.div`
+//   border: 1px solid black;
+// `;
 
 export default GameRoomAll;
