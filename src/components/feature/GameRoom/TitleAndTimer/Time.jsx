@@ -14,9 +14,9 @@ function Time() {
   );
 }
 
-export default Time;
-
 const StTime = styled.div`
   border: 1px solid green;
   display: inline-block;
 `;
+
+export default Time;

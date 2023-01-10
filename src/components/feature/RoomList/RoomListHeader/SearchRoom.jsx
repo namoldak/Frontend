@@ -1,6 +1,6 @@
 // 외부 모듈
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 // 내부 모듈
@@ -9,26 +9,34 @@ import search from '../../../../assets/img/search.png';
 
 function SearchRoom() {
   const dispatch = useDispatch();
-  const roomList = useSelector((state) => state.rooms.rooms);
-  const roomName = roomList.map((room) => room.roomName);
   const [keyword, setKeyword] = useState('');
+  const input = useRef(null);
 
+  // eslint-disable-next-line consistent-return
   function onClickSearchRoom() {
-    if (roomName.find((x) => x.includes(keyword.trim()))) {
-      alert('찾았닭');
-      dispatch(searchRoom(keyword));
-    } else {
-      alert('찾는 방이 없닭');
+    if (keyword.trim() === '') {
+      return null;
     }
+    dispatch(searchRoom(keyword));
     setKeyword('');
+  }
+
+  function onKeyUpEnter(event) {
+    if (event.keyCode === 13) {
+      document.activeElement.blur();
+      onClickSearchRoom();
+      input.current.focus();
+    }
   }
 
   return (
     <StSearchRoom>
       <SearchInput
+        ref={input}
         placeholder="방 제목을 검색하닭"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
+        onKeyUp={onKeyUpEnter}
       />
       {/* eslint-disable-next-line react/jsx-no-bind */}
       <SearchBtn disabled={!keyword} onClick={onClickSearchRoom}>
