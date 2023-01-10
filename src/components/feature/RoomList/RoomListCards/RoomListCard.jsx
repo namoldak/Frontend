@@ -1,7 +1,6 @@
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 // 내부 모듈
@@ -11,13 +10,15 @@ import rightArrow from '../../../../assets/img/rightArrow.png';
 import Room from './Room';
 
 function RoomListCard() {
-  const rooms = useSelector((state) => state.rooms.rooms);
-  console.log('rooms', rooms);
+  const { totalPage, gameRoomResponseDtoList } = useSelector(
+    (state) => state.rooms.rooms,
+  );
+  console.log('gameRoomResponseDtoList', gameRoomResponseDtoList);
+  console.log('totalPage', totalPage);
 
   const [page, setPage] = useState(0);
+  console.log('page', page);
   const [limit, setLimit] = useState(4);
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,59 +27,40 @@ function RoomListCard() {
 
   return (
     <StRoomListCardBox>
-      {!rooms.length ? (
-        <StTestDiv>
-          {page > 0 ? (
-            <StLeftImg
-              width="100px"
-              src={leftArrow}
-              alt="leftArrow icone"
-              onClick={() => {
-                setPage(page - 1);
-              }}
-            />
-          ) : (
-            <StEmptyDiv />
-          )}
+      <StTestDiv>
+        {page > 0 ? (
+          <StLeftImg
+            width="100px"
+            src={leftArrow}
+            alt="leftArrow icone"
+            onClick={() => {
+              setPage(page - 1);
+            }}
+          />
+        ) : (
           <StEmptyDiv />
-          <span>아무것도 없닭...</span>
-          <StEmptyDiv />
-        </StTestDiv>
-      ) : (
-        <StTestDiv>
-          {page > 0 ? (
-            <StLeftImg
-              width="100px"
-              src={leftArrow}
-              alt="leftArrow icone"
-              onClick={() => {
-                setPage(page - 1);
-              }}
-            />
-          ) : (
-            <StEmptyDiv />
-          )}
-          {rooms.slice(0, 4).map((room) => {
+        )}
+        {gameRoomResponseDtoList &&
+          gameRoomResponseDtoList.map((room) => {
             return (
               <RoomInfo key={room.id}>
                 <Room roomInfo={room} />
               </RoomInfo>
             );
           })}
-          {page < 5 ? (
-            <StRightImg
-              width="100px"
-              src={rightArrow}
-              alt="rightArrow icon"
-              onClick={() => {
-                setPage(page + 1);
-              }}
-            />
-          ) : (
-            <StEmptyDiv />
-          )}
-        </StTestDiv>
-      )}
+        {page <= totalPage - 2 ? (
+          <StRightImg
+            width="100px"
+            src={rightArrow}
+            alt="rightArrow icon"
+            onClick={() => {
+              setPage(page + 1);
+            }}
+          />
+        ) : (
+          <StEmptyDiv />
+        )}
+      </StTestDiv>
     </StRoomListCardBox>
   );
 }
@@ -117,7 +99,6 @@ const RoomInfo = styled.div`
 const StTestDiv = styled.div`
   display: grid;
   border: 1px solid black;
-  /* grid-template-columns: 100px 1fr 1fr 1fr 1fr 100px; */
   grid-template-columns: repeat(6, 1fr);
   max-width: 100%;
   column-gap: 40px;
