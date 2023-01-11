@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import Modal from '../../common/Modals/Modal';
-import MyPageModal from '../../common/Modals/MyPageModal';
+import Modal from '../../common/Modals/BasicModal/Modal';
+import MyPageModal from '../../common/Modals/BasicModal/MyPageModal';
 
 function MySetting() {
   const [isModalOn, setIsModalOn] = useState(false);

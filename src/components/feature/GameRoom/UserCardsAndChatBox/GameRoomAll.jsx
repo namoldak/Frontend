@@ -10,6 +10,7 @@ import * as StompJs from '@stomp/stompjs';
 import { instance } from '../../../../api/core/axios';
 import { getNicknameCookie } from '../../../../utils/cookies';
 import GameRoomChoice from './GameRoomChoice';
+import ChatBox from './ChatBox';
 
 function GameRoomAll() {
   const reconnect = 0;
@@ -37,7 +38,7 @@ function GameRoomAll() {
   let myPeerConnection;
 
   const sender = getNicknameCookie('nickname');
-  // console.log('sender', sender);
+  console.log('sender', sender);
 
   const subscribe = () => {
     client.current.subscribe(

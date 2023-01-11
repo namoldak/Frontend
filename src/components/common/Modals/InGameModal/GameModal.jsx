@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import ModalPortal from './ModalPortal';
+import ModalPortal from '../ModalPortal';
 
 function GameModal({ content }) {
   return (

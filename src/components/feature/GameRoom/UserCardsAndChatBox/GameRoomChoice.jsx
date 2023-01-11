@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import GameAnswerModal from '../../../common/Modals/GameAnswerModal';
-import GameModal from '../../../common/Modals/GameModal';
+import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
+import GameModal from '../../../common/Modals/InGameModal/GameModal';
 
 function GameRoomChoice(param) {
   const [isMyTurn, setIsMyTurn] = useState(false);

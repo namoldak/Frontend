@@ -2,11 +2,11 @@
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Button from '../Button';
+import Button from '../../Button';
 
 // 내부 모듈
-import Input from '../Input';
-import { instance } from '../../../api/core/axios';
+import Input from '../../Input';
+import { instance } from '../../../../api/core/axios';
 
 function GameAnswerModal(param) {
   // eslint-disable-next-line react/destructuring-assignment

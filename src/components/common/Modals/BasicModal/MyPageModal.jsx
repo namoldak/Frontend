@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import Input from '../Input';
-import { removeCookie } from '../../../utils/cookies';
-import { instance } from '../../../api/core/axios';
+import Input from '../../Input';
+import { removeCookie } from '../../../../utils/cookies';
+import { instance } from '../../../../api/core/axios';
 
 function MyPageModal() {
   const [password, setPassword] = useState('');
