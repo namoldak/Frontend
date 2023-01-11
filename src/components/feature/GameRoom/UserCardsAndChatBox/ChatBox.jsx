@@ -13,7 +13,8 @@ function ChatBox() {
   const nickname = getNicknameCookie('nickname');
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
-  const allMessages = [];
+  const [chatData, setChatData] = useState([]); // chat 전체 데이터
+  // const allMessages = [];
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
@@ -24,25 +25,27 @@ function ChatBox() {
       `/sub/gameroom/${param.roomId}`,
       async ({ body }) => {
         const data = JSON.parse(body);
-        console.log('subscribe data', data);
+        setChatData(data);
+        console.log('subscribe data', chatData);
         switch (data.type) {
           case 'ENTER': {
-            console.log('enter');
+            // console.log('enter');
             break;
           }
           case 'CHAT': {
-            console.log('chat', data.sender);
-            setChatMessages([...chatMessages, data.message]);
+            // console.log('chat', data.sender);
+            setChatMessages((chatMessages) => [...chatMessages, data.message]);
             break;
           }
           default: {
-            console.log('default');
+            // console.log('default');
             break;
           }
         }
       },
     );
   };
+
   const connect = () => {
     client.current = new StompJs.Client({
       webSocketFactory: () => new SockJs(`http://13.209.84.31:8080/ws-stomp`),
@@ -56,6 +59,7 @@ function ChatBox() {
             type: 'ENTER',
             roomId: param.roomId,
             sender: nickname,
+            message: `${nickname}님이 게임에 참가하셨습니다.`,
           }),
         });
       },
@@ -67,7 +71,13 @@ function ChatBox() {
     client.current.activate();
   };
 
+  // input value 즉 메시지 채팅을 입력
   function publish(value) {
+    if (message === '') {
+      alert('채팅 내용을 입력해주세요.');
+      return;
+    }
+
     client.current.publish({
       destination: `/sub/gameroom/${param.roomId}`,
       body: JSON.stringify({
@@ -81,17 +91,58 @@ function ChatBox() {
   }
 
   useEffect(() => {
-    connect();
+    connect(); // 연결된 경우 렌더링
   }, []);
+
+  console.log('chatData', chatData);
+  console.log('chatData.message', chatData.message);
+  // console.log('chatData.type', chatData.type);
+  console.log('chatMessages', chatMessages);
+
   return (
     <StChatBox>
       <StNotice>공지내용</StNotice>
       <StUserChatBox>
-        <div>
-          {chatMessages?.map((message) => {
-            return <li>{message}</li>;
-          })}
-        </div>
+        {`채팅 내역들 : ${chatMessages}`}
+        {chatData.sender && (
+          <div>
+            {chatMessages?.map((message) => {
+              // 채팅 내역들
+              // if (chatData.type === 'CHAT') {
+              //   return (
+              //     <Chats key={message}>{`채팅들 : ${chatMessages}`}</Chats>
+              //   );
+              // }
+              // 내가 채팅 보내는 경우
+              if (chatData.sender === nickname) {
+                return (
+                  <MyChat
+                    key={nickname}
+                  >{`${chatData.sender}: ${chatData.message}`}</MyChat>
+                );
+              }
+              // 다른 사람이 채팅 보내는 경우
+              return (
+                <AnotherChat
+                  key={nickname}
+                >{`${chatData.sender}: ${chatData.message}`}</AnotherChat>
+              );
+            })}
+          </div>
+        )}
+        {/* {chatData.sender === '' && (
+          <div>
+            {chatMessages?.map((message) => {
+              return <Chats key={message}>{`채팅들 : ${chatMessages}`}</Chats>;
+            })}
+          </div>
+        )} */}
+        {/* // 채팅 내역들
+        if (chatData.type === 'CHAT') {
+          return (
+            <Chats key={message}>{`채팅들 : ${chatMessages}`}</Chats>
+          );
+        } */}
       </StUserChatBox>
       <StSendChat>
         <input
@@ -105,6 +156,7 @@ function ChatBox() {
     </StChatBox>
   );
 }
+
 const StChatBox = styled.div`
   border: 2px solid black;
   display: grid;
@@ -120,4 +172,17 @@ const StSendChat = styled.div`
   border: 1px solid black;
   height: 50px;
 `;
+
+const Chats = styled.div`
+  color: purple;
+`;
+
+const MyChat = styled.div`
+  color: blue;
+`;
+
+const AnotherChat = styled.div`
+  color: red;
+`;
+
 export default ChatBox;
