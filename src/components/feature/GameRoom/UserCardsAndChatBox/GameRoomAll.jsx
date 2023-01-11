@@ -102,7 +102,8 @@ function GameRoomAll() {
   };
   const connect = () => {
     client.current = new StompJs.Client({
-      webSocketFactory: () => new SockJs(`http://13.209.84.31:8080/ws-stomp`),
+      // webSocketFactory: () => new SockJs(`http://13.209.84.31:8080/ws-stomp`),
+      webSocketFactory: () => new SockJs(`http://52.79.248.2:8080/ws-stomp`),
       connectHeaders,
       debug() {},
       onConnect: () => {
@@ -127,18 +128,23 @@ function GameRoomAll() {
     // client.current.deactivate();
   };
   const leaveRoom = async () => {
+    console.log(1);
     disconnect();
+    console.log(2);
     await instance
       .delete(`rooms/${param.roomId}/exit`)
       .then(async (res) => {
         console.log('방나가기 res', res);
         await navigate('/rooms');
+        console.log(4);
       })
       .catch(async (error) => {
         // console.log(error.data.message);
         // alert(error.data.message);
         await navigate('/rooms');
+        console.log('5', error);
       });
+    console.log(6);
   };
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
