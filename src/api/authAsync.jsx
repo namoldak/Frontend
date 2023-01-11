@@ -65,24 +65,12 @@ const checkEmail = async (email) => {
   return null;
 };
 
-const deleteAccount = async (userInfo) => {
-  console.log('userInfo async', userInfo);
-  try {
-    const response = await instance.delete(`/auth/deleteMember`);
-    return response;
-  } catch (error) {
-    alert('에러가 발생했습니다.');
-  }
-  return null;
-};
-
 const authAPI = {
   Login,
   SignUp,
   KakaoLogin,
   checkNickName,
   checkEmail,
-  deleteAccount,
 };
 
 export default authAPI;

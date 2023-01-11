@@ -13,9 +13,9 @@ function Theme() {
   );
 }
 
+export default Theme;
+
 const StTheme = styled.div`
   border: 1px solid blue;
   display: inline-block;
 `;
-
-export default Theme;

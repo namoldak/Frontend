@@ -27,10 +27,11 @@ function ChatBox() {
         console.log('subscribe data', data);
         switch (data.type) {
           case 'ENTER': {
-            console.log(`${data.sender}님이 입장 했습니다.`);
+            console.log('enter');
             break;
           }
           case 'CHAT': {
+            console.log('chat', data.sender);
             setChatMessages([...chatMessages, data.message]);
             break;
           }
@@ -66,14 +67,14 @@ function ChatBox() {
     client.current.activate();
   };
 
-  function publish() {
+  function publish(value) {
     client.current.publish({
       destination: `/sub/gameroom/${param.roomId}`,
       body: JSON.stringify({
         type: 'CHAT',
         roomId: param.roomId,
         sender: nickname,
-        message,
+        message: value,
       }),
     });
     setMessage('');
@@ -99,7 +100,7 @@ function ChatBox() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={() => publish()}>전송</button>
+        <button onClick={() => publish(message)}>전송</button>
       </StSendChat>
     </StChatBox>
   );
