@@ -11,9 +11,10 @@ function ChatBox() {
   const param = useParams();
   const [cookie] = useCookies();
   const nickname = getNicknameCookie('nickname');
-  const [message, setMessage] = useState('');
-  const [chatMessages, setChatMessages] = useState([]);
-  const [chatData, setChatData] = useState([]); // chat 전체 데이터
+  const [message, setMessage] = useState(''); // input value 값
+  const [chatMessages, setChatMessages] = useState([]); // 누적 채팅 메시지들
+  const [chatUser, setChatUser] = useState([]); // 누적 유저 이름들
+  const [chatData, setChatData] = useState([]); // 실시간 채팅 데이터 type 계속 바뀜
   // const allMessages = [];
   const connectHeaders = {
     Authorization: cookie.access_token,
@@ -25,8 +26,8 @@ function ChatBox() {
       `/sub/gameroom/${param.roomId}`,
       async ({ body }) => {
         const data = JSON.parse(body);
-        setChatData(data);
-        console.log('subscribe data', chatData);
+        setChatData(data); // 함수 밖에서 data를 사용하기 위함
+        // console.log('subscribe data', chatData);
         switch (data.type) {
           case 'ENTER': {
             // console.log('enter');
@@ -35,6 +36,7 @@ function ChatBox() {
           case 'CHAT': {
             // console.log('chat', data.sender);
             setChatMessages((chatMessages) => [...chatMessages, data.message]);
+            setChatUser((chatUser) => [...chatUser, data.sender]);
             break;
           }
           default: {
@@ -103,46 +105,36 @@ function ChatBox() {
     <StChatBox>
       <StNotice>공지내용</StNotice>
       <StUserChatBox>
-        {`채팅 내역들 : ${chatMessages}`}
         {chatData.sender && (
           <div>
-            {chatMessages?.map((message) => {
-              // 채팅 내역들
-              // if (chatData.type === 'CHAT') {
-              //   return (
-              //     <Chats key={message}>{`채팅들 : ${chatMessages}`}</Chats>
-              //   );
-              // }
-              // 내가 채팅 보내는 경우
+            {chatMessages?.map((message, index) => {
               if (chatData.sender === nickname) {
                 return (
                   <MyChat
-                    key={nickname}
-                  >{`${chatData.sender}: ${chatData.message}`}</MyChat>
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={String(index)}
+                  >{`${chatUser[index]}: ${message}`}</MyChat>
                 );
               }
-              // 다른 사람이 채팅 보내는 경우
               return (
                 <AnotherChat
-                  key={nickname}
-                >{`${chatData.sender}: ${chatData.message}`}</AnotherChat>
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={String(index)}
+                >{`${chatUser[index]}: ${message}`}</AnotherChat>
               );
+
+              // return (ㄷㄷㄷ
+              //   <Chat
+              //     // eslint-disable-next-line react/no-array-index-key
+              //     key={String(index)}
+              //     classname={chatData.sender === nickname ? 'my' : ''}
+              //   >
+              //     <div>{`${chatUser[index]}: ${message}`}</div>
+              //   </Chat>
+              // );
             })}
           </div>
         )}
-        {/* {chatData.sender === '' && (
-          <div>
-            {chatMessages?.map((message) => {
-              return <Chats key={message}>{`채팅들 : ${chatMessages}`}</Chats>;
-            })}
-          </div>
-        )} */}
-        {/* // 채팅 내역들
-        if (chatData.type === 'CHAT') {
-          return (
-            <Chats key={message}>{`채팅들 : ${chatMessages}`}</Chats>
-          );
-        } */}
       </StUserChatBox>
       <StSendChat>
         <input
@@ -173,15 +165,31 @@ const StSendChat = styled.div`
   height: 50px;
 `;
 
-const Chats = styled.div`
-  color: purple;
+const Chat = styled.div`
+  /* color: purple; */
+
+  &.my {
+    font-size: 30px;
+    color: blue;
+  }
 `;
 
+// const Chats = styled.div`
+//   color: purple;
+
+//   li {
+//     list-style: none;
+//   }
+// `;
+
 const MyChat = styled.div`
+  background-color: aliceblue;
+  text-align: right;
   color: blue;
 `;
 
 const AnotherChat = styled.div`
+  text-align: left;
   color: red;
 `;
 
