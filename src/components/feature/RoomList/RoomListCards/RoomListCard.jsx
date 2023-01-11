@@ -10,16 +10,11 @@ import rightArrow from '../../../../assets/img/rightArrow.png';
 import Room from './Room';
 
 function RoomListCard() {
-<<<<<<< HEAD
-  const rooms = useSelector((state) => state.rooms.gameRoomResponseDtoList);
-  console.log('rooms', rooms);
-=======
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
   console.log('gameRoomResponseDtoList', gameRoomResponseDtoList);
   console.log('totalPage', totalPage);
->>>>>>> 10f40f1a188e87cb0067ca42c10458e13799ebb2
 
   const [page, setPage] = useState(0);
   console.log('page', page);
