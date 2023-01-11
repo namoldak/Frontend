@@ -14,38 +14,43 @@ function ChatBox() {
   const [message, setMessage] = useState(''); // input value 값
   const [chatMessages, setChatMessages] = useState([]); // 누적 채팅 메시지들
   const [chatUser, setChatUser] = useState([]); // 누적 유저 이름들
-  const [chatData, setChatData] = useState([]); // 실시간 채팅 데이터 type 계속 바뀜
   // const allMessages = [];
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
 
-  const subscribe = () => {
-    client.current.subscribe(
-      `/sub/gameroom/${param.roomId}`,
-      async ({ body }) => {
-        const data = JSON.parse(body);
-        setChatData(data); // 함수 밖에서 data를 사용하기 위함
-        // console.log('subscribe data', chatData);
-        switch (data.type) {
-          case 'ENTER': {
-            // console.log('enter');
-            break;
-          }
-          case 'CHAT': {
-            // console.log('chat', data.sender);
-            setChatMessages((chatMessages) => [...chatMessages, data.message]);
-            setChatUser((chatUser) => [...chatUser, data.sender]);
-            break;
-          }
-          default: {
-            // console.log('default');
-            break;
-          }
+  const subscribe = async () => {
+    client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
+      const data = JSON.parse(body);
+      // console.log('subscribe data', data);
+      console.log('1');
+      switch (data.type) {
+        case 'ENTER': {
+          console.log('2');
+          // console.log('enter');
+          break;
         }
-      },
-    );
+        case 'CHAT': {
+          // console.log('chat', data.sender)
+          console.log('3');
+          setChatMessages((chatMessages) => [...chatMessages, data]);
+          // setChatMessages([...chatMessages, data.message]);
+          console.log('4');
+          // setChatUser([...chatUser, data.sender]);
+          setChatUser((chatUser) => [...chatUser, data.sender]);
+          console.log('5');
+          console.log('chatMessages', chatMessages);
+          console.log('data.message', data.message);
+          break;
+        }
+        default: {
+          // console.log('default');
+          console.log('6');
+          break;
+        }
+      }
+    });
   };
 
   const connect = () => {
@@ -96,45 +101,23 @@ function ChatBox() {
     connect(); // 연결된 경우 렌더링
   }, []);
 
-  console.log('chatData', chatData);
-  console.log('chatData.message', chatData.message);
-  // console.log('chatData.type', chatData.type);
-  console.log('chatMessages', chatMessages);
-
   return (
     <StChatBox>
       <StNotice>공지내용</StNotice>
       <StUserChatBox>
-        {chatData.sender && (
-          <div>
-            {chatMessages?.map((message, index) => {
-              if (chatData.sender === nickname) {
-                return (
-                  <MyChat
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={String(index)}
-                  >{`${chatUser[index]}: ${message}`}</MyChat>
-                );
-              }
-              return (
-                <AnotherChat
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={String(index)}
-                >{`${chatUser[index]}: ${message}`}</AnotherChat>
-              );
-
-              // return (ㄷㄷㄷ
-              //   <Chat
-              //     // eslint-disable-next-line react/no-array-index-key
-              //     key={String(index)}
-              //     classname={chatData.sender === nickname ? 'my' : ''}
-              //   >
-              //     <div>{`${chatUser[index]}: ${message}`}</div>
-              //   </Chat>
-              // );
-            })}
-          </div>
-        )}
+        <div>
+          {chatMessages?.map((message, index) => {
+            return (
+              <Chat
+                // eslint-disable-next-line react/no-array-index-key
+                key={String(index)}
+                className={message.sender === nickname ? 'my' : 'other'}
+              >
+                <div>{`${message.sender}: ${message.message}`}</div>
+              </Chat>
+            );
+          })}
+        </div>
       </StUserChatBox>
       <StSendChat>
         <input
@@ -166,11 +149,14 @@ const StSendChat = styled.div`
 `;
 
 const Chat = styled.div`
-  /* color: purple; */
-
   &.my {
-    font-size: 30px;
+    text-align: right;
     color: blue;
+  }
+
+  &.other {
+    color: purple;
+    text-align: left;
   }
 `;
 
@@ -183,7 +169,6 @@ const Chat = styled.div`
 // `;
 
 const MyChat = styled.div`
-  background-color: aliceblue;
   text-align: right;
   color: blue;
 `;
