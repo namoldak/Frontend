@@ -3,25 +3,20 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import ModalPortal from './ModalPortal';
+import ModalPortal from '../ModalPortal';
 
-function Modal({ onClose, content }) {
+function GameModal({ content }) {
   return (
     <ModalPortal>
-      <StBackground onClick={onClose}>
+      <StBackground>
         <StModalBorder>
-          <div>
-            <button onClick={onClose}>X</button>
-          </div>
-          <div>
-            <div
-              role="presentation"
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-            >
-              {content}
-            </div>
+          <div
+            role="presentation"
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+          >
+            {content}
           </div>
         </StModalBorder>
       </StBackground>
@@ -53,4 +48,4 @@ const StModalBorder = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-export default Modal;
+export default GameModal;

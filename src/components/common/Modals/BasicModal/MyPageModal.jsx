@@ -1,18 +1,15 @@
 // 외부 모듈
-import React, { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import Input from '../Input';
-import { removeCookie } from '../../../utils/cookies';
-import { instance } from '../../../api/core/axios';
+import Input from '../../Input';
+import { removeCookie } from '../../../../utils/cookies';
+import { instance } from '../../../../api/core/axios';
 
 function MyPageModal() {
   const [password, setPassword] = useState('');
   const [passMsg, setPassMsg] = useState('');
-  const input = useRef(null);
 
   async function onClickDeleteAccount() {
     instance
@@ -42,7 +39,6 @@ function MyPageModal() {
   return (
     <StModalContainer onKeyUp={onKeyUpEnter}>
       <Input
-        ref={input}
         placeholder="비밀번호를 입력해주세요"
         type="password"
         value={password}

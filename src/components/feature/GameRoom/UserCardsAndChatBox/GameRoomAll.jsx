@@ -292,6 +292,7 @@ function GameRoomAll() {
         </Link>
         <button>설정</button>
       </StGameRoomHeader>
+      <GameRoomChoice props={param} />
       <StGameRoomMain>
         <StGameTitleAndUserCards>
           <StTitle>
@@ -363,8 +364,6 @@ function GameRoomAll() {
     </StGameRoomOuter>
   );
 }
-
-export default GameRoomAll;
 
 const StGameRoomOuter = styled.div`
   border: 5px solid black;

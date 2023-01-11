@@ -33,5 +33,6 @@ export const getNicknameCookie = () => {
 };
 
 export const removeCookie = () => {
-  return cookies.remove('my_token', 'nickname');
+  cookies.remove('my_token');
+  cookies.remove('nickname');
 };
