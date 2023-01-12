@@ -84,14 +84,16 @@ export const roomSlice = createSlice({
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
       console.log('action payload', action.payload);
+      sessionStorage.setItem('owner', action.payload.owner);
       state.rooms.gameRoomResponseDtoList.push(action.payload);
+      // 세션스토리지에 오너저장
       window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [createRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
     [enterRoom.fulfilled]: (state, action) => {
-      // console.log('enterRoom payload', action.payload);
+      sessionStorage.setItem('owner', action.payload.data.owner);
       state.rooms = action.payload;
     },
     [readAllRooms.fulfilled]: (state, action) => {

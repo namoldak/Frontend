@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import React, { useRef, useEffect, useState, Children } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import * as SockJS from 'sockjs-client';
+import { useSelector, useDispatch } from 'react-redux';
 
 // 내부모듈
 import { instance } from '../../../../api/core/axios';
@@ -10,12 +11,15 @@ import GameRoomChoice from './GameRoomChoice';
 import { getNicknameCookie } from '../../../../utils/cookies';
 import ChatBox from './ChatBox';
 import Audio from './Audio';
+import { enterRoom } from '../../../../redux/modules/roomSlice';
 
 function GameRoomRTC() {
+  const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   console.log(myNickName);
   const navigate = useNavigate();
 
+  const owner = sessionStorage.getItem('owner');
   const socketRef = useRef();
 
   const videoRef = useRef(null);
@@ -25,6 +29,7 @@ function GameRoomRTC() {
   const cameraOption = useRef(null);
   const param = useParams();
 
+  const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
 
   let pcs = {};
@@ -169,6 +174,12 @@ function GameRoomRTC() {
   }
 
   useEffect(() => {
+    if (myNickName === owner) {
+      setIsOwner(true);
+    }
+  }, [isOwner]);
+  useEffect(() => {
+    dispatch(enterRoom);
     socketRef.current = new SockJS(`http://13.209.84.31:8080/signal`);
     socketRef.current.onopen = () => {
       // navigator.mediaDevices
@@ -294,6 +305,9 @@ function GameRoomRTC() {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
           delete pcs[data.sender];
+          // api요청 누가 오너인가요?? -> 해당룸의 오너는 지금 B입니다 라는 답을줌 ->
+          // B가 오너라는 데이터를 받았으니까
+          // setSession 스토리지에 오너를 B로 다시 세팅함
           setUsers((oldUsers) =>
             oldUsers.filter((user) => user.id !== data.sender),
           );
@@ -353,6 +367,7 @@ function GameRoomRTC() {
         >
           방나가기
         </button>
+        {isOwner ? <button>시작하기</button> : <div>방장이아닙니다</div>}
 
         <button>설정</button>
       </StGameRoomHeader>
