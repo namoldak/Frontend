@@ -5,6 +5,7 @@ import * as SockJs from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 import { useCookies } from 'react-cookie';
 import { getNicknameCookie } from '../../../../utils/cookies';
+import { instance } from '../../../../api/core/axios';
 
 function ChatBox() {
   const client = useRef({});
@@ -55,7 +56,7 @@ function ChatBox() {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      webSocketFactory: () => new SockJs(`http://13.209.84.31:8080/ws-stomp`),
+      webSocketFactory: () => new SockJs(`https://namoldak.com/ws-stomp`),
       connectHeaders,
       debug() {},
       onConnect: () => {
