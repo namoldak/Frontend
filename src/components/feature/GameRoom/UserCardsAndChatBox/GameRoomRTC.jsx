@@ -185,7 +185,7 @@ function GameRoomRTC() {
   }, [isOwner, owner]);
   useEffect(() => {
     dispatch(enterRoom);
-    socketRef.current = new SockJS(`http://13.209.84.31:8080/signal`);
+    socketRef.current = new SockJS(`https://namoldak.com/signal`);
     socketRef.current.onopen = () => {
       // navigator.mediaDevices
       // .getUserMedia({
@@ -310,6 +310,7 @@ function GameRoomRTC() {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
           delete pcs[data.sender];
+
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
             .then(async (res) => {
@@ -329,7 +330,9 @@ function GameRoomRTC() {
           break;
         }
         case 'game_start': {
+
           console.log('게임.');
+
           gameStart();
           break;
         }
