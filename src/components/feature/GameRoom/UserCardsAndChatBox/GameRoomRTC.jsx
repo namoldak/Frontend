@@ -290,7 +290,7 @@ function GameRoomRTC() {
           }
           break;
         }
-        case 'leave': {
+        case 'exit': {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
           delete pcs[data.sender];
@@ -309,7 +309,7 @@ function GameRoomRTC() {
   const disconnect = () => {
     socketRef.current?.send(
       JSON.stringify({
-        type: 'leave',
+        type: 'exit',
         roomId: param.roomId,
       }),
     );
