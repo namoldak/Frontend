@@ -12,6 +12,7 @@ import { getNicknameCookie } from '../../../../utils/cookies';
 import ChatBox from './ChatBox';
 import Audio from './Audio';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
+import ToastMessage from '../../../common/Toast/ToastMessage';
 
 function GameRoomRTC() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ function GameRoomRTC() {
   const camerasSelect = useRef(null);
   const cameraOption = useRef(null);
   const param = useParams();
-
+  const [isStartModalOn, setIsStartModalOn] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -38,6 +39,9 @@ function GameRoomRTC() {
   let stream;
   let myPeerConnection;
 
+  function gameStart() {
+    setIsStartModalOn(true);
+  }
   function createPeerConnection(socketID, socket, peerConnectionLocalStream) {
     const pc = new RTCPeerConnection({
       iceServers: [
@@ -177,10 +181,10 @@ function GameRoomRTC() {
     if (myNickName === owner) {
       setIsOwner(true);
     }
-  }, [isOwner]);
+  }, [isOwner, owner]);
   useEffect(() => {
     dispatch(enterRoom);
-    socketRef.current = new SockJS(`http://13.209.84.31:8080/signal`);
+    socketRef.current = new SockJS(`https://namoldak.com/signal`);
     socketRef.current.onopen = () => {
       // navigator.mediaDevices
       // .getUserMedia({
@@ -305,12 +309,17 @@ function GameRoomRTC() {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
           delete pcs[data.sender];
-          // api요청 누가 오너인가요?? -> 해당룸의 오너는 지금 B입니다 라는 답을줌 ->
-          // B가 오너라는 데이터를 받았으니까
-          // setSession 스토리지에 오너를 B로 다시 세팅함
+          const response = instance.get(`/rooms/${param.roomId}/ownerInfo`);
+          console.log(response);
+          sessionStorage.setItem('owner', response.data);
           setUsers((oldUsers) =>
             oldUsers.filter((user) => user.id !== data.sender),
           );
+          break;
+        }
+        case 'game_start': {
+          console.log('게임이 시작돼었었습니다.');
+          gameStart();
           break;
         }
         default: {
@@ -355,6 +364,9 @@ function GameRoomRTC() {
 
   return (
     <StGameRoomOuter>
+      {isStartModalOn && (
+        <ToastMessage setToastState={setIsStartModalOn} text="Game Start!" />
+      )}
       <StGameRoomHeader>
         <Link to="/rooms">
           <button>뒤로가기</button>
@@ -367,7 +379,11 @@ function GameRoomRTC() {
         >
           방나가기
         </button>
-        {isOwner ? <button>시작하기</button> : <div>방장이아닙니다</div>}
+        {isOwner ? (
+          <button onClick={gameStart}>시작하기</button>
+        ) : (
+          <div>방장이아닙니다</div>
+        )}
 
         <button>설정</button>
       </StGameRoomHeader>
