@@ -20,7 +20,7 @@ function Room({ roomInfo }) {
       return null;
     }
     console.log('enter roominfo', roomInfo);
-    // dispatch(enterRoom(roomInfo));
+    dispatch(enterRoom(roomInfo));
     navigate(`/gameroom/${roomInfo.id}`);
   }
 

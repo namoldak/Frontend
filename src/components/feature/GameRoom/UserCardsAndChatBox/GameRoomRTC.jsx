@@ -21,6 +21,7 @@ function GameRoomRTC() {
   const navigate = useNavigate();
 
   const owner = sessionStorage.getItem('owner');
+  const [roomOwner, setRoomOwner] = useState(owner);
   const socketRef = useRef();
 
   const videoRef = useRef(null);
@@ -309,16 +310,29 @@ function GameRoomRTC() {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
           delete pcs[data.sender];
-          const response = instance.get(`/rooms/${param.roomId}/ownerInfo`);
-          console.log(response);
-          sessionStorage.setItem('owner', response.data);
+
+          instance
+            .get(`/rooms/${param.roomId}/ownerInfo`)
+            .then(async (res) => {
+              console.log(res.data.ownerNickname);
+              await sessionStorage.setItem('owner', res.data.ownerNickname);
+              if (sessionStorage.getItem('owner') === myNickName) {
+                setIsOwner(true);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
           setUsers((oldUsers) =>
             oldUsers.filter((user) => user.id !== data.sender),
           );
           break;
         }
         case 'game_start': {
-          console.log('게임이 시작돼었었습니다.');
+
+          console.log('게임.');
+
           gameStart();
           break;
         }
@@ -338,7 +352,8 @@ function GameRoomRTC() {
     );
   };
   const leaveRoom = async () => {
-    await disconnect();
+    sessionStorage.clear();
+
     await instance
       .delete(`rooms/${param.roomId}/exit`)
       .then(async (res) => {
@@ -346,9 +361,10 @@ function GameRoomRTC() {
         await navigate('/rooms');
       })
       .catch(async (error) => {
-        alert(error.data.message);
+        // alert(error.data.message);
         await navigate('/rooms');
       });
+    await disconnect();
   };
 
   async function onInputCameraChange() {
@@ -425,6 +441,7 @@ function GameRoomRTC() {
               </div>
             </StCard>
             {users.map((user) => {
+              console.log(user);
               return (
                 <StCard key={user.id}>
                   <Audio key={user.id} stream={user.stream}>

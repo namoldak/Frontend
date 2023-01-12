@@ -5,6 +5,7 @@ import * as SockJs from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 import { useCookies } from 'react-cookie';
 import { getNicknameCookie } from '../../../../utils/cookies';
+import { instance } from '../../../../api/core/axios';
 
 function ChatBox() {
   const client = useRef({});
