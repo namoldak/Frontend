@@ -290,7 +290,7 @@ function GameRoomRTC() {
           }
           break;
         }
-        case 'user_exit': {
+        case 'leave': {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
           delete pcs[data.sender];
@@ -307,25 +307,25 @@ function GameRoomRTC() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const disconnect = () => {
-    // socketRef.current.deactivate();
+    socketRef.current?.send(
+      JSON.stringify({
+        type: 'leave',
+        roomId: param.roomId,
+      }),
+    );
   };
   const leaveRoom = async () => {
-    console.log(1);
-    disconnect();
-    console.log(2);
+    await disconnect();
     await instance
       .delete(`rooms/${param.roomId}/exit`)
       .then(async (res) => {
         console.log('res', res);
         await navigate('/rooms');
-        console.log(4);
       })
       .catch(async (error) => {
-        // alert(error.data.message);
+        alert(error.data.message);
         await navigate('/rooms');
-        console.log('5', error);
       });
-    console.log(6);
   };
 
   async function onInputCameraChange() {
@@ -345,15 +345,15 @@ function GameRoomRTC() {
         <Link to="/rooms">
           <button>뒤로가기</button>
         </Link>
-        <Link to="/rooms">
-          <button
-            onClick={() => {
-              leaveRoom();
-            }}
-          >
-            방나가기
-          </button>
-        </Link>
+
+        <button
+          onClick={() => {
+            leaveRoom();
+          }}
+        >
+          방나가기
+        </button>
+
         <button>설정</button>
       </StGameRoomHeader>
       <GameRoomChoice props={param} />
@@ -395,7 +395,7 @@ function GameRoomRTC() {
             </StCard>
             {users.map((user) => {
               return (
-                <StCard>
+                <StCard key={user.id}>
                   <Audio key={user.id} stream={user.stream}>
                     <track kind="captions" />
                   </Audio>
