@@ -15,6 +15,7 @@ import ChatBox from './ChatBox';
 import Audio from './Audio';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 import ToastMessage from '../../../common/Toast/ToastMessage';
+import Timer from '../TitleAndTimer/Timer';
 
 function GameRoomRTC() {
   const SockJsRTC = new SockJS('http://13.209.84.31:8080/signal');
@@ -35,6 +36,7 @@ function GameRoomRTC() {
   const cameraOption = useRef(null);
   const param = useParams();
   const [isStartModalOn, setIsStartModalOn] = useState(false);
+  const [isStartTimer, setIsStartTimer] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -101,6 +103,11 @@ function GameRoomRTC() {
       }),
     });
   }
+
+  function timerStart() {
+    setIsStartTimer(true);
+  }
+
   function createPeerConnection(socketID, socket, peerConnectionLocalStream) {
     const pc = new RTCPeerConnection({
       iceServers: [
@@ -509,7 +516,10 @@ function GameRoomRTC() {
             })}
           </StUserCards>
         </StGameTitleAndUserCards>
-        <StTimer>타이머:남은시간20초</StTimer>
+        <div>
+          <button onClick={timerStart}>발언권 부여</button>
+          {isStartTimer && <Timer setIsStartTimer={setIsStartTimer} />}
+        </div>
         <ChatBox />
       </StGameRoomMain>
     </StGameRoomOuter>
