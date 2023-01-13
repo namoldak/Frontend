@@ -368,6 +368,7 @@ function GameRoomRTC() {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
           delete pcs[data.sender];
+
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
             .then(async (res) => {
@@ -388,6 +389,7 @@ function GameRoomRTC() {
         }
         case 'game_start': {
           console.log('게임.');
+
           gameStart();
           break;
         }
