@@ -17,7 +17,7 @@ import { enterRoom } from '../../../../redux/modules/roomSlice';
 import ToastMessage from '../../../common/Toast/ToastMessage';
 
 function GameRoomRTC() {
-  const SockJsRTC = new SockJS('http://13.209.84.31:8080/signal');
+  const SockJsRTC = new SockJS('https://namoldak.com/signal');
   const SockJs = new SockJS('https://namoldak.com/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
@@ -398,19 +398,26 @@ function GameRoomRTC() {
         }
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return async () => {
+      if (socketRef.current) {
+        sessionStorage.clear();
+        await instance
+          .delete(`rooms/${param.roomId}/exit`)
+          .then(async (res) => {
+            console.log('res', res);
+            await navigate('/rooms');
+          })
+          .catch(async (error) => {
+            // alert(error.data.message);
+            await navigate('/rooms');
+          });
+        socketRef.current.close();
+      }
+    };
   }, []);
-  const disconnect = () => {
-    socketRef.current?.send(
-      JSON.stringify({
-        type: 'leave',
-        roomId: param.roomId,
-      }),
-    );
-  };
+
   const leaveRoom = async () => {
     sessionStorage.clear();
-
     await instance
       .delete(`rooms/${param.roomId}/exit`)
       .then(async (res) => {
@@ -421,7 +428,7 @@ function GameRoomRTC() {
         // alert(error.data.message);
         await navigate('/rooms');
       });
-    await disconnect();
+    await socketRef.current.close();
   };
 
   async function onInputCameraChange() {
