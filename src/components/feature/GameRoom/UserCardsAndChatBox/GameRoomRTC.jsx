@@ -2,8 +2,10 @@
 import styled from 'styled-components';
 import React, { useRef, useEffect, useState, Children } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import * as SockJS from 'sockjs-client';
+import SockJS from 'sockjs-client';
 import { useSelector, useDispatch } from 'react-redux';
+import { useCookies } from 'react-cookie';
+import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
 import { instance } from '../../../../api/core/axios';
@@ -15,6 +17,8 @@ import { enterRoom } from '../../../../redux/modules/roomSlice';
 import ToastMessage from '../../../common/Toast/ToastMessage';
 
 function GameRoomRTC() {
+  const SockJsRTC = new SockJS('http://13.209.84.31:8080/signal');
+  const SockJs = new SockJS('https://namoldak.com/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   console.log(myNickName);
@@ -40,8 +44,62 @@ function GameRoomRTC() {
   let stream;
   let myPeerConnection;
 
+  /// ////////////////////////////////////////!SECTION
+  const client = useRef({});
+  const [cookie] = useCookies();
+  const connectHeaders = {
+    Authorization: cookie.access_token,
+    'Refresh-Token': cookie.refresh_token,
+  };
+  const subscribe = async () => {
+    client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
+      const data = JSON.parse(body);
+      // console.log('subscribe data', data);
+      console.log('1');
+      switch (data.type) {
+        case 'start': {
+          setIsStartModalOn(true);
+          break;
+        }
+
+        default: {
+          // console.log('default');
+          console.log('6');
+          break;
+        }
+      }
+    });
+  };
+
+  const connect = () => {
+    client.current = new StompJs.Client({
+      webSocketFactory: () => SockJs,
+      connectHeaders,
+      debug() {},
+      onConnect: () => {
+        subscribe();
+      },
+      onStompError: (frame) => {
+        console.log(`Broker reported error: ${frame.headers.message}`);
+        console.log(`Additional details: ${frame.body}`);
+      },
+    });
+    client.current.activate();
+  };
+
+  useEffect(() => {
+    connect(); // 연결된 경우 렌더링
+  }, []);
+
+  /// ////////////////////////////////////////!SECTION
+
   function gameStart() {
-    setIsStartModalOn(true);
+    client.current.publish({
+      destination: `/sub/gameroom/${param.roomId}`,
+      body: JSON.stringify({
+        type: 'start',
+      }),
+    });
   }
   function createPeerConnection(socketID, socket, peerConnectionLocalStream) {
     const pc = new RTCPeerConnection({
@@ -185,7 +243,7 @@ function GameRoomRTC() {
   }, [isOwner, owner]);
   useEffect(() => {
     dispatch(enterRoom);
-    socketRef.current = new SockJS(`http://13.209.84.31:8080/signal`);
+    socketRef.current = SockJsRTC;
     socketRef.current.onopen = () => {
       // navigator.mediaDevices
       // .getUserMedia({
