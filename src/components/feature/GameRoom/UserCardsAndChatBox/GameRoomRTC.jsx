@@ -9,13 +9,13 @@ import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
 import { instance } from '../../../../api/core/axios';
-import GameRoomChoice from './GameRoomChoice';
+import MyTurn from './MyTurn';
 import { getNicknameCookie } from '../../../../utils/cookies';
 import ChatBox from './ChatBox';
 import Audio from './Audio';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 import ToastMessage from '../../../common/Toast/ToastMessage';
-import Timer from '../TitleAndTimer/Timer';
+import Timer from '../Timer/Timer';
 import duckImg from '../../../../assets/img/duck.jpg';
 
 let stream;
@@ -459,7 +459,7 @@ function GameRoomRTC() {
 
         <button>설정</button>
       </StGameRoomHeader>
-      <GameRoomChoice props={param} />
+      <MyTurn props={param} />
       <StGameRoomMain>
         <StGameTitleAndUserCards>
           <StTitle>

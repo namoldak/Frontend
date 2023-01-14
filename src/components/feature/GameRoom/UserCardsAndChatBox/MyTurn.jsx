@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
 
-function GameRoomChoice(param) {
+function MyTurn(param) {
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [isMyMic, setIsMyMic] = useState(false);
   const [isModalOn, setIsModalOn] = useState(false);
@@ -21,13 +21,10 @@ function GameRoomChoice(param) {
         modal
       </button>
       {isModalOn && (
-        <GameModal
-          onClose={() => setIsModalOn(false)}
-          content={<GameAnswerModal gameInfo={param} />}
-        />
+        <GameModal content={<GameAnswerModal gameInfo={param} />} />
       )}
     </div>
   );
 }
 
-export default GameRoomChoice;
+export default MyTurn;
