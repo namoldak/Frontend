@@ -1,5 +1,5 @@
 // 외부모듈
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 function Timer({ setIsStartTimer }) {
@@ -7,18 +7,14 @@ function Timer({ setIsStartTimer }) {
 
   useEffect(() => {
     const countdown = setInterval(() => {
-      if (parseInt(seconds, 10) > 0) {
-        setSeconds(parseInt(seconds, 10) - 1);
-      }
-      return () => clearInterval(countdown);
+      setSeconds(parseInt(seconds, 10) - 1);
     }, 1000);
+    if (parseInt(seconds, 10) === 0) {
+      clearInterval(countdown);
+      setIsStartTimer(false);
+    }
+    return () => clearInterval(countdown);
   }, [seconds]);
-
-  const timerOut = setTimeout(() => {
-    setIsStartTimer(false);
-  }, 20000);
-
-  clearTimeout(timerOut);
 
   return (
     <StTimer>

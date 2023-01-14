@@ -15,7 +15,7 @@ import ChatBox from './ChatBox';
 import Audio from './Audio';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 import ToastMessage from '../../../common/Toast/ToastMessage';
-import Timer from '../Timer/Timer';
+import Timer from '../TitleAndTimer/Timer';
 import duckImg from '../../../../assets/img/duck.jpg';
 
 let stream;
