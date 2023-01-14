@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { searchRoom } from '../../../../redux/modules/roomSlice';
-import search from '../../../../assets/img/search.png';
+import search from '../../../../assets/img/search.svg';
 
 function SearchRoom() {
   const dispatch = useDispatch();
@@ -51,6 +51,8 @@ const StSearchRoom = styled.div`
   justify-content: center;
   align-items: center;
   width: 30%;
+  padding: 20px;
+  background-color: ${({ theme }) => theme.colors.lightBrown};
 `;
 
 const SearchInput = styled.input`
