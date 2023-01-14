@@ -9,13 +9,15 @@ import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
 import { instance } from '../../../../api/core/axios';
-import GameRoomChoice from './GameRoomChoice';
+// import MyTurn from './MyTurn';
 import { getNicknameCookie } from '../../../../utils/cookies';
 import ChatBox from './ChatBox';
 import Audio from './Audio';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 import ToastMessage from '../../../common/Toast/ToastMessage';
 import Timer from '../TitleAndTimer/Timer';
+import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
+import GameModal from '../../../common/Modals/InGameModal/GameModal';
 import duckImg from '../../../../assets/img/duck.jpg';
 
 let stream;
@@ -25,6 +27,7 @@ let cameraOff = false;
 let myPeerConnection;
 
 function GameRoomRTC() {
+  // const SockJsRTC = new SockJS('http://13.209.84.31:8080/signal');
   const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
@@ -44,6 +47,7 @@ function GameRoomRTC() {
   const param = useParams();
   const [isStartModalOn, setIsStartModalOn] = useState(false);
   const [isStartTimer, setIsStartTimer] = useState(false);
+  const [isMyTurnModal, setIsMyTurnModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -66,6 +70,7 @@ function GameRoomRTC() {
 
         default: {
           // console.log('default');
+          console.log('6');
           break;
         }
       }
@@ -102,7 +107,7 @@ function GameRoomRTC() {
     });
   }
 
-  function timerStart() {
+  function onClickTimerHandler() {
     setIsStartTimer(true);
   }
 
@@ -245,7 +250,11 @@ function GameRoomRTC() {
   useEffect(() => {
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
     socketRef.current.onopen = async () => {
-      console.log('socket connect');
+      // navigator.mediaDevices
+      // .getUserMedia({
+      //   video: true,
+      //   audio: true,
+      // })
       await getUserMedias()
         .then((streamMedia) => {
           if (videoRef.current) {
@@ -399,20 +408,37 @@ function GameRoomRTC() {
       }
     };
     return async () => {
-      try {
-        await instance.delete(`rooms/${param.roomId}/exit`);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        socketRef.current.close();
+      if (socketRef.current) {
         sessionStorage.clear();
+        await instance
+          .delete(`rooms/${param.roomId}/exit`)
+          .then(async (res) => {
+            console.log('res', res);
+            await navigate('/rooms');
+          })
+          .catch(async (error) => {
+            // alert(error.data.message);
+            await navigate('/rooms');
+          });
+        socketRef.current.close();
       }
     };
   }, []);
 
-  function leaveRoom() {
-    navigate('/rooms');
-  }
+  const leaveRoom = async () => {
+    sessionStorage.clear();
+    await instance
+      .delete(`rooms/${param.roomId}/exit`)
+      .then(async (res) => {
+        console.log('res', res);
+        await navigate('/rooms');
+      })
+      .catch(async (error) => {
+        // alert(error.data.message);
+        await navigate('/rooms');
+      });
+    await socketRef.current.close();
+  };
 
   async function onInputCameraChange() {
     await getUserMedias(camerasSelect.current.value);
@@ -454,7 +480,6 @@ function GameRoomRTC() {
 
         <button>설정</button>
       </StGameRoomHeader>
-      <GameRoomChoice props={param} />
       <StGameRoomMain>
         <StGameTitleAndUserCards>
           <StTitle>
@@ -518,8 +543,26 @@ function GameRoomRTC() {
           </StUserCards>
         </StGameTitleAndUserCards>
         <div>
-          <button onClick={timerStart}>발언권 부여</button>
-          {isStartTimer && <Timer setIsStartTimer={setIsStartTimer} />}
+          <button onClick={onClickTimerHandler}>타이머</button>
+          {isStartTimer && (
+            <Timer
+              setIsStartTimer={setIsStartTimer}
+              setIsMyTurnModal={setIsMyTurnModal}
+            />
+          )}
+          {/* {isMyTurnModal && (
+              <MyTurn props={param} setIsMyTurnModal={setIsMyTurnModal} />
+            )} */}
+          {isMyTurnModal && (
+            <GameModal
+              content={
+                <GameAnswerModal
+                  gameInfo={param}
+                  setIsMyTurnModal={setIsMyTurnModal}
+                />
+              }
+            />
+          )}
         </div>
         <ChatBox />
       </StGameRoomMain>
