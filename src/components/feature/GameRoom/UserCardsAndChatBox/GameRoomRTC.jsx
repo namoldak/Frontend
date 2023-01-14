@@ -98,12 +98,22 @@ function GameRoomRTC() {
 
   /// ////////////////////////////////////////!SECTION
 
-  function gameStart() {
+  async function gameStart() {
     client.current.publish({
       destination: `/sub/gameroom/${param.roomId}`,
       body: JSON.stringify({
         type: 'start',
       }),
+    });
+    const content = '게임시작!';
+    const data = {
+      roomId: param.roomId,
+      senderId: owner,
+      cotent: content,
+      type: 'START',
+    };
+    instance.post(`/pub/game/${param.roomId}/start`, data).then((response) => {
+      console.log('start', response);
     });
   }
 
