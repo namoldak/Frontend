@@ -1,12 +1,14 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import backImg from '../../assets/img/backImg.svg';
+import backImg from '../../../assets/img/backImg.svg';
+import Container from './Container';
 
 function Layout() {
-  <StLayout>
-    <Outlet />
-  </StLayout>;
+  return (
+    <StLayout>
+      <Container />
+    </StLayout>
+  );
 }
 
 const StLayout = styled.div`

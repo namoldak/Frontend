@@ -8,19 +8,22 @@ import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
 import RoomList from '../pages/RoomList';
-import Layout from '../components/common/Layout';
+import Layout from '../components/common/Layout/Layout';
+import RoomListLayout from '../components/common/Layout/RoomListLayout';
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/gameroom/:roomId" element={<GameRoom />} />
-        {/* <Route element={<Layout />}> */}
-        <Route path="/rooms" element={<RoomList />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/" element={<LandingPage />} />
-        {/* </Route> */}
+        <Route element={<RoomListLayout />}>
+          <Route path="/rooms" element={<RoomList />} />
+        </Route>
+        <Route element={<Layout />}>
+          <Route path="/gameroom/:roomId" element={<GameRoom />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/" element={<LandingPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
