@@ -44,6 +44,8 @@ function GameRoomRTC() {
   const camerasSelect = useRef(null);
   const cameraOption = useRef(null);
   const param = useParams();
+  const { roomId } = param;
+  console.log(roomId);
   const [isStartModalOn, setIsStartModalOn] = useState(false);
   const [isStartTimer, setIsStartTimer] = useState(false);
   const [isMyTurnModal, setIsMyTurnModal] = useState(false);
@@ -525,14 +527,11 @@ function GameRoomRTC() {
               setIsMyTurnModal={setIsMyTurnModal}
             />
           )}
-          {/* {isMyTurnModal && (
-            <MyTurn props={param} setIsMyTurnModal={setIsMyTurnModal} />
-          )} */}
           {isMyTurnModal && (
             <GameModal
               content={
                 <GameAnswerModal
-                  gameInfo={param}
+                  roomId={roomId}
                   setIsMyTurnModal={setIsMyTurnModal}
                 />
               }
