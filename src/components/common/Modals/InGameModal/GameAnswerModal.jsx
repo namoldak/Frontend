@@ -1,5 +1,5 @@
 // 외부 모듈
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Button from '../../Button';
 
@@ -7,12 +7,13 @@ import Button from '../../Button';
 import Input from '../../Input';
 import { instance } from '../../../../api/core/axios';
 
-function GameAnswerModal(param) {
+function GameAnswerModal(param, { setIsMyTurnModal }) {
+  console.log(param);
   // eslint-disable-next-line react/destructuring-assignment
-  const gameRoomId = param.gameInfo.props.roomId;
+  const gameRoomId = param.gameInfo.roomId;
   console.log('gameRoomId', gameRoomId);
-
   const [answerValue, setAnswerValue] = useState('');
+  const [seconds, setSeconds] = useState(10);
 
   async function onClickAnswer() {
     const answer = { answer: answerValue };
@@ -30,8 +31,20 @@ function GameAnswerModal(param) {
     }
   }
 
+  useEffect(() => {
+    const countdown = setInterval(() => {
+      setSeconds(parseInt(seconds, 10) - 1);
+    }, 1000);
+    if (parseInt(seconds, 10) === 0) {
+      // setIsMyTurnModal(false);
+    }
+    return () => clearInterval(countdown);
+  }, [seconds]);
+
   return (
     <StModalContainer onKeyUp={onKeyUpEnter}>
+      <StTimeText>제한 시간</StTimeText>
+      <LimitTimer>{seconds} 초</LimitTimer>
       <Input
         placeholder="정답을 입력해주세요."
         value={answerValue}
@@ -51,5 +64,8 @@ const StModalContainer = styled.div`
 
   gap: 10px;
 `;
+
+const StTimeText = styled.div``;
+const LimitTimer = styled.div``;
 
 export default GameAnswerModal;

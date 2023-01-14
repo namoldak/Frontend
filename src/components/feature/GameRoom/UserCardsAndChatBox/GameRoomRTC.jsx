@@ -9,13 +9,15 @@ import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
 import { instance } from '../../../../api/core/axios';
-import MyTurn from './MyTurn';
+// import MyTurn from './MyTurn';
 import { getNicknameCookie } from '../../../../utils/cookies';
 import ChatBox from './ChatBox';
 import Audio from './Audio';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 import ToastMessage from '../../../common/Toast/ToastMessage';
 import Timer from '../TitleAndTimer/Timer';
+import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
+import GameModal from '../../../common/Modals/InGameModal/GameModal';
 import duckImg from '../../../../assets/img/duck.jpg';
 
 let stream;
@@ -26,7 +28,7 @@ let myPeerConnection;
 
 function GameRoomRTC() {
   // const SockJsRTC = new SockJS('http://13.209.84.31:8080/signal');
-  const SockJs = new SockJS('https://namoldak.com/ws-stomp');
+  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   console.log(myNickName);
@@ -45,6 +47,7 @@ function GameRoomRTC() {
   const param = useParams();
   const [isStartModalOn, setIsStartModalOn] = useState(false);
   const [isStartTimer, setIsStartTimer] = useState(false);
+  const [isMyTurnModal, setIsMyTurnModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
 
@@ -59,7 +62,6 @@ function GameRoomRTC() {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
       // console.log('subscribe data', data);
-      console.log('1');
       switch (data.type) {
         case 'start': {
           setIsStartModalOn(true);
@@ -105,7 +107,7 @@ function GameRoomRTC() {
     });
   }
 
-  function timerStart() {
+  function onClickTimerHandler() {
     setIsStartTimer(true);
   }
 
@@ -240,7 +242,7 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+    socketRef.current = new SockJS('https://api.namoldak.com/signal');
     socketRef.current.onopen = async () => {
       // navigator.mediaDevices
       // .getUserMedia({
@@ -459,7 +461,6 @@ function GameRoomRTC() {
 
         <button>설정</button>
       </StGameRoomHeader>
-      <MyTurn props={param} />
       <StGameRoomMain>
         <StGameTitleAndUserCards>
           <StTitle>
@@ -519,8 +520,26 @@ function GameRoomRTC() {
           </StUserCards>
         </StGameTitleAndUserCards>
         <div>
-          <button onClick={timerStart}>발언권 부여</button>
-          {isStartTimer && <Timer setIsStartTimer={setIsStartTimer} />}
+          <button onClick={onClickTimerHandler}>타이머</button>
+          {isStartTimer && (
+            <Timer
+              setIsStartTimer={setIsStartTimer}
+              setIsMyTurnModal={setIsMyTurnModal}
+            />
+          )}
+          {/* {isMyTurnModal && (
+            <MyTurn props={param} setIsMyTurnModal={setIsMyTurnModal} />
+          )} */}
+          {isMyTurnModal && (
+            <GameModal
+              content={
+                <GameAnswerModal
+                  gameInfo={param}
+                  setIsMyTurnModal={setIsMyTurnModal}
+                />
+              }
+            />
+          )}
         </div>
         <ChatBox />
       </StGameRoomMain>
