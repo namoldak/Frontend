@@ -1,29 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-function Audio({ stream }) {
+function Audio({ stream, nickName }) {
   const ref = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
-    console.log(stream.getVideoTracks()[0]);
-    if (ref.current) ref.current.srcObject = stream;
-    console.log(stream.getVideoTracks()[0].enabled);
-    if (stream.getVideoTracks()[0].enabled) {
-      console.log(stream.getVideoTracks()[0].enabled);
-      console.log('true임');
-      ref.current.style.display = 'blokc';
-    } else {
-      console.log(stream.getVideoTracks()[0].enabled);
-      console.log('false임');
-      ref.current.style.display = 'none';
+    if (ref.current) {
+      ref.current.srcObject = stream;
     }
-  }, [stream, stream.getVideoTracks()[0].enabled]);
+  }, [stream]);
 
   return (
     <>
       Card
       <h4>키워드</h4>
-      <span>OOO님</span>
+      <span>{nickName}님</span>
       <div>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <video
