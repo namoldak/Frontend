@@ -93,7 +93,7 @@ export const roomSlice = createSlice({
       state.error = action.payload;
     },
     [enterRoom.fulfilled]: (state, action) => {
-      console.log('dd');
+      console.log(action.payload);
       sessionStorage.setItem('owner', action.payload.data.owner);
       state.rooms = action.payload;
     },

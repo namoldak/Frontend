@@ -111,7 +111,12 @@ function GameRoomRTC() {
     setIsStartTimer(true);
   }
 
-  function createPeerConnection(socketID, socket, peerConnectionLocalStream) {
+  function createPeerConnection(
+    socketID,
+    socket,
+    peerConnectionLocalStream,
+    userNickName,
+  ) {
     const pc = new RTCPeerConnection({
       iceServers: [
         {
@@ -150,6 +155,7 @@ function GameRoomRTC() {
         {
           id: socketID,
           stream: e.streams[0],
+          nickName: userNickName,
         },
       ]);
     };
@@ -265,6 +271,7 @@ function GameRoomRTC() {
         JSON.stringify({
           type: 'join_room',
           roomId: param.roomId,
+          nickname: myNickName,
         }),
       );
     };
@@ -273,11 +280,18 @@ function GameRoomRTC() {
       switch (data.type) {
         case 'all_users': {
           console.log('all_user recieve');
-          console.log(data.allUsers);
           const { allUsers } = data;
+          const { allUsersNickNames } = data;
+          console.log(allUsers);
+          console.log(allUsersNickNames);
           for (let i = 0; i < allUsers.length; i += 1) {
             console.log(stream);
-            createPeerConnection(allUsers[i], socketRef.current, stream);
+            createPeerConnection(
+              allUsers[i],
+              socketRef.current,
+              stream,
+              allUsersNickNames[`${allUsers[i]}`],
+            );
             console.log(pcs);
 
             const allUsersEachPc = pcs[`${allUsers[i]}`];
@@ -296,6 +310,7 @@ function GameRoomRTC() {
                       offer,
                       receiver: allUsers[i],
                       roomId: param.roomId,
+                      nickname: myNickName,
                     }),
                   );
                 })
@@ -308,7 +323,12 @@ function GameRoomRTC() {
         }
         case 'offer': {
           console.log('get offer');
-          createPeerConnection(data.sender, socketRef.current, stream);
+          createPeerConnection(
+            data.sender,
+            socketRef.current,
+            stream,
+            data.senderNickName,
+          );
           const offerPc = pcs[`${data.sender}`];
           if (offerPc) {
             offerPc.setRemoteDescription(data.offer).then(() => {
@@ -357,8 +377,7 @@ function GameRoomRTC() {
         case 'leave': {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
-          delete pcs[data.sender];
-
+          delete pcs[`${data.sender}`];
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
             .then(async (res) => {
@@ -470,7 +489,7 @@ function GameRoomRTC() {
             <StCard>
               Card
               <h4>키워드</h4>
-              <span>OOO님</span>
+              <span>{myNickName}님</span>
               <div>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                 <video
@@ -511,7 +530,11 @@ function GameRoomRTC() {
             {users.map((user) => {
               return (
                 <StCard key={user.id}>
-                  <Audio key={user.id} stream={user.stream}>
+                  <Audio
+                    key={user.id}
+                    stream={user.stream}
+                    nickName={user.nickName}
+                  >
                     <track kind="captions" />
                   </Audio>
                 </StCard>
@@ -528,8 +551,8 @@ function GameRoomRTC() {
             />
           )}
           {/* {isMyTurnModal && (
-            <MyTurn props={param} setIsMyTurnModal={setIsMyTurnModal} />
-          )} */}
+              <MyTurn props={param} setIsMyTurnModal={setIsMyTurnModal} />
+            )} */}
           {isMyTurnModal && (
             <GameModal
               content={
