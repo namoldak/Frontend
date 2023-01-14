@@ -5,9 +5,19 @@ function Audio({ stream }) {
   const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
+    console.log(stream.getVideoTracks()[0]);
     if (ref.current) ref.current.srcObject = stream;
-    // if (muted) setIsMuted(muted);
-  }, [stream]);
+    console.log(stream.getVideoTracks()[0].enabled);
+    if (stream.getVideoTracks()[0].enabled) {
+      console.log(stream.getVideoTracks()[0].enabled);
+      console.log('true임');
+      ref.current.style.display = 'blokc';
+    } else {
+      console.log(stream.getVideoTracks()[0].enabled);
+      console.log('false임');
+      ref.current.style.display = 'none';
+    }
+  }, [stream, stream.getVideoTracks()[0].enabled]);
 
   return (
     <>
