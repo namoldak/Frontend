@@ -92,6 +92,12 @@ function ChatBox() {
     connect();
   }, []);
 
+  function onKeyUpEnter(event) {
+    if (event.key === 'Enter') {
+      publish();
+    }
+  }
+
   return (
     <StChatBox>
       <StNotice>공지내용</StNotice>
@@ -116,6 +122,7 @@ function ChatBox() {
           placeholder="채팅을 입력해주세요."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          onKeyUp={onKeyUpEnter}
         />
         <button onClick={() => publish(message)}>전송</button>
       </StSendChat>
