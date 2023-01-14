@@ -5,7 +5,6 @@ import * as SockJs from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 import { useCookies } from 'react-cookie';
 import { getNicknameCookie } from '../../../../utils/cookies';
-import { instance } from '../../../../api/core/axios';
 
 function ChatBox() {
   const client = useRef({});
@@ -15,7 +14,6 @@ function ChatBox() {
   const [message, setMessage] = useState(''); // input value 값
   const [chatMessages, setChatMessages] = useState([]); // 누적 채팅 메시지들
   const [chatUser, setChatUser] = useState([]); // 누적 유저 이름들
-  // const allMessages = [];
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
@@ -25,29 +23,21 @@ function ChatBox() {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
       // console.log('subscribe data', data);
-      console.log('1');
       switch (data.type) {
         case 'ENTER': {
-          console.log('2');
           // console.log('enter');
           break;
         }
         case 'CHAT': {
           // console.log('chat', data.sender)
-          console.log('3');
           setChatMessages((chatMessages) => [...chatMessages, data]);
-          // setChatMessages([...chatMessages, data.message]);
-          console.log('4');
-          // setChatUser([...chatUser, data.sender]);
           setChatUser((chatUser) => [...chatUser, data.sender]);
-          console.log('5');
-          console.log('chatMessages', chatMessages);
-          console.log('data.message', data.message);
+          // setChatMessages([...chatMessages, data.message]);
+          // setChatUser([...chatUser, data.sender]);
           break;
         }
         default: {
           // console.log('default');
-          console.log('6');
           break;
         }
       }
@@ -56,7 +46,7 @@ function ChatBox() {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      webSocketFactory: () => new SockJs(`https://namoldak.com/ws-stomp`),
+      webSocketFactory: () => new SockJs('https://namoldak.com/ws-stomp'),
       connectHeaders,
       debug() {},
       onConnect: () => {
@@ -99,7 +89,7 @@ function ChatBox() {
   }
 
   useEffect(() => {
-    connect(); // 연결된 경우 렌더링
+    connect();
   }, []);
 
   return (
@@ -159,24 +149,6 @@ const Chat = styled.div`
     color: purple;
     text-align: left;
   }
-`;
-
-// const Chats = styled.div`
-//   color: purple;
-
-//   li {
-//     list-style: none;
-//   }
-// `;
-
-const MyChat = styled.div`
-  text-align: right;
-  color: blue;
-`;
-
-const AnotherChat = styled.div`
-  text-align: left;
-  color: red;
 `;
 
 export default ChatBox;
