@@ -9,7 +9,6 @@ import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
 import { instance } from '../../../../api/core/axios';
-// import MyTurn from './MyTurn';
 import { getNicknameCookie } from '../../../../utils/cookies';
 import ChatBox from './ChatBox';
 import Audio from './Audio';
@@ -70,7 +69,6 @@ function GameRoomRTC() {
 
         default: {
           // console.log('default');
-          console.log('6');
           break;
         }
       }
