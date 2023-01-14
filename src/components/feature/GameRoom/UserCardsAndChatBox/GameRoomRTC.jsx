@@ -25,8 +25,7 @@ let cameraOff = false;
 let myPeerConnection;
 
 function GameRoomRTC() {
-  // const SockJsRTC = new SockJS('http://13.209.84.31:8080/signal');
-  const SockJs = new SockJS('https://namoldak.com/ws-stomp');
+  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   console.log(myNickName);
@@ -59,7 +58,6 @@ function GameRoomRTC() {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
       // console.log('subscribe data', data);
-      console.log('1');
       switch (data.type) {
         case 'start': {
           setIsStartModalOn(true);
@@ -68,7 +66,6 @@ function GameRoomRTC() {
 
         default: {
           // console.log('default');
-          console.log('6');
           break;
         }
       }
@@ -109,7 +106,12 @@ function GameRoomRTC() {
     setIsStartTimer(true);
   }
 
-  function createPeerConnection(socketID, socket, peerConnectionLocalStream) {
+  function createPeerConnection(
+    socketID,
+    socket,
+    peerConnectionLocalStream,
+    userNickName,
+  ) {
     const pc = new RTCPeerConnection({
       iceServers: [
         {
@@ -148,6 +150,7 @@ function GameRoomRTC() {
         {
           id: socketID,
           stream: e.streams[0],
+          nickName: userNickName,
         },
       ]);
     };
@@ -240,13 +243,9 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+    socketRef.current = new SockJS('https://api.namoldak.com/signal');
     socketRef.current.onopen = async () => {
-      // navigator.mediaDevices
-      // .getUserMedia({
-      //   video: true,
-      //   audio: true,
-      // })
+      console.log('socket connect');
       await getUserMedias()
         .then((streamMedia) => {
           if (videoRef.current) {
@@ -263,6 +262,7 @@ function GameRoomRTC() {
         JSON.stringify({
           type: 'join_room',
           roomId: param.roomId,
+          nickname: myNickName,
         }),
       );
     };
@@ -271,11 +271,18 @@ function GameRoomRTC() {
       switch (data.type) {
         case 'all_users': {
           console.log('all_user recieve');
-          console.log(data.allUsers);
           const { allUsers } = data;
+          const { allUsersNickNames } = data;
+          console.log(allUsers);
+          console.log(allUsersNickNames);
           for (let i = 0; i < allUsers.length; i += 1) {
             console.log(stream);
-            createPeerConnection(allUsers[i], socketRef.current, stream);
+            createPeerConnection(
+              allUsers[i],
+              socketRef.current,
+              stream,
+              allUsersNickNames[`${allUsers[i]}`],
+            );
             console.log(pcs);
 
             const allUsersEachPc = pcs[`${allUsers[i]}`];
@@ -294,6 +301,7 @@ function GameRoomRTC() {
                       offer,
                       receiver: allUsers[i],
                       roomId: param.roomId,
+                      nickname: myNickName,
                     }),
                   );
                 })
@@ -306,7 +314,12 @@ function GameRoomRTC() {
         }
         case 'offer': {
           console.log('get offer');
-          createPeerConnection(data.sender, socketRef.current, stream);
+          createPeerConnection(
+            data.sender,
+            socketRef.current,
+            stream,
+            data.senderNickName,
+          );
           const offerPc = pcs[`${data.sender}`];
           if (offerPc) {
             offerPc.setRemoteDescription(data.offer).then(() => {
@@ -355,8 +368,7 @@ function GameRoomRTC() {
         case 'leave': {
           console.log('delete', data.sender);
           pcs[`${data.sender}`].close();
-          delete pcs[data.sender];
-
+          delete pcs[`${data.sender}`];
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
             .then(async (res) => {
@@ -387,37 +399,20 @@ function GameRoomRTC() {
       }
     };
     return async () => {
-      if (socketRef.current) {
-        sessionStorage.clear();
-        await instance
-          .delete(`rooms/${param.roomId}/exit`)
-          .then(async (res) => {
-            console.log('res', res);
-            await navigate('/rooms');
-          })
-          .catch(async (error) => {
-            // alert(error.data.message);
-            await navigate('/rooms');
-          });
+      try {
+        await instance.delete(`rooms/${param.roomId}/exit`);
+      } catch (e) {
+        console.log(e);
+      } finally {
         socketRef.current.close();
+        sessionStorage.clear();
       }
     };
   }, []);
 
-  const leaveRoom = async () => {
-    sessionStorage.clear();
-    await instance
-      .delete(`rooms/${param.roomId}/exit`)
-      .then(async (res) => {
-        console.log('res', res);
-        await navigate('/rooms');
-      })
-      .catch(async (error) => {
-        // alert(error.data.message);
-        await navigate('/rooms');
-      });
-    await socketRef.current.close();
-  };
+  function leaveRoom() {
+    navigate('/rooms');
+  }
 
   async function onInputCameraChange() {
     await getUserMedias(camerasSelect.current.value);
@@ -469,7 +464,7 @@ function GameRoomRTC() {
             <StCard>
               Card
               <h4>키워드</h4>
-              <span>OOO님</span>
+              <span>{myNickName}님</span>
               <div>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                 <video
@@ -510,7 +505,11 @@ function GameRoomRTC() {
             {users.map((user) => {
               return (
                 <StCard key={user.id}>
-                  <Audio key={user.id} stream={user.stream}>
+                  <Audio
+                    key={user.id}
+                    stream={user.stream}
+                    nickName={user.nickName}
+                  >
                     <track kind="captions" />
                   </Audio>
                 </StCard>
