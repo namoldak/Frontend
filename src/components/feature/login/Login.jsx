@@ -65,11 +65,11 @@ function Login() {
   }, [code]);
 
   return (
-    <StTopContainer>
-      <StElementBox>
-        <form onSubmit={handleSubmit(onClickLogin)}>
-          <h1>NaMan-MoRunDark</h1>
-          <h3>Login</h3>
+    <StLogin>
+      <form onSubmit={handleSubmit(onClickLogin)}>
+        <StLoginContainer>
+          <Title>NaMolDark</Title>
+          <SubTitle>Login</SubTitle>
           <StInputBox>
             <Input
               placeholder="이메일을 입력해주세요"
@@ -90,28 +90,33 @@ function Login() {
               <Button>회원가입 하기</Button>
             </Link>
           </StBtnBox>
-        </form>
-      </StElementBox>
-    </StTopContainer>
+        </StLoginContainer>
+      </form>
+    </StLogin>
   );
 }
 
-const StTopContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  margin: 100px auto;
-  padding: 30px;
-
-  border: 1px solid gray;
-  max-width: 500px;
+const StLogin = styled.div`
+  ${({ theme }) => theme.common.flexCenterColumn};
+  width: 100%;
+  height: 60%;
+  margin: 20vh auto;
+  border: 1px solid black;
 `;
 
-const StElementBox = styled.div`
-  border: 1px solid rgb(195, 195, 195);
-  padding: 30px;
+const StLoginContainer = styled.div`
+  ${({ theme }) => theme.common.flexCenterColumn};
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+`;
+
+const Title = styled.div`
+  font-size: ${({ theme }) => theme.fontSizes.title};
+`;
+
+const SubTitle = styled.div`
+  font-size: ${({ theme }) => theme.fontSizes.subTitle};
 `;
 
 const StInputBox = styled.div`
@@ -120,8 +125,7 @@ const StInputBox = styled.div`
 
   border: 1px solid rgb(157, 145, 145);
   padding: 30px;
-
-  gap: 20px;
+  width: 100%;
 `;
 
 const Input = styled.input`
@@ -138,7 +142,7 @@ const Button = styled.button`
 `;
 
 const HelpText = styled.p`
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 18px;
   text-align: left;
