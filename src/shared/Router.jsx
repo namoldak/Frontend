@@ -8,16 +8,19 @@ import LandingPage from '../pages/LandingPage';
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
 import RoomList from '../pages/RoomList';
+import Layout from '../components/common/Layout';
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/gameroom/:roomId" element={<GameRoom />} />
+        {/* <Route element={<Layout />}> */}
         <Route path="/rooms" element={<RoomList />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/" element={<LandingPage />} />
+        {/* </Route> */}
       </Routes>
     </BrowserRouter>
   );
