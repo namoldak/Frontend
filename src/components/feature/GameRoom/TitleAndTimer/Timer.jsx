@@ -1,8 +1,8 @@
 // 외부모듈
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function Timer({ setIsStartTimer }) {
+function Timer({ setIsStartTimer, setIsMyTurnModal }) {
   const [seconds, setSeconds] = useState(20);
 
   useEffect(() => {
@@ -10,8 +10,8 @@ function Timer({ setIsStartTimer }) {
       setSeconds(parseInt(seconds, 10) - 1);
     }, 1000);
     if (parseInt(seconds, 10) === 0) {
-      clearInterval(countdown);
       setIsStartTimer(false);
+      setIsMyTurnModal(true);
     }
     return () => clearInterval(countdown);
   }, [seconds]);
