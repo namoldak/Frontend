@@ -7,48 +7,48 @@ import Button from '../../Button';
 import Input from '../../Input';
 import { instance } from '../../../../api/core/axios';
 
-function GameAnswerModal(param, { setIsMyTurnModal }) {
-  console.log(param);
-  // eslint-disable-next-line react/destructuring-assignment
-  const gameRoomId = param.gameInfo.roomId;
-  console.log('gameRoomId', gameRoomId);
+function GameAnswerModal({ roomId, setIsMyTurnModal }) {
   const [answerValue, setAnswerValue] = useState('');
   const [seconds, setSeconds] = useState(10);
 
+  function onInputHandler(event) {
+    setAnswerValue(event.target.value);
+  }
+
   async function onClickAnswer() {
-    const answer = { answer: answerValue };
-    console.log('answer', answer);
-    await instance.post(`/pub/game/${gameRoomId}/answer`, answer);
+    const answer = answerValue;
+    await instance.post(`/pub/game/${roomId}/answer`, answer);
   }
 
   async function onClickSkip() {
-    await instance.post(`/pub/game/${gameRoomId}/skip`);
+    await instance.post(`/pub/game/${roomId}/skip`);
   }
 
-  function onKeyUpEnter(event) {
-    if (event.keyCode === 13) {
-      onClickAnswer();
-    }
-  }
+  // function onKeyUpEnter(event) {
+  //   if (event.keyCode === 13) {
+  //     onClickAnswer();
+  //   }
+  // }
 
   useEffect(() => {
     const countdown = setInterval(() => {
       setSeconds(parseInt(seconds, 10) - 1);
     }, 1000);
     if (parseInt(seconds, 10) === 0) {
-      // setIsMyTurnModal(false);
+      setIsMyTurnModal(false);
     }
     return () => clearInterval(countdown);
   }, [seconds]);
 
   return (
-    <StModalContainer onKeyUp={onKeyUpEnter}>
+    // <StModalContainer onKeyUp={onKeyUpEnter}>
+    <StModalContainer>
       <StTimeText>제한 시간</StTimeText>
       <LimitTimer>{seconds} 초</LimitTimer>
       <Input
         placeholder="정답을 입력해주세요."
         value={answerValue}
-        onChange={(e) => setAnswerValue(e.target.value)}
+        onChange={onInputHandler}
       />
       <Button onClick={onClickSkip}>SKIP</Button>
       <Button onClick={onClickAnswer}>ANSWER</Button>
