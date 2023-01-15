@@ -52,6 +52,9 @@ function GameRoomRTC() {
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
 
+  const [keyword, setKeyword] = useState('');
+  const [category, setCategory] = useState('');
+
   /// ////////////////////////////////////////!SECTION
   const client = useRef({});
   const [cookie] = useCookies();
@@ -62,10 +65,13 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      // console.log('subscribe data', data);
+      console.log('subscribe data', data);
       switch (data.type) {
         case 'start': {
           setIsStartModalOn(true);
+          setCategory(data.category);
+          setKeyword(data.keyword);
+          console.log(data);
           break;
         }
 
@@ -98,22 +104,22 @@ function GameRoomRTC() {
 
   /// ////////////////////////////////////////!SECTION
 
-  async function gameStart() {
+  function gameStart() {
     client.current.publish({
       destination: `/sub/gameroom/${param.roomId}`,
       body: JSON.stringify({
         type: 'start',
       }),
     });
-    const content = '게임시작!';
-    const data = {
-      roomId: param.roomId,
-      senderId: owner,
-      cotent: content,
-      type: 'START',
-    };
-    instance.post(`/pub/game/${param.roomId}/start`, data).then((response) => {
-      console.log('start', response);
+
+    client.current.publish({
+      destination: `/pub/game/${param.roomId}/start`,
+      body: JSON.stringify({
+        roomId: param.roomId,
+        // sender: myNickName,
+        // content: '게임 시작!',
+        // type: 'START',
+      }),
     });
   }
 
@@ -407,9 +413,6 @@ function GameRoomRTC() {
           break;
         }
         case 'game_start': {
-          console.log('게임.');
-
-          gameStart();
           break;
         }
         default: {
@@ -493,12 +496,12 @@ function GameRoomRTC() {
       <StGameRoomMain>
         <StGameTitleAndUserCards>
           <StTitle>
-            <h1>주제</h1>
+            <h1>{category}</h1>
           </StTitle>
           <StUserCards>
             <StCard>
               Card
-              <h4>키워드</h4>
+              <h4>{keyword}</h4>
               <span>{myNickName}님</span>
               <div>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
