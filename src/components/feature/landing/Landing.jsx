@@ -12,6 +12,8 @@ import {
   removeCookie,
 } from '../../../utils/cookies';
 import MySetting from './MySetting';
+import banner from '../../../assets/img/Group 3766.svg';
+import chicken from '../../../assets/img/chickenFront.svg';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,7 +35,7 @@ function Landing() {
   }
 
   return (
-    <StTopContainer>
+    <StLanding>
       <StHeader>
         {isLoggedIn ? (
           <div>
@@ -50,6 +52,13 @@ function Landing() {
           </div>
         )}
       </StHeader>
+      {/* 테스트 이미지 */}
+      <Banner>
+        <img src={banner} alt="banner_img" />
+        <Charactar>
+          <img src={chicken} alt="chicken_character" className="chicken" />
+        </Charactar>
+      </Banner>
       <StRuleBox>
         <h3>나만 모른 닭 Game Rule:</h3>
         <StRuleText>
@@ -59,57 +68,34 @@ function Landing() {
       <Link to="/rooms">
         <Button>게임하러 가기</Button>
       </Link>
-    </StTopContainer>
+    </StLanding>
   );
 }
 
-const StTopContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  height: 100%;
-  width: 95%;
-
-  margin: auto;
-
-  padding: 30px;
-
-  border: 1px solid gray;
+const StLanding = styled.div`
+  ${({ theme }) => theme.common.flexCenterColumn}
+  margin: 25vh; // 임시
 `;
 
-const StHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: left;
-
-  border: 1px solid rgb(157, 145, 145);
-  padding: 30px;
-
-  gap: 20px;
+const Banner = styled.div`
+  position: relative;
 `;
 
-const StRuleBox = styled.div`
-  width: fit-content;
-  height: fit-content;
-  margin-left: auto;
-  border: 1px solid rgb(111, 92, 92);
-  padding: 30px;
+const Charactar = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 36%;
+  width: 360px;
 
-  gap: 20px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
-const StRuleText = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-  height: fit-content;
-  white-space: pre-wrap;
+const StHeader = styled.div``;
 
-  text-align: left;
-  line-height: 2rem;
+const StRuleBox = styled.div``;
 
-  border: 1px solid rgb(111, 92, 92);
-
-  gap: 10px;
-`;
+const StRuleText = styled.div``;
 export default Landing;

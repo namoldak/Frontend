@@ -40,9 +40,7 @@ const schema = yup.object().shape({
 });
 
 function Signup() {
-  // 회원가입 후 로그인 페이지로
   const navigate = useNavigate();
-  // 닉네임 중목 true/false
   const [nickValid, setNickValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
 
@@ -123,11 +121,11 @@ function Signup() {
   }, [emailValid]);
 
   return (
-    <StTopContainer>
-      <StElementBox>
-        <form onSubmit={handleSubmit(onClickSignup)}>
-          <h1>NaMan-MoRunDark</h1>
-          <h3>Sign Up</h3>
+    <StSignUp>
+      <form onSubmit={handleSubmit(onClickSignup)}>
+        <StSignUpContainer>
+          <Title>NaMan-MoRunDark</Title>
+          <SubTitle>Sign Up</SubTitle>
           <StInputCon>
             {/* 닉네임 유효성 검사 */}
             <InputBox>
@@ -184,26 +182,33 @@ function Signup() {
               <Button>로그인하러 가기</Button>
             </Link>
           </StBtnBox>
-        </form>
-      </StElementBox>
-    </StTopContainer>
+        </StSignUpContainer>
+      </form>
+    </StSignUp>
   );
 }
 
-const StTopContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 100px auto;
-  padding: 30px;
-  border: 1px solid gray;
-  max-width: 500px;
+const StSignUp = styled.div`
+  ${({ theme }) => theme.common.flexCenterColumn};
+  width: 100%;
+  height: 60%;
+  margin: 20vh auto;
+  border: 1px solid black;
 `;
 
-const StElementBox = styled.div`
-  border: 1px solid rgb(195, 195, 195);
-  padding: 30px;
+const StSignUpContainer = styled.div`
+  ${({ theme }) => theme.common.flexCenterColumn};
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+`;
+
+const Title = styled.div`
+  font-size: ${({ theme }) => theme.fontSizes.title};
+`;
+
+const SubTitle = styled.div`
+  font-size: ${({ theme }) => theme.fontSizes.subTitle};
 `;
 
 const StInputCon = styled.div`

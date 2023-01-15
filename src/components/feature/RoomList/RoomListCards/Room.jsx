@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
-import test from '../../../../assets/img/test.png';
+import egg from '../../../../assets/img/egg.svg';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 
 function Room({ roomInfo }) {
@@ -33,7 +33,7 @@ function Room({ roomInfo }) {
             clickRoom(roomInfo);
           }}
         >
-          <img src={test} alt="test" />
+          <img src={egg} alt="egg_image" />
         </ImageBox>
         <div>{roomInfo.member.length}/4</div>
       </div>
