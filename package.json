@@ -27,6 +27,7 @@
     "redux": "^4.2.0",
     "sockjs-client": "^1.6.1",
     "styled-components": "^5.3.6",
+    "styled-reset": "^4.4.5",
     "use-search-params": "^1.0.4",
     "web-vitals": "^2.1.0",
     "webrtc-adapter": "^8.2.0",
