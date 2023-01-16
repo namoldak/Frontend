@@ -1,5 +1,5 @@
 // 외부 모듈
-import React, { useEffect } from 'react';
+import React, { useEffect, forwardRef, useRef } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -16,8 +16,11 @@ import loginTitleBtn from '../../../assets/images/loginTitleBtn.svg';
 import loginBtn from '../../../assets/images/loginBtn.svg';
 
 const schema = yup.object().shape({
-  email: yup.string().email('올바른 이메일을 입력해주세요.').required(''),
-  password: yup.string().required('비밀번호를 입력해주세요.'),
+  email: yup
+    .string()
+    .email('올바른 이메일을 입력해주세요.')
+    .required('올바른 이메일을 입력해주세요.'),
+  password: yup.string().required('올바른 비밀번호를 입력해주세요'),
 });
 
 function Login() {
@@ -75,26 +78,29 @@ function Login() {
           <img src={loginTitleBtn} alt="title_image" />
         </StTitle>
         <StInputBox>
-          <Input
+          <input
+            name="email"
             placeholder="이메일을 입력해주세요"
+            // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('email', { required: true })}
           />
           <StHelpText>{errors.email?.message}</StHelpText>
-          <Input
+          <input
+            name="password"
             type="password"
             placeholder="비밀번호를 입력해주세요."
+            // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('password', { required: true })}
           />
           <StHelpText>{errors.password?.message}</StHelpText>
         </StInputBox>
         <StBtnBox>
-          <StLoginBtn>
+          <StLoginBtn type="submit">
             <img src={loginBtn} alt="login_image" />
           </StLoginBtn>
-          {/* <input type="submit" value="로그인" /> */}
           <KaKaoBtn />
           <Link to="/signup">
-            <Button>회원가입 하기</Button>
+            <button>회원가입 하기</button>
           </Link>
         </StBtnBox>
       </StLoginContainer>
