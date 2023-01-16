@@ -22,7 +22,7 @@ function ChatBox() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      // console.log('subscribe data', data);
+      console.log('subscribe data', data);
       switch (data.type) {
         case 'ENTER': {
           // console.log('enter');

@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { readAllRooms } from '../../../../redux/modules/roomSlice';
-import leftArrow from '../../../../assets/img/leftArrow.svg';
-import rightArrow from '../../../../assets/img/rightArrow.svg';
+import leftArrow from '../../../../assets/images/leftArrow.svg';
+import rightArrow from '../../../../assets/images/rightArrow.svg';
 import Room from './Room';
 
 function RoomListCard() {
