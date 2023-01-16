@@ -3,9 +3,12 @@ import styled from 'styled-components';
 
 import duckImg from '../../../../assets/img/duck.jpg';
 
-function Audio({ stream, nickName, isCameraOn }) {
+
+function Audio({ stream, nickName, isCameraOn, keyword }) {
   const videoRef = useRef(null);
   const userCardImgRef = useRef(null);
+  const [userkeyword, setUserKeyword] = useState('키워드');
+  const [userList, setUserList] = useState('');
 
   function cameraOnHandler() {
     if (isCameraOn === true) {
@@ -24,12 +27,14 @@ function Audio({ stream, nickName, isCameraOn }) {
     if (videoRef.current) {
       videoRef.current.srcObject = stream;
     }
-  }, [stream]);
+
+    setUserKeyword(keyword[`${nickName}`]);
+  }, [stream, keyword]);
 
   return (
     <>
       Card
-      <h4>키워드</h4>
+      <h4>{userkeyword}</h4>
       <span>{nickName}님</span>
       <div>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}

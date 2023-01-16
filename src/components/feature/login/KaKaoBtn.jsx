@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 // 내부 이미지
-import kakao from '../../../assets/img/kakaoLoginLarge.png';
+import kakao from '../../../assets/images/kakaoLoginLarge.png';
 
 function KaKaoBtn() {
   return (

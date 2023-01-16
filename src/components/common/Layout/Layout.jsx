@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import backImg from '../../../assets/img/backImg.svg';
+import backImg from '../../../assets/images/backImg.svg';
 import Container from './Container';
 
 function Layout() {

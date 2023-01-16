@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import Input from '../../Input';
-import { removeCookie } from '../../../../utils/cookies';
+import { getNicknameCookie, removeCookie } from '../../../../utils/cookies';
 import { instance } from '../../../../api/core/axios';
 
 function MyPageModal() {
@@ -12,6 +12,10 @@ function MyPageModal() {
   const [passMsg, setPassMsg] = useState('');
 
   async function onClickDeleteAccount() {
+    const nickname = getNicknameCookie('nickname');
+    // if (typeof nickname === 'object') {
+
+    // } else {
     instance
       .delete(`/auth/deleteMember`, { data: { password } })
       .then((response) => {
