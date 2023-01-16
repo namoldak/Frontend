@@ -75,9 +75,10 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      console.log('데이터수신');
+      console.log(data);
       switch (data.type) {
         case 'START': {
+          console.log('2');
           // type은 대문자로 적기
           setIsStartModalOn(true);
           setCategory(data.content.category);
@@ -86,10 +87,23 @@ function GameRoomRTC() {
           break;
         }
         case 'SPOTLIGHT': {
+          console.log('5');
           console.log('spotlight', data);
           if (myNickName === data.sender) {
             setIsStartTimer(true);
           }
+          break;
+        }
+        case 'FAIL': {
+          console.log('FAIL 수신');
+          if (myNickName === data.nickname) {
+            // eslint-disable-next-line no-use-before-define
+            sendSpotlight();
+          }
+          break;
+        }
+        case 'SUCCESS': {
+          console.log('끝');
           break;
         }
         case 'CAMERAON': {
@@ -150,7 +164,17 @@ function GameRoomRTC() {
 
   /// ////////////////////////////////////////!SECTION
 
+  function sendAnswer(answerValue, nickName) {
+    client.current.publish({
+      destination: `/pub/game/${param.roomId}/answer`,
+      body: JSON.stringify({
+        answer: answerValue,
+        nickname: nickName,
+      }),
+    });
+  }
   function sendSpotlight() {
+    console.log('4');
     console.log('sendspot');
     client.current.publish({
       destination: `/pub/game/${param.roomId}/spotlight`,
@@ -161,6 +185,7 @@ function GameRoomRTC() {
   }
 
   async function gameStart() {
+    console.log('1');
     await client.current.publish({
       destination: `/pub/game/${param.roomId}/start`,
       // 서버쪽에선 pub 없다고함. pub은 프론트만 붙이고
@@ -169,7 +194,12 @@ function GameRoomRTC() {
         // 룸아이디는 무조건 바디에 보내기 간롤ㅈㄷㄱㄱ
       }),
     });
-    sendSpotlight();
+    // eslint-disable-next-line func-names
+    setTimeout(function () {
+      sendSpotlight();
+    }, 5000);
+    console.log('3');
+
     // client.current.publish({
     //   destination: `/pub/game/${param.roomId}/spotlight`,
     //   body: JSON.stringify({
@@ -486,9 +516,6 @@ function GameRoomRTC() {
 
           break;
         }
-        case 'game_start': {
-          break;
-        }
         default: {
           break;
         }
@@ -552,6 +579,7 @@ function GameRoomRTC() {
         )}
 
         <button>설정</button>
+        <button onClick={sendSpotlight}>스팟보내기</button>
       </StGameRoomHeader>
       <StGameRoomMain>
         <StGameTitleAndUserCards>
@@ -631,6 +659,8 @@ function GameRoomRTC() {
                 <GameAnswerModal
                   roomId={roomId}
                   setIsMyTurnModal={setIsMyTurnModal}
+                  sendAnswer={sendAnswer}
+                  nickName={myNickName}
                 />
               }
             />
