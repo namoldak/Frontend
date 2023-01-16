@@ -9,7 +9,7 @@ import * as StompJs from '@stomp/stompjs';
 // 내부모듈
 import { instance } from '../../../../api/core/axios';
 import { getNicknameCookie } from '../../../../utils/cookies';
-import GameRoomChoice from './GameRoomChoice';
+import GameRoomChoice from './GameRoomChoice;';
 import ChatBox from './ChatBox';
 
 function GameRoomAll() {

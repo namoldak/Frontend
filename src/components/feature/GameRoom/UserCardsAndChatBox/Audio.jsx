@@ -1,12 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 
-function Audio({ stream, nickName }) {
-  const ref = useRef(null);
-  const [isMuted, setIsMuted] = useState(false);
+import duckImg from '../../../../assets/img/duck.jpg';
+
+function Audio({ stream, nickName, isCameraOn }) {
+  const videoRef = useRef(null);
+  const userCardImgRef = useRef(null);
+
+  function cameraOnHandler() {
+    if (isCameraOn === true) {
+      videoRef.current.style.display = 'block';
+      userCardImgRef.current.style.display = 'none';
+    } else {
+      videoRef.current.style.display = 'none';
+      userCardImgRef.current.style.display = 'block';
+    }
+  }
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.srcObject = stream;
+    cameraOnHandler();
+  }, [isCameraOn]);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.srcObject = stream;
     }
   }, [stream]);
 
@@ -18,7 +34,7 @@ function Audio({ stream, nickName }) {
       <div>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <video
-          ref={ref}
+          ref={videoRef}
           id="myFace"
           autoPlay
           playsInline
@@ -27,9 +43,18 @@ function Audio({ stream, nickName }) {
         >
           비디오
         </video>
+        <Stimg
+          ref={userCardImgRef}
+          src={duckImg}
+          alt=""
+          width={200}
+          height={200}
+        />
       </div>
     </>
   );
 }
 
 export default Audio;
+
+const Stimg = styled.img``;
