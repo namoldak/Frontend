@@ -17,7 +17,7 @@ import ToastMessage from '../../../common/Toast/ToastMessage';
 import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
-import duckImg from '../../../../assets/img/duck.jpg';
+import duckImg from '../../../../assets/images/duck.jpg';
 
 let stream;
 let pcs = {};
@@ -60,11 +60,11 @@ function GameRoomRTC() {
     'Refresh-Token': cookie.refresh_token,
   };
   const subscribe = async () => {
-    client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
+    client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      // console.log('subscribe data', data);
+      console.log('subscribe data', data);
       switch (data.type) {
-        case 'start': {
+        case 'START': {
           setIsStartModalOn(true);
           break;
         }

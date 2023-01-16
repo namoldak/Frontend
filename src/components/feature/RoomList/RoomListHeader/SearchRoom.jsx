@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { searchRoom } from '../../../../redux/modules/roomSlice';
-import search from '../../../../assets/img/search.svg';
+import search from '../../../../assets/images/search.svg';
 
 function SearchRoom() {
   const dispatch = useDispatch();
