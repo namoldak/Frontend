@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function Timer({ setIsStartTimer }) {
+function Timer({ setIsStartTimer, setIsMyTurnModal }) {
   const [seconds, setSeconds] = useState(20);
 
   useEffect(() => {
@@ -11,6 +11,7 @@ function Timer({ setIsStartTimer }) {
     }, 1000);
     if (parseInt(seconds, 10) === 0) {
       setIsStartTimer(false);
+      setIsMyTurnModal(true);
     }
     return () => clearInterval(countdown);
   }, [seconds]);

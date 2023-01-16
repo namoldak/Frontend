@@ -20,7 +20,6 @@ function CreateRoomModal() {
       alert('제목을 입력해주세요');
     } else {
       dispatch(createRoom(newRoom));
-      setGameRoomName('');
     }
   }
 

@@ -28,7 +28,9 @@ const StButton = styled.button`
   font-size: 14px;
 
   transition-duration: 0.1s;
-
+  .img {
+    width: 100%;
+  }
   &:active {
     box-shadow: 0 1px rgba(200, 200, 200, 0.2);
     top: 2px;
