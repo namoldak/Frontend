@@ -10,7 +10,6 @@ import { setCookie, setNicknameCookie } from '../../../utils/cookies';
 // 내부 모듈
 import authAPI from '../../../api/authAsync';
 import KaKaoBtn from './KaKaoBtn';
-import Input from '../../common/Input';
 import popUp from '../../../assets/images/popUp.svg';
 import loginTitleBtn from '../../../assets/images/loginTitleBtn.svg';
 import loginBtn from '../../../assets/images/loginBtn.svg';
@@ -127,12 +126,14 @@ const StTitle = styled.div`
 const StInputBox = styled.div`
   /* display: flex;
   flex-direction: column;
-
   border: 1px solid rgb(157, 145, 145);
   padding: 30px;
   width: 100%; */
 `;
-
+const Input = styled.input`
+  width: 20rem;
+  height: 30px;
+`;
 const Button = styled.button`
   /* width: 100%;
   text-align: center;
@@ -150,10 +151,8 @@ const StHelpText = styled.p`
 const StBtnBox = styled.div`
   /* display: flex;
   flex-direction: column;
-
   border: 1px solid rgb(111, 92, 92);
   padding: 30px;
-
   gap: 20px; */
 `;
 
