@@ -18,7 +18,7 @@ import SpotTimer from '../TitleAndTimer/SpotTimer';
 import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
-import duckImg from '../../../../assets/img/duck.jpg';
+import duckImg from '../../../../assets/images/duck.jpg';
 
 let stream;
 let pcs = {};

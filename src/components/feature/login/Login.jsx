@@ -5,12 +5,15 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-// import Cookies from 'universal-cookie';
 import { setCookie, setNicknameCookie } from '../../../utils/cookies';
 
 // 내부 모듈
 import authAPI from '../../../api/authAsync';
 import KaKaoBtn from './KaKaoBtn';
+import Input from '../../common/Input';
+import popUp from '../../../assets/images/popUp.svg';
+import loginTitleBtn from '../../../assets/images/loginTitleBtn.svg';
+import loginBtn from '../../../assets/images/loginBtn.svg';
 
 const schema = yup.object().shape({
   email: yup.string().email('올바른 이메일을 입력해주세요.').required(''),
@@ -66,97 +69,97 @@ function Login() {
 
   return (
     <StLogin>
-      <form onSubmit={handleSubmit(onClickLogin)}>
-        <StLoginContainer>
-          <Title>NaMolDark</Title>
-          <SubTitle>Login</SubTitle>
-          <StInputBox>
-            <Input
-              placeholder="이메일을 입력해주세요"
-              {...register('email', { required: true })}
-            />
-            <HelpText>{errors.email?.message}</HelpText>
-            <Input
-              type="password"
-              placeholder="비밀번호를 입력해주세요."
-              {...register('password', { required: true })}
-            />
-            <HelpText>{errors.password?.message}</HelpText>
-          </StInputBox>
-          <StBtnBox>
-            <input type="submit" value="로그인" />
-            <KaKaoBtn />
-            <Link to="/signup">
-              <Button>회원가입 하기</Button>
-            </Link>
-          </StBtnBox>
-        </StLoginContainer>
-      </form>
+      {/* <form onSubmit={handleSubmit(onClickLogin)}> */}
+      <StLoginContainer onSubmit={handleSubmit(onClickLogin)}>
+        <StTitle>
+          <img src={loginTitleBtn} alt="title_image" />
+        </StTitle>
+        <StInputBox>
+          <Input
+            placeholder="이메일을 입력해주세요"
+            {...register('email', { required: true })}
+          />
+          <StHelpText>{errors.email?.message}</StHelpText>
+          <Input
+            type="password"
+            placeholder="비밀번호를 입력해주세요."
+            {...register('password', { required: true })}
+          />
+          <StHelpText>{errors.password?.message}</StHelpText>
+        </StInputBox>
+        <StBtnBox>
+          <StLoginBtn>
+            <img src={loginBtn} alt="login_image" />
+          </StLoginBtn>
+          {/* <input type="submit" value="로그인" /> */}
+          <KaKaoBtn />
+          <Link to="/signup">
+            <Button>회원가입 하기</Button>
+          </Link>
+        </StBtnBox>
+      </StLoginContainer>
+      {/* </form> */}
     </StLogin>
   );
 }
 
 const StLogin = styled.div`
-  ${({ theme }) => theme.common.flexCenterColumn};
-  width: 100%;
-  height: 60%;
-  margin: 20vh auto;
-  border: 1px solid black;
+  ${({ theme }) => theme.common.absoluteCenter}
+  width: 942px;
+  height: 700px;
+  background-image: url(${popUp});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
-const StLoginContainer = styled.div`
+const StLoginContainer = styled.form`
   ${({ theme }) => theme.common.flexCenterColumn};
-  width: 100%;
   height: 100%;
+  text-align: center;
   border: 1px solid black;
 `;
 
-const Title = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.title};
-`;
-
-const SubTitle = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.subTitle};
+const StTitle = styled.div`
+  width: 284px;
+  height: 88px;
 `;
 
 const StInputBox = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
 
   border: 1px solid rgb(157, 145, 145);
   padding: 30px;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 20px;
+  width: 100%; */
 `;
 
 const Button = styled.button`
-  width: 100%;
-  cursor: default;
+  /* width: 100%;
   text-align: center;
-  cursor: pointer;
-  margin-left: 10px;
+  margin-left: 10px; */
 `;
 
-const HelpText = styled.p`
-  font-size: 14px;
+const StHelpText = styled.p`
+  /* font-size: 14px;
   font-weight: 400;
   line-height: 18px;
   text-align: left;
-  color: #fe415c;
+  color: #fe415c; */
 `;
 
 const StBtnBox = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
 
   border: 1px solid rgb(111, 92, 92);
   padding: 30px;
 
-  gap: 20px;
+  gap: 20px; */
+`;
+
+const StLoginBtn = styled.button`
+  width: 170px;
+  height: 60px;
 `;
 
 export default Login;

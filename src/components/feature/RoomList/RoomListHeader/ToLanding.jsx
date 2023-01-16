@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import leftArrow from '../../../../assets/img/leftArrow.svg';
+import leftArrow from '../../../../assets/images/leftArrow.svg';
 
 function ToLanding() {
   return (
