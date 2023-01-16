@@ -39,7 +39,7 @@ function Landing() {
 
   return (
     <StLanding>
-      {/* <StHeader>
+      <StHeader>
         {isLoggedIn ? (
           <div>
             <button onClick={onClickLogOut}>로그아웃</button>
@@ -54,7 +54,7 @@ function Landing() {
             <div>Guest는 로그인하고 이용해야한닭</div>
           </div>
         )}
-      </StHeader> */}
+      </StHeader>
       <StHeaderBtnBox>
         <StBackBtn>
           <Link to="/login">
@@ -117,7 +117,7 @@ const StLadingMain = styled.div`
 const StBanner = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn}
   position: absolute;
-  top: -16%;
+  top: -14%;
   left: 20%;
   width: 739px;
   height: 100%;
