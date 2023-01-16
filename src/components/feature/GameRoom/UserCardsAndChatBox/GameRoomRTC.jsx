@@ -14,6 +14,7 @@ import ChatBox from './ChatBox';
 import Audio from './Audio';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 import ToastMessage from '../../../common/Toast/ToastMessage';
+import SpotTimer from '../TitleAndTimer/SpotTimer';
 import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
@@ -45,15 +46,17 @@ function GameRoomRTC() {
   const cameraOption = useRef(null);
   const param = useParams();
   const { roomId } = param;
-  console.log(roomId);
+  // console.log(roomId);
   const [isStartModalOn, setIsStartModalOn] = useState(false);
   const [isStartTimer, setIsStartTimer] = useState(false);
   const [isMyTurnModal, setIsMyTurnModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
 
-  const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
+  const [keyword, setKeyword] = useState('');
+  const [myKeyword, setMyKeyword] = useState('');
+  // const [memberList, setMemberList] = useState('');
 
   /// ////////////////////////////////////////!SECTION
   const client = useRef({});
@@ -63,15 +66,24 @@ function GameRoomRTC() {
     'Refresh-Token': cookie.refresh_token,
   };
   const subscribe = async () => {
-    client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
+    client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
+      // subscribe url gameroom => gameRoom
       const data = JSON.parse(body);
       console.log('subscribe data', data);
       switch (data.type) {
-        case 'start': {
+        case 'START': {
+          // type은 대문자로 적기
           setIsStartModalOn(true);
-          setCategory(data.category);
-          setKeyword(data.keyword);
-          console.log(data);
+          setCategory(data.content.category);
+          setKeyword(data.content.keyword);
+          setMyKeyword('나만 모른닭');
+          break;
+        }
+        case 'SPOTLIGHT': {
+          console.log('spotlight', data);
+          if (myNickName === data.sender) {
+            setIsStartTimer(true);
+          }
           break;
         }
 
@@ -104,23 +116,32 @@ function GameRoomRTC() {
 
   /// ////////////////////////////////////////!SECTION
 
-  function gameStart() {
+  function sendSpotlight() {
+    console.log('sendspot');
     client.current.publish({
-      destination: `/sub/gameroom/${param.roomId}`,
-      body: JSON.stringify({
-        type: 'start',
-      }),
-    });
-
-    client.current.publish({
-      destination: `/pub/game/${param.roomId}/start`,
+      destination: `/pub/game/${param.roomId}/spotlight`,
       body: JSON.stringify({
         roomId: param.roomId,
-        // sender: myNickName,
-        // content: '게임 시작!',
-        // type: 'START',
       }),
     });
+  }
+
+  async function gameStart() {
+    await client.current.publish({
+      destination: `/pub/game/${param.roomId}/start`,
+      // 서버쪽에선 pub 없다고함. pub은 프론트만 붙이고
+      body: JSON.stringify({
+        roomId: param.roomId,
+        // 룸아이디는 무조건 바디에 보내기 간롤ㅈㄷㄱㄱ
+      }),
+    });
+    sendSpotlight();
+    // client.current.publish({
+    //   destination: `/pub/game/${param.roomId}/spotlight`,
+    //   body: JSON.stringify({
+    //     roomId: param.roomId,
+    //   }),
+    // });
   }
 
   function onClickTimerHandler() {
@@ -438,20 +459,10 @@ function GameRoomRTC() {
     };
   }, []);
 
-  const leaveRoom = async () => {
+  async function leaveRoom() {
     sessionStorage.clear();
-    await instance
-      .delete(`rooms/${param.roomId}/exit`)
-      .then(async (res) => {
-        console.log('res', res);
-        await navigate('/rooms');
-      })
-      .catch(async (error) => {
-        // alert(error.data.message);
-        await navigate('/rooms');
-      });
-    await socketRef.current.close();
-  };
+    navigate('/rooms');
+  }
 
   async function onInputCameraChange() {
     await getUserMedias(camerasSelect.current.value);
@@ -474,10 +485,6 @@ function GameRoomRTC() {
         <ToastMessage setToastState={setIsStartModalOn} text="Game Start!" />
       )}
       <StGameRoomHeader>
-        <Link to="/rooms">
-          <button>뒤로가기</button>
-        </Link>
-
         <button
           onClick={() => {
             leaveRoom();
@@ -501,7 +508,7 @@ function GameRoomRTC() {
           <StUserCards>
             <StCard>
               Card
-              <h4>{keyword}</h4>
+              <h4>{myKeyword}</h4>
               <span>{myNickName}님</span>
               <div>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
@@ -547,6 +554,7 @@ function GameRoomRTC() {
                     key={user.id}
                     stream={user.stream}
                     nickName={user.nickName}
+                    keyword={keyword}
                   >
                     <track kind="captions" />
                   </Audio>
@@ -556,11 +564,11 @@ function GameRoomRTC() {
           </StUserCards>
         </StGameTitleAndUserCards>
         <div>
-          <button onClick={onClickTimerHandler}>타이머</button>
           {isStartTimer && (
-            <Timer
+            <SpotTimer
               setIsStartTimer={setIsStartTimer}
               setIsMyTurnModal={setIsMyTurnModal}
+              // 삼항연산자 사용 (발언권 있는 사람의 경우 스팟타이머, 아니면 그냥 타이머)
             />
           )}
           {isMyTurnModal && (
