@@ -25,13 +25,11 @@ let pcs = {};
 let muted = false;
 let cameraOff = false;
 let myPeerConnection;
-
 function GameRoomRTC() {
   // const SockJsRTC = new SockJS('http://13.209.84.31:8080/signal');
   const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
-  console.log(myNickName);
   const navigate = useNavigate();
 
   const owner = sessionStorage.getItem('owner');
@@ -44,14 +42,23 @@ function GameRoomRTC() {
   const cameraBtn = useRef(null);
   const camerasSelect = useRef(null);
   const cameraOption = useRef(null);
+
   const param = useParams();
   const { roomId } = param;
-  // console.log(roomId);
   const [isStartModalOn, setIsStartModalOn] = useState(false);
   const [isStartTimer, setIsStartTimer] = useState(false);
   const [isMyTurnModal, setIsMyTurnModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
+
+  function usePrevious(users) {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = users;
+    });
+    return ref.current;
+  }
+  usePrevious(users);
 
   const [category, setCategory] = useState('');
   const [keyword, setKeyword] = useState('');
@@ -67,9 +74,8 @@ function GameRoomRTC() {
   };
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
-      // subscribe url gameroom => gameRoom
       const data = JSON.parse(body);
-      console.log('subscribe data', data);
+      console.log('데이터수신');
       switch (data.type) {
         case 'START': {
           // type은 대문자로 적기
@@ -86,7 +92,35 @@ function GameRoomRTC() {
           }
           break;
         }
+        case 'CAMERAON': {
+          // console.log('prev', prevusers);
+          console.log('users', users);
+          console.log(data);
+          setUsers((oldUsers) =>
+            oldUsers.map((user) =>
+              user.nickName === data.nickname
+                ? { ...user, isCameraOn: true }
+                : user,
+            ),
+          );
 
+          console.log(users);
+          break;
+        }
+        case 'CAMERAOFF': {
+          // console.log(prevusers);
+          console.log(data);
+          setUsers((oldUsers) =>
+            oldUsers.map((user) =>
+              user.nickName === data.nickname
+                ? { ...user, isCameraOn: false }
+                : user,
+            ),
+          );
+          console.log(users);
+
+          break;
+        }
         default: {
           // console.log('default');
           break;
@@ -193,9 +227,11 @@ function GameRoomRTC() {
           id: socketID,
           stream: e.streams[0],
           nickName: userNickName,
+          isCameraOn: true,
         },
       ]);
     };
+
     if (peerConnectionLocalStream) {
       console.log('localstream add');
       peerConnectionLocalStream.getTracks().forEach((track) => {
@@ -216,14 +252,30 @@ function GameRoomRTC() {
     });
 
     if (!cameraOff) {
-      cameraBtn.current.innerText = 'OFF';
+      cameraBtn.current.innerText = '켜기';
       cameraOff = !cameraOff;
       videoRef.current.style.display = 'none';
       userCardImgRef.current.style.display = 'block';
+      client.current.publish({
+        destination: `/pub/chat/camera`,
+        body: JSON.stringify({
+          type: 'CAMERAOFF',
+          nickname: myNickName,
+          roomId: param.roomId,
+        }),
+      });
     } else {
       userCardImgRef.current.style.display = 'none';
       videoRef.current.style.display = 'block';
-      cameraBtn.current.innerText = 'ON';
+      cameraBtn.current.innerText = '끄기';
+      client.current.publish({
+        destination: `/pub/chat/camera`,
+        body: JSON.stringify({
+          type: 'CAMERAON',
+          nickname: myNickName,
+          roomId: param.roomId,
+        }),
+      });
       cameraOff = !cameraOff;
     }
   }
@@ -431,6 +483,7 @@ function GameRoomRTC() {
           setUsers((oldUsers) =>
             oldUsers.filter((user) => user.id !== data.sender),
           );
+
           break;
         }
         case 'game_start': {
@@ -554,6 +607,7 @@ function GameRoomRTC() {
                     key={user.id}
                     stream={user.stream}
                     nickName={user.nickName}
+                    isCameraOn={user.isCameraOn}
                     keyword={keyword}
                   >
                     <track kind="captions" />
