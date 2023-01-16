@@ -19,10 +19,10 @@ export default Input;
 const StyledInput = styled.input`
   width: ${(props) => props.width || '400px'};
   height: 30px;
-  font-size: 18px;
-  text-indent: 10px;
   border: 2px solid rgba(55, 55, 55, 0.5);
   border-radius: 10px;
+  font-size: 18px;
+  text-indent: 10px;
 
   &:focus {
     outline: none;
