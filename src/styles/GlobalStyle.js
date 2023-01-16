@@ -8,7 +8,7 @@ ${reset}
     box-sizing: border-box;
 }
 body {
-    font-family: 'MapoBackpacking';
+    font-family: 'CoreDream';
 }
 ol, ul {
     list-style: none;
@@ -18,6 +18,9 @@ a {
     text-decoration: inherit;
 }
 img {
+    width: 100%;
+    height: 100%;
+    display: block;
     -webkit-user-drag: none;
     -khtml-user-drag: none;
     -moz-user-drag: none;
@@ -29,6 +32,7 @@ button {
     padding: 0;
     border: 0;
     background: none;
+    cursor: pointer;
 }
 `;
 
