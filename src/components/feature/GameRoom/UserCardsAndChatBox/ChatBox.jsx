@@ -75,7 +75,6 @@ function ChatBox() {
       alert('채팅 내용을 입력해주세요.');
       return;
     }
-
     client.current.publish({
       destination: `/sub/gameroom/${param.roomId}`,
       body: JSON.stringify({
@@ -94,7 +93,7 @@ function ChatBox() {
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
-      publish();
+      publish(message);
     }
   }
 
@@ -116,13 +115,12 @@ function ChatBox() {
           })}
         </div>
       </StUserChatBox>
-      <StSendChat>
+      <StSendChat onKeyUp={onKeyUpEnter}>
         <input
           type="text"
           placeholder="채팅을 입력해주세요."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyUp={onKeyUpEnter}
         />
         <button onClick={() => publish(message)}>전송</button>
       </StSendChat>

@@ -27,6 +27,7 @@ let muted = false;
 let cameraOff = false;
 let myPeerConnection;
 function GameRoomRTC() {
+  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
   const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
@@ -80,7 +81,6 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-
       switch (data.type) {
         case 'START': {
           setText('Game Start');
@@ -122,12 +122,6 @@ function GameRoomRTC() {
           }
           break;
         }
-        case 'SKIP': {
-          if (myNickName === data.sender) {
-            sendSpotlight();
-          }
-          break;
-        }
         case 'FAIL': {
           if (myNickName === data.nickname) {
             sendSpotlight();
@@ -143,7 +137,6 @@ function GameRoomRTC() {
           setIsEndGameModal(true);
           break;
         }
-
         case 'ENDGAME': {
           setCategory('');
           setKeyword('');
@@ -314,7 +307,6 @@ function GameRoomRTC() {
         },
       ]);
     };
-
     try {
       if (peerConnectionLocalStream) {
         peerConnectionLocalStream.getTracks().forEach((track) => {
