@@ -7,7 +7,12 @@ import Button from '../../Button';
 import Input from '../../Input';
 import { instance } from '../../../../api/core/axios';
 
-function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
+function GameAnswerModal({
+  skipAnswer,
+  setIsMyTurnModal,
+  sendAnswer,
+  nickName,
+}) {
   const [answerValue, setAnswerValue] = useState('');
   const [seconds, setSeconds] = useState(10);
   function onInputHandler(event) {
@@ -40,7 +45,14 @@ function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
         value={answerValue}
         onChange={onInputHandler}
       />
-      <Button>SKIP</Button>
+      <Button
+        onClick={() => {
+          skipAnswer(nickName);
+          setIsMyTurnModal(false);
+        }}
+      >
+        SKIP
+      </Button>
       <Button
         onClick={() => {
           sendAnswer(answerValue, nickName);
