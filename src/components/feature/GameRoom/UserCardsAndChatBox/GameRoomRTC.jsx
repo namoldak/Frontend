@@ -80,6 +80,7 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
+
       switch (data.type) {
         case 'START': {
           setText('Game Start');
@@ -121,6 +122,12 @@ function GameRoomRTC() {
           }
           break;
         }
+        case 'SKIP': {
+          if (myNickName === data.sender) {
+            sendSpotlight();
+          }
+          break;
+        }
         case 'FAIL': {
           if (myNickName === data.nickname) {
             sendSpotlight();
@@ -136,6 +143,7 @@ function GameRoomRTC() {
           setIsEndGameModal(true);
           break;
         }
+
         case 'ENDGAME': {
           setCategory('');
           setKeyword('');
