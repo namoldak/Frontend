@@ -5,7 +5,6 @@ import Button from '../../Button';
 
 // 내부 모듈
 import Input from '../../Input';
-import { instance } from '../../../../api/core/axios';
 
 function GameAnswerModal({
   skipAnswer,
@@ -14,30 +13,31 @@ function GameAnswerModal({
   nickName,
 }) {
   const [answerValue, setAnswerValue] = useState('');
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(20);
   function onInputHandler(event) {
     setAnswerValue(event.target.value);
   }
 
-  // function onKeyUpEnter(event) {
-  //   if (event.keyCode === 13) {
-  //     onClickAnswer();
-  //   }
-  // }
+  function onKeyUpEnter(event) {
+    if (event.keyCode === 13) {
+      sendAnswer(answerValue, nickName);
+      setIsMyTurnModal(false);
+    }
+  }
 
   useEffect(() => {
     const countdown = setInterval(() => {
       setSeconds(parseInt(seconds, 10) - 1);
     }, 1000);
     if (parseInt(seconds, 10) === 0) {
+      skipAnswer(nickName);
       setIsMyTurnModal(false);
     }
     return () => clearInterval(countdown);
   }, [seconds]);
 
   return (
-    // <StModalContainer onKeyUp={onKeyUpEnter}>
-    <StModalContainer>
+    <StModalContainer onKeyUp={onKeyUpEnter}>
       <StTimeText>제한 시간</StTimeText>
       <LimitTimer>{seconds} 초</LimitTimer>
       <Input
