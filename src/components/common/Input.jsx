@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Input({ type, placeholder, onChange, value, width, onFocus }) {
+function Input({ width, height, placeholder, onChange, value, type }) {
   return (
     <StyledInput
-      type={type}
+      width={width}
+      height={height}
       placeholder={placeholder}
       onChange={onChange}
       value={value}
-      width={width}
-      onFocus={onFocus}
+      type={type}
+      // onFocus={onFocus}
     />
   );
 }
@@ -17,15 +18,21 @@ function Input({ type, placeholder, onChange, value, width, onFocus }) {
 export default Input;
 
 const StyledInput = styled.input`
-  width: ${(props) => props.width || '400px'};
-  height: 30px;
-  border: 2px solid rgba(55, 55, 55, 0.5);
-  border-radius: 10px;
-  font-size: 18px;
-  text-indent: 10px;
+  width: ${(props) => props.width || '484px'};
+  height: ${(props) => props.width || '64px'};
+  background: ${({ theme }) => theme.colors.lightBeige};
+  border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
+  outline: 7px solid ${({ theme }) => theme.colors.brown};
+  border-radius: ${(props) => props.width || '50px'};
+  font-size: 22px;
+  color: ${({ theme }) => theme.colors.text};
+  text-indent: 16px;
+  line-height: 22px;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.text};
+  }
 
   &:focus {
-    outline: none;
-    border-color: #ffd440;
   }
 `;
