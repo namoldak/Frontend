@@ -14,6 +14,7 @@ function ChatBox() {
   const [message, setMessage] = useState(''); // input value 값
   const [chatMessages, setChatMessages] = useState([]); // 누적 채팅 메시지들
   const [chatUser, setChatUser] = useState([]); // 누적 유저 이름들
+  const input = useRef(null);
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
@@ -71,7 +72,7 @@ function ChatBox() {
 
   // input value 즉 메시지 채팅을 입력
   function publish(value) {
-    if (message === '') {
+    if (message.trim() === '') {
       alert('채팅 내용을 입력해주세요.');
       return;
     }
@@ -93,7 +94,9 @@ function ChatBox() {
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
+      document.activeElement.blur();
       publish(message);
+      input.current.focus();
     }
   }
 
@@ -117,6 +120,7 @@ function ChatBox() {
       </StUserChatBox>
       <StSendChat onKeyUp={onKeyUpEnter}>
         <input
+          ref={input}
           type="text"
           placeholder="채팅을 입력해주세요."
           value={message}
