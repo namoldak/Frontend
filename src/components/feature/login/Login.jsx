@@ -10,7 +10,6 @@ import { setCookie, setNicknameCookie } from '../../../utils/cookies';
 // 내부 모듈
 import authAPI from '../../../api/authAsync';
 import KaKaoBtn from './KaKaoBtn';
-// import Input from '../../common/Input';
 import popUp from '../../../assets/images/popUp.svg';
 import loginTitleBtn from '../../../assets/images/loginTitleBtn.svg';
 import loginBtn from '../../../assets/images/loginBtn.svg';

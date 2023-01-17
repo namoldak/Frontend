@@ -7,21 +7,11 @@ import Button from '../../Button';
 import Input from '../../Input';
 import { instance } from '../../../../api/core/axios';
 
-function GameAnswerModal({ roomId, setIsMyTurnModal }) {
+function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
   const [answerValue, setAnswerValue] = useState('');
   const [seconds, setSeconds] = useState(10);
-
   function onInputHandler(event) {
     setAnswerValue(event.target.value);
-  }
-
-  async function onClickAnswer() {
-    const answer = answerValue;
-    await instance.post(`/pub/game/${roomId}/answer`, answer);
-  }
-
-  async function onClickSkip() {
-    await instance.post(`/pub/game/${roomId}/skip`);
   }
 
   // function onKeyUpEnter(event) {
@@ -50,8 +40,15 @@ function GameAnswerModal({ roomId, setIsMyTurnModal }) {
         value={answerValue}
         onChange={onInputHandler}
       />
-      <Button onClick={onClickSkip}>SKIP</Button>
-      <Button onClick={onClickAnswer}>ANSWER</Button>
+      <Button>SKIP</Button>
+      <Button
+        onClick={() => {
+          sendAnswer(answerValue, nickName);
+          setIsMyTurnModal(false);
+        }}
+      >
+        ANSWER
+      </Button>
     </StModalContainer>
   );
 }
