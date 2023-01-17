@@ -12,8 +12,6 @@ function Toast({ setToastState, text, type }) {
     };
   }, []);
 
-  console.log(type);
-
   return (
     <StBackground>
       <StToastBorder>
