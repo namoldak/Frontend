@@ -21,13 +21,14 @@ import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal'
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
 import duckImg from '../../../../assets/images/duck.jpg';
 
-let stream;
+let stream = null;
 let pcs = {};
 let muted = false;
 let cameraOff = false;
 let myPeerConnection;
 function GameRoomRTC() {
-  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const navigate = useNavigate();
@@ -80,7 +81,6 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      console.log('data 확인', data);
       switch (data.type) {
         case 'START': {
           setText('Game Start');
@@ -286,6 +286,15 @@ function GameRoomRTC() {
     pc.oniceconnectionstatechange = (e) => {
       // console.log(e);
     };
+    setUsers((oldUsers) => [
+      ...oldUsers,
+      {
+        id: socketID,
+        stream: null,
+        nickName: userNickName,
+        isCameraOn: false,
+      },
+    ]);
     pc.ontrack = (e) => {
       setUsers((oldUsers) => oldUsers.filter((user) => user.id !== socketID));
       setUsers((oldUsers) => [
@@ -298,13 +307,16 @@ function GameRoomRTC() {
         },
       ]);
     };
-
-    if (peerConnectionLocalStream) {
-      peerConnectionLocalStream.getTracks().forEach((track) => {
-        pc.addTrack(track, peerConnectionLocalStream);
-      });
-    } else {
-      console.log('no local stream');
+    try {
+      if (peerConnectionLocalStream) {
+        peerConnectionLocalStream.getTracks().forEach((track) => {
+          pc.addTrack(track, peerConnectionLocalStream);
+        });
+      } else {
+        console.log('no local stream');
+      }
+    } catch (error) {
+      console.log(error);
     }
     return pc;
   }
@@ -318,7 +330,7 @@ function GameRoomRTC() {
     });
 
     if (!cameraOff) {
-      cameraBtn.current.innerText = '켜기';
+      cameraBtn.current.innerText = '카메라켜기';
       cameraOff = !cameraOff;
       videoRef.current.style.display = 'none';
       userCardImgRef.current.style.display = 'block';
@@ -333,7 +345,7 @@ function GameRoomRTC() {
     } else {
       userCardImgRef.current.style.display = 'none';
       videoRef.current.style.display = 'block';
-      cameraBtn.current.innerText = '끄기';
+      cameraBtn.current.innerText = '카메라끄기';
       client.current.publish({
         destination: `/pub/chat/camera`,
         body: JSON.stringify({
@@ -350,10 +362,10 @@ function GameRoomRTC() {
       track.enabled = !track.enabled;
     });
     if (!muted) {
-      muteBtn.current.innerText = 'Unmute';
+      muteBtn.current.innerText = '소리켜기';
       muted = !muted;
     } else {
-      muteBtn.current.innerText = 'Mute';
+      muteBtn.current.innerText = '소리끄기';
       muted = !muted;
     }
   }
@@ -404,8 +416,11 @@ function GameRoomRTC() {
           }
         })
         .catch((error) => {
+          userCardImgRef.current.style.display = 'block';
+          videoRef.current.style.display = 'none';
           console.log(`getUserMedia error: ${error}`);
         });
+
       socketRef.current?.send(
         JSON.stringify({
           type: 'join_room',
