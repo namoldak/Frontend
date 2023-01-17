@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+/* eslint-disable no-use-before-define */
 // 외부모듈
 import styled from 'styled-components';
 import React, { useRef, useEffect, useState, Children } from 'react';
@@ -45,12 +47,14 @@ function GameRoomRTC() {
 
   const param = useParams();
   const { roomId } = param;
-  const [isStartModalOn, setIsStartModalOn] = useState(false);
+  const [isStartModal, setIsStartModal] = useState(false);
   const [isStartTimer, setIsStartTimer] = useState(false);
   const [isMyTurnModal, setIsMyTurnModal] = useState(false);
+  const [isEndGameModal, setIsEndGameModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
-
+  const [winner, setWinner] = useState('');
+  const [text, setText] = useState('');
   function usePrevious(users) {
     const ref = useRef();
     useEffect(() => {
@@ -63,7 +67,6 @@ function GameRoomRTC() {
   const [category, setCategory] = useState('');
   const [keyword, setKeyword] = useState('');
   const [myKeyword, setMyKeyword] = useState('');
-  // const [memberList, setMemberList] = useState('');
 
   /// ////////////////////////////////////////!SECTION
   const client = useRef({});
@@ -72,44 +75,52 @@ function GameRoomRTC() {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
+
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      console.log(data);
+      console.log('data 확인', data);
       switch (data.type) {
         case 'START': {
-          console.log('2');
-          // type은 대문자로 적기
-          setIsStartModalOn(true);
+          setText('Game Start');
+          setIsStartModal(true);
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
           setMyKeyword('나만 모른닭');
           break;
         }
         case 'SPOTLIGHT': {
-          console.log('5');
-          console.log('spotlight', data);
           if (myNickName === data.sender) {
             setIsStartTimer(true);
           }
           break;
         }
+        case 'SKIP': {
+          if (myNickName === data.sender) {
+            sendSpotlight();
+          }
+          break;
+        }
         case 'FAIL': {
-          console.log('FAIL 수신');
           if (myNickName === data.nickname) {
-            // eslint-disable-next-line no-use-before-define
             sendSpotlight();
           }
           break;
         }
         case 'SUCCESS': {
-          console.log('끝');
+          if (myNickName === data.nickname) {
+            endGame();
+          }
+          setText(data.content);
+          setWinner(data.nickname);
+          setIsEndGameModal(true);
+          break;
+        }
+        case 'RESULT': {
+          console.log('result');
           break;
         }
         case 'CAMERAON': {
-          // console.log('prev', prevusers);
-          console.log('users', users);
-          console.log(data);
           setUsers((oldUsers) =>
             oldUsers.map((user) =>
               user.nickName === data.nickname
@@ -117,13 +128,9 @@ function GameRoomRTC() {
                 : user,
             ),
           );
-
-          console.log(users);
           break;
         }
         case 'CAMERAOFF': {
-          // console.log(prevusers);
-          console.log(data);
           setUsers((oldUsers) =>
             oldUsers.map((user) =>
               user.nickName === data.nickname
@@ -164,6 +171,22 @@ function GameRoomRTC() {
 
   /// ////////////////////////////////////////!SECTION
 
+  function endGame() {
+    console.log('function endGame');
+    client.current.publish({
+      destination: `/pub/game/${param.roomId}/endGame`,
+    });
+  }
+
+  function skipAnswer(nickName) {
+    client.current.publish({
+      destination: `/pub/game/${param.roomId}/skip`,
+      body: JSON.stringify({
+        nickname: nickName,
+      }),
+    });
+  }
+
   function sendAnswer(answerValue, nickName) {
     client.current.publish({
       destination: `/pub/game/${param.roomId}/answer`,
@@ -173,39 +196,27 @@ function GameRoomRTC() {
       }),
     });
   }
+
   function sendSpotlight() {
-    console.log('4');
-    console.log('sendspot');
     client.current.publish({
       destination: `/pub/game/${param.roomId}/spotlight`,
-      body: JSON.stringify({
-        roomId: param.roomId,
-      }),
     });
   }
 
-  async function gameStart() {
-    console.log('1');
-    await client.current.publish({
+  function gameStart() {
+    if (users.length < 2) {
+      alert('최소 3마리가 필요하닭!');
+    }
+    client.current.publish({
       destination: `/pub/game/${param.roomId}/start`,
-      // 서버쪽에선 pub 없다고함. pub은 프론트만 붙이고
       body: JSON.stringify({
         roomId: param.roomId,
-        // 룸아이디는 무조건 바디에 보내기 간롤ㅈㄷㄱㄱ
+        nickname: myNickName,
       }),
     });
-    // eslint-disable-next-line func-names
     setTimeout(function () {
       sendSpotlight();
     }, 5000);
-    console.log('3');
-
-    // client.current.publish({
-    //   destination: `/pub/game/${param.roomId}/spotlight`,
-    //   body: JSON.stringify({
-    //     roomId: param.roomId,
-    //   }),
-    // });
   }
 
   function onClickTimerHandler() {
@@ -524,22 +535,22 @@ function GameRoomRTC() {
     return async () => {
       if (socketRef.current) {
         sessionStorage.clear();
-        await instance
+        instance
           .delete(`rooms/${param.roomId}/exit`)
           .then(async (res) => {
             console.log('res', res);
-            await navigate('/rooms');
+            navigate('/rooms');
           })
           .catch(async (error) => {
             // alert(error.data.message);
-            await navigate('/rooms');
+            navigate('/rooms');
           });
         socketRef.current.close();
       }
     };
   }, []);
 
-  async function leaveRoom() {
+  function leaveRoom() {
     sessionStorage.clear();
     navigate('/rooms');
   }
@@ -561,8 +572,19 @@ function GameRoomRTC() {
 
   return (
     <StGameRoomOuter>
-      {isStartModalOn && (
-        <ToastMessage setToastState={setIsStartModalOn} text="Game Start!" />
+      {isStartModal && (
+        <ToastMessage
+          setToastState={setIsStartModal}
+          text={text}
+          type="start"
+        />
+      )}
+      {isEndGameModal && (
+        <ToastMessage
+          setToastState={setIsEndGameModal}
+          text={text}
+          type="end"
+        />
       )}
       <StGameRoomHeader>
         <button
@@ -661,6 +683,7 @@ function GameRoomRTC() {
                   setIsMyTurnModal={setIsMyTurnModal}
                   sendAnswer={sendAnswer}
                   nickName={myNickName}
+                  skipAnswer={skipAnswer}
                 />
               }
             />
