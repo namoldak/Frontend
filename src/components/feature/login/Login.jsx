@@ -14,6 +14,7 @@ import popUp from '../../../assets/images/popUp.svg';
 import loginTitleBtn from '../../../assets/images/loginTitleBtn.svg';
 import loginBtn from '../../../assets/images/loginBtn.svg';
 
+// useForm
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -23,7 +24,6 @@ const schema = yup.object().shape({
 });
 
 function Login() {
-  // 로그인 후 랜딩페이지로
   const navigate = useNavigate();
   // 카카오 로그인 인증 code
   const [searchParams] = useSearchParams(); // URL 내의 GET 디코딩 된 쿼리 매개변수에 접근
@@ -71,39 +71,40 @@ function Login() {
 
   return (
     <StLogin>
-      {/* <form onSubmit={handleSubmit(onClickLogin)}> */}
       <StLoginContainer onSubmit={handleSubmit(onClickLogin)}>
         <StTitle>
           <img src={loginTitleBtn} alt="title_image" />
         </StTitle>
         <StInputBox>
           <input
-            name="email"
+            type="text"
+            className="emailInput"
             placeholder="이메일을 입력해주세요"
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('email', { required: true })}
           />
-          <StHelpText>{errors.email?.message}</StHelpText>
+          {/* <StHelpText>{errors.email?.message}</StHelpText> */}
           <input
-            name="password"
             type="password"
             placeholder="비밀번호를 입력해주세요."
             // eslint-disable-next-line react/jsx-props-no-spreading
             {...register('password', { required: true })}
           />
-          <StHelpText>{errors.password?.message}</StHelpText>
+          {/* <StHelpText>{errors.password?.message}</StHelpText> */}
         </StInputBox>
         <StBtnBox>
           <StLoginBtn type="submit">
             <img src={loginBtn} alt="login_image" />
           </StLoginBtn>
           <KaKaoBtn />
-          <Link to="/signup">
-            <button>회원가입 하기</button>
-          </Link>
+          <StSignUp>
+            <p>회원이 아니신가요?</p>
+            <Link to="/signup">
+              <button>회원가입</button>
+            </Link>
+          </StSignUp>
         </StBtnBox>
       </StLoginContainer>
-      {/* </form> */}
     </StLogin>
   );
 }
@@ -130,41 +131,54 @@ const StTitle = styled.div`
 `;
 
 const StInputBox = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  border: 1px solid rgb(157, 145, 145);
-  padding: 30px;
-  width: 100%; */
-`;
-const Input = styled.input`
-  width: 20rem;
-  height: 30px;
-`;
-const Button = styled.button`
-  /* width: 100%;
-  text-align: center;
-  margin-left: 10px; */
-`;
-
-const StHelpText = styled.p`
-  /* font-size: 14px;
-  font-weight: 400;
-  line-height: 18px;
-  text-align: left;
-  color: #fe415c; */
+  input {
+    width: 484px;
+    height: 64px;
+    background: ${({ theme }) => theme.colors.lightBeige};
+    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
+    outline: 7px solid ${({ theme }) => theme.colors.brown};
+    border-radius: 50px;
+    font-size: 22px;
+    color: ${({ theme }) => theme.colors.text};
+    text-indent: 16px;
+    line-height: 22px;
+  }
+  input::placeholder {
+    color: ${({ theme }) => theme.colors.text};
+  }
+  .emailInput {
+    margin-top: 50px;
+    margin-bottom: 32px;
+  }
 `;
 
 const StBtnBox = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  border: 1px solid rgb(111, 92, 92);
-  padding: 30px;
-  gap: 20px; */
+  ${({ theme }) => theme.common.flexCenterColumn};
 `;
 
 const StLoginBtn = styled.button`
   width: 170px;
   height: 60px;
+  margin-top: 38px;
+  margin-bottom: 34px;
+`;
+
+const StSignUp = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 32px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.white};
+  font-size: ${({ theme }) => theme.fontSizes.paragraph};
+  font-weight: 500;
+  line-height: 22px;
+
+  button {
+    color: ${({ theme }) => theme.colors.white};
+    font-size: ${({ theme }) => theme.fontSizes.paragraph};
+    font-weight: 800;
+    margin-left: 10px;
+  }
 `;
 
 export default Login;
