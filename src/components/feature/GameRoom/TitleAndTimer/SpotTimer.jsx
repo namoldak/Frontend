@@ -5,7 +5,6 @@ import styled from 'styled-components';
 function SpotTimer({ setIsSpotTimer, setIsMyTurnModal }) {
   const [seconds, setSeconds] = useState(20);
 
-
   useEffect(() => {
     const countdown = setInterval(() => {
       setSeconds(parseInt(seconds, 10) - 1);

@@ -27,15 +27,14 @@ import categoryImg from '../../../../assets/images/category.svg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 import userCardImg from '../../../../assets/images/userCardImg.svg';
 
-
 let stream = null;
 let pcs = {};
 let muted = false;
 let cameraOff = false;
 let myPeerConnection;
 function GameRoomRTC() {
-  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
-  // const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const navigate = useNavigate();
@@ -424,8 +423,8 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    socketRef.current = new SockJS('https://api.namoldak.com/signal');
-    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+    // socketRef.current = new SockJS('https://api.namoldak.com/signal');
+    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {
