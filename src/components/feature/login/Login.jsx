@@ -122,7 +122,6 @@ const StLoginContainer = styled.form`
   ${({ theme }) => theme.common.flexCenterColumn};
   height: 100%;
   text-align: center;
-  border: 1px solid black;
 `;
 
 const StTitle = styled.div`
@@ -137,8 +136,8 @@ const StInputBox = styled.div`
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
     outline: 7px solid ${({ theme }) => theme.colors.brown};
-    border-radius: 50px;
-    font-size: 22px;
+    border-radius: 32px;
+    font-size: 18px;
     color: ${({ theme }) => theme.colors.text};
     text-indent: 16px;
     line-height: 22px;
