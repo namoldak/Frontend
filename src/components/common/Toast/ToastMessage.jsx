@@ -2,7 +2,11 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-function Toast({ setToastState, text, type }) {
+// 내부 모듈
+import gameStart from '../../../assets/images/gameStart.svg';
+import gameAnswer from '../../../assets/images/gameAnswer.svg';
+
+function Toast({ setToastState, type }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setToastState(false);
@@ -15,9 +19,15 @@ function Toast({ setToastState, text, type }) {
   return (
     <StBackground>
       <StToastBorder>
-        <StToastMessage>
-          <p className={type === 'start' ? 'start' : ''}>{text}</p>
-        </StToastMessage>
+        {type === 'start' ? (
+          <StToastMessage>
+            <img src={gameStart} alt="game start" />
+          </StToastMessage>
+        ) : (
+          <StToastAnswer>
+            <img src={gameAnswer} alt="game finished" />
+          </StToastAnswer>
+        )}
       </StToastBorder>
     </StBackground>
   );
@@ -42,26 +52,22 @@ const StToastBorder = styled.div`
   width: 400px;
   height: 300px;
 
-  /* background-color: white; */
-  /* border: 1px solid black; */
-  border-radius: 20px;
-
   text-align: center;
 
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
 
 const StToastMessage = styled.div`
-  .end {
-    color: green;
-  }
+  width: 908px;
+  height: 278px;
+`;
 
-  .start {
-    color: red;
-  }
+const StToastAnswer = styled.div`
+  width: 618px;
+  height: 453px;
 `;
 
 export default Toast;
