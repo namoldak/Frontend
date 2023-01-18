@@ -24,7 +24,7 @@ function ChatBox({ notice }) {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
-  console.log(notice);
+
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
@@ -77,9 +77,8 @@ function ChatBox({ notice }) {
   };
 
   // input value 즉 메시지 채팅을 입력
-  function publish(value) {
+  function publish(message) {
     if (message.trim() === '') {
-      // alert('채팅 내용을 입력해주세요.');
       return;
     }
     client.current.publish({
@@ -88,7 +87,7 @@ function ChatBox({ notice }) {
         type: 'CHAT',
         roomId: param.roomId,
         sender: nickname,
-        message: value,
+        message,
       }),
     });
     setMessage('');
@@ -100,9 +99,9 @@ function ChatBox({ notice }) {
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
-      document.activeElement.blur();
+      // document.activeElement.blur();
       publish(message);
-      input.current.focus();
+      // input.current.focus();
     }
   }
 
@@ -128,8 +127,9 @@ function ChatBox({ notice }) {
             })}
           </div>
         </StUserChatBox>
-        <StSendChat onKeyUp={onKeyUpEnter}>
+        <StSendChat>
           <input
+            ref={input}
             type="text"
             placeholder="채팅을 입력해주세요."
             value={message}
