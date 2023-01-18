@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { readAllRooms } from '../../../../redux/modules/roomSlice';
+import roomListBanner from '../../../../assets/images/roomListBanner.svg';
 import leftArrow from '../../../../assets/images/leftArrow.svg';
 import rightArrow from '../../../../assets/images/rightArrow.svg';
 import Room from './Room';
@@ -29,86 +30,73 @@ function RoomListCard() {
 
   return (
     <StRoomListCardBox>
-      <StTestDiv>
+      <StRoomDiv>
         {page > 0 ? (
-          <StLeftImg
-            width="100px"
-            src={leftArrow}
-            alt="leftArrow icone"
+          <StLeftBtn
             onClick={() => {
               setPage(page - 1);
             }}
-          />
+          >
+            <img src={leftArrow} alt="leftArrow icone" />
+          </StLeftBtn>
         ) : (
           <StEmptyDiv />
         )}
         {gameRoomResponseDtoList &&
           gameRoomResponseDtoList.map((room) => {
             return (
-              <RoomInfo key={room.id}>
+              <div key={room.id}>
                 <Room roomInfo={room} />
-              </RoomInfo>
+              </div>
             );
           })}
         {page <= totalPage - 2 ? (
-          <StRightImg
-            width="100px"
-            src={rightArrow}
-            alt="rightArrow icon"
+          <StRightBtn
             onClick={() => {
               setPage(page + 1);
             }}
-          />
+          >
+            <img src={rightArrow} alt="rightArrow icon" />
+          </StRightBtn>
         ) : (
           <StEmptyDiv />
         )}
-      </StTestDiv>
+      </StRoomDiv>
     </StRoomListCardBox>
   );
 }
 
 const StRoomListCardBox = styled.div`
-  width: 100%;
+  position: relative;
+  width: 1180px;
+  height: 532px;
+  background-image: url(${roomListBanner});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
-const StLeftImg = styled.img`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-`;
-const StRightImg = styled.img`
+const StRoomDiv = styled.div`
   display: grid;
-  transform: rotate(180deg);
-  cursor: pointer;
-  -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
-`;
-const RoomInfo = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  margin: auto;
-`;
-
-const StTestDiv = styled.div`
-  display: grid;
-  border: 1px solid black;
   grid-template-columns: repeat(6, 1fr);
-  max-width: 100%;
   column-gap: 40px;
   place-items: center;
+  /* min-width: 80%; */
+  /* max-width: 100%; */
+  padding-top: 10%;
+`;
+
+const StLeftBtn = styled.button`
+  height: 40px;
+  margin-left: 100px;
+`;
+
+const StRightBtn = styled.button`
+  height: 40px;
+  margin-right: 100px;
 `;
 
 const StEmptyDiv = styled.div`
-  padding: 50px;
+  /* padding: 50px; */
 `;
 
 export default RoomListCard;

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 // 내부 모듈
 import Modal from '../../../common/Modals/BasicModal/Modal';
 import CreateRoomModal from '../../../common/Modals/BasicModal/CreateRoomModal';
+import createRoomBtn from '../../../../assets/images/createRoomBtn.svg';
 
 function CreateRoom() {
   const [isModalOn, setIsModalOn] = useState(false);
@@ -24,7 +25,7 @@ function CreateRoom() {
           setIsModalOn(true);
         }}
       >
-        방 만들기
+        <img src={createRoomBtn} alt="방 만들기 버튼" />
       </CreateRoomBtn>
     </StCreateRoom>
   );
@@ -33,10 +34,8 @@ function CreateRoom() {
 const StCreateRoom = styled.div``;
 
 const CreateRoomBtn = styled.button`
-  font-size: 20px;
-  background: none;
-  padding: 10px;
-  cursor: pointer;
+  width: 238px;
+  height: 78px;
 `;
 
 export default CreateRoom;
