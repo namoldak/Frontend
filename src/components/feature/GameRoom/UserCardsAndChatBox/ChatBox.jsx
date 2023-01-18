@@ -52,8 +52,8 @@ function ChatBox({ notice }) {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      webSocketFactory: () => new SockJs('https://api.namoldak.com/ws-stomp'),
-      // webSocketFactory: () => new SockJs('http://13.209.84.31:8080/ws-stomp'),
+      // webSocketFactory: () => new SockJs('https://api.namoldak.com/ws-stomp'),
+      webSocketFactory: () => new SockJs('http://13.209.84.31:8080/ws-stomp'),
       connectHeaders,
       debug() {},
       onConnect: () => {
