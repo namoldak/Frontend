@@ -62,7 +62,6 @@ function GameRoomRTC() {
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
   const [winner, setWinner] = useState('');
-  const [text, setText] = useState('');
   const [notice, setNotice] = useState('');
 
   function usePrevious(users) {
@@ -92,7 +91,6 @@ function GameRoomRTC() {
       console.log('data', data);
       switch (data.type) {
         case 'START': {
-          setText('Game Start');
           stream.getAudioTracks().forEach((track) => {
             track.enabled = false;
           });
@@ -145,10 +143,12 @@ function GameRoomRTC() {
           break;
         }
         case 'SUCCESS': {
+          setNotice(data.content);
           if (myNickName === data.nickname) {
-            endGame();
+            setTimeout(function () {
+              endGame();
+            }, 2000);
           }
-          setText(data.content);
           setWinner(data.nickname);
           setIsEndGameModal(true);
           break;
@@ -602,18 +602,10 @@ function GameRoomRTC() {
     <StGameRoomRTC>
       <div>
         {isStartModal && (
-          <ToastMessage
-            setToastState={setIsStartModal}
-            text={text}
-            type="start"
-          />
+          <ToastMessage setToastState={setIsStartModal} type="start" />
         )}
         {isEndGameModal && (
-          <ToastMessage
-            setToastState={setIsEndGameModal}
-            text={text}
-            type="end"
-          />
+          <ToastMessage setToastState={setIsEndGameModal} type="end" />
         )}
       </div>
       <StGameRoomHeader>

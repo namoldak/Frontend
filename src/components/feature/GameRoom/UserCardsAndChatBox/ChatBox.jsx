@@ -79,7 +79,7 @@ function ChatBox({ notice }) {
   // input value 즉 메시지 채팅을 입력
   function publish(value) {
     if (message.trim() === '') {
-      alert('채팅 내용을 입력해주세요.');
+      // alert('채팅 내용을 입력해주세요.');
       return;
     }
     client.current.publish({
@@ -100,7 +100,7 @@ function ChatBox({ notice }) {
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
-      // document.activeElement.blur();
+      document.activeElement.blur();
       publish(message);
       input.current.focus();
     }
