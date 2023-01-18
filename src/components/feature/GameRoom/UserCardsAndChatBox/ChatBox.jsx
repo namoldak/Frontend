@@ -6,7 +6,7 @@ import * as StompJs from '@stomp/stompjs';
 import { useCookies } from 'react-cookie';
 import { getNicknameCookie } from '../../../../utils/cookies';
 
-function ChatBox() {
+function ChatBox({ notice }) {
   const client = useRef({});
   const param = useParams();
   const [cookie] = useCookies();
@@ -14,11 +14,12 @@ function ChatBox() {
   const [message, setMessage] = useState(''); // input value 값
   const [chatMessages, setChatMessages] = useState([]); // 누적 채팅 메시지들
   const [chatUser, setChatUser] = useState([]); // 누적 유저 이름들
+  const input = useRef(null);
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
-
+  console.log(notice);
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
@@ -71,7 +72,7 @@ function ChatBox() {
 
   // input value 즉 메시지 채팅을 입력
   function publish(value) {
-    if (message === '') {
+    if (message.trim() === '') {
       alert('채팅 내용을 입력해주세요.');
       return;
     }
@@ -93,13 +94,16 @@ function ChatBox() {
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
+      document.activeElement.blur();
       publish(message);
+      input.current.focus();
     }
   }
 
   return (
     <StChatBox>
-      <StNotice>공지내용</StNotice>
+      <StNotice>{notice}</StNotice>
+      {/* <StNotice>공지사항</StNotice> */}
       <StUserChatBox>
         <div>
           {chatMessages?.map((message, index) => {
@@ -117,6 +121,7 @@ function ChatBox() {
       </StUserChatBox>
       <StSendChat onKeyUp={onKeyUpEnter}>
         <input
+          ref={input}
           type="text"
           placeholder="채팅을 입력해주세요."
           value={message}
