@@ -6,7 +6,7 @@ import * as StompJs from '@stomp/stompjs';
 import { useCookies } from 'react-cookie';
 import { getNicknameCookie } from '../../../../utils/cookies';
 
-function ChatBox() {
+function ChatBox({ notice }) {
   const client = useRef({});
   const param = useParams();
   const [cookie] = useCookies();
@@ -19,7 +19,7 @@ function ChatBox() {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
-
+  console.log(notice);
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
@@ -102,7 +102,8 @@ function ChatBox() {
 
   return (
     <StChatBox>
-      <StNotice>공지내용</StNotice>
+      <StNotice>{notice}</StNotice>
+      {/* <StNotice>공지사항</StNotice> */}
       <StUserChatBox>
         <div>
           {chatMessages?.map((message, index) => {

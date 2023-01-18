@@ -56,6 +56,7 @@ function GameRoomRTC() {
   const [users, setUsers] = useState([]);
   const [winner, setWinner] = useState('');
   const [text, setText] = useState('');
+  const [notice, setNotice] = useState('');
 
   function usePrevious(users) {
     const ref = useRef();
@@ -81,6 +82,7 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
+      console.log('data', data);
       switch (data.type) {
         case 'START': {
           setText('Game Start');
@@ -101,6 +103,7 @@ function GameRoomRTC() {
           break;
         }
         case 'SPOTLIGHT': {
+          setNotice(data.content);
           if (myNickName === data.sender) {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
@@ -117,14 +120,20 @@ function GameRoomRTC() {
           break;
         }
         case 'SKIP': {
+          setNotice(data.content);
           if (myNickName === data.sender) {
-            sendSpotlight();
+            setTimeout(function () {
+              sendSpotlight();
+            }, 2000);
           }
           break;
         }
         case 'FAIL': {
+          setNotice(data.content);
           if (myNickName === data.nickname) {
-            sendSpotlight();
+            setTimeout(function () {
+              sendSpotlight();
+            }, 2000);
           }
           break;
         }
@@ -138,6 +147,7 @@ function GameRoomRTC() {
           break;
         }
         case 'ENDGAME': {
+          setNotice('');
           setCategory('');
           setKeyword('');
           setMyKeyword('');
@@ -701,7 +711,7 @@ function GameRoomRTC() {
             />
           )}
         </div>
-        <ChatBox />
+        <ChatBox notice={notice} />
       </StGameRoomMain>
     </StGameRoomOuter>
   );
