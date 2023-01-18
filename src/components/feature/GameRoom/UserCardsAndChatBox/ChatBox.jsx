@@ -11,7 +11,7 @@ import chatBack2 from '../../../../assets/images/chatBack2.svg';
 import chatEnterBtn from '../../../../assets/images/chatEnterBtn.svg';
 import chatNotice from '../../../../assets/images/chatNotice.svg';
 
-function ChatBox() {
+function ChatBox({ notice }) {
   const client = useRef({});
   const param = useParams();
   const [cookie] = useCookies();
@@ -52,6 +52,7 @@ function ChatBox() {
   const connect = () => {
     client.current = new StompJs.Client({
       webSocketFactory: () => new SockJs('https://api.namoldak.com/ws-stomp'),
+      // webSocketFactory: () => new SockJs('http://13.209.84.31:8080/ws-stomp'),
       connectHeaders,
       debug() {},
       onConnect: () => {
@@ -105,35 +106,39 @@ function ChatBox() {
 
   return (
     <StChatBox>
-      <StNotice>{notice}</StNotice>
-      {/* <StNotice>공지사항</StNotice> */}
-      <StUserChatBox>
-        <div>
-          {chatMessages?.map((message, index) => {
-            return (
-              <Chat
-                // eslint-disable-next-line react/no-array-index-key
-                key={String(index)}
-                className={message.sender === nickname ? 'my' : 'other'}
-              >
-                <div>{`${message.sender}: ${message.message}`}</div>
-              </Chat>
-            );
-          })}
-        </div>
-      </StUserChatBox>
-      <StSendChat onKeyUp={onKeyUpEnter}>
-        <input
-          type="text"
-          placeholder="채팅을 입력해주세요."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyUp={onKeyUpEnter}
-        />
-        <StChatEnter onClick={() => publish(message)}>
-          <img src={chatEnterBtn} alt="입력" />
-        </StChatEnter>
-      </StSendChat>
+      <StChatBoxCon>
+        <StNoticeBack>
+          <StNoticeText>{notice}</StNoticeText>
+        </StNoticeBack>
+        {/* <StNotice>공지사항</StNotice> */}
+        <StUserChatBox>
+          <div>
+            {chatMessages?.map((message, index) => {
+              return (
+                <Chat
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={String(index)}
+                  className={message.sender === nickname ? 'my' : 'other'}
+                >
+                  <div>{`${message.sender}: ${message.message}`}</div>
+                </Chat>
+              );
+            })}
+          </div>
+        </StUserChatBox>
+        <StSendChat onKeyUp={onKeyUpEnter}>
+          <input
+            type="text"
+            placeholder="채팅을 입력해주세요."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyUp={onKeyUpEnter}
+          />
+          <StChatEnter onClick={() => publish(message)}>
+            <img src={chatEnterBtn} alt="입력" />
+          </StChatEnter>
+        </StSendChat>
+      </StChatBoxCon>
     </StChatBox>
   );
 }
@@ -207,11 +212,12 @@ const StSendChat = styled.div`
   justify-content: space-between;
   align-items: center;
   position: absolute;
-  top: 670px;
+  top: 645px;
+  left: 0;
 
   input {
     width: 374px;
-    height: 64px;
+    height: 70px;
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
     outline: 7px solid ${({ theme }) => theme.colors.brown};
@@ -220,7 +226,7 @@ const StSendChat = styled.div`
     color: ${({ theme }) => theme.colors.text};
     text-indent: 16px;
     line-height: 22px;
-    margin-left: 30px;
+    margin-right: 20px;
   }
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};
@@ -230,7 +236,6 @@ const StSendChat = styled.div`
 const StChatEnter = styled.button`
   width: 96px;
   height: 74px;
-  margin-right: 20px;
 `;
 
 export default ChatBox;
