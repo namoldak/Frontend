@@ -2,31 +2,32 @@ import React from 'react';
 import styled from 'styled-components';
 import CreateRoom from './CreateRoom';
 import SearchRoom from './SearchRoom';
-import ToLanding from './ToLanding';
+import Header from './Header';
 
 function RoomListHeaderLayout() {
   return (
-    <StRoomListHeaderLayout>
+    <StRoomListHeader>
+      <Header />
       <StRoomListHeaderBox>
-        <ToLanding />
         <SearchRoom />
         <CreateRoom />
       </StRoomListHeaderBox>
-    </StRoomListHeaderLayout>
+    </StRoomListHeader>
   );
 }
 
-const StRoomListHeaderLayout = styled.div`
+const StRoomListHeader = styled.div`
   width: 100%;
   margin: 0 auto;
-  border: 1px solid #000;
+  margin-top: 20px;
 `;
 
 const StRoomListHeaderBox = styled.div`
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 10px;
+  margin: 20px 0;
 `;
 
 export default RoomListHeaderLayout;

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { searchRoom } from '../../../../redux/modules/roomSlice';
+import Input from '../../../common/Input';
 import search from '../../../../assets/images/search.svg';
 
 function SearchRoom() {
@@ -31,7 +32,7 @@ function SearchRoom() {
 
   return (
     <StSearchRoom>
-      <SearchInput
+      <Input
         ref={input}
         placeholder="방 제목을 검색하닭"
         value={keyword}
@@ -47,29 +48,19 @@ function SearchRoom() {
 }
 
 const StSearchRoom = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
-  padding: 20px;
-  background-color: ${({ theme }) => theme.colors.lightBrown};
-`;
+  position: relative;
 
-const SearchInput = styled.input`
-  width: 100%;
-  height: 30px;
+  input {
+    width: 913px;
+    border-radius: 30px;
+    margin-right: 10px;
+  }
 `;
 
 const SearchBtn = styled.button`
-  margin-left: 10px;
-  border: 0;
-  background: none;
-  cursor: pointer;
-
-  img {
-    width: 30px;
-    height: 30px;
-  }
+  position: absolute;
+  top: 16%;
+  right: 4%;
 `;
 
 export default SearchRoom;

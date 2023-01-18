@@ -18,6 +18,7 @@ const colors = {
   lightBrown: '6E3D12', // 밝은 갈색
   brown: '#643B11', // 갈색
   text: '#321D07', // 짙은 갈색
+  text2: '#212121', // 연한 검정
 };
 
 const common = {
