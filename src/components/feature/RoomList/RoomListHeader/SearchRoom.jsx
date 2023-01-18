@@ -49,10 +49,12 @@ function SearchRoom() {
 
 const StSearchRoom = styled.div`
   position: relative;
+  display: flex;
+  justify-content: space-between;
 
   input {
-    width: 528px;
-    height: 54px;
+    width: 913px;
+    height: 70px;
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
     outline: 7px solid ${({ theme }) => theme.colors.brown};
@@ -61,6 +63,7 @@ const StSearchRoom = styled.div`
     color: ${({ theme }) => theme.colors.text};
     text-indent: 16px;
     line-height: 22px;
+    margin-right: 10px;
   }
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};

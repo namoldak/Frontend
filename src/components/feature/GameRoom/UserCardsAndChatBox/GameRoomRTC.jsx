@@ -96,7 +96,7 @@ function GameRoomRTC() {
           setIsStartModal(true);
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
-          setMyKeyword('나만 모른닭');
+          setMyKeyword('???');
           if (myNickName === owner) {
             startBtn.current.disabled = true;
             leaveBtn.current.disabled = true;
@@ -639,13 +639,18 @@ function GameRoomRTC() {
               />
             )}
           </div>
-          {isOwner ? (
+          {isOwner && (
             <button ref={startBtn} onClick={gameStart}>
-              시작하기
+              <img src={gameStartBtn} alt="게임시작" />
+            </button>
+          )}
+          {/* {isOwner ? (
+            <button ref={startBtn} onClick={gameStart}>
+              <img src={gameStartBtn} alt="게임시작" />
             </button>
           ) : (
             <div>방장이아닙니다</div>
-          )}
+          )} */}
           <StSettingBtn>
             <img src={settingBtn} alt="setting_image" />
           </StSettingBtn>
@@ -655,12 +660,12 @@ function GameRoomRTC() {
       <StGameRoomMain>
         <StGameCategoryAndUserCards>
           <StCategoryBack>
-            <StCategoryText>{category}</StCategoryText>
+            <StCategoryText>{category || '주제'}</StCategoryText>
           </StCategoryBack>
           <StUserCards>
             <StCard>
               <StKeywordBack>
-                <StKeyword>{myKeyword}</StKeyword>
+                <StKeyword>{myKeyword || '키워드'}</StKeyword>
               </StKeywordBack>
               <StVideoBox>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
@@ -717,7 +722,15 @@ function GameRoomRTC() {
             })}
           </StUserCards>
         </StGameCategoryAndUserCards>
-        <ChatBox notice={notice} />
+        <ChatBox
+          notice={
+            notice || (
+              <p>
+                게임 진행 시 <span>공지사항</span>을 안내해 드립니다.
+              </p>
+            )
+          }
+        />
       </StGameRoomMain>
     </StGameRoomRTC>
   );
@@ -736,7 +749,7 @@ const StGameRoomHeader = styled.div`
   margin-bottom: 20px;
 `;
 
-const StLeaveBtn = styled.div`
+const StLeaveBtn = styled.button`
   margin-right: auto;
 `;
 
@@ -759,7 +772,7 @@ const StGameCategoryAndUserCards = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
 `;
 
-const StCategoryBack = styled.p`
+const StCategoryBack = styled.div`
   background-image: url(${categoryImg});
   background-size: cover;
   background-repeat: no-repeat;
@@ -798,7 +811,10 @@ const StCard = styled.div`
 `;
 
 const StVideoBox = styled.div`
-  width: 240px;
+  width: 150px;
+  max-width: 150px;
+  min-height: 150px;
+  margin: 0 auto;
 
   video {
     width: 100%;
@@ -831,7 +847,6 @@ const StNickName = styled.span`
   text-align: center;
   border-top: 6px solid #f5c86f;
   padding: 7px 0;
-  /* line-height: 24px; */
 `;
 
 const Stimg = styled.img`
