@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 function Timer({ setIsTimer }) {
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(20);
 
   useEffect(() => {
     const countdown = setInterval(() => {

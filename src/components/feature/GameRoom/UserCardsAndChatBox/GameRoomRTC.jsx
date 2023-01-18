@@ -640,10 +640,12 @@ function GameRoomRTC() {
               />
             )}
           </div>
-          {isOwner && (
+          {isOwner ? (
             <button ref={startBtn} onClick={gameStart}>
-              <img src={gameStartBtn} alt="게임시작버튼" />
+              시작하기
             </button>
+          ) : (
+            <div>방장이아닙니다</div>
           )}
           <StSettingBtn>
             <img src={settingBtn} alt="setting_image" />

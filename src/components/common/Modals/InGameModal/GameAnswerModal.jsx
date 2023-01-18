@@ -66,41 +66,15 @@ function GameAnswerModal({
 }
 
 const StModalContainer = styled.div`
-  ${({ theme }) => theme.common.flexCenterColumn};
-  margin-top: 60px;
-
-  input {
-    width: 420px;
-    margin-top: 47px;
-    margin-bottom: 60px;
-  }
-`;
-
-const StTitle = styled.div`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 38px;
-  font-weight: 900;
-`;
-
-const StNotice = styled.div`
-  color: ${({ theme }) => theme.colors.text};
-  margin-top: 20px;
-`;
-
-const StBtnBox = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
 `;
 
-const StSkip = styled.div`
-  width: 184px;
-  height: 70px;
-  margin-right: 25px;
-`;
-
-const StAnswer = styled.div`
-  width: 184px;
-  height: 70px;
-  margin-left: 25px;
-`;
+const StTimeText = styled.div``;
+const LimitTimer = styled.div``;
 
 export default GameAnswerModal;
