@@ -9,30 +9,21 @@ import chatBack2 from '../../../../assets/images/chatBack2.svg';
 import chatEnterBtn from '../../../../assets/images/chatEnterBtn.svg';
 import chatNotice from '../../../../assets/images/chatNotice.svg';
 
-function ChatBox({ notice, client, chatMessages, sendChat }) {
-  const param = useParams();
-  const [cookie] = useCookies();
+function ChatBox({ notice, sendChat, chatMessages }) {
   const nickname = getNicknameCookie('nickname');
-  const [message, setMessage] = useState(''); // input value 값
+  const [message, setMessage] = useState('');
   const input = useRef(null);
-  const connectHeaders = {
-    Authorization: cookie.access_token,
-    'Refresh-Token': cookie.refresh_token,
-  };
 
   console.log('sendChat', sendChat);
-  console.log('client:', client);
-  // input value 즉 메시지 채팅을 입력
+
   function publish(value) {
-    sendChat(value, nickname);
+    sendChat(value);
     setMessage('');
   }
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
-      document.activeElement.blur();
       publish(message);
-      input.current.focus();
     }
   }
 
@@ -58,8 +49,9 @@ function ChatBox({ notice, client, chatMessages, sendChat }) {
             })}
           </div>
         </StUserChatBox>
-        <StSendChat onKeyUp={onKeyUpEnter}>
+        <StSendChat>
           <input
+            ref={input}
             type="text"
             placeholder="채팅을 입력해주세요."
             value={message}
@@ -94,7 +86,7 @@ const StChatBoxCon = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   padding: 20px 18px 20px 18px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 `;
 
 const StNoticeBack = styled.div`
@@ -120,7 +112,7 @@ const StNoticeText = styled.p`
 const StUserChatBox = styled.div`
   margin: 20px auto;
   max-height: 500px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 `;
 
 const Chat = styled.div`
