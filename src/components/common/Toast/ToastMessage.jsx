@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-function Toast({ setToastState, text }) {
+function Toast({ setToastState, text, type }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setToastState(false);
@@ -16,7 +16,7 @@ function Toast({ setToastState, text }) {
     <StBackground>
       <StToastBorder>
         <StToastMessage>
-          <p>{text}</p>
+          <p className={type === 'start' ? 'start' : ''}>{text}</p>
         </StToastMessage>
       </StToastBorder>
     </StBackground>
@@ -55,9 +55,13 @@ const StToastBorder = styled.div`
 `;
 
 const StToastMessage = styled.div`
-  font-size: 100px;
-  font-weight: 700;
-  color: #b23d3d;
+  .end {
+    color: green;
+  }
+
+  .start {
+    color: red;
+  }
 `;
 
 export default Toast;

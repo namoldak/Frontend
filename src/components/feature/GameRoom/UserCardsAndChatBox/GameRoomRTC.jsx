@@ -27,6 +27,7 @@ import categoryImg from '../../../../assets/images/category.svg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 import userCardImg from '../../../../assets/images/userCardImg.svg';
 
+
 let stream = null;
 let pcs = {};
 let muted = false;
@@ -63,7 +64,6 @@ function GameRoomRTC() {
   const [winner, setWinner] = useState('');
   const [text, setText] = useState('');
   const [notice, setNotice] = useState('');
-  // `게임 진행 시 ${(<span>공지사항</span>)}을 안내해 드립니다.`,
 
   function usePrevious(users) {
     const ref = useRef();

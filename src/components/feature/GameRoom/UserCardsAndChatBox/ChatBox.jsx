@@ -19,11 +19,12 @@ function ChatBox({ notice }) {
   const [message, setMessage] = useState(''); // input value 값
   const [chatMessages, setChatMessages] = useState([]); // 누적 채팅 메시지들
   const [chatUser, setChatUser] = useState([]); // 누적 유저 이름들
+  const input = useRef(null);
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
-
+  console.log(notice);
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
@@ -77,11 +78,10 @@ function ChatBox({ notice }) {
 
   // input value 즉 메시지 채팅을 입력
   function publish(value) {
-    if (message === '') {
+    if (message.trim() === '') {
       alert('채팅 내용을 입력해주세요.');
       return;
     }
-
     client.current.publish({
       destination: `/sub/gameroom/${param.roomId}`,
       body: JSON.stringify({
@@ -100,7 +100,9 @@ function ChatBox({ notice }) {
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
-      publish();
+      // document.activeElement.blur();
+      publish(message);
+      input.current.focus();
     }
   }
 

@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function Timer({ setIsStartTimer, setIsMyTurnModal }) {
-  const [seconds, setSeconds] = useState(20);
+function SpotTimer({ setIsSpotTimer, setIsMyTurnModal }) {
+  const [seconds, setSeconds] = useState(10);
 
   useEffect(() => {
     const countdown = setInterval(() => {
       setSeconds(parseInt(seconds, 10) - 1);
     }, 1000);
     if (parseInt(seconds, 10) === 0) {
-      setIsStartTimer(false);
+      setIsSpotTimer(false);
       setIsMyTurnModal(true);
     }
     return () => clearInterval(countdown);
@@ -24,7 +24,7 @@ function Timer({ setIsStartTimer, setIsMyTurnModal }) {
   );
 }
 
-export default Timer;
+export default SpotTimer;
 
 const StTimer = styled.div`
   border: 1px solid green;
