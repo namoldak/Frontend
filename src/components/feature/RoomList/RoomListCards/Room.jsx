@@ -9,7 +9,7 @@ import egg from '../../../../assets/images/egg.svg';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 
 function Room({ roomInfo }) {
-  console.log('roomInfo', roomInfo);
+  // console.log('roomInfo', roomInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

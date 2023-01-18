@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { searchRoom } from '../../../../redux/modules/roomSlice';
-import Input from '../../../common/Input';
+// import Input from '../../../common/Input';
 import search from '../../../../assets/images/search.svg';
 
 function SearchRoom() {
@@ -32,7 +32,7 @@ function SearchRoom() {
 
   return (
     <StSearchRoom>
-      <Input
+      <input
         ref={input}
         placeholder="방 제목을 검색하닭"
         value={keyword}
@@ -40,7 +40,7 @@ function SearchRoom() {
         onKeyUp={onKeyUpEnter}
       />
       {/* eslint-disable-next-line react/jsx-no-bind */}
-      <SearchBtn disabled={!keyword} onClick={onClickSearchRoom}>
+      <SearchBtn onClick={onClickSearchRoom}>
         <img src={search} alt="search icon" />
       </SearchBtn>
     </StSearchRoom>
@@ -51,9 +51,19 @@ const StSearchRoom = styled.div`
   position: relative;
 
   input {
-    width: 913px;
-    border-radius: 30px;
-    margin-right: 10px;
+    width: 528px;
+    height: 54px;
+    background: ${({ theme }) => theme.colors.lightBeige};
+    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
+    outline: 7px solid ${({ theme }) => theme.colors.brown};
+    border-radius: 32px;
+    font-size: 18px;
+    color: ${({ theme }) => theme.colors.text};
+    text-indent: 16px;
+    line-height: 22px;
+  }
+  input::placeholder {
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 
