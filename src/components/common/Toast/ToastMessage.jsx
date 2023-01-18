@@ -48,10 +48,6 @@ const StToastBorder = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  width: 400px;
-  height: 300px;
-
   text-align: center;
 
   position: fixed;
