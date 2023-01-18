@@ -5,7 +5,6 @@ import Button from '../../Button';
 
 // 내부 모듈
 import Input from '../../Input';
-import { instance } from '../../../../api/core/axios';
 
 function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
   const [answerValue, setAnswerValue] = useState('');
@@ -31,8 +30,7 @@ function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
   }, [seconds]);
 
   return (
-    // <StModalContainer onKeyUp={onKeyUpEnter}>
-    <StModalContainer>
+    <StModalContainer onKeyUp={onKeyUpEnter}>
       <StTimeText>제한 시간</StTimeText>
       <LimitTimer>{seconds} 초</LimitTimer>
       <Input
@@ -40,7 +38,14 @@ function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
         value={answerValue}
         onChange={onInputHandler}
       />
-      <Button>SKIP</Button>
+      <Button
+        onClick={() => {
+          skipAnswer(nickName);
+          setIsMyTurnModal(false);
+        }}
+      >
+        SKIP
+      </Button>
       <Button
         onClick={() => {
           sendAnswer(answerValue, nickName);
@@ -54,15 +59,41 @@ function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
 }
 
 const StModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  ${({ theme }) => theme.common.flexCenterColumn};
+  margin-top: 60px;
 
-  gap: 10px;
+  input {
+    width: 420px;
+    margin-top: 47px;
+    margin-bottom: 60px;
+  }
 `;
 
-const StTimeText = styled.div``;
-const LimitTimer = styled.div``;
+const StTitle = styled.div`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 38px;
+  font-weight: 900;
+`;
+
+const StNotice = styled.div`
+  color: ${({ theme }) => theme.colors.text};
+  margin-top: 20px;
+`;
+
+const StBtnBox = styled.div`
+  display: flex;
+`;
+
+const StSkip = styled.div`
+  width: 184px;
+  height: 70px;
+  margin-right: 25px;
+`;
+
+const StAnswer = styled.div`
+  width: 184px;
+  height: 70px;
+  margin-left: 25px;
+`;
 
 export default GameAnswerModal;

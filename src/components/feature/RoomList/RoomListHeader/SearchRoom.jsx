@@ -51,9 +51,19 @@ const StSearchRoom = styled.div`
   position: relative;
 
   input {
-    width: 913px;
-    border-radius: 30px;
-    margin-right: 10px;
+    width: 528px;
+    height: 54px;
+    background: ${({ theme }) => theme.colors.lightBeige};
+    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
+    outline: 7px solid ${({ theme }) => theme.colors.brown};
+    border-radius: 32px;
+    font-size: 18px;
+    color: ${({ theme }) => theme.colors.text};
+    text-indent: 16px;
+    line-height: 22px;
+  }
+  input::placeholder {
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import ModalPortal from '../ModalPortal';
+import modalBack from '../../../../assets/images/modalBack.svg';
 
 function GameModal({ content }) {
   return (
@@ -37,15 +38,16 @@ const StBackground = styled.div`
 `;
 
 const StModalBorder = styled.div`
-  padding: 20px;
-  width: 500px;
-  height: fit-content;
-  border-radius: 15px;
-  background-color: #fff;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-image: url(${modalBack});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 615px;
+  height: 453px;
+  padding: 30px;
 `;
 
 export default GameModal;

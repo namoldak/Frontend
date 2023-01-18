@@ -19,6 +19,9 @@ import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
 import duckImg from '../../../../assets/images/duck.jpg';
+import backBtn from '../../../../assets/images/backBtn.svg';
+import settingBtn from '../../../../assets/images/settingBtn.svg';
+import gameStartBtn from '../../../../assets/images/startBtn.svg';
 
 let stream;
 let pcs = {};
@@ -26,8 +29,8 @@ let muted = false;
 let cameraOff = false;
 let myPeerConnection;
 function GameRoomRTC() {
-  // const SockJsRTC = new SockJS('http://13.209.84.31:8080/signal');
   const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  // const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const navigate = useNavigate();
@@ -50,6 +53,9 @@ function GameRoomRTC() {
   const [isMyTurnModal, setIsMyTurnModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
+  const [winner, setWinner] = useState('');
+  const [text, setText] = useState('');
+  const [notice, setNotice] = useState('');
 
   function usePrevious(users) {
     const ref = useRef();
@@ -367,6 +373,7 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
+    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
     socketRef.current.onopen = async () => {
       // navigator.mediaDevices
@@ -583,14 +590,12 @@ function GameRoomRTC() {
       </StGameRoomHeader>
       <StGameRoomMain>
         <StGameTitleAndUserCards>
-          <StTitle>
+          <StCategory>
             <h1>{category}</h1>
-          </StTitle>
+          </StCategory>
           <StUserCards>
             <StCard>
-              Card
               <h4>{myKeyword}</h4>
-              <span>{myNickName}님</span>
               <div>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                 <video
@@ -627,6 +632,7 @@ function GameRoomRTC() {
                   <option ref={cameraOption} value="device" />
                 </select>
               </div>
+              <span>{myNickName}님</span>
             </StCard>
             {users.map((user) => {
               return (
@@ -645,36 +651,16 @@ function GameRoomRTC() {
             })}
           </StUserCards>
         </StGameTitleAndUserCards>
-        <div>
-          {isStartTimer && (
-            <SpotTimer
-              setIsStartTimer={setIsStartTimer}
-              setIsMyTurnModal={setIsMyTurnModal}
-              // 삼항연산자 사용 (발언권 있는 사람의 경우 스팟타이머, 아니면 그냥 타이머)
-            />
-          )}
-          {isMyTurnModal && (
-            <GameModal
-              content={
-                <GameAnswerModal
-                  roomId={roomId}
-                  setIsMyTurnModal={setIsMyTurnModal}
-                  sendAnswer={sendAnswer}
-                  nickName={myNickName}
-                />
-              }
-            />
-          )}
-        </div>
-        <ChatBox />
+        <ChatBox notice={notice} />
       </StGameRoomMain>
     </StGameRoomOuter>
   );
 }
 
-const StGameRoomOuter = styled.div`
-  border: 5px solid black;
-  display: grid;
+const StGameRoomRTC = styled.div`
+  width: 100%;
+  height: 100vh;
+`;
 
   grid-template-rows: 100px 1fr;
 `;
@@ -700,24 +686,84 @@ const StTimer = styled.div`
 const StChatBox = styled.div`
   border: 2px solid black;
   display: grid;
-  grid-template-rows: 30px 1fr 30px;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px;
 `;
 
-const StTitle = styled.div`
+const StGameTitleAndUserCards = styled.div`
+  border: 2px solid black;
+`;
+
+const StCategory = styled.div`
   border: 1px solid black;
   display: grid;
   grid-template-rows: 120px 1fr;
 `;
 
+const StCategoryText = styled.p`
+  font-size: 40px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 130px;
+  color: '#5D3714';
+`;
+
 const StUserCards = styled.div`
-  border: 1px solid black;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  background-image: url(${userCardImg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 590px;
+  height: 620px;
+  margin-top: 22px;
+  padding: 30px;
 `;
 
 const StCard = styled.div`
-  border: 1px solid black;
+  width: 260px;
+  height: 274px;
+  border: 6px solid #f5c86f;
+  border-radius: 20px;
+  /* overflow: hidden; */
+`;
+
+const StVideoBox = styled.div`
+  width: 240px;
+
+  video {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const StKeywordBack = styled.div`
+  background-image: url(${keywordImg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 214px;
+  height: 53px;
+  margin: 10px auto;
+`;
+
+const StKeyword = styled.div`
+  font-size: 22px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  padding-top: 15px;
+`;
+
+const StNickName = styled.span`
+  display: block;
+  font-size: 24px;
+  font-weight: 400;
+  color: #5d3714;
+  text-align: center;
+  border-top: 6px solid #f5c86f;
+  padding: 7px 0;
+  /* line-height: 24px; */
 `;
 
 const Stimg = styled.img`

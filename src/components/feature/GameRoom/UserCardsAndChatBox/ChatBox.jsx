@@ -5,6 +5,11 @@ import * as SockJs from 'sockjs-client';
 import * as StompJs from '@stomp/stompjs';
 import { useCookies } from 'react-cookie';
 import { getNicknameCookie } from '../../../../utils/cookies';
+// 내부 모듈
+import chatBack from '../../../../assets/images/chatBack.svg';
+import chatBack2 from '../../../../assets/images/chatBack2.svg';
+import chatEnterBtn from '../../../../assets/images/chatEnterBtn.svg';
+import chatNotice from '../../../../assets/images/chatNotice.svg';
 
 function ChatBox() {
   const client = useRef({});
@@ -100,7 +105,8 @@ function ChatBox() {
 
   return (
     <StChatBox>
-      <StNotice>공지내용</StNotice>
+      <StNotice>{notice}</StNotice>
+      {/* <StNotice>공지사항</StNotice> */}
       <StUserChatBox>
         <div>
           {chatMessages?.map((message, index) => {
@@ -116,7 +122,7 @@ function ChatBox() {
           })}
         </div>
       </StUserChatBox>
-      <StSendChat>
+      <StSendChat onKeyUp={onKeyUpEnter}>
         <input
           type="text"
           placeholder="채팅을 입력해주세요."
@@ -124,38 +130,107 @@ function ChatBox() {
           onChange={(e) => setMessage(e.target.value)}
           onKeyUp={onKeyUpEnter}
         />
-        <button onClick={() => publish(message)}>전송</button>
+        <StChatEnter onClick={() => publish(message)}>
+          <img src={chatEnterBtn} alt="입력" />
+        </StChatEnter>
       </StSendChat>
     </StChatBox>
   );
 }
 
 const StChatBox = styled.div`
-  border: 2px solid black;
-  display: grid;
-  grid-template-rows: 50px 1fr 50px;
+  position: relative;
+  width: 540px;
+  height: 780px;
+  background-image: url(${chatBack});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
-const StNotice = styled.div`
+
+const StChatBoxCon = styled.div`
+  position: absolute;
+  top: 4%;
+  left: 6%;
+  width: 480px;
+  height: 700px;
+  background-image: url(${chatBack2});
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 20px 18px 20px 18px;
   border: 1px solid black;
 `;
+
+const StNoticeBack = styled.div`
+  background-image: url(${chatNotice});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 446px;
+  height: 62px;
+`;
+
+const StNoticeText = styled.p`
+  font-size: 16px;
+  color: ${({ theme }) => theme.colors.white};
+  font-weight: 600;
+  line-height: 60px;
+  text-align: center;
+
+  span {
+    color: #cc0202;
+  }
+`;
+
 const StUserChatBox = styled.div`
+  margin: 20px auto;
+  max-height: 500px;
   border: 1px solid black;
-`;
-const StSendChat = styled.div`
-  border: 1px solid black;
-  height: 50px;
 `;
 
 const Chat = styled.div`
+  font-size: 18px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  padding: 4px 0 4px 0;
+
   &.my {
     text-align: right;
-    color: blue;
   }
 
   &.other {
-    color: purple;
     text-align: left;
   }
+`;
+
+const StSendChat = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 670px;
+
+  input {
+    width: 374px;
+    height: 64px;
+    background: ${({ theme }) => theme.colors.lightBeige};
+    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
+    outline: 7px solid ${({ theme }) => theme.colors.brown};
+    border-radius: 10px;
+    font-size: 18px;
+    color: ${({ theme }) => theme.colors.text};
+    text-indent: 16px;
+    line-height: 22px;
+    margin-left: 30px;
+  }
+  input::placeholder {
+    color: ${({ theme }) => theme.colors.text};
+  }
+`;
+
+const StChatEnter = styled.button`
+  width: 96px;
+  height: 74px;
+  margin-right: 20px;
 `;
 
 export default ChatBox;
