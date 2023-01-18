@@ -20,6 +20,12 @@ import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
 import duckImg from '../../../../assets/images/duck.jpg';
+import backBtn from '../../../../assets/images/backBtn.svg';
+import settingBtn from '../../../../assets/images/settingBtn.svg';
+import gameStartBtn from '../../../../assets/images/startBtn.svg';
+import categoryImg from '../../../../assets/images/category.svg';
+import keywordImg from '../../../../assets/images/keyword.svg';
+import userCardImg from '../../../../assets/images/userCardImg.svg';
 
 let stream = null;
 let pcs = {};
@@ -27,7 +33,8 @@ let muted = false;
 let cameraOff = false;
 let myPeerConnection;
 function GameRoomRTC() {
-  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const navigate = useNavigate();
@@ -54,7 +61,7 @@ function GameRoomRTC() {
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
   const [winner, setWinner] = useState('');
-  const [text, setText] = useState('');
+  const [notice, setNotice] = useState('');
 
   function usePrevious(users) {
     const ref = useRef();
@@ -80,9 +87,9 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
+      console.log('data', data);
       switch (data.type) {
         case 'START': {
-          setText('Game Start');
           stream.getAudioTracks().forEach((track) => {
             track.enabled = false;
           });
@@ -100,6 +107,7 @@ function GameRoomRTC() {
           break;
         }
         case 'SPOTLIGHT': {
+          setNotice(data.content);
           if (myNickName === data.sender) {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
@@ -116,27 +124,36 @@ function GameRoomRTC() {
           break;
         }
         case 'SKIP': {
+          setNotice(data.content);
           if (myNickName === data.sender) {
-            sendSpotlight();
+            setTimeout(function () {
+              sendSpotlight();
+            }, 2000);
           }
           break;
         }
         case 'FAIL': {
+          setNotice(data.content);
           if (myNickName === data.nickname) {
-            sendSpotlight();
+            setTimeout(function () {
+              sendSpotlight();
+            }, 2000);
           }
           break;
         }
         case 'SUCCESS': {
+          setNotice(data.content);
           if (myNickName === data.nickname) {
-            endGame();
+            setTimeout(function () {
+              endGame();
+            }, 2000);
           }
-          setText(data.content);
           setWinner(data.nickname);
           setIsEndGameModal(true);
           break;
         }
         case 'ENDGAME': {
+          setNotice('');
           setCategory('');
           setKeyword('');
           setMyKeyword('');
@@ -306,7 +323,6 @@ function GameRoomRTC() {
         },
       ]);
     };
-
     try {
       if (peerConnectionLocalStream) {
         peerConnectionLocalStream.getTracks().forEach((track) => {
@@ -407,7 +423,8 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    socketRef.current = new SockJS('https://api.namoldak.com/signal');
+    // socketRef.current = new SockJS('https://api.namoldak.com/signal');
+    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {
@@ -581,51 +598,71 @@ function GameRoomRTC() {
   }, [stream, socketRef.current]);
 
   return (
-    <StGameRoomOuter>
-      {isStartModal && (
-        <ToastMessage
-          setToastState={setIsStartModal}
-          text={text}
-          type="start"
-        />
-      )}
-      {isEndGameModal && (
-        <ToastMessage
-          setToastState={setIsEndGameModal}
-          text={text}
-          type="end"
-        />
-      )}
+    <StGameRoomRTC>
+      <div>
+        {isStartModal && (
+          <ToastMessage setToastState={setIsStartModal} type="start" />
+        )}
+        {isEndGameModal && (
+          <ToastMessage setToastState={setIsEndGameModal} type="end" />
+        )}
+      </div>
       <StGameRoomHeader>
-        <button
+        <StLeaveBtn
           ref={leaveBtn}
           onClick={() => {
             leaveRoom();
           }}
         >
-          방나가기
-        </button>
-        {isOwner ? (
-          <button ref={startBtn} onClick={gameStart}>
-            시작하기
-          </button>
-        ) : (
-          <div>방장이아닙니다</div>
-        )}
-        <button>설정</button>
-        <button onClick={sendSpotlight}>스팟보내기</button>
+          <img src={backBtn} alt="back_image" />
+        </StLeaveBtn>
+        <StHeaderBtnBox>
+          <div>
+            {isSpotTimer && (
+              <SpotTimer
+                setIsSpotTimer={setIsSpotTimer}
+                setIsMyTurnModal={setIsMyTurnModal}
+              />
+            )}
+            {isTimer && <Timer setIsTimer={setIsTimer} />}
+            {isMyTurnModal && (
+              <GameModal
+                content={
+                  <GameAnswerModal
+                    roomId={roomId}
+                    setIsMyTurnModal={setIsMyTurnModal}
+                    sendAnswer={sendAnswer}
+                    nickName={myNickName}
+                    skipAnswer={skipAnswer}
+                  />
+                }
+              />
+            )}
+          </div>
+          {isOwner ? (
+            <button ref={startBtn} onClick={gameStart}>
+              시작하기
+            </button>
+          ) : (
+            <div>방장이아닙니다</div>
+          )}
+          <StSettingBtn>
+            <img src={settingBtn} alt="setting_image" />
+          </StSettingBtn>
+        </StHeaderBtnBox>
+        {/* <button onClick={sendSpotlight}>스팟보내기</button> */}
       </StGameRoomHeader>
       <StGameRoomMain>
-        <StGameTitleAndUserCards>
-          <StTitle>
-            <h1>{category}</h1>
-          </StTitle>
+        <StGameCategoryAndUserCards>
+          <StCategoryBack>
+            <StCategoryText>{category}</StCategoryText>
+          </StCategoryBack>
           <StUserCards>
             <StCard>
-              Card
-              <h4>{myKeyword}</h4>
-              <span>{myNickName}님</span>
-              <div>
+              <StKeywordBack>
+                <StKeyword>{myKeyword}</StKeyword>
+              </StKeywordBack>
+              <StVideoBox>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                 <video
                   muted
@@ -660,7 +697,8 @@ function GameRoomRTC() {
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <option ref={cameraOption} value="device" />
                 </select>
-              </div>
+              </StVideoBox>
+              <StNickName>{myNickName}님</StNickName>
             </StCard>
             {users.map((user) => {
               return (
@@ -678,81 +716,122 @@ function GameRoomRTC() {
               );
             })}
           </StUserCards>
-        </StGameTitleAndUserCards>
-        <div>
-          {isSpotTimer && (
-            <SpotTimer
-              setIsSpotTimer={setIsSpotTimer}
-              setIsMyTurnModal={setIsMyTurnModal}
-            />
-          )}
-          {isTimer && <Timer setIsTimer={setIsTimer} />}
-          {isMyTurnModal && (
-            <GameModal
-              content={
-                <GameAnswerModal
-                  roomId={roomId}
-                  setIsMyTurnModal={setIsMyTurnModal}
-                  sendAnswer={sendAnswer}
-                  nickName={myNickName}
-                  skipAnswer={skipAnswer}
-                />
-              }
-            />
-          )}
-        </div>
-        <ChatBox />
+        </StGameCategoryAndUserCards>
+        <ChatBox notice={notice} />
       </StGameRoomMain>
-    </StGameRoomOuter>
+    </StGameRoomRTC>
   );
 }
 
-const StGameRoomOuter = styled.div`
-  border: 5px solid black;
-  display: grid;
-
-  grid-template-rows: 100px 1fr;
+const StGameRoomRTC = styled.div`
+  width: 100%;
 `;
+
 const StGameRoomHeader = styled.div`
-  border: 3px solid red;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 78px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
+const StLeaveBtn = styled.div`
+  margin-right: auto;
+`;
+
+const StHeaderBtnBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StSettingBtn = styled.button`
+  margin-left: 100px;
 `;
 
 const StGameRoomMain = styled.div`
-  margin-top: 30px;
-  border: 3px solid blue;
   display: grid;
-  grid-template-columns: 1fr 150px 1fr;
+  grid-template-columns: 600px 520px;
+  grid-gap: 40px;
 `;
 
-const StGameTitleAndUserCards = styled.div`
-  border: 2px solid black;
+const StGameCategoryAndUserCards = styled.div`
+  ${({ theme }) => theme.common.flexCenterColumn};
 `;
 
-const StTimer = styled.div`
-  border: 2px solid black;
+const StCategoryBack = styled.p`
+  background-image: url(${categoryImg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 410px;
+  height: 140px;
+  margin: 0 auto;
 `;
 
-const StChatBox = styled.div`
-  border: 2px solid black;
-  display: grid;
-  grid-template-rows: 30px 1fr 30px;
-`;
-
-const StTitle = styled.div`
-  border: 1px solid black;
-  display: grid;
-  grid-template-rows: 120px 1fr;
+const StCategoryText = styled.p`
+  font-size: 40px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 130px;
+  color: '#5D3714';
 `;
 
 const StUserCards = styled.div`
-  border: 1px solid black;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+  background-image: url(${userCardImg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 590px;
+  height: 620px;
+  margin-top: 22px;
+  padding: 30px;
 `;
 
 const StCard = styled.div`
-  border: 1px solid black;
+  width: 260px;
+  height: 274px;
+  border: 6px solid #f5c86f;
+  border-radius: 20px;
+  /* overflow: hidden; */
+`;
+
+const StVideoBox = styled.div`
+  width: 240px;
+
+  video {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const StKeywordBack = styled.div`
+  background-image: url(${keywordImg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 214px;
+  height: 53px;
+  margin: 10px auto;
+`;
+
+const StKeyword = styled.div`
+  font-size: 22px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  padding-top: 15px;
+`;
+
+const StNickName = styled.span`
+  display: block;
+  font-size: 24px;
+  font-weight: 400;
+  color: #5d3714;
+  text-align: center;
+  border-top: 6px solid #f5c86f;
+  padding: 7px 0;
+  /* line-height: 24px; */
 `;
 
 const Stimg = styled.img`

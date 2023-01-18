@@ -15,7 +15,8 @@ import {
 import backBtn from '../../../assets/images/backBtn.svg';
 import settingBtn from '../../../assets/images/settingBtn.svg';
 import landingBack from '../../../assets/images/landingBack.svg';
-import bannerImage from '../../../assets/images/bannerImg.svg';
+import landingTitle from '../../../assets/images/landingTitle.svg';
+import landingBanner from '../../../assets/images/landingBanner.svg';
 import landingToGameBtn from '../../../assets/images/landingToGameBtn.svg';
 
 function Landing() {
@@ -55,7 +56,7 @@ function Landing() {
           </div>
         )}
       </StHeader> */}
-      <StHeaderBtnBox>
+      <StLandingHeader>
         <StBackBtn>
           <Link to="/login">
             <img src={backBtn} alt="back_image" />
@@ -64,11 +65,14 @@ function Landing() {
         <StSettingBtn>
           <img src={settingBtn} alt="setting_image" />
         </StSettingBtn>
-      </StHeaderBtnBox>
+      </StLandingHeader>
       <StLadingMain>
         <StBanner>
+          <StBannerTitle>
+            <img src={landingTitle} alt="나만 모른 닭" />
+          </StBannerTitle>
           <StBannerImg>
-            <img src={bannerImage} alt="banner_image" />
+            <img src={landingBanner} alt="banner_image" />
           </StBannerImg>
           <GameRule />
           <StToGameBtn>
@@ -87,9 +91,10 @@ const StLanding = styled.div`
   padding: 10px;
 `;
 
-const StHeaderBtnBox = styled.div`
+const StLandingHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 `;
 
 const StBackBtn = styled.button`
@@ -100,33 +105,35 @@ const StBackBtn = styled.button`
 const StSettingBtn = styled.button`
   width: 78px;
   height: 78px;
-  /* margin-left: auto; */
 `;
 
 // background image 적용
 const StLadingMain = styled.div`
-  position: fixed;
+  /* position: fixed; */
   width: 1180px;
   height: 800px;
   background-image: url(${landingBack});
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: bottom;
 `;
 
 // 하위 컴포넌트 정렬 위함
 const StBanner = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn}
-  position: absolute;
-  top: -16%;
-  left: 20%;
   width: 739px;
   height: 100%;
   margin: 0 auto;
 `;
 
+const StBannerTitle = styled.div`
+  position: absolute;
+  top: 0;
+`;
+
 const StBannerImg = styled.div`
   width: 100%;
-  height: 671px;
+  /* height: 671px; */
 `;
 
 const StToGameBtn = styled.button`

@@ -9,7 +9,7 @@ import egg from '../../../../assets/images/egg.svg';
 import { enterRoom } from '../../../../redux/modules/roomSlice';
 
 function Room({ roomInfo }) {
-  console.log('roomInfo', roomInfo);
+  // console.log('roomInfo', roomInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -27,15 +27,17 @@ function Room({ roomInfo }) {
   return (
     <StRoomCardBox>
       <div key={roomInfo.id}>
-        <Title>{roomInfo.roomName}</Title>
-        <ImageBox
+        <StRoomTitle>{roomInfo.roomName}</StRoomTitle>
+        <StEgg
           onClick={() => {
             clickRoom(roomInfo);
           }}
         >
           <img src={egg} alt="egg_image" />
-        </ImageBox>
-        <div>{roomInfo.member.length}/4</div>
+        </StEgg>
+        <StRoomInfo>
+          <p>{roomInfo.member.length} / 4</p>
+        </StRoomInfo>
       </div>
     </StRoomCardBox>
   );
@@ -43,33 +45,34 @@ function Room({ roomInfo }) {
 
 export default Room;
 
-const Title = styled.div`
-  font-size: 26px;
-  text-align: center;
-  margin-bottom: 10px;
-`;
-
-const ImageBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  width: 40%;
-  height: 40%;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-`;
-
 const StRoomCardBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  width: fit-content;
-  height: fit-content;
-
+  text-align: center;
   margin: auto;
+`;
+
+const StRoomTitle = styled.div`
+  font-size: 26px;
+  ${({ theme }) => theme.colors.text2}
+`;
+
+const StEgg = styled.div`
+  width: 150px;
+  height: 200px;
+  margin: 20px 0;
+`;
+
+const StRoomInfo = styled.div`
+  background: ${({ theme }) => theme.colors.lightBeige};
+  width: 68px;
+  height: 37px;
+  border-radius: 10px;
+  margin: 0 auto;
+
+  p {
+    font-size: 18px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.black};
+    text-align: center;
+    padding-top: 10px;
+  }
 `;
