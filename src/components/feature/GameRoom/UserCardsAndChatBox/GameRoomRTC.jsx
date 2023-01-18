@@ -62,6 +62,7 @@ function GameRoomRTC() {
   const [users, setUsers] = useState([]);
   const [winner, setWinner] = useState('');
   const [notice, setNotice] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
 
   function usePrevious(users) {
     const ref = useRef();
@@ -191,6 +192,12 @@ function GameRoomRTC() {
           );
           break;
         }
+        case 'CHAT': {
+          console.log('chat 수신');
+          setChatMessages((chatMessages) => [...chatMessages, data]);
+          console.log(chatMessages);
+          break;
+        }
         default: {
           // console.log('default');
           break;
@@ -219,6 +226,23 @@ function GameRoomRTC() {
   }, []);
 
   /// ////////////////////////////////////////!SECTION
+
+  function sendChat(message) {
+    console.log('msg', message);
+    console.log('rtc sendchat');
+    if (message.trim() === '') {
+      return;
+    }
+    client.current.publish({
+      destination: `/sub/gameRoom/${param.roomId}`,
+      body: JSON.stringify({
+        type: 'CHAT',
+        roomId: param.roomId,
+        sender: myNickName,
+        message,
+      }),
+    });
+  }
 
   function endGame() {
     client.current.publish({
@@ -717,7 +741,12 @@ function GameRoomRTC() {
             })}
           </StUserCards>
         </StGameCategoryAndUserCards>
-        <ChatBox notice={notice} />
+        <ChatBox
+          notice={notice}
+          sendChat={sendChat}
+          client={client}
+          chatMessages={chatMessages}
+        />
       </StGameRoomMain>
     </StGameRoomRTC>
   );
@@ -759,7 +788,7 @@ const StGameCategoryAndUserCards = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
 `;
 
-const StCategoryBack = styled.p`
+const StCategoryBack = styled.div`
   background-image: url(${categoryImg});
   background-size: cover;
   background-repeat: no-repeat;
