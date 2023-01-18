@@ -88,7 +88,7 @@ const StChatBoxCon = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   padding: 20px 18px 20px 18px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 `;
 
 const StNoticeBack = styled.div`
@@ -114,7 +114,7 @@ const StNoticeText = styled.p`
 const StUserChatBox = styled.div`
   margin: 20px auto;
   max-height: 500px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 `;
 
 const Chat = styled.div`

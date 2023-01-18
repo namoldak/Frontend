@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+
+// 내부 모듈
 import duckImg from '../../../../assets/images/duck.jpg';
+import keywordImg from '../../../../assets/images/keyword.svg';
 
 function Audio({ stream, nickName, isCameraOn, keyword }) {
   const videoRef = useRef(null);
@@ -30,10 +33,11 @@ function Audio({ stream, nickName, isCameraOn, keyword }) {
 
   return (
     <>
-      Card
-      <h4>{userkeyword}</h4>
-      <span>{nickName}님</span>
-      <div>
+      <StKeywordBack>
+        <StKeyword>{userkeyword || '키워드'}</StKeyword>
+      </StKeywordBack>
+      {/* <h4>{userkeyword}</h4> */}
+      <StVideoBox>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <video
           ref={videoRef}
@@ -52,11 +56,51 @@ function Audio({ stream, nickName, isCameraOn, keyword }) {
           width={200}
           height={200}
         />
-      </div>
+      </StVideoBox>
+      <StNickName>{nickName}님</StNickName>
     </>
   );
 }
 
 export default Audio;
+
+const StKeywordBack = styled.div`
+  background-image: url(${keywordImg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 214px;
+  height: 53px;
+  margin: 10px auto;
+`;
+
+const StKeyword = styled.div`
+  font-size: 22px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  padding-top: 15px;
+`;
+
+const StVideoBox = styled.div`
+  width: 150px;
+  max-width: 150px;
+  min-height: 150px;
+  margin: 0 auto;
+
+  video {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const StNickName = styled.span`
+  display: block;
+  font-size: 24px;
+  font-weight: 400;
+  color: #5d3714;
+  text-align: center;
+  border-top: 6px solid #f5c86f;
+  padding: 7px 0;
+`;
 
 const Stimg = styled.img``;
