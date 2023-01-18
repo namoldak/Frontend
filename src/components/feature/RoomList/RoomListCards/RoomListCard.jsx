@@ -11,16 +11,15 @@ import rightArrow from '../../../../assets/images/rightArrow.svg';
 import Room from './Room';
 
 function RoomListCard() {
-  const rooms = useSelector((state) => state.rooms);
-  console.log('rooms', rooms);
+  // const rooms = useSelector((state) => state.rooms);
+  // // console.log('rooms', rooms);
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
   console.log('gameRoomResponseDtoList', gameRoomResponseDtoList);
-  console.log('totalPage', totalPage);
+  // console.log('totalPage', totalPage);
 
   const [page, setPage] = useState(0);
-  console.log('page', page);
   const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
 

@@ -94,7 +94,7 @@ function ChatBox({ notice }) {
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
-      document.activeElement.blur();
+      // document.activeElement.blur();
       publish(message);
       input.current.focus();
     }

@@ -10,7 +10,6 @@ export const createRoom = createAsyncThunk(
   async (newRoom, thunkAPI) => {
     try {
       const response = await instance.post(`/rooms`, newRoom);
-      // console.log('create room:', response);
       // console.log('roomId', response.data.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
@@ -68,10 +67,10 @@ export const searchRoom = createAsyncThunk(
     console.log('keyword', keyword);
     try {
       const response = await instance.get(`/rooms/search?keyword=${keyword}`);
-      console.log('search room', response);
-      return thunkAPI.fulfillWithValue(response.data);
+      // console.log('search room', response);
+      return thunkAPI.fulfillWithValue(response.data.gameRoomResponseDtoList);
     } catch (error) {
-      console.log('search room error', error);
+      // console.log('search room error', error);
       alert(error.response.data.statusMsg);
       return thunkAPI.rejectWithValue(error);
     }
@@ -83,7 +82,7 @@ export const roomSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      console.log('action payload', action.payload);
+      // console.log('action payload', action.payload);
       sessionStorage.setItem('owner', action.payload.owner);
       state.rooms.gameRoomResponseDtoList.push(action.payload);
       // 세션스토리지에 오너저장
@@ -93,7 +92,7 @@ export const roomSlice = createSlice({
       state.error = action.payload;
     },
     [enterRoom.fulfilled]: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       sessionStorage.setItem('owner', action.payload.data.owner);
       state.rooms = action.payload;
     },
@@ -105,7 +104,7 @@ export const roomSlice = createSlice({
       state.error = action.payload;
     },
     [searchRoom.fulfilled]: (state, action) => {
-      console.log('action payload searchRoom', action);
+      // console.log('action payload searchRoom', action);
       state.rooms.gameRoomResponseDtoList = action.payload;
     },
     [searchRoom.rejected]: (state, action) => {
