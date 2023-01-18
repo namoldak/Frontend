@@ -62,6 +62,7 @@ function GameRoomRTC() {
   const [users, setUsers] = useState([]);
   const [winner, setWinner] = useState('');
   const [notice, setNotice] = useState('');
+  const [chatMessages, setChatMessages] = useState([]); // 누적 채팅 메시지들
 
   function usePrevious(users) {
     const ref = useRef();
@@ -89,6 +90,16 @@ function GameRoomRTC() {
       const data = JSON.parse(body);
       console.log('data', data);
       switch (data.type) {
+        case 'ENTER': {
+          // console.log('enter');
+          break;
+        }
+        case 'CHAT': {
+          console.log('chat 수신');
+          setChatMessages((chatMessages) => [...chatMessages, data]);
+          console.log(chatMessages);
+          break;
+        }
         case 'START': {
           stream.getAudioTracks().forEach((track) => {
             track.enabled = false;
@@ -219,6 +230,25 @@ function GameRoomRTC() {
   }, []);
 
   /// ////////////////////////////////////////!SECTION
+
+  const sendChat = (value, nickName) => {
+    if (value.trim() === '') {
+      // alert('채팅 내용을 입력해주세요.');
+      return;
+    }
+    console.log('value:', value);
+    console.log('메세지 전송');
+    console.log(client);
+    client.current.publish({
+      destination: `/sub/gameroom/${param.roomId}`,
+      body: JSON.stringify({
+        type: 'CHAT',
+        roomId: param.roomId,
+        sender: nickName,
+        message: value,
+      }),
+    });
+  };
 
   function endGame() {
     client.current.publish({
@@ -717,7 +747,12 @@ function GameRoomRTC() {
             })}
           </StUserCards>
         </StGameCategoryAndUserCards>
-        <ChatBox notice={notice} />
+        <ChatBox
+          notice={notice}
+          chatMessages={chatMessages}
+          client={client.current}
+          snedChat={sendChat}
+        />
       </StGameRoomMain>
     </StGameRoomRTC>
   );
@@ -759,7 +794,7 @@ const StGameCategoryAndUserCards = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
 `;
 
-const StCategoryBack = styled.p`
+const StCategoryBack = styled.div`
   background-image: url(${categoryImg});
   background-size: cover;
   background-repeat: no-repeat;

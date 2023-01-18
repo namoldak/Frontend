@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import * as SockJs from 'sockjs-client';
-import * as StompJs from '@stomp/stompjs';
 import { useCookies } from 'react-cookie';
 import { getNicknameCookie } from '../../../../utils/cookies';
 // 내부 모듈
@@ -11,92 +9,24 @@ import chatBack2 from '../../../../assets/images/chatBack2.svg';
 import chatEnterBtn from '../../../../assets/images/chatEnterBtn.svg';
 import chatNotice from '../../../../assets/images/chatNotice.svg';
 
-function ChatBox({ notice }) {
-  const client = useRef({});
+function ChatBox({ notice, client, chatMessages, sendChat }) {
   const param = useParams();
   const [cookie] = useCookies();
   const nickname = getNicknameCookie('nickname');
   const [message, setMessage] = useState(''); // input value 값
-  const [chatMessages, setChatMessages] = useState([]); // 누적 채팅 메시지들
-  const [chatUser, setChatUser] = useState([]); // 누적 유저 이름들
   const input = useRef(null);
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
-  console.log(notice);
-  const subscribe = async () => {
-    client.current.subscribe(`/sub/gameroom/${param.roomId}`, ({ body }) => {
-      const data = JSON.parse(body);
-      console.log('subscribe data', data);
-      switch (data.type) {
-        case 'ENTER': {
-          // console.log('enter');
-          break;
-        }
-        case 'CHAT': {
-          // console.log('chat', data.sender)
-          setChatMessages((chatMessages) => [...chatMessages, data]);
-          setChatUser((chatUser) => [...chatUser, data.sender]);
-          // setChatMessages([...chatMessages, data.message]);
-          // setChatUser([...chatUser, data.sender]);
-          break;
-        }
-        default: {
-          // console.log('default');
-          break;
-        }
-      }
-    });
-  };
 
-  const connect = () => {
-    client.current = new StompJs.Client({
-      // webSocketFactory: () => new SockJs('https://api.namoldak.com/ws-stomp'),
-      webSocketFactory: () => new SockJs('http://13.209.84.31:8080/ws-stomp'),
-      connectHeaders,
-      debug() {},
-      onConnect: () => {
-        subscribe();
-        client.current.publish({
-          destination: `/sub/gameroom/${param.roomId}`,
-          body: JSON.stringify({
-            type: 'ENTER',
-            roomId: param.roomId,
-            sender: nickname,
-            message: `${nickname}님이 게임에 참가하셨습니다.`,
-          }),
-        });
-      },
-      onStompError: (frame) => {
-        console.log(`Broker reported error: ${frame.headers.message}`);
-        console.log(`Additional details: ${frame.body}`);
-      },
-    });
-    client.current.activate();
-  };
-
+  console.log('sendChat', sendChat);
+  console.log('client:', client);
   // input value 즉 메시지 채팅을 입력
   function publish(value) {
-    if (message.trim() === '') {
-      // alert('채팅 내용을 입력해주세요.');
-      return;
-    }
-    client.current.publish({
-      destination: `/sub/gameroom/${param.roomId}`,
-      body: JSON.stringify({
-        type: 'CHAT',
-        roomId: param.roomId,
-        sender: nickname,
-        message: value,
-      }),
-    });
+    sendChat(value, nickname);
     setMessage('');
   }
-
-  useEffect(() => {
-    connect();
-  }, []);
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
