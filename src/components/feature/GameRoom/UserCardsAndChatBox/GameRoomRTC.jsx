@@ -20,6 +20,9 @@ import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
 import duckImg from '../../../../assets/images/duck.jpg';
+import backBtn from '../../../../assets/images/backBtn.svg';
+import settingBtn from '../../../../assets/images/settingBtn.svg';
+import gameStartBtn from '../../../../assets/images/startBtn.svg';
 
 let stream = null;
 let pcs = {};
@@ -591,50 +594,74 @@ function GameRoomRTC() {
   }, [stream, socketRef.current]);
 
   return (
-    <StGameRoomOuter>
-      {isStartModal && (
-        <ToastMessage
-          setToastState={setIsStartModal}
-          text={text}
-          type="start"
-        />
-      )}
-      {isEndGameModal && (
-        <ToastMessage
-          setToastState={setIsEndGameModal}
-          text={text}
-          type="end"
-        />
-      )}
+    <StGameRoomRTC>
+      <div>
+        {isStartModal && (
+          <ToastMessage
+            setToastState={setIsStartModal}
+            text={text}
+            type="start"
+          />
+        )}
+        {isEndGameModal && (
+          <ToastMessage
+            setToastState={setIsEndGameModal}
+            text={text}
+            type="end"
+          />
+        )}
+      </div>
       <StGameRoomHeader>
-        <button
+        <StLeaveBtn
           ref={leaveBtn}
           onClick={() => {
             leaveRoom();
           }}
         >
-          방나가기
-        </button>
-        {isOwner ? (
-          <button ref={startBtn} onClick={gameStart}>
-            시작하기
-          </button>
-        ) : (
-          <div>방장이아닙니다</div>
-        )}
-        <button>설정</button>
-        <button onClick={sendSpotlight}>스팟보내기</button>
+          <img src={backBtn} alt="back_image" />
+        </StLeaveBtn>
+        <StHeaderBtnBox>
+          <div>
+            {isSpotTimer && (
+              <SpotTimer
+                setIsSpotTimer={setIsSpotTimer}
+                setIsMyTurnModal={setIsMyTurnModal}
+              />
+            )}
+            {isTimer && <Timer setIsTimer={setIsTimer} />}
+            {isMyTurnModal && (
+              <GameModal
+                content={
+                  <GameAnswerModal
+                    roomId={roomId}
+                    setIsMyTurnModal={setIsMyTurnModal}
+                    sendAnswer={sendAnswer}
+                    nickName={myNickName}
+                    skipAnswer={skipAnswer}
+                  />
+                }
+              />
+            )}
+          </div>
+          {isOwner && (
+            <button ref={startBtn} onClick={gameStart}>
+              <img src={gameStartBtn} alt="게임시작버튼" />
+            </button>
+          )}
+          <StSettingBtn>
+            <img src={settingBtn} alt="setting_image" />
+          </StSettingBtn>
+        </StHeaderBtnBox>
+        {/* <button onClick={sendSpotlight}>스팟보내기</button> */}
       </StGameRoomHeader>
       <StGameRoomMain>
         <StGameTitleAndUserCards>
-          <StTitle>
+          <StCategory>
             <h1>{category}</h1>
-          </StTitle>
+          </StCategory>
           <StUserCards>
             <StCard>
-              Card
               <h4>{myKeyword}</h4>
-              <span>{myNickName}님</span>
               <div>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                 <video
@@ -671,6 +698,7 @@ function GameRoomRTC() {
                   <option ref={cameraOption} value="device" />
                 </select>
               </div>
+              <span>{myNickName}님</span>
             </StCard>
             {users.map((user) => {
               return (
@@ -689,66 +717,50 @@ function GameRoomRTC() {
             })}
           </StUserCards>
         </StGameTitleAndUserCards>
-        <div>
-          {isSpotTimer && (
-            <SpotTimer
-              setIsSpotTimer={setIsSpotTimer}
-              setIsMyTurnModal={setIsMyTurnModal}
-            />
-          )}
-          {isTimer && <Timer setIsTimer={setIsTimer} />}
-          {isMyTurnModal && (
-            <GameModal
-              content={
-                <GameAnswerModal
-                  roomId={roomId}
-                  setIsMyTurnModal={setIsMyTurnModal}
-                  sendAnswer={sendAnswer}
-                  nickName={myNickName}
-                  skipAnswer={skipAnswer}
-                />
-              }
-            />
-          )}
-        </div>
         <ChatBox notice={notice} />
       </StGameRoomMain>
-    </StGameRoomOuter>
+    </StGameRoomRTC>
   );
 }
 
-const StGameRoomOuter = styled.div`
-  border: 5px solid black;
-  display: grid;
-
-  grid-template-rows: 100px 1fr;
+const StGameRoomRTC = styled.div`
+  width: 100%;
+  height: 100vh;
 `;
+
 const StGameRoomHeader = styled.div`
-  border: 3px solid red;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 78px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
+const StLeaveBtn = styled.div`
+  margin-right: auto;
+`;
+
+const StHeaderBtnBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StSettingBtn = styled.button`
+  margin-left: 100px;
 `;
 
 const StGameRoomMain = styled.div`
-  margin-top: 30px;
-  border: 3px solid blue;
   display: grid;
-  grid-template-columns: 1fr 150px 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px;
 `;
 
 const StGameTitleAndUserCards = styled.div`
   border: 2px solid black;
 `;
 
-const StTimer = styled.div`
-  border: 2px solid black;
-`;
-
-const StChatBox = styled.div`
-  border: 2px solid black;
-  display: grid;
-  grid-template-rows: 30px 1fr 30px;
-`;
-
-const StTitle = styled.div`
+const StCategory = styled.div`
   border: 1px solid black;
   display: grid;
   grid-template-rows: 120px 1fr;
