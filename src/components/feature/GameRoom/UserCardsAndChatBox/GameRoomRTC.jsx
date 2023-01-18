@@ -447,8 +447,8 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    // socketRef.current = new SockJS('https://api.namoldak.com/signal');
-    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+    socketRef.current = new SockJS('https://api.namoldak.com/signal');
+    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {

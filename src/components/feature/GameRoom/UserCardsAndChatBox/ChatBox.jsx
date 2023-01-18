@@ -16,8 +16,6 @@ function ChatBox({ notice, sendChat, chatMessages }) {
   const [message, setMessage] = useState('');
   const input = useRef(null);
 
-  console.log('sendChat', sendChat);
-
   function publish(value) {
     sendChat(value);
     setMessage('');
