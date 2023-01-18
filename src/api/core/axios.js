@@ -6,10 +6,8 @@ import { getCookie } from '../../utils/cookies';
 export const instance = axios.create({
   // baseURL: 'http://15.164.233.135:8080',
   // baseURL: 'http://13.209.84.31:8080',
-
   baseURL: 'https://api.namoldak.com',
 
-  // baseURL: 'http://13.209.84.31:8080',
   withCredentials: true,
   headers: {
     'Access-Control-Allow-Origin': '*',

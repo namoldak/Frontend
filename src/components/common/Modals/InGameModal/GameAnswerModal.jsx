@@ -6,24 +6,31 @@ import Button from '../../Button';
 // 내부 모듈
 import Input from '../../Input';
 
-function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
+function GameAnswerModal({
+  skipAnswer,
+  setIsMyTurnModal,
+  sendAnswer,
+  nickName,
+}) {
   const [answerValue, setAnswerValue] = useState('');
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(20);
   function onInputHandler(event) {
     setAnswerValue(event.target.value);
   }
 
-  // function onKeyUpEnter(event) {
-  //   if (event.keyCode === 13) {
-  //     onClickAnswer();
-  //   }
-  // }
+  function onKeyUpEnter(event) {
+    if (event.keyCode === 13) {
+      sendAnswer(answerValue, nickName);
+      setIsMyTurnModal(false);
+    }
+  }
 
   useEffect(() => {
     const countdown = setInterval(() => {
       setSeconds(parseInt(seconds, 10) - 1);
     }, 1000);
     if (parseInt(seconds, 10) === 0) {
+      skipAnswer(nickName);
       setIsMyTurnModal(false);
     }
     return () => clearInterval(countdown);
@@ -59,41 +66,15 @@ function GameAnswerModal({ roomId, setIsMyTurnModal, sendAnswer, nickName }) {
 }
 
 const StModalContainer = styled.div`
-  ${({ theme }) => theme.common.flexCenterColumn};
-  margin-top: 60px;
-
-  input {
-    width: 420px;
-    margin-top: 47px;
-    margin-bottom: 60px;
-  }
-`;
-
-const StTitle = styled.div`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 38px;
-  font-weight: 900;
-`;
-
-const StNotice = styled.div`
-  color: ${({ theme }) => theme.colors.text};
-  margin-top: 20px;
-`;
-
-const StBtnBox = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
 `;
 
-const StSkip = styled.div`
-  width: 184px;
-  height: 70px;
-  margin-right: 25px;
-`;
-
-const StAnswer = styled.div`
-  width: 184px;
-  height: 70px;
-  margin-left: 25px;
-`;
+const StTimeText = styled.div``;
+const LimitTimer = styled.div``;
 
 export default GameAnswerModal;

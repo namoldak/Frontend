@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function Timer({ setIsStartTimer }) {
+function Timer({ setIsTimer }) {
   const [seconds, setSeconds] = useState(20);
 
   useEffect(() => {
@@ -10,7 +10,7 @@ function Timer({ setIsStartTimer }) {
       setSeconds(parseInt(seconds, 10) - 1);
     }, 1000);
     if (parseInt(seconds, 10) === 0) {
-      setIsStartTimer(false);
+      setIsTimer(false);
     }
     return () => clearInterval(countdown);
   }, [seconds]);
