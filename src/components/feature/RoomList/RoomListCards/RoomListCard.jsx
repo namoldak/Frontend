@@ -9,6 +9,8 @@ import roomListBanner from '../../../../assets/images/roomListBanner.svg';
 import leftArrow from '../../../../assets/images/leftArrow.svg';
 import rightArrow from '../../../../assets/images/rightArrow.svg';
 import Room from './Room';
+import useSound from '../../../../hooks/useSound';
+import bgm from '../../../../assets/audio/bg.mp3';
 
 function RoomListCard() {
   // const rooms = useSelector((state) => state.rooms);
@@ -23,9 +25,12 @@ function RoomListCard() {
   const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
 
+
   function refreshRoomList() {
     dispatch(readAllRooms({ page, limit }));
   }
+  
+  // useSound(bgm, 0.2, 2000);
 
   useEffect(() => {
     dispatch(readAllRooms({ page, limit }));

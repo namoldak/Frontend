@@ -4,8 +4,9 @@ import styled from 'styled-components';
 // 내부 모듈
 import duckImg from '../../../../assets/images/duck.jpg';
 import keywordImg from '../../../../assets/images/keyword.svg';
+import star from '../../../../assets/images/star.svg';
 
-function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn }) {
+function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
   const videoRef = useRef(null);
   const userCardImgRef = useRef(null);
   const [userkeyword, setUserKeyword] = useState('키워드');
@@ -36,7 +37,13 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn }) {
       <StKeywordBack>
         <StKeyword>{userkeyword || '키워드'}</StKeyword>
       </StKeywordBack>
-      {/* <h4>{userkeyword}</h4> */}
+      {isOwner ? (
+        <StStar>
+          <img src={star} alt="star" />
+        </StStar>
+      ) : (
+        <div />
+      )}
       <StVideoBox className={isMyTurn ? 'spotLight' : ''}>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <video
@@ -81,6 +88,14 @@ const StKeyword = styled.div`
   color: ${({ theme }) => theme.colors.white};
   text-align: center;
   padding-top: 15px;
+`;
+
+const StStar = styled.div`
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  height: 60px;
+  z-index: 10;
 `;
 
 const StVideoBox = styled.div`

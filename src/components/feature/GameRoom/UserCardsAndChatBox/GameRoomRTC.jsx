@@ -29,6 +29,7 @@ import backBtn from '../../../../assets/images/backBtn.svg';
 import settingBtn from '../../../../assets/images/settingBtn.svg';
 import gameStartBtn from '../../../../assets/images/startBtn.svg';
 import categoryImg from '../../../../assets/images/category.svg';
+import star from '../../../../assets/images/star.svg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 import userCardImg from '../../../../assets/images/userCardImg.svg';
 
@@ -36,8 +37,10 @@ let stream = null;
 let pcs = {};
 let myPeerConnection;
 function GameRoomRTC() {
-  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
-  // const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+
+  const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const navigate = useNavigate();
@@ -362,6 +365,7 @@ function GameRoomRTC() {
         nickName: userNickName,
         isCameraOn: false,
         isMyTurn: false,
+        isOwner: false,
       },
     ]);
     pc.ontrack = (e) => {
@@ -471,8 +475,10 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    socketRef.current = new SockJS('https://api.namoldak.com/signal');
-    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+    // socketRef.current = new SockJS('https://api.namoldak.com/signal');
+
+    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {
@@ -592,6 +598,14 @@ function GameRoomRTC() {
               await sessionStorage.setItem('owner', res.data.ownerNickname);
               if (sessionStorage.getItem('owner') === myNickName) {
                 setIsOwner(true);
+              } else {
+                setUsers((oldUsers) =>
+                  oldUsers.map((user) =>
+                    sessionStorage.getItem('owner') === user.nickName
+                      ? { ...user, isOwner: true }
+                      : user,
+                  ),
+                );
               }
             })
             .catch((error) => {
@@ -713,6 +727,13 @@ function GameRoomRTC() {
           <StUserCards>
             <StCard className={isMyTurn ? 'spotLight' : ''}>
               <StKeywordBack>
+                {isOwner ? (
+                  <StStar>
+                    <img src={star} alt="star" />
+                  </StStar>
+                ) : (
+                  <div />
+                )}
                 <StKeyword>{myKeyword || '키워드'}</StKeyword>
               </StKeywordBack>
               <StVideoBox className={isMyTurn ? 'spotLight' : ''}>
@@ -769,6 +790,7 @@ function GameRoomRTC() {
                     isCameraOn={user.isCameraOn}
                     keyword={keyword}
                     isMyTurn={user.isMyTurn}
+                    isOwner={user.isOwner}
                   >
                     <track kind="captions" />
                   </Audio>
@@ -886,6 +908,7 @@ const StVideoBox = styled.div`
 `;
 
 const StKeywordBack = styled.div`
+  position: relative;
   background-image: url(${keywordImg});
   background-size: cover;
   background-repeat: no-repeat;
@@ -902,6 +925,14 @@ const StKeyword = styled.div`
   padding-top: 15px;
 `;
 
+const StStar = styled.div`
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  height: 60px;
+  z-index: 10;
+`;
+
 const StNickName = styled.span`
   display: block;
   font-size: 24px;
@@ -910,6 +941,7 @@ const StNickName = styled.span`
   text-align: center;
   border-top: 6px solid #f5c86f;
   padding: 7px 0;
+
   .spotLight {
     border-top: 6px solid rgba(190, 220, 138, 1);
   }

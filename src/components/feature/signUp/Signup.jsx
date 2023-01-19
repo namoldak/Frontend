@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-props-no-spreading */
 // 외부 모듈
 import React, { useState } from 'react';
@@ -14,6 +15,7 @@ import popUp from '../../../assets/images/popUp.svg';
 import signUpTitleBtn from '../../../assets/images/signUpTitleBtn.svg';
 import doubleCheckBtn from '../../../assets/images/doubleCheckBtn.svg';
 import signUpBtn from '../../../assets/images/signUpBtn.svg';
+import useToast from '../../../hooks/useToast';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -67,7 +69,10 @@ function SignUp() {
     await authAPI
       .SignUp(data)
       .then(
-        alert('회원가입이 완료되었습니다. 다시 로그인 해 주세요.'),
+        useToast(
+          '회원가입이 완료되었습니다. 다시 로그인 해 주세요.',
+          'success',
+        ),
         navigate('/login'),
       );
   }
@@ -75,14 +80,12 @@ function SignUp() {
   // 닉네임 중복확인
   function onClickCheckNickName() {
     const data = getValues('nickname');
-    // console.log('닉네임확인 nick', data);
 
     authAPI.checkNickName(data).then((response) => {
-      // console.log('닉네임확인 response', response.data);
       if (response.data === false) {
-        alert('유효한 닉네임입니다.');
+        useToast('유효한 닉네임입니다.', 'success');
       } else {
-        alert('이미 사용 중인 닉네임입니다.');
+        useToast('이미 사용 중인 닉네임입니다.', 'error');
       }
       setNickValid(response.data);
     });
@@ -91,12 +94,11 @@ function SignUp() {
   // 이메일 중복 확인
   function onClickCheckEmail() {
     const data = getValues('email');
-
     authAPI.checkEmail(data).then((response) => {
       if (response.data === false) {
-        alert('유효한 이메일입니다.');
+        useToast('유효한 이메일입니다.', 'success');
       } else {
-        alert('이미 사용중인 이메일입니다.');
+        useToast('이미 사용중인 이메일입니다.', 'error');
       }
       setEmailValid(response.data);
     });
@@ -105,10 +107,11 @@ function SignUp() {
   // 첫번째 렌더링 시 실행 안 됨
   useDidMountEffect(() => {
     if (nickValid) {
-      setError('nickname', {
-        type: 'custom',
-        message: '이미 사용 중인 닉네임입니다.',
-      });
+      useToast('이미 사용 중인 닉네임입니다.', 'error');
+      //   setError('nickname', {
+      //     type: 'custom',
+      //     message: '이미 사용 중인 닉네임입니다.',
+      //   });
     } else {
       clearErrors('nickname', { type: 'custom' });
     }
@@ -116,10 +119,11 @@ function SignUp() {
 
   useDidMountEffect(() => {
     if (emailValid) {
-      setError('email', {
-        type: 'custom',
-        message: '이미 사용 중인 이메일입니다.',
-      });
+      useToast('이미 사용 중인 이메일입니다.', 'error');
+      //   setError('email', {
+      //     type: 'custom',
+      //     message: '이미 사용 중인 이메일입니다.',
+      //   });
     } else {
       clearErrors('email', { type: 'custom' });
     }
@@ -217,7 +221,6 @@ const StTitle = styled.div`
 
 const StInputCon = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
-
   input {
     width: 528px;
     height: 54px;
@@ -233,7 +236,6 @@ const StInputCon = styled.div`
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};
   }
-
   .pwInput {
     margin-bottom: 24px;
   }
@@ -242,11 +244,9 @@ const StInputCon = styled.div`
 const StInputBox = styled.div`
   display: flex;
   align-items: center;
-
   input {
     width: 337px;
   }
-
   .emailInput {
     margin-top: 20px;
     margin-bottom: 24px;
@@ -276,7 +276,6 @@ const StLogin = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.paragraph};
   font-weight: 500;
   line-height: 22px;
-
   button {
     color: ${({ theme }) => theme.colors.white};
     font-size: ${({ theme }) => theme.fontSizes.paragraph};
