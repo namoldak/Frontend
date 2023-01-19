@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 function SpotTimer({ setIsSpotTimer, setIsMyTurnModal }) {
-  const [seconds, setSeconds] = useState(300);
+  const [seconds, setSeconds] = useState(30);
 
   useEffect(() => {
     const countdown = setInterval(() => {
