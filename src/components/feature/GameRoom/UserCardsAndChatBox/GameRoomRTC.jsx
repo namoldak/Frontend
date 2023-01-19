@@ -626,18 +626,15 @@ function GameRoomRTC() {
       }
     };
     return async () => {
-      if (socketRef.current) {
-        sessionStorage.clear();
-        instance
-          .delete(`rooms/${param.roomId}/exit`)
-          .then(async (res) => {
-            navigate('/rooms');
-          })
-          .catch(async (error) => {
-            navigate('/rooms');
-          });
-        socketRef.current.close();
-      }
+      sessionStorage.clear();
+      instance
+        .delete(`rooms/${param.roomId}/exit`)
+        .then(async (res) => {
+          socketRef.current.close();
+        })
+        .catch(async (error) => {
+          socketRef.current.close();
+        });
     };
   }, []);
 
