@@ -18,6 +18,7 @@ import landingBack from '../../../assets/images/landingBack.svg';
 import landingTitle from '../../../assets/images/landingTitle.svg';
 import landingBanner from '../../../assets/images/landingBanner.svg';
 import landingToGameBtn from '../../../assets/images/landingToGameBtn.svg';
+import landingToLoginBtn from '../../../assets/images/landingToLoginBtn.svg';
 import Modal from '../../common/Modals/BasicModal/Modal';
 import MyPageModal from '../../common/Modals/BasicModal/MyPageModal';
 
@@ -38,28 +39,7 @@ function Landing() {
 
   return (
     <StLanding>
-      {/* <StHeader>
-        {isLoggedIn ? (
-          <div>
-            <button onClick={onClickLogOut}>로그아웃</button>
-            <div>반갑닭, {nickname}</div>
-            <MySetting />
-          </div>
-        ) : (
-          <div>
-            <Link to="/login">
-              <TextButton>로그인</TextButton>
-            </Link>
-            <div>Guest는 로그인하고 이용해야한닭</div>
-          </div>
-        )}
-      </StHeader> */}
       <StLandingHeader>
-        <StBackBtn>
-          <Link to="/login">
-            <img src={backBtn} alt="back_image" />
-          </Link>
-        </StBackBtn>
         {isSettingModalOn && (
           <Modal
             onClose={() => {
@@ -85,11 +65,17 @@ function Landing() {
             <img src={landingBanner} alt="banner_image" />
           </StBannerImg>
           <GameRule />
-          <StToGameBtn>
-            <Link to="/rooms">
-              <img src={landingToGameBtn} alt="button" />
-            </Link>
-          </StToGameBtn>
+          <StToGo>
+            {isLoggedIn ? (
+              <Link to="/rooms">
+                <img src={landingToGameBtn} alt="게임하러가기" />
+              </Link>
+            ) : (
+              <Link to="/login">
+                <img src={landingToLoginBtn} alt="로그인하러가기" />
+              </Link>
+            )}
+          </StToGo>
         </StBanner>
       </StLadingMain>
     </StLanding>
@@ -115,6 +101,7 @@ const StBackBtn = styled.button`
 const StSettingBtn = styled.button`
   width: 78px;
   height: 78px;
+  margin-left: auto;
 `;
 
 // background image 적용
@@ -146,10 +133,8 @@ const StBannerImg = styled.div`
   /* height: 671px; */
 `;
 
-const StToGameBtn = styled.button`
+const StToGo = styled.button`
   margin-top: 10px;
 `;
-
-const StHeader = styled.div``;
 
 export default Landing;
