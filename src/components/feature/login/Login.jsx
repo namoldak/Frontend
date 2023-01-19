@@ -13,6 +13,7 @@ import KaKaoBtn from './KaKaoBtn';
 import popUp from '../../../assets/images/popUp.svg';
 import loginTitleBtn from '../../../assets/images/loginTitleBtn.svg';
 import loginBtn from '../../../assets/images/loginBtn.svg';
+import backBtn from '../../../assets/images/backBtn.svg';
 
 // useForm
 const schema = yup.object().shape({
@@ -70,42 +71,49 @@ function Login() {
   }, [code]);
 
   return (
-    <StLogin>
-      <StLoginContainer onSubmit={handleSubmit(onClickLogin)}>
-        <StTitle>
-          <img src={loginTitleBtn} alt="title_image" />
-        </StTitle>
-        <StInputBox>
-          <input
-            type="text"
-            className="emailInput"
-            placeholder="이메일을 입력해주세요"
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('email', { required: true })}
-          />
-          {/* <StHelpText>{errors.email?.message}</StHelpText> */}
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해주세요."
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...register('password', { required: true })}
-          />
-          {/* <StHelpText>{errors.password?.message}</StHelpText> */}
-        </StInputBox>
-        <StBtnBox>
-          <StLoginBtn type="submit">
-            <img src={loginBtn} alt="login_image" />
-          </StLoginBtn>
-          <KaKaoBtn />
-          <StSignUp>
-            <p>회원이 아니신가요?</p>
-            <Link to="/signup">
-              <button>회원가입</button>
-            </Link>
-          </StSignUp>
-        </StBtnBox>
-      </StLoginContainer>
-    </StLogin>
+    <>
+      <StBackBtn>
+        <Link to="/">
+          <img src={backBtn} alt="back_image" />
+        </Link>
+      </StBackBtn>
+      <StLogin>
+        <StLoginContainer onSubmit={handleSubmit(onClickLogin)}>
+          <StTitle>
+            <img src={loginTitleBtn} alt="title_image" />
+          </StTitle>
+          <StInputBox>
+            <input
+              type="text"
+              className="emailInput"
+              placeholder="이메일을 입력해주세요"
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...register('email', { required: true })}
+            />
+            {/* <StHelpText>{errors.email?.message}</StHelpText> */}
+            <input
+              type="password"
+              placeholder="비밀번호를 입력해주세요."
+              // eslint-disable-next-line react/jsx-props-no-spreading
+              {...register('password', { required: true })}
+            />
+            {/* <StHelpText>{errors.password?.message}</StHelpText> */}
+          </StInputBox>
+          <StBtnBox>
+            <StLoginBtn type="submit">
+              <img src={loginBtn} alt="login_image" />
+            </StLoginBtn>
+            <KaKaoBtn />
+            <StSignUp>
+              <p>회원이 아니신가요?</p>
+              <Link to="/signup">
+                <button>회원가입</button>
+              </Link>
+            </StSignUp>
+          </StBtnBox>
+        </StLoginContainer>
+      </StLogin>
+    </>
   );
 }
 
@@ -178,6 +186,13 @@ const StSignUp = styled.div`
     font-weight: 800;
     margin-left: 10px;
   }
+`;
+
+const StBackBtn = styled.button`
+  margin-top: 30px;
+  margin-left: 10px;
+  width: 78px;
+  height: 78px;
 `;
 
 export default Login;

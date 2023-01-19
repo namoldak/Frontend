@@ -16,6 +16,7 @@ import signUpTitleBtn from '../../../assets/images/signUpTitleBtn.svg';
 import doubleCheckBtn from '../../../assets/images/doubleCheckBtn.svg';
 import signUpBtn from '../../../assets/images/signUpBtn.svg';
 import useToast from '../../../hooks/useToast';
+import backBtn from '../../../assets/images/backBtn.svg';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -130,71 +131,78 @@ function SignUp() {
   }, [emailValid]);
 
   return (
-    <StSignUp>
-      <StSignUpContainer onSubmit={handleSubmit(onClickSignup)}>
-        <StTitle>
-          <img src={signUpTitleBtn} alt="title_image" />
-        </StTitle>
-        <StInputCon>
-          <StInputBox>
-            <input
-              placeholder="닉네임을 입력해주세요."
-              {...register('nickname', { required: true })}
-            />
-            <StDbCheckBtn
-              disabled={errors.nickname || !getValues('nickname')}
-              onClick={onClickCheckNickName}
-            >
-              <img src={doubleCheckBtn} alt="double_check" />
-            </StDbCheckBtn>
-          </StInputBox>
-          {/* <HelpText>
+    <>
+      <StBackBtn>
+        <Link to="/">
+          <img src={backBtn} alt="back_image" />
+        </Link>
+      </StBackBtn>
+      <StSignUp>
+        <StSignUpContainer onSubmit={handleSubmit(onClickSignup)}>
+          <StTitle>
+            <img src={signUpTitleBtn} alt="title_image" />
+          </StTitle>
+          <StInputCon>
+            <StInputBox>
+              <input
+                placeholder="닉네임을 입력해주세요."
+                {...register('nickname', { required: true })}
+              />
+              <StDbCheckBtn
+                disabled={errors.nickname || !getValues('nickname')}
+                onClick={onClickCheckNickName}
+              >
+                <img src={doubleCheckBtn} alt="double_check" />
+              </StDbCheckBtn>
+            </StInputBox>
+            {/* <HelpText>
             {errors.nicknameCheck?.message || errors.nickname?.message}
           </HelpText> */}
-          <StInputBox>
-            <input
-              className="emailInput"
-              placeholder="이메일을 입력해주세요"
-              {...register('email', { required: true })}
-            />
-            <StDbCheckBtn
-              disabled={errors.email || !getValues('email')}
-              // eslint-disable-next-line react/jsx-no-bind
-              onClick={onClickCheckEmail}
-            >
-              <img src={doubleCheckBtn} alt="double_check" />
-            </StDbCheckBtn>
-          </StInputBox>
-          {/* <HelpText>
+            <StInputBox>
+              <input
+                className="emailInput"
+                placeholder="이메일을 입력해주세요"
+                {...register('email', { required: true })}
+              />
+              <StDbCheckBtn
+                disabled={errors.email || !getValues('email')}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={onClickCheckEmail}
+              >
+                <img src={doubleCheckBtn} alt="double_check" />
+              </StDbCheckBtn>
+            </StInputBox>
+            {/* <HelpText>
             {errors.emailCheck?.message || errors.email?.message}
           </HelpText> */}
-          <input
-            className="pwInput"
-            type="password"
-            placeholder="비밀번호를 입력해주세요."
-            {...register('password', { required: true })}
-          />
-          {/* <HelpText>{errors.password?.message}</HelpText> */}
-          <input
-            type="password"
-            placeholder="비밀번호를 다시 입력해주세요."
-            {...register('confirmPw', { required: true })}
-          />
-          {/* <HelpText>{errors.confirmPw?.message}</HelpText> */}
-        </StInputCon>
-        <StBtnBox>
-          <StSignUpBtn type="submit">
-            <img src={signUpBtn} alt="signUp_image" />
-          </StSignUpBtn>
-          <StLogin>
-            <p>아이디가 있으신가요?</p>
-            <Link to="/login">
-              <button>로그인</button>
-            </Link>
-          </StLogin>
-        </StBtnBox>
-      </StSignUpContainer>
-    </StSignUp>
+            <input
+              className="pwInput"
+              type="password"
+              placeholder="비밀번호를 입력해주세요."
+              {...register('password', { required: true })}
+            />
+            {/* <HelpText>{errors.password?.message}</HelpText> */}
+            <input
+              type="password"
+              placeholder="비밀번호를 다시 입력해주세요."
+              {...register('confirmPw', { required: true })}
+            />
+            {/* <HelpText>{errors.confirmPw?.message}</HelpText> */}
+          </StInputCon>
+          <StBtnBox>
+            <StSignUpBtn type="submit">
+              <img src={signUpBtn} alt="signUp_image" />
+            </StSignUpBtn>
+            <StLogin>
+              <p>아이디가 있으신가요?</p>
+              <Link to="/login">
+                <button>로그인</button>
+              </Link>
+            </StLogin>
+          </StBtnBox>
+        </StSignUpContainer>
+      </StSignUp>
+    </>
   );
 }
 
@@ -282,6 +290,13 @@ const StLogin = styled.div`
     font-weight: 800;
     margin-left: 10px;
   }
+`;
+
+const StBackBtn = styled.button`
+  margin-top: 30px;
+  margin-left: 10px;
+  width: 78px;
+  height: 78px;
 `;
 
 export default SignUp;

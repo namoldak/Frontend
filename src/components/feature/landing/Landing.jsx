@@ -31,29 +31,12 @@ function Landing() {
 
   useEffect(() => {
     if (getCookie('my_token')) {
-      console.log('cookie');
       setIsLoggedIn(true);
     }
   }, [getCookie]);
 
   return (
     <StLanding>
-      {/* <StHeader>
-        {isLoggedIn ? (
-          <div>
-            <button onClick={onClickLogOut}>로그아웃</button>
-            <div>반갑닭, {nickname}</div>
-            <MySetting />
-          </div>
-        ) : (
-          <div>
-            <Link to="/login">
-              <TextButton>로그인</TextButton>
-            </Link>
-            <div>Guest는 로그인하고 이용해야한닭</div>
-          </div>
-        )}
-      </StHeader> */}
       <StLandingHeader>
         <StBackBtn>
           <Link to="/login">
