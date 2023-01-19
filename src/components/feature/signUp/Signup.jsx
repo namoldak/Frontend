@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-props-no-spreading */
 // 외부 모듈
 import React, { useState } from 'react';
@@ -14,6 +15,7 @@ import popUp from '../../../assets/images/popUp.svg';
 import signUpTitleBtn from '../../../assets/images/signUpTitleBtn.svg';
 import doubleCheckBtn from '../../../assets/images/doubleCheckBtn.svg';
 import signUpBtn from '../../../assets/images/signUpBtn.svg';
+import useToast from '../../../hooks/useToast';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -67,7 +69,10 @@ function Signup() {
     await authAPI
       .SignUp(data)
       .then(
-        alert('회원가입이 완료되었습니다. 다시 로그인 해 주세요.'),
+        useToast(
+          '회원가입이 완료되었습니다. 다시 로그인 해 주세요.',
+          'success',
+        ),
         navigate('/login'),
       );
   }
@@ -80,9 +85,9 @@ function Signup() {
     authAPI.checkNickName(data).then((response) => {
       // console.log('닉네임확인 response', response.data);
       if (response.data === false) {
-        alert('유효한 닉네임입니다.');
+        useToast('유효한 닉네임입니다.', 'success');
       } else {
-        alert('이미 사용 중인 닉네임입니다.');
+        useToast('이미 사용 중인 닉네임입니다.', 'error');
       }
       setNickValid(response.data);
     });
@@ -91,12 +96,11 @@ function Signup() {
   // 이메일 중복 확인
   function onClickCheckEmail() {
     const data = getValues('email');
-
     authAPI.checkEmail(data).then((response) => {
       if (response.data === false) {
-        alert('유효한 이메일입니다.');
+        useToast('유효한 이메일입니다.', 'success');
       } else {
-        alert('이미 사용중인 이메일입니다.');
+        useToast('이미 사용중인 이메일입니다.', 'error');
       }
       setEmailValid(response.data);
     });
@@ -144,9 +148,6 @@ function Signup() {
               <img src={doubleCheckBtn} alt="double_check" />
             </StDbCheckBtn>
           </StInputBox>
-          {/* <HelpText>
-            {errors.nicknameCheck?.message || errors.nickname?.message}
-          </HelpText> */}
           <StInputBox>
             <input
               className="emailInput"
@@ -155,28 +156,22 @@ function Signup() {
             />
             <StDbCheckBtn
               disabled={errors.email || !getValues('email')}
-              // eslint-disable-next-line react/jsx-no-bind
               onClick={onClickCheckEmail}
             >
               <img src={doubleCheckBtn} alt="double_check" />
             </StDbCheckBtn>
           </StInputBox>
-          {/* <HelpText>
-            {errors.emailCheck?.message || errors.email?.message}
-          </HelpText> */}
           <input
             className="pwInput"
             type="password"
             placeholder="비밀번호를 입력해주세요."
             {...register('password', { required: true })}
           />
-          {/* <HelpText>{errors.password?.message}</HelpText> */}
           <input
             type="password"
             placeholder="비밀번호를 다시 입력해주세요."
             {...register('confirmPw', { required: true })}
           />
-          {/* <HelpText>{errors.confirmPw?.message}</HelpText> */}
         </StInputCon>
         <StBtnBox>
           <StSignUpBtn type="submit">
