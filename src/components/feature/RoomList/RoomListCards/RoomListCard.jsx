@@ -25,6 +25,11 @@ function RoomListCard() {
   const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
 
+
+  function refreshRoomList() {
+    dispatch(readAllRooms({ page, limit }));
+  }
+  
   // useSound(bgm, 0.2, 2000);
 
   useEffect(() => {
@@ -65,6 +70,7 @@ function RoomListCard() {
           <StEmptyDiv />
         )}
       </StRoomDiv>
+      <StRefreshBtn onClick={refreshRoomList}>새로고침</StRefreshBtn>
     </StRoomListCardBox>
   );
 }
@@ -102,4 +108,11 @@ const StEmptyDiv = styled.div`
   /* padding: 50px; */
 `;
 
+const StRefreshBtn = styled.button`
+  margin-left: 150px;
+  margin-top: 30px;
+  color: white;
+  font-size: 22px;
+  font-weight: 500;
+`;
 export default RoomListCard;
