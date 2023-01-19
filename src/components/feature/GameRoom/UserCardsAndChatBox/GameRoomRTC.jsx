@@ -19,7 +19,12 @@ import SpotTimer from '../TitleAndTimer/SpotTimer';
 import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
+
 import duckImg from '../../../../assets/images/duck.jpg';
+import voiceOn from '../../../../assets/images/voiceOn.png';
+import voiceOff from '../../../../assets/images/voiceOff.png';
+import cameraOff from '../../../../assets/images/cameraOff.png';
+import cameraOn from '../../../../assets/images/cameraOn.png';
 import backBtn from '../../../../assets/images/backBtn.svg';
 import settingBtn from '../../../../assets/images/settingBtn.svg';
 import gameStartBtn from '../../../../assets/images/startBtn.svg';
@@ -29,8 +34,6 @@ import userCardImg from '../../../../assets/images/userCardImg.svg';
 
 let stream = null;
 let pcs = {};
-let muted = false;
-let cameraOff = false;
 let myPeerConnection;
 function GameRoomRTC() {
   const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
@@ -64,7 +67,8 @@ function GameRoomRTC() {
   const [notice, setNotice] = useState('');
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
-
+  const [isVoiceOn, setIsVoiceOn] = useState(true);
+  const [isCameraOn, setIsCameraOn] = useState(true);
   function usePrevious(users) {
     const ref = useRef();
     useEffect(() => {
@@ -124,15 +128,17 @@ function GameRoomRTC() {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
             });
+            setIsVoiceOn(true);
             setIsSpotTimer(true);
-            muteBtn.current.disabled = false;
+            muteBtn.current.onClick = true;
             setIsMyTurn(true);
           } else {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = false;
             });
+            setIsVoiceOn(false);
             setIsTimer(true);
-            muteBtn.current.disabled = true;
+            muteBtn.current.onClick = false;
             setIsMyTurn(false);
             setUsers((users) =>
               users.map((user) =>
@@ -181,6 +187,7 @@ function GameRoomRTC() {
           stream.getAudioTracks().forEach((track) => {
             track.enabled = true;
           });
+          setIsVoiceOn(true);
           setUsers((users) =>
             users.map((user) => {
               return { ...user, isMyTurn: false };
@@ -385,16 +392,12 @@ function GameRoomRTC() {
   }
 
   function onClickCameraOffHandler() {
-    // eslint-disable-next-line no-use-before-define
-    console.log(stream);
     stream.getVideoTracks().forEach((track) => {
       console.log(track);
       track.enabled = !track.enabled;
     });
 
-    if (!cameraOff) {
-      cameraBtn.current.innerText = '카메라켜기';
-      cameraOff = !cameraOff;
+    if (isCameraOn) {
       videoRef.current.style.display = 'none';
       userCardImgRef.current.style.display = 'block';
       client.current.publish({
@@ -405,10 +408,10 @@ function GameRoomRTC() {
           roomId: param.roomId,
         }),
       });
+      setIsCameraOn(false);
     } else {
       userCardImgRef.current.style.display = 'none';
       videoRef.current.style.display = 'block';
-      cameraBtn.current.innerText = '카메라끄기';
       client.current.publish({
         destination: `/pub/chat/camera`,
         body: JSON.stringify({
@@ -417,19 +420,17 @@ function GameRoomRTC() {
           roomId: param.roomId,
         }),
       });
-      cameraOff = !cameraOff;
+      setIsCameraOn(true);
     }
   }
   function onClickMuteHandler() {
     stream.getAudioTracks().forEach((track) => {
       track.enabled = !track.enabled;
     });
-    if (!muted) {
-      muteBtn.current.innerText = '소리켜기';
-      muted = !muted;
+    if (isVoiceOn) {
+      setIsVoiceOn(false);
     } else {
-      muteBtn.current.innerText = '소리끄기';
-      muted = !muted;
+      setIsVoiceOn(true);
     }
   }
 
@@ -734,17 +735,21 @@ function GameRoomRTC() {
                   width={200}
                   height={200}
                 />
-                <button
+                <StVoiceImg
                   ref={muteBtn}
+                  src={isVoiceOn ? voiceOn : voiceOff}
                   onClick={() => {
                     onClickMuteHandler();
                   }}
-                >
-                  mute
-                </button>
-                <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
-                  camera OFF
-                </button>
+                />
+                <StCameraImg
+                  ref={cameraBtn}
+                  src={isCameraOn ? cameraOn : cameraOff}
+                  onClick={() => {
+                    onClickCameraOffHandler();
+                  }}
+                />
+
                 <select ref={camerasSelect} onInput={onInputCameraChange}>
                   {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <option ref={cameraOption} value="device" />
@@ -915,4 +920,15 @@ const Stimg = styled.img`
   display: none;
 `;
 
+const StVoiceImg = styled.img`
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+`;
+
+const StCameraImg = styled.img`
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+`;
 export default GameRoomRTC;
