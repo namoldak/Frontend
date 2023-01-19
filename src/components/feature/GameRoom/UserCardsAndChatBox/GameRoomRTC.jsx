@@ -19,23 +19,27 @@ import SpotTimer from '../TitleAndTimer/SpotTimer';
 import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
+
 import duckImg from '../../../../assets/images/duck.jpg';
+import voiceOn from '../../../../assets/images/voiceOn.png';
+import voiceOff from '../../../../assets/images/voiceOff.png';
+import cameraOff from '../../../../assets/images/cameraOff.png';
+import cameraOn from '../../../../assets/images/cameraOn.png';
 import backBtn from '../../../../assets/images/backBtn.svg';
 import settingBtn from '../../../../assets/images/settingBtn.svg';
 import gameStartBtn from '../../../../assets/images/startBtn.svg';
 import categoryImg from '../../../../assets/images/category.svg';
+import star from '../../../../assets/images/star.svg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 import userCardImg from '../../../../assets/images/userCardImg.svg';
 
 let stream = null;
 let pcs = {};
-let muted = false;
-let cameraOff = false;
 let myPeerConnection;
 function GameRoomRTC() {
-  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
 
-  // const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+  const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
 
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
@@ -66,7 +70,8 @@ function GameRoomRTC() {
   const [notice, setNotice] = useState('');
   const [isMyTurn, setIsMyTurn] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
-
+  const [isVoiceOn, setIsVoiceOn] = useState(true);
+  const [isCameraOn, setIsCameraOn] = useState(true);
   function usePrevious(users) {
     const ref = useRef();
     useEffect(() => {
@@ -126,15 +131,17 @@ function GameRoomRTC() {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
             });
+            setIsVoiceOn(true);
             setIsSpotTimer(true);
-            muteBtn.current.disabled = false;
+            muteBtn.current.style.display = 'inline-blcok';
             setIsMyTurn(true);
           } else {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = false;
             });
+            setIsVoiceOn(false);
             setIsTimer(true);
-            muteBtn.current.disabled = true;
+            muteBtn.current.style.display = 'none';
             setIsMyTurn(false);
             setUsers((users) =>
               users.map((user) =>
@@ -183,6 +190,7 @@ function GameRoomRTC() {
           stream.getAudioTracks().forEach((track) => {
             track.enabled = true;
           });
+          setIsVoiceOn(true);
           setUsers((users) =>
             users.map((user) => {
               return { ...user, isMyTurn: false };
@@ -357,6 +365,7 @@ function GameRoomRTC() {
         nickName: userNickName,
         isCameraOn: false,
         isMyTurn: false,
+        isOwner: false,
       },
     ]);
     pc.ontrack = (e) => {
@@ -387,16 +396,12 @@ function GameRoomRTC() {
   }
 
   function onClickCameraOffHandler() {
-    // eslint-disable-next-line no-use-before-define
-    console.log(stream);
     stream.getVideoTracks().forEach((track) => {
       console.log(track);
       track.enabled = !track.enabled;
     });
 
-    if (!cameraOff) {
-      cameraBtn.current.innerText = '카메라켜기';
-      cameraOff = !cameraOff;
+    if (isCameraOn) {
       videoRef.current.style.display = 'none';
       userCardImgRef.current.style.display = 'block';
       client.current.publish({
@@ -407,10 +412,10 @@ function GameRoomRTC() {
           roomId: param.roomId,
         }),
       });
+      setIsCameraOn(false);
     } else {
       userCardImgRef.current.style.display = 'none';
       videoRef.current.style.display = 'block';
-      cameraBtn.current.innerText = '카메라끄기';
       client.current.publish({
         destination: `/pub/chat/camera`,
         body: JSON.stringify({
@@ -419,19 +424,17 @@ function GameRoomRTC() {
           roomId: param.roomId,
         }),
       });
-      cameraOff = !cameraOff;
+      setIsCameraOn(true);
     }
   }
   function onClickMuteHandler() {
     stream.getAudioTracks().forEach((track) => {
       track.enabled = !track.enabled;
     });
-    if (!muted) {
-      muteBtn.current.innerText = '소리켜기';
-      muted = !muted;
+    if (isVoiceOn) {
+      setIsVoiceOn(false);
     } else {
-      muteBtn.current.innerText = '소리끄기';
-      muted = !muted;
+      setIsVoiceOn(true);
     }
   }
 
@@ -472,9 +475,9 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    socketRef.current = new SockJS('https://api.namoldak.com/signal');
+    // socketRef.current = new SockJS('https://api.namoldak.com/signal');
 
-    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
 
     socketRef.current.onopen = async () => {
       await getUserMedias()
@@ -595,6 +598,14 @@ function GameRoomRTC() {
               await sessionStorage.setItem('owner', res.data.ownerNickname);
               if (sessionStorage.getItem('owner') === myNickName) {
                 setIsOwner(true);
+              } else {
+                setUsers((oldUsers) =>
+                  oldUsers.map((user) =>
+                    sessionStorage.getItem('owner') === user.nickName
+                      ? { ...user, isOwner: true }
+                      : user,
+                  ),
+                );
               }
             })
             .catch((error) => {
@@ -716,6 +727,13 @@ function GameRoomRTC() {
           <StUserCards>
             <StCard className={isMyTurn ? 'spotLight' : ''}>
               <StKeywordBack>
+                {isOwner ? (
+                  <StStar>
+                    <img src={star} alt="star" />
+                  </StStar>
+                ) : (
+                  <div />
+                )}
                 <StKeyword>{myKeyword || '키워드'}</StKeyword>
               </StKeywordBack>
               <StVideoBox className={isMyTurn ? 'spotLight' : ''}>
@@ -738,21 +756,24 @@ function GameRoomRTC() {
                   width={200}
                   height={200}
                 />
-                <button
+                <StVoiceImg
+                  src={isVoiceOn ? voiceOn : voiceOff}
                   ref={muteBtn}
                   onClick={() => {
                     onClickMuteHandler();
                   }}
-                >
-                  mute
-                </button>
-                <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
-                  camera OFF
-                </button>
-                <select ref={camerasSelect} onInput={onInputCameraChange}>
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                />
+                <StCameraImg
+                  ref={cameraBtn}
+                  src={isCameraOn ? cameraOn : cameraOff}
+                  onClick={() => {
+                    onClickCameraOffHandler();
+                  }}
+                />
+
+                {/* <select ref={camerasSelect} onInput={onInputCameraChange}>
                   <option ref={cameraOption} value="device" />
-                </select>
+                </select> */}
               </StVideoBox>
               <StNickName>{myNickName}님</StNickName>
             </StCard>
@@ -769,6 +790,7 @@ function GameRoomRTC() {
                     isCameraOn={user.isCameraOn}
                     keyword={keyword}
                     isMyTurn={user.isMyTurn}
+                    isOwner={user.isOwner}
                   >
                     <track kind="captions" />
                   </Audio>
@@ -886,6 +908,7 @@ const StVideoBox = styled.div`
 `;
 
 const StKeywordBack = styled.div`
+  position: relative;
   background-image: url(${keywordImg});
   background-size: cover;
   background-repeat: no-repeat;
@@ -902,6 +925,14 @@ const StKeyword = styled.div`
   padding-top: 15px;
 `;
 
+const StStar = styled.div`
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  height: 60px;
+  z-index: 10;
+`;
+
 const StNickName = styled.span`
   display: block;
   font-size: 24px;
@@ -910,6 +941,7 @@ const StNickName = styled.span`
   text-align: center;
   border-top: 6px solid #f5c86f;
   padding: 7px 0;
+
   .spotLight {
     border-top: 6px solid rgba(190, 220, 138, 1);
   }
@@ -919,4 +951,17 @@ const Stimg = styled.img`
   display: none;
 `;
 
+const StVoiceImg = styled.img`
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+`;
+
+const StCameraImg = styled.img`
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+`;
 export default GameRoomRTC;
