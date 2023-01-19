@@ -46,7 +46,7 @@ const schema = yup.object().shape({
     .required('비밀번호를 한번 더 입력해주세요'),
 });
 
-function Signup() {
+function SignUp() {
   const navigate = useNavigate();
   const [nickValid, setNickValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
@@ -280,4 +280,4 @@ const StLogin = styled.div`
   }
 `;
 
-export default Signup;
+export default SignUp;

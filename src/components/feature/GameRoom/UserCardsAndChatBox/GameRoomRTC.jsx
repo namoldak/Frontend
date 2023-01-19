@@ -34,6 +34,9 @@ let cameraOff = false;
 let myPeerConnection;
 function GameRoomRTC() {
   const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+
+  // const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const navigate = useNavigate();
@@ -61,6 +64,7 @@ function GameRoomRTC() {
   const [users, setUsers] = useState([]);
   const [winner, setWinner] = useState('');
   const [notice, setNotice] = useState('');
+  const [isMyTurn, setIsMyTurn] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
 
   function usePrevious(users) {
@@ -89,6 +93,16 @@ function GameRoomRTC() {
       const data = JSON.parse(body);
       console.log('data', data);
       switch (data.type) {
+        case 'ENTER': {
+          // console.log('enter');
+          break;
+        }
+        case 'CHAT': {
+          console.log('chat 수신');
+          setChatMessages((chatMessages) => [...chatMessages, data]);
+          console.log(chatMessages);
+          break;
+        }
         case 'START': {
           stream.getAudioTracks().forEach((track) => {
             track.enabled = false;
@@ -114,12 +128,21 @@ function GameRoomRTC() {
             });
             setIsSpotTimer(true);
             muteBtn.current.disabled = false;
+            setIsMyTurn(true);
           } else {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = false;
             });
             setIsTimer(true);
             muteBtn.current.disabled = true;
+            setIsMyTurn(false);
+            setUsers((users) =>
+              users.map((user) =>
+                user.nickName === data.sender
+                  ? { ...user, isMyTurn: true }
+                  : { ...user, isMyTurn: false },
+              ),
+            );
           }
           break;
         }
@@ -160,6 +183,13 @@ function GameRoomRTC() {
           stream.getAudioTracks().forEach((track) => {
             track.enabled = true;
           });
+          setUsers((users) =>
+            users.map((user) => {
+              return { ...user, isMyTurn: false };
+            }),
+          );
+          setIsMyTurn(false);
+
           if (myNickName === owner) {
             startBtn.current.disabled = false;
             muteBtn.current.disabled = false;
@@ -189,12 +219,6 @@ function GameRoomRTC() {
                 : user,
             ),
           );
-          break;
-        }
-        case 'CHAT': {
-          console.log('chat 수신');
-          setChatMessages((chatMessages) => [...chatMessages, data]);
-          console.log(chatMessages);
           break;
         }
         default: {
@@ -332,6 +356,7 @@ function GameRoomRTC() {
         stream: null,
         nickName: userNickName,
         isCameraOn: false,
+        isMyTurn: false,
       },
     ]);
     pc.ontrack = (e) => {
@@ -343,6 +368,7 @@ function GameRoomRTC() {
           stream: e.streams[0],
           nickName: userNickName,
           isCameraOn: true,
+          isMyTurn: false,
         },
       ]);
     };
@@ -447,6 +473,9 @@ function GameRoomRTC() {
   }, [isOwner, owner]);
   useEffect(() => {
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
+
+    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {
@@ -685,11 +714,11 @@ function GameRoomRTC() {
             <StCategoryText>{category || '주제'}</StCategoryText>
           </StCategoryBack>
           <StUserCards>
-            <StCard>
+            <StCard className={isMyTurn ? 'spotLight' : ''}>
               <StKeywordBack>
                 <StKeyword>{myKeyword || '키워드'}</StKeyword>
               </StKeywordBack>
-              <StVideoBox>
+              <StVideoBox className={isMyTurn ? 'spotLight' : ''}>
                 {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                 <video
                   muted
@@ -729,13 +758,17 @@ function GameRoomRTC() {
             </StCard>
             {users.map((user) => {
               return (
-                <StCard key={user.id}>
+                <StCard
+                  className={user.isMyTurn ? 'spotLight' : ''}
+                  key={user.id}
+                >
                   <Audio
                     key={user.id}
                     stream={user.stream}
                     nickName={user.nickName}
                     isCameraOn={user.isCameraOn}
                     keyword={keyword}
+                    isMyTurn={user.isMyTurn}
                   >
                     <track kind="captions" />
                   </Audio>
@@ -806,7 +839,7 @@ const StCategoryBack = styled.div`
   margin: 0 auto;
 `;
 
-const StCategoryText = styled.p`
+const StCategoryText = styled.div`
   font-size: 40px;
   font-weight: 900;
   text-align: center;
@@ -833,6 +866,11 @@ const StCard = styled.div`
   border: 6px solid #f5c86f;
   border-radius: 20px;
   /* overflow: hidden; */
+  .spotLight {
+    background: rgba(103, 138, 41, 1);
+    border-color: rgba(147, 191, 69, 1);
+    z-index: 2;
+  }
 `;
 
 const StVideoBox = styled.div`
@@ -872,6 +910,9 @@ const StNickName = styled.span`
   text-align: center;
   border-top: 6px solid #f5c86f;
   padding: 7px 0;
+  .spotLight {
+    border-top: 6px solid rgba(190, 220, 138, 1);
+  }
 `;
 
 const Stimg = styled.img`
