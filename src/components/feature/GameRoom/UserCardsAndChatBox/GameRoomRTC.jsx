@@ -130,7 +130,7 @@ function GameRoomRTC() {
             });
             setIsVoiceOn(true);
             setIsSpotTimer(true);
-            muteBtn.current.onClick = true;
+            muteBtn.current.style.display = 'inline-blcok';
             setIsMyTurn(true);
           } else {
             stream.getAudioTracks().forEach((track) => {
@@ -138,7 +138,7 @@ function GameRoomRTC() {
             });
             setIsVoiceOn(false);
             setIsTimer(true);
-            muteBtn.current.onClick = false;
+            muteBtn.current.style.display = 'none';
             setIsMyTurn(false);
             setUsers((users) =>
               users.map((user) =>
@@ -736,8 +736,8 @@ function GameRoomRTC() {
                   height={200}
                 />
                 <StVoiceImg
-                  ref={muteBtn}
                   src={isVoiceOn ? voiceOn : voiceOff}
+                  ref={muteBtn}
                   onClick={() => {
                     onClickMuteHandler();
                   }}
@@ -750,10 +750,9 @@ function GameRoomRTC() {
                   }}
                 />
 
-                <select ref={camerasSelect} onInput={onInputCameraChange}>
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                {/* <select ref={camerasSelect} onInput={onInputCameraChange}>
                   <option ref={cameraOption} value="device" />
-                </select>
+                </select> */}
               </StVideoBox>
               <StNickName>{myNickName}님</StNickName>
             </StCard>
@@ -924,11 +923,13 @@ const StVoiceImg = styled.img`
   cursor: pointer;
   width: 20px;
   height: 20px;
+  display: inline-block;
 `;
 
 const StCameraImg = styled.img`
   cursor: pointer;
   width: 20px;
   height: 20px;
+  display: inline-block;
 `;
 export default GameRoomRTC;
