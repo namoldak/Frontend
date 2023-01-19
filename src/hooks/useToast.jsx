@@ -5,7 +5,7 @@ const useToast = (message, type) => {
   const config = {
     position: 'top-center',
     autoClose: 3000,
-    hideProgressBar: false,
+    hideProgressBar: true,
     newestOnTop: false,
     closeOnClick: true,
     rtl: false,

@@ -13,13 +13,9 @@ import useSound from '../../../../hooks/useSound';
 import bgm from '../../../../assets/audio/bg.mp3';
 
 function RoomListCard() {
-  // const rooms = useSelector((state) => state.rooms);
-  // // console.log('rooms', rooms);
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
-  console.log('gameRoomResponseDtoList', gameRoomResponseDtoList);
-  // console.log('totalPage', totalPage);
 
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(4);
