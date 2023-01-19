@@ -756,23 +756,23 @@ function GameRoomRTC() {
                   // width={200}
                   // height={200}
                 />
+                <StVoiceCameraBox>
+                  <StCameraImg
+                    ref={cameraBtn}
+                    src={isCameraOn ? cameraOn : cameraOff}
+                    onClick={() => {
+                      onClickCameraOffHandler();
+                    }}
+                  />
+                  <StVoiceImg
+                    src={isVoiceOn ? voiceOn : voiceOff}
+                    ref={muteBtn}
+                    onClick={() => {
+                      onClickMuteHandler();
+                    }}
+                  />
+                </StVoiceCameraBox>
               </StVideoBox>
-              <StVoiceCameraBox>
-                <StVoiceImg
-                  src={isVoiceOn ? voiceOn : voiceOff}
-                  ref={muteBtn}
-                  onClick={() => {
-                    onClickMuteHandler();
-                  }}
-                />
-                <StCameraImg
-                  ref={cameraBtn}
-                  src={isCameraOn ? cameraOn : cameraOff}
-                  onClick={() => {
-                    onClickCameraOffHandler();
-                  }}
-                />
-              </StVoiceCameraBox>
               <StNickName>{myNickName}님</StNickName>
             </StCard>
             {users.map((user) => {
@@ -887,6 +887,7 @@ const StCard = styled.div`
   border: 6px solid #f5c86f;
   border-radius: 20px;
   overflow: hidden;
+  position: relative;
 
   /* .spotLight {
     background: rgba(103, 138, 41, 1);
@@ -923,7 +924,7 @@ const StStar = styled.div`
 
 const StVideoBox = styled.div`
   max-width: 150px;
-  max-height: 140px;
+  height: 140px;
   overflow: hidden;
   margin: 0 auto;
 `;
@@ -937,15 +938,14 @@ const StVideo = styled.div`
 
 const StNickName = styled.span`
   display: block;
-  height: 100%;
+  height: 50%;
   font-size: 22px;
   font-weight: 400;
   color: #5d3714;
   text-align: center;
   background: #ffe9bc;
   border-top: 6px solid #f5c86f;
-  padding: 7px 0;
-  max-height: 50px;
+  padding-top: 16px;
 
   /* .spotLight {
     border-top: 6px solid rgba(190, 220, 138, 1);
@@ -954,29 +954,32 @@ const StNickName = styled.span`
 
 const Stimg = styled.img`
   display: none;
+  height: unset;
 `;
 
 const StVoiceImg = styled.img`
   cursor: pointer;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   display: inline-block;
 `;
 
 const StCameraImg = styled.img`
   cursor: pointer;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   display: inline-block;
-  margin-right: 4px;
-  margin-left: 4px;
+  margin-bottom: 4px;
 `;
 
 const StVoiceCameraBox = styled.div`
-  float: right;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 14px;
+  top: 70px;
+  z-index: 900;
   margin-left: auto;
-  margin-bottom: 15px;
-  width: 50px;
 `;
 
 export default GameRoomRTC;
