@@ -20,7 +20,6 @@ import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
 
-import duckImg from '../../../../assets/images/duck.jpg';
 import voiceOn from '../../../../assets/images/voiceOn.png';
 import voiceOff from '../../../../assets/images/voiceOff.png';
 import cameraOff from '../../../../assets/images/cameraOff.png';
@@ -39,9 +38,9 @@ let stream = null;
 let pcs = {};
 let myPeerConnection;
 function GameRoomRTC() {
-  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
 
-  const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+  // const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
 
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
@@ -477,9 +476,9 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    // socketRef.current = new SockJS('https://api.namoldak.com/signal');
+    socketRef.current = new SockJS('https://api.namoldak.com/signal');
 
-    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
 
     socketRef.current.onopen = async () => {
       await getUserMedias()
@@ -693,7 +692,6 @@ function GameRoomRTC() {
               <GameModal
                 content={
                   <GameAnswerModal
-                    roomId={roomId}
                     setIsMyTurnModal={setIsMyTurnModal}
                     sendAnswer={sendAnswer}
                     nickName={myNickName}
