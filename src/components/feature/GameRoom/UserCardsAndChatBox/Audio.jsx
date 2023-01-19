@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import duckImg from '../../../../assets/images/duck.jpg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 import star from '../../../../assets/images/star.svg';
+import playerImg from '../../../../assets/images/playerImg.svg';
 
 function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
   const videoRef = useRef(null);
@@ -44,24 +45,26 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
       ) : (
         <div />
       )}
-      <StVideoBox className={isMyTurn ? 'spotLight' : ''}>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <video
-          ref={videoRef}
-          id="myFace"
-          autoPlay
-          playsInline
-          width={200}
-          height={200}
-        >
-          비디오
-        </video>
+      <StVideoBox>
+        <StVideo>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            ref={videoRef}
+            id="myFace"
+            autoPlay
+            playsInline
+            // width={200}
+            // height={200}
+          >
+            비디오
+          </video>
+        </StVideo>
         <Stimg
           ref={userCardImgRef}
-          src={duckImg}
+          src={playerImg}
           alt=""
-          width={200}
-          height={200}
+          // width={200}
+          // height={200}
         />
       </StVideoBox>
       <StNickName className={isMyTurn ? 'spotLight' : ''}>
@@ -72,6 +75,21 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
 }
 
 export default Audio;
+
+const StAudio = styled.div`
+  width: 260px;
+  height: 274px;
+  background-color: #f5f5f5;
+  border: 6px solid #f5c86f;
+  border-radius: 20px;
+  overflow: hidden;
+
+  /* .spotLight {
+    background: rgba(103, 138, 41, 1);
+    border-color: rgba(147, 191, 69, 1);
+    z-index: 2;
+  } */
+`;
 
 const StKeywordBack = styled.div`
   background-image: url(${keywordImg});
@@ -92,34 +110,43 @@ const StKeyword = styled.div`
 
 const StStar = styled.div`
   position: absolute;
-  top: -20%;
-  left: -10%;
+  top: -16%;
+  left: -6%;
   height: 60px;
-  z-index: 10;
+  z-index: 100;
 `;
 
 const StVideoBox = styled.div`
-  width: 150px;
   max-width: 150px;
-  min-height: 150px;
+  max-height: 150px;
+  overflow: hidden;
   margin: 0 auto;
+`;
+
+const StVideo = styled.div`
+  height: 150px;
+
   video {
-    width: 100%;
-    height: 100%;
+    width: 150px;
+    height: 143px;
   }
 `;
 
 const StNickName = styled.span`
   display: block;
-  font-size: 24px;
+  height: 100%;
+  font-size: 22px;
   font-weight: 400;
   color: #5d3714;
   text-align: center;
+  background: #ffe9bc;
   border-top: 6px solid #f5c86f;
   padding: 7px 0;
-  .spotLight {
+  max-height: 50px;
+
+  /* .spotLight {
     border-top: 6px solid rgba(190, 220, 138, 1);
-  }
+  } */
 `;
 
 const Stimg = styled.img``;

@@ -27,6 +27,8 @@ import categoryImg from '../../../../assets/images/category.svg';
 import star from '../../../../assets/images/star.svg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 import userCardImg from '../../../../assets/images/userCardImg.svg';
+import playerImg from '../../../../assets/images/playerImg.svg';
+import ownerImg from '../../../../assets/images/ownerImg.svg';
 
 let stream = null;
 let pcs = {};
@@ -735,42 +737,44 @@ function GameRoomRTC() {
                 )}
                 <StKeyword>{myKeyword || '키워드'}</StKeyword>
               </StKeywordBack>
-              <StVideoBox className={isMyTurn ? 'spotLight' : ''}>
-                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                <video
-                  muted
-                  ref={videoRef}
-                  id="myFace"
-                  autoPlay
-                  playsInline
-                  width={200}
-                  height={200}
-                >
-                  비디오
-                </video>
+              <StVideoBox>
+                <StVideo>
+                  {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                  <video
+                    muted
+                    ref={videoRef}
+                    id="myFace"
+                    autoPlay
+                    playsInline
+                    // width={200}
+                    // height={200}
+                  >
+                    비디오
+                  </video>
+                </StVideo>
                 <Stimg
                   ref={userCardImgRef}
-                  src={duckImg}
+                  src={playerImg}
                   alt=""
-                  width={200}
-                  height={200}
+                  // width={200}
+                  // height={200}
                 />
-                <button
-                  ref={muteBtn}
-                  onClick={() => {
-                    onClickMuteHandler();
-                  }}
-                >
-                  mute
-                </button>
-                <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
-                  camera OFF
-                </button>
-                <select ref={camerasSelect} onInput={onInputCameraChange}>
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <option ref={cameraOption} value="device" />
-                </select>
               </StVideoBox>
+              <button
+                ref={muteBtn}
+                onClick={() => {
+                  onClickMuteHandler();
+                }}
+              >
+                mute
+              </button>
+              <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
+                camera OFF
+              </button>
+              <select ref={camerasSelect} onInput={onInputCameraChange}>
+                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                <option ref={cameraOption} value="device" />
+              </select>
               <StNickName>{myNickName}님</StNickName>
             </StCard>
             {users.map((user) => {
@@ -881,26 +885,16 @@ const StUserCards = styled.div`
 const StCard = styled.div`
   width: 260px;
   height: 274px;
+  background-color: #f5f5f5;
   border: 6px solid #f5c86f;
   border-radius: 20px;
-  /* overflow: hidden; */
-  .spotLight {
+  overflow: hidden;
+
+  /* .spotLight {
     background: rgba(103, 138, 41, 1);
     border-color: rgba(147, 191, 69, 1);
     z-index: 2;
-  }
-`;
-
-const StVideoBox = styled.div`
-  width: 150px;
-  max-width: 150px;
-  min-height: 150px;
-  margin: 0 auto;
-
-  video {
-    width: 100%;
-    height: 100%;
-  }
+  } */
 `;
 
 const StKeywordBack = styled.div`
@@ -910,7 +904,7 @@ const StKeywordBack = styled.div`
   background-repeat: no-repeat;
   width: 214px;
   height: 53px;
-  margin: 10px auto;
+  margin: 10px auto 0 auto;
 `;
 
 const StKeyword = styled.div`
@@ -923,24 +917,41 @@ const StKeyword = styled.div`
 
 const StStar = styled.div`
   position: absolute;
-  top: -20%;
-  left: -10%;
+  top: -16%;
+  left: -6%;
   height: 60px;
-  z-index: 10;
+  z-index: 100;
+`;
+
+const StVideoBox = styled.div`
+  max-width: 150px;
+  max-height: 140px;
+  overflow: hidden;
+  margin: 0 auto;
+`;
+
+const StVideo = styled.div`
+  video {
+    width: 150px;
+    height: 143px;
+  }
 `;
 
 const StNickName = styled.span`
   display: block;
-  font-size: 24px;
+  height: 100%;
+  font-size: 22px;
   font-weight: 400;
   color: #5d3714;
   text-align: center;
+  background: #ffe9bc;
   border-top: 6px solid #f5c86f;
   padding: 7px 0;
+  max-height: 50px;
 
-  .spotLight {
+  /* .spotLight {
     border-top: 6px solid rgba(190, 220, 138, 1);
-  }
+  } */
 `;
 
 const Stimg = styled.img`

@@ -15,7 +15,6 @@ function ChatBox({ notice, sendChat, chatMessages }) {
   const input = useRef(null);
   const scrollRef = useRef();
 
-
   const scrollToBottom = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
