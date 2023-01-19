@@ -13,8 +13,17 @@ function ChatBox({ notice, sendChat, chatMessages }) {
   const nickname = getNicknameCookie('nickname');
   const [message, setMessage] = useState('');
   const input = useRef(null);
+  const scrollRef = useRef();
 
-  console.log('sendChat', sendChat);
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
 
   function publish(value) {
     sendChat(value);
@@ -34,7 +43,7 @@ function ChatBox({ notice, sendChat, chatMessages }) {
           <StNoticeText>{notice}</StNoticeText>
         </StNoticeBack>
         {/* <StNotice>공지사항</StNotice> */}
-        <StUserChatBox>
+        <StUserChatBox ref={scrollRef}>
           <div>
             {chatMessages?.map((message, index) => {
               return (
@@ -111,7 +120,9 @@ const StNoticeText = styled.p`
 
 const StUserChatBox = styled.div`
   margin: 20px auto;
+  overflow: auto;
   max-height: 500px;
+  overflow-y: hidden;
   /* border: 1px solid black; */
 `;
 
