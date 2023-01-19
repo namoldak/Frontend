@@ -18,10 +18,14 @@ import landingBack from '../../../assets/images/landingBack.svg';
 import landingTitle from '../../../assets/images/landingTitle.svg';
 import landingBanner from '../../../assets/images/landingBanner.svg';
 import landingToGameBtn from '../../../assets/images/landingToGameBtn.svg';
+import Modal from '../../common/Modals/BasicModal/Modal';
+import MyPageModal from '../../common/Modals/BasicModal/MyPageModal';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const nickname = getNicknameCookie('nickname');
+  const [isSettingModalOn, setIsSettingModalOn] = useState(false);
+
   console.log('nickname', nickname);
   console.log(isLoggedIn);
 
@@ -31,12 +35,6 @@ function Landing() {
       setIsLoggedIn(true);
     }
   }, [getCookie]);
-
-  function onClickLogOut() {
-    removeCookie('my_token', 'nickname');
-    alert('재밌었닭!');
-    setIsLoggedIn(false);
-  }
 
   return (
     <StLanding>
@@ -62,7 +60,19 @@ function Landing() {
             <img src={backBtn} alt="back_image" />
           </Link>
         </StBackBtn>
-        <StSettingBtn>
+        {isSettingModalOn && (
+          <Modal
+            onClose={() => {
+              setIsSettingModalOn(false);
+            }}
+            content={<MyPageModal loggedIn={setIsLoggedIn} />}
+          />
+        )}
+        <StSettingBtn
+          onClick={() => {
+            setIsSettingModalOn(true);
+          }}
+        >
           <img src={settingBtn} alt="setting_image" />
         </StSettingBtn>
       </StLandingHeader>

@@ -13,19 +13,19 @@ import useSound from '../../../../hooks/useSound';
 import bgm from '../../../../assets/audio/bg.mp3';
 
 function RoomListCard() {
-  // const rooms = useSelector((state) => state.rooms);
-  // // console.log('rooms', rooms);
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
-  console.log('gameRoomResponseDtoList', gameRoomResponseDtoList);
-  // console.log('totalPage', totalPage);
 
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
 
-  // useSound(bgm, 0.2, 2000);
+  useSound(bgm, 0.1, 2000);
+
+  function refreshRoomList() {
+    dispatch(readAllRooms({ page, limit }));
+  }
 
   useEffect(() => {
     dispatch(readAllRooms({ page, limit }));
@@ -65,6 +65,7 @@ function RoomListCard() {
           <StEmptyDiv />
         )}
       </StRoomDiv>
+      <StRefreshBtn onClick={refreshRoomList}>새로고침</StRefreshBtn>
     </StRoomListCardBox>
   );
 }
@@ -102,4 +103,11 @@ const StEmptyDiv = styled.div`
   /* padding: 50px; */
 `;
 
+const StRefreshBtn = styled.button`
+  margin-left: 150px;
+  margin-top: 30px;
+  color: white;
+  font-size: 22px;
+  font-weight: 500;
+`;
 export default RoomListCard;
