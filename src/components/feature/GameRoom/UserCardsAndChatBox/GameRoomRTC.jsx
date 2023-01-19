@@ -806,7 +806,7 @@ const StCategoryBack = styled.div`
   margin: 0 auto;
 `;
 
-const StCategoryText = styled.p`
+const StCategoryText = styled.div`
   font-size: 40px;
   font-weight: 900;
   text-align: center;

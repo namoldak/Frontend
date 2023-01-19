@@ -80,10 +80,8 @@ function Signup() {
   // 닉네임 중복확인
   function onClickCheckNickName() {
     const data = getValues('nickname');
-    // console.log('닉네임확인 nick', data);
 
     authAPI.checkNickName(data).then((response) => {
-      // console.log('닉네임확인 response', response.data);
       if (response.data === false) {
         useToast('유효한 닉네임입니다.', 'success');
       } else {
@@ -109,10 +107,11 @@ function Signup() {
   // 첫번째 렌더링 시 실행 안 됨
   useDidMountEffect(() => {
     if (nickValid) {
-      setError('nickname', {
-        type: 'custom',
-        message: '이미 사용 중인 닉네임입니다.',
-      });
+      useToast('이미 사용 중인 닉네임입니다.', 'error');
+      //   setError('nickname', {
+      //     type: 'custom',
+      //     message: '이미 사용 중인 닉네임입니다.',
+      //   });
     } else {
       clearErrors('nickname', { type: 'custom' });
     }
@@ -120,10 +119,11 @@ function Signup() {
 
   useDidMountEffect(() => {
     if (emailValid) {
-      setError('email', {
-        type: 'custom',
-        message: '이미 사용 중인 이메일입니다.',
-      });
+      useToast('이미 사용 중인 이메일입니다.', 'error');
+      //   setError('email', {
+      //     type: 'custom',
+      //     message: '이미 사용 중인 이메일입니다.',
+      //   });
     } else {
       clearErrors('email', { type: 'custom' });
     }
@@ -148,6 +148,9 @@ function Signup() {
               <img src={doubleCheckBtn} alt="double_check" />
             </StDbCheckBtn>
           </StInputBox>
+          {/* <HelpText>
+            {errors.nicknameCheck?.message || errors.nickname?.message}
+          </HelpText> */}
           <StInputBox>
             <input
               className="emailInput"
@@ -156,22 +159,28 @@ function Signup() {
             />
             <StDbCheckBtn
               disabled={errors.email || !getValues('email')}
+              // eslint-disable-next-line react/jsx-no-bind
               onClick={onClickCheckEmail}
             >
               <img src={doubleCheckBtn} alt="double_check" />
             </StDbCheckBtn>
           </StInputBox>
+          {/* <HelpText>
+            {errors.emailCheck?.message || errors.email?.message}
+          </HelpText> */}
           <input
             className="pwInput"
             type="password"
             placeholder="비밀번호를 입력해주세요."
             {...register('password', { required: true })}
           />
+          {/* <HelpText>{errors.password?.message}</HelpText> */}
           <input
             type="password"
             placeholder="비밀번호를 다시 입력해주세요."
             {...register('confirmPw', { required: true })}
           />
+          {/* <HelpText>{errors.confirmPw?.message}</HelpText> */}
         </StInputCon>
         <StBtnBox>
           <StSignUpBtn type="submit">
@@ -212,7 +221,6 @@ const StTitle = styled.div`
 
 const StInputCon = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
-
   input {
     width: 528px;
     height: 54px;
@@ -228,7 +236,6 @@ const StInputCon = styled.div`
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};
   }
-
   .pwInput {
     margin-bottom: 24px;
   }
@@ -237,11 +244,9 @@ const StInputCon = styled.div`
 const StInputBox = styled.div`
   display: flex;
   align-items: center;
-
   input {
     width: 337px;
   }
-
   .emailInput {
     margin-top: 20px;
     margin-bottom: 24px;
@@ -271,7 +276,6 @@ const StLogin = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.paragraph};
   font-weight: 500;
   line-height: 22px;
-
   button {
     color: ${({ theme }) => theme.colors.white};
     font-size: ${({ theme }) => theme.fontSizes.paragraph};
