@@ -693,7 +693,6 @@ function GameRoomRTC() {
               <GameModal
                 content={
                   <GameAnswerModal
-                    roomId={roomId}
                     setIsMyTurnModal={setIsMyTurnModal}
                     sendAnswer={sendAnswer}
                     nickName={myNickName}
