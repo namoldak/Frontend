@@ -625,18 +625,15 @@ function GameRoomRTC() {
       }
     };
     return async () => {
-      if (socketRef.current) {
-        sessionStorage.clear();
-        instance
-          .delete(`rooms/${param.roomId}/exit`)
-          .then(async (res) => {
-            navigate('/rooms');
-          })
-          .catch(async (error) => {
-            navigate('/rooms');
-          });
-        socketRef.current.close();
-      }
+      sessionStorage.clear();
+      instance
+        .delete(`rooms/${param.roomId}/exit`)
+        .then(async (res) => {
+          socketRef.current.close();
+        })
+        .catch(async (error) => {
+          socketRef.current.close();
+        });
     };
   }, []);
 
@@ -758,6 +755,8 @@ function GameRoomRTC() {
                   // width={200}
                   // height={200}
                 />
+              </StVideoBox>
+              <StVoiceCameraBox>
                 <StVoiceImg
                   src={isVoiceOn ? voiceOn : voiceOff}
                   ref={muteBtn}
@@ -772,26 +771,7 @@ function GameRoomRTC() {
                     onClickCameraOffHandler();
                   }}
                 />
-
-                {/* <select ref={camerasSelect} onInput={onInputCameraChange}>
-                  <option ref={cameraOption} value="device" />
-                </select> */}
-              </StVideoBox>
-              <button
-                ref={muteBtn}
-                onClick={() => {
-                  onClickMuteHandler();
-                }}
-              >
-                mute
-              </button>
-              <button ref={cameraBtn} onClick={onClickCameraOffHandler}>
-                camera OFF
-              </button>
-              <select ref={camerasSelect} onInput={onInputCameraChange}>
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                <option ref={cameraOption} value="device" />
-              </select>
+              </StVoiceCameraBox>
               <StNickName>{myNickName}님</StNickName>
             </StCard>
             {users.map((user) => {
@@ -987,5 +967,15 @@ const StCameraImg = styled.img`
   width: 20px;
   height: 20px;
   display: inline-block;
+  margin-right: 4px;
+  margin-left: 4px;
 `;
+
+const StVoiceCameraBox = styled.div`
+  float: right;
+  margin-left: auto;
+  margin-bottom: 15px;
+  width: 50px;
+`;
+
 export default GameRoomRTC;

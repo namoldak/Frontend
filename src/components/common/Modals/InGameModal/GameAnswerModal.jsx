@@ -5,6 +5,8 @@ import Button from '../../Button';
 
 // 내부 모듈
 import Input from '../../Input';
+import skipBtn from '../../../../assets/images/skipBtn.svg';
+import okBtn from '../../../../assets/images/okBtn.svg';
 
 function GameAnswerModal({
   skipAnswer,
@@ -14,6 +16,7 @@ function GameAnswerModal({
 }) {
   const [answerValue, setAnswerValue] = useState('');
   const [seconds, setSeconds] = useState(20);
+
   function onInputHandler(event) {
     setAnswerValue(event.target.value);
   }
@@ -38,43 +41,71 @@ function GameAnswerModal({
 
   return (
     <StModalContainer onKeyUp={onKeyUpEnter}>
-      <StTimeText>제한 시간</StTimeText>
-      <LimitTimer>{seconds} 초</LimitTimer>
+      <StTitle>정 답</StTitle>
+      <StTimer>제한 시간 : {seconds} 초</StTimer>
       <Input
         placeholder="정답을 입력해주세요."
         value={answerValue}
         onChange={onInputHandler}
       />
-      <Button
-        onClick={() => {
-          skipAnswer(nickName);
-          setIsMyTurnModal(false);
-        }}
-      >
-        SKIP
-      </Button>
-      <Button
-        onClick={() => {
-          sendAnswer(answerValue, nickName);
-          setIsMyTurnModal(false);
-        }}
-      >
-        ANSWER
-      </Button>
+      <StBtnBox>
+        <button
+          onClick={() => {
+            skipAnswer(nickName);
+            setIsMyTurnModal(false);
+          }}
+        >
+          <img src={skipBtn} alt="넘기기" className="skip" />
+        </button>
+        <button
+          onClick={() => {
+            sendAnswer(answerValue, nickName);
+            setIsMyTurnModal(false);
+          }}
+        >
+          <img src={okBtn} alt="제출" className="submit" />
+        </button>
+      </StBtnBox>
     </StModalContainer>
   );
 }
 
 const StModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  ${({ theme }) => theme.common.flexCenterColumn};
+  margin-top: 54px;
+  z-index: 900;
 
-  gap: 10px;
+  input {
+    width: 420px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
 `;
 
-const StTimeText = styled.div``;
-const LimitTimer = styled.div``;
+const StTitle = styled.div`
+  font-size: 38px;
+  font-weight: 900;
+`;
+
+const StTimer = styled.div`
+  font-size: 20px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-top: 20px;
+`;
+
+const StBtnBox = styled.div`
+  display: flex;
+
+  .skip {
+    width: 184px;
+    margin-right: 25px;
+  }
+
+  .submit {
+    width: 184px;
+    margin-left: 25px;
+  }
+`;
 
 export default GameAnswerModal;

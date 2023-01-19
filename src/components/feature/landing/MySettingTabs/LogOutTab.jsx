@@ -12,8 +12,6 @@ function LogOutTab(loggedIn) {
   const [isLoggedIn, setIsLoggedIn] = useState(loggedIn);
   const nickname = getNicknameCookie('nickname');
 
-  console.log('nick', nickname);
-
   function onClickLogOut() {
     if (nickname === undefined) {
       useToast('로그인 하지도 않았닭!!');
