@@ -1,19 +1,31 @@
 // 외부 모듈
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
 import { removeCookie } from '../../../../utils/cookies';
 import { instance } from '../../../../api/core/axios';
+import useToast from '../../../../hooks/useToast';
 
 function LogOutTab(loggedIn) {
   const [isLoggedIn, setIsLoggedIn] = useState(loggedIn);
 
   function onClickLogOut() {
     removeCookie('my_token', 'nickname');
-    alert('재밌었닭!');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useToast('재밌었닭!');
     setIsLoggedIn(false);
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
   return (
     <StLogoutBtnDiv>
       <button onClick={onClickLogOut}>로그아웃</button>

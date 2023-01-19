@@ -39,9 +39,9 @@ let stream = null;
 let pcs = {};
 let myPeerConnection;
 function GameRoomRTC() {
-  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
 
-  const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+  // const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
 
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
@@ -477,9 +477,9 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {
-    // socketRef.current = new SockJS('https://api.namoldak.com/signal');
+    socketRef.current = new SockJS('https://api.namoldak.com/signal');
 
-    socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
+    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
 
     socketRef.current.onopen = async () => {
       await getUserMedias()
@@ -990,4 +990,5 @@ const StCameraImg = styled.img`
   height: 20px;
   display: inline-block;
 `;
+
 export default GameRoomRTC;
