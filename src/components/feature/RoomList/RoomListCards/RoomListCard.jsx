@@ -25,7 +25,7 @@ function RoomListCard() {
   const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
 
-  useSound(bgm, 0.2, 2000);
+  // useSound(bgm, 0.2, 2000);
 
   useEffect(() => {
     dispatch(readAllRooms({ page, limit }));
