@@ -13,24 +13,19 @@ import useSound from '../../../../hooks/useSound';
 import bgm from '../../../../assets/audio/bg.mp3';
 
 function RoomListCard() {
-  // const rooms = useSelector((state) => state.rooms);
-  // // console.log('rooms', rooms);
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
-  console.log('gameRoomResponseDtoList', gameRoomResponseDtoList);
-  // console.log('totalPage', totalPage);
 
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
 
+  useSound(bgm, 0.1, 2000);
 
   function refreshRoomList() {
     dispatch(readAllRooms({ page, limit }));
   }
-  
-  // useSound(bgm, 0.2, 2000);
 
   useEffect(() => {
     dispatch(readAllRooms({ page, limit }));
