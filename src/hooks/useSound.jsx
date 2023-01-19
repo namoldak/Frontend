@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Howl } from 'howler';
 import { createBrowserHistory } from 'history';
 
-function useSound(src, volume = 0.2) {
+function useSound(src, volume = 0.1) {
   const history = createBrowserHistory();
   let sound;
   const soundStop = () => sound.stop();

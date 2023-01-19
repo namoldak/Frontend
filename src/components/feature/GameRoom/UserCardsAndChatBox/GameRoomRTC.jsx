@@ -20,7 +20,6 @@ import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
 
-import duckImg from '../../../../assets/images/duck.jpg';
 import voiceOn from '../../../../assets/images/voiceOn.png';
 import voiceOff from '../../../../assets/images/voiceOff.png';
 import cameraOff from '../../../../assets/images/cameraOff.png';

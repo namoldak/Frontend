@@ -1,26 +1,31 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { removeCookie } from '../../../../utils/cookies';
+import { getNicknameCookie, removeCookie } from '../../../../utils/cookies';
 import { instance } from '../../../../api/core/axios';
 import useToast from '../../../../hooks/useToast';
 
 function LogOutTab(loggedIn) {
   const [isLoggedIn, setIsLoggedIn] = useState(loggedIn);
+  const nickname = getNicknameCookie('nickname');
 
   function onClickLogOut() {
-    removeCookie('my_token', 'nickname');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useToast('재밌었닭!');
-    setIsLoggedIn(false);
+    if (nickname === undefined) {
+      useToast('로그인 하지도 않았닭!!');
+    } else {
+      removeCookie('my_token', 'nickname');
+      useToast('재밌었닭!');
+      setIsLoggedIn(false);
+    }
   }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       window.location.reload();
-    }, 2000);
+    }, 2500);
     return () => {
       clearTimeout(timer);
     };
