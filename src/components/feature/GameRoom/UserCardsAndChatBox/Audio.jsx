@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import duckImg from '../../../../assets/images/duck.jpg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 
-function Audio({ stream, nickName, isCameraOn, keyword }) {
+function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn }) {
   const videoRef = useRef(null);
   const userCardImgRef = useRef(null);
   const [userkeyword, setUserKeyword] = useState('키워드');
@@ -37,7 +37,7 @@ function Audio({ stream, nickName, isCameraOn, keyword }) {
         <StKeyword>{userkeyword || '키워드'}</StKeyword>
       </StKeywordBack>
       {/* <h4>{userkeyword}</h4> */}
-      <StVideoBox>
+      <StVideoBox className={isMyTurn ? 'spotLight' : ''}>
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         <video
           ref={videoRef}
@@ -57,7 +57,9 @@ function Audio({ stream, nickName, isCameraOn, keyword }) {
           height={200}
         />
       </StVideoBox>
-      <StNickName>{nickName}님</StNickName>
+      <StNickName className={isMyTurn ? 'spotLight' : ''}>
+        {nickName}님
+      </StNickName>
     </>
   );
 }
@@ -86,7 +88,6 @@ const StVideoBox = styled.div`
   max-width: 150px;
   min-height: 150px;
   margin: 0 auto;
-
   video {
     width: 100%;
     height: 100%;
@@ -101,6 +102,9 @@ const StNickName = styled.span`
   text-align: center;
   border-top: 6px solid #f5c86f;
   padding: 7px 0;
+  .spotLight {
+    border-top: 6px solid rgba(190, 220, 138, 1);
+  }
 `;
 
 const Stimg = styled.img``;
