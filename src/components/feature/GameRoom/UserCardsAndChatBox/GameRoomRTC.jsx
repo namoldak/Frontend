@@ -173,6 +173,8 @@ function GameRoomRTC() {
           break;
         }
         case 'ENDGAME': {
+          muteBtn.current.style.display = 'block';
+          leaveBtn.current.disabled = false;
           setNotice('');
           setCategory('');
           setKeyword('');
@@ -190,11 +192,6 @@ function GameRoomRTC() {
 
           if (myNickName === owner) {
             startBtn.current.disabled = false;
-            muteBtn.current.style.display = 'blcok';
-            leaveBtn.current.disabled = false;
-          } else {
-            muteBtn.current.style.display = 'blcok';
-            leaveBtn.current.disabled = false;
           }
 
           break;
