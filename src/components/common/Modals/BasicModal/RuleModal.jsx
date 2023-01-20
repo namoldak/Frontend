@@ -9,7 +9,6 @@ import ModalPortal from '../ModalPortal';
 import landingBack from '../../../../assets/images/landingBack.svg';
 import landingToLoginBtn from '../../../../assets/images/landingToLoginBtn.svg';
 
-
 function RuleModal({ onClose, content }) {
   return (
     <ModalPortal>

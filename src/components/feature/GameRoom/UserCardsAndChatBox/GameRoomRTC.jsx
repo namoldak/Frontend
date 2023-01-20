@@ -173,6 +173,8 @@ function GameRoomRTC() {
           break;
         }
         case 'ENDGAME': {
+          muteBtn.current.style.display = 'block';
+          leaveBtn.current.disabled = false;
           setNotice('');
           setCategory('');
           setKeyword('');
@@ -190,11 +192,6 @@ function GameRoomRTC() {
 
           if (myNickName === owner) {
             startBtn.current.disabled = false;
-            muteBtn.current.style.display = 'blcok';
-            leaveBtn.current.disabled = false;
-          } else {
-            muteBtn.current.style.display = 'blcok';
-            leaveBtn.current.disabled = false;
           }
 
           break;
@@ -693,11 +690,7 @@ function GameRoomRTC() {
                     playsInline
                   />
                 </StVideo>
-                <Stimg
-                  ref={userCardImgRef}
-                  src={playerImg}
-                  alt="닭 일러스트"
-                />
+                <Stimg ref={userCardImgRef} src={playerImg} alt="닭 일러스트" />
                 <StVoiceCameraBox>
                   <StCameraImg
                     ref={cameraBtn}
