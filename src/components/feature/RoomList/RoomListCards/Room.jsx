@@ -38,10 +38,10 @@ function Room({ roomInfo }) {
             clickRoom(roomInfo);
           }}
         >
-          <img src={egg} alt="egg_image" />
+          <img src={egg} alt="계란 이미지" />
           {roomInfo.status === 'false' ? (
             <StInProgress>
-              <img src={inprogress} alt="game in progress" />
+              <img src={inprogress} alt="진행 중" />
             </StInProgress>
           ) : (
             ''

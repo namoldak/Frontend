@@ -15,7 +15,6 @@ const StContainer = styled.div`
   height: 100vh;
   margin: 0 auto;
   width: 1180px;
-  border: 1px solid black;
 `;
 
 export default Container;

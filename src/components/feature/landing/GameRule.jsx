@@ -25,7 +25,7 @@ function GameRule() {
           setIsModalOn(true);
         }}
       >
-        <img src={ruleBtn} alt="button" />
+        <img src={ruleBtn} alt="게임 룰" />
       </button>
     </StGameRule>
   );

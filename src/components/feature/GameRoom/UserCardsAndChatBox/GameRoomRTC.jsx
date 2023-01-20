@@ -10,8 +10,8 @@ import { useCookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
-import { instance } from '../../../../api/core/axios';
 import { getNicknameCookie } from '../../../../utils/cookies';
+import { instance } from '../../../../api/core/axios';
 import ChatBox from './ChatBox';
 import Audio from './Audio';
 import ToastMessage from '../../../common/Toast/ToastMessage';
@@ -631,7 +631,7 @@ function GameRoomRTC() {
             leaveRoom();
           }}
         >
-          <img src={backBtn} alt="back_image" />
+          <img src={backBtn} alt="뒤로가기" />
         </StLeaveBtn>
         <StHeaderBtnBox>
           <div>
@@ -661,7 +661,7 @@ function GameRoomRTC() {
             </button>
           )}
           <StSettingBtn>
-            <img src={settingBtn} alt="setting_image" />
+            <img src={settingBtn} alt="설정버튼" />
           </StSettingBtn>
         </StHeaderBtnBox>
       </StGameRoomHeader>
@@ -675,7 +675,7 @@ function GameRoomRTC() {
               <StKeywordBack>
                 {isOwner ? (
                   <StStar>
-                    <img src={star} alt="star" />
+                    <img src={star} alt="별" />
                   </StStar>
                 ) : (
                   <div />
@@ -693,7 +693,11 @@ function GameRoomRTC() {
                     playsInline
                   />
                 </StVideo>
-                <Stimg ref={userCardImgRef} src={playerImg} alt="" />
+                <Stimg
+                  ref={userCardImgRef}
+                  src={playerImg}
+                  alt="닭 일러스트"
+                />
                 <StVoiceCameraBox>
                   <StCameraImg
                     ref={cameraBtn}

@@ -25,7 +25,7 @@ function CreateRoom() {
           setIsModalOn(true);
         }}
       >
-        <img src={createRoomBtn} alt="방 만들기 버튼" />
+        <img src={createRoomBtn} alt="방 만들기" />
       </CreateRoomBtn>
     </StCreateRoom>
   );
@@ -35,7 +35,8 @@ const StCreateRoom = styled.div``;
 
 const CreateRoomBtn = styled.button`
   width: 238px;
-  height: 78px;
+  height: 80px;
+  margin-top: 10px;
 `;
 
 export default CreateRoom;

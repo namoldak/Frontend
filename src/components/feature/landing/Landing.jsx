@@ -4,21 +4,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
-import MySetting from './MySetting';
+import { getCookie, getNicknameCookie } from 'utils/cookies';
+import settingBtn from 'assets/images/settingBtn.svg';
+import landingBack from 'assets/images/landingBack.svg';
+import landingTitle from 'assets/images/landingTitle.svg';
+import landingBanner from 'assets/images/landingBanner.svg';
+import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
+import landingToLoginBtn from 'assets/images/landingToLoginBtn.svg';
 import GameRule from './GameRule';
-import TextButton from '../../common/TextButton';
-import {
-  getCookie,
-  getNicknameCookie,
-  removeCookie,
-} from '../../../utils/cookies';
-import backBtn from '../../../assets/images/backBtn.svg';
-import settingBtn from '../../../assets/images/settingBtn.svg';
-import landingBack from '../../../assets/images/landingBack.svg';
-import landingTitle from '../../../assets/images/landingTitle.svg';
-import landingBanner from '../../../assets/images/landingBanner.svg';
-import landingToGameBtn from '../../../assets/images/landingToGameBtn.svg';
-import landingToLoginBtn from '../../../assets/images/landingToLoginBtn.svg';
 import Modal from '../../common/Modals/BasicModal/Modal';
 import MyPageModal from '../../common/Modals/BasicModal/MyPageModal';
 
@@ -41,7 +34,12 @@ function Landing() {
             onClose={() => {
               setIsSettingModalOn(false);
             }}
-            content={<MyPageModal loggedIn={setIsLoggedIn} />}
+            content={
+              <MyPageModal
+                loggedIn={setIsLoggedIn}
+                modalOn={setIsSettingModalOn}
+              />
+            }
           />
         )}
         <StSettingBtn
@@ -49,16 +47,16 @@ function Landing() {
             setIsSettingModalOn(true);
           }}
         >
-          <img src={settingBtn} alt="setting_image" />
+          <img src={settingBtn} alt="설정버튼" />
         </StSettingBtn>
       </StLandingHeader>
       <StLadingMain>
         <StBanner>
           <StBannerTitle>
-            <img src={landingTitle} alt="나만 모른 닭" />
+            <img src={landingTitle} alt="제목 이미지" />
           </StBannerTitle>
           <StBannerImg>
-            <img src={landingBanner} alt="banner_image" />
+            <img src={landingBanner} alt="닭 3마리 일러스트" />
           </StBannerImg>
           <GameRule />
           <StToGo>
@@ -79,19 +77,12 @@ function Landing() {
 }
 
 // header + main
-const StLanding = styled.div`
-  padding: 10px;
-`;
+const StLanding = styled.div``;
 
 const StLandingHeader = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
-`;
-
-const StBackBtn = styled.button`
-  width: 78px;
-  height: 78px;
 `;
 
 const StSettingBtn = styled.button`
@@ -102,11 +93,11 @@ const StSettingBtn = styled.button`
 
 // background image 적용
 const StLadingMain = styled.div`
-  /* position: fixed; */
   width: 1180px;
-  height: 800px;
+  height: calc(100vh - 120px);
+  max-height: 800px;
   background-image: url(${landingBack});
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
 `;
@@ -126,7 +117,7 @@ const StBannerTitle = styled.div`
 
 const StBannerImg = styled.div`
   width: 100%;
-  /* height: 671px; */
+  height: 60%;
 `;
 
 const StToGo = styled.button`

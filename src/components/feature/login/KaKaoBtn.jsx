@@ -7,7 +7,7 @@ function KaKaoBtn() {
   return (
     <KakaoBox>
       <a href={process.env.REACT_APP_KAKAO_AUTH_URL}>
-        <img src={kakao} alt="kakao login" />
+        <img src={kakao} alt="카카오 로그인" />
       </a>
     </KakaoBox>
   );

@@ -3,7 +3,6 @@ import { Howl } from 'howler';
 import { createBrowserHistory } from 'history';
 
 function useSound(src, volume = 0.1) {
-  const history = createBrowserHistory();
   let sound;
   const soundStop = () => sound.stop();
   const soundPlay = (src) => {
@@ -16,7 +15,7 @@ function useSound(src, volume = 0.1) {
     soundPlay(src);
     sound.on('play', () => {
       const history = createBrowserHistory();
-      const unlistenHistoryEvent = history.listen(({ action }) => {
+      history.listen(({ action }) => {
         if (action === 'POP') {
           sound.stop();
         }

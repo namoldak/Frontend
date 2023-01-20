@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import duckImg from '../../../../assets/images/duck.jpg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 import star from '../../../../assets/images/star.svg';
 import playerImg from '../../../../assets/images/playerImg.svg';
@@ -40,7 +39,7 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
       </StKeywordBack>
       {isOwner ? (
         <StStar>
-          <img src={star} alt="star" />
+          <img src={star} alt="별" />
         </StStar>
       ) : (
         <div />
@@ -62,7 +61,7 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
         <Stimg
           ref={userCardImgRef}
           src={playerImg}
-          alt=""
+          alt="닭 이미지"
           // width={200}
           // height={200}
         />
@@ -97,7 +96,7 @@ const StKeywordBack = styled.div`
   background-repeat: no-repeat;
   width: 214px;
   height: 53px;
-  margin: 10px auto;
+  margin: 10px auto 0 auto;
 `;
 
 const StKeyword = styled.div`
@@ -118,14 +117,12 @@ const StStar = styled.div`
 
 const StVideoBox = styled.div`
   max-width: 150px;
-  max-height: 150px;
+  height: 140px;
   overflow: hidden;
   margin: 0 auto;
 `;
 
 const StVideo = styled.div`
-  height: 150px;
-
   video {
     width: 150px;
     height: 143px;
@@ -134,19 +131,20 @@ const StVideo = styled.div`
 
 const StNickName = styled.span`
   display: block;
-  height: 100%;
+  height: 50%;
   font-size: 22px;
   font-weight: 400;
   color: #5d3714;
   text-align: center;
   background: #ffe9bc;
   border-top: 6px solid #f5c86f;
-  padding: 7px 0;
-  max-height: 50px;
+  padding-top: 16px;
 
   /* .spotLight {
     border-top: 6px solid rgba(190, 220, 138, 1);
   } */
 `;
 
-const Stimg = styled.img``;
+const Stimg = styled.img`
+  height: unset;
+`;

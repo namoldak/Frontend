@@ -11,12 +11,13 @@ import * as yup from 'yup';
 // 내부 모듈
 import authAPI from '../../../api/authAsync';
 import useDidMountEffect from '../../../hooks/useDidMountEffect';
+import useToast from '../../../hooks/useToast';
 import popUp from '../../../assets/images/popUp.svg';
 import signUpTitleBtn from '../../../assets/images/signUpTitleBtn.svg';
 import doubleCheckBtn from '../../../assets/images/doubleCheckBtn.svg';
 import signUpBtn from '../../../assets/images/signUpBtn.svg';
-import useToast from '../../../hooks/useToast';
 import backBtn from '../../../assets/images/backBtn.svg';
+import miniLoginBtn from '../../../assets/images/miniLoginBtn.svg';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -134,13 +135,13 @@ function SignUp() {
     <>
       <StBackBtn>
         <Link to="/">
-          <img src={backBtn} alt="back_image" />
+          <img src={backBtn} alt="뒤로가기" />
         </Link>
       </StBackBtn>
       <StSignUp>
         <StSignUpContainer onSubmit={handleSubmit(onClickSignup)}>
           <StTitle>
-            <img src={signUpTitleBtn} alt="title_image" />
+            <img src={signUpTitleBtn} alt="회원가입" />
           </StTitle>
           <StInputCon>
             <StInputBox>
@@ -152,7 +153,7 @@ function SignUp() {
                 disabled={errors.nickname || !getValues('nickname')}
                 onClick={onClickCheckNickName}
               >
-                <img src={doubleCheckBtn} alt="double_check" />
+                <img src={doubleCheckBtn} alt="닉네임 중복확인" />
               </StDbCheckBtn>
             </StInputBox>
             {/* <HelpText>
@@ -169,7 +170,7 @@ function SignUp() {
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onClickCheckEmail}
               >
-                <img src={doubleCheckBtn} alt="double_check" />
+                <img src={doubleCheckBtn} alt="이메일 중복확인" />
               </StDbCheckBtn>
             </StInputBox>
             {/* <HelpText>
@@ -191,12 +192,14 @@ function SignUp() {
           </StInputCon>
           <StBtnBox>
             <StSignUpBtn type="submit">
-              <img src={signUpBtn} alt="signUp_image" />
+              <img src={signUpBtn} alt="회원가입 버튼" />
             </StSignUpBtn>
             <StLogin>
               <p>아이디가 있으신가요?</p>
               <Link to="/login">
-                <button>로그인</button>
+                <button>
+                  <img src={miniLoginBtn} alt="로그인" />
+                </button>
               </Link>
             </StLogin>
           </StBtnBox>
@@ -284,16 +287,21 @@ const StLogin = styled.div`
   font-size: ${({ theme }) => theme.fontSizes.paragraph};
   font-weight: 500;
   line-height: 22px;
+
+  a {
+    height: 40px;
+  }
+
   button {
     color: ${({ theme }) => theme.colors.white};
     font-size: ${({ theme }) => theme.fontSizes.paragraph};
     font-weight: 800;
-    margin-left: 10px;
+    margin-left: -12px;
   }
 `;
 
 const StBackBtn = styled.button`
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 10px;
   width: 78px;
   height: 78px;
