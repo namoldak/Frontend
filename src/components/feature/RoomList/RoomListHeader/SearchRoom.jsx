@@ -72,7 +72,7 @@ const StSearchRoom = styled.div`
 
 const SearchBtn = styled.button`
   position: absolute;
-  top: 16%;
+  top: 23%;
   right: 4%;
 `;
 

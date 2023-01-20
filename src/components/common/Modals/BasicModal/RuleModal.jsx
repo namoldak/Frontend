@@ -1,10 +1,14 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 // 내부 모듈
 import closeBtn from 'assets/images/closeBtn.svg';
 import ModalPortal from '../ModalPortal';
+import landingBack from '../../../../assets/images/landingBack.svg';
+import landingToLoginBtn from '../../../../assets/images/landingToLoginBtn.svg';
+
 
 function RuleModal({ onClose, content }) {
   return (
@@ -19,7 +23,12 @@ function RuleModal({ onClose, content }) {
           <StCloseBtn onClick={onClose}>
             <img src={closeBtn} alt="방 닫기" />
           </StCloseBtn>
-          <div>{content}</div>
+          <StRuleText>{content}</StRuleText>
+          <StToGo>
+            <Link to="/login">
+              <img src={landingToLoginBtn} alt="로그인하러가기" />
+            </Link>
+          </StToGo>
         </StModalBorder>
       </StBackground>
     </ModalPortal>
@@ -29,27 +38,46 @@ function RuleModal({ onClose, content }) {
 const StBackground = styled.div`
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 999;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 
 const StModalBorder = styled.div`
-  position: relative;
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-45%, -55%);
-  width: 900px;
-  height: 500px;
-  padding: 40px;
+  transform: translate(-50%, -50%);
+  width: 1180px;
+  height: 750px;
+  background-image: url(${landingBack});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
 `;
 
 const StCloseBtn = styled.button`
   position: absolute;
-  top: 0;
-  right: 50px;
+  top: 50px;
+  right: 110px;
+  width: 60px;
 `;
+
+const StRuleText = styled.div`
+  ${({ theme }) => theme.common.absoluteCenter}
+  padding-bottom: 50px
+`;
+
+const StToGo = styled.button`
+  width: 485px;
+  position: absolute;
+  left: 50%;
+  bottom: 80px;
+  transform: translateX(-50%);
+`;
+
 export default RuleModal;

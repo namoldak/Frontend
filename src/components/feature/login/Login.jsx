@@ -14,6 +14,7 @@ import popUp from '../../../assets/images/popUp.svg';
 import loginTitleBtn from '../../../assets/images/loginTitleBtn.svg';
 import loginBtn from '../../../assets/images/loginBtn.svg';
 import backBtn from '../../../assets/images/backBtn.svg';
+import miniSignUpBtn from '../../../assets/images/miniSignUpBtn.svg';
 
 // useForm
 const schema = yup.object().shape({
@@ -107,7 +108,9 @@ function Login() {
             <StSignUp>
               <p>회원이 아니신가요?</p>
               <Link to="/signup">
-                <button>회원가입</button>
+                <button>
+                  <img src={miniSignUpBtn} alt="회원가입" />
+                </button>
               </Link>
             </StSignUp>
           </StBtnBox>
@@ -173,23 +176,27 @@ const StLoginBtn = styled.button`
 const StSignUp = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 32px;
+  margin-top: 15px;
   text-align: center;
   color: ${({ theme }) => theme.colors.white};
   font-size: ${({ theme }) => theme.fontSizes.paragraph};
   font-weight: 500;
   line-height: 22px;
 
+  a {
+    height: 40px;
+  }
+
   button {
     color: ${({ theme }) => theme.colors.white};
     font-size: ${({ theme }) => theme.fontSizes.paragraph};
     font-weight: 800;
-    margin-left: 10px;
+    margin-left: -12px;
   }
 `;
 
 const StBackBtn = styled.button`
-  margin-top: 30px;
+  margin-top: 10px;
   margin-left: 10px;
   width: 78px;
   height: 78px;

@@ -35,7 +35,8 @@ const StCreateRoom = styled.div``;
 
 const CreateRoomBtn = styled.button`
   width: 238px;
-  height: 78px;
+  height: 80px;
+  margin-top: 10px;
 `;
 
 export default CreateRoom;
