@@ -5,12 +5,13 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { readAllRooms } from '../../../../redux/modules/roomSlice';
-import roomListBanner from '../../../../assets/images/roomListBanner.svg';
-import leftArrow from '../../../../assets/images/leftArrow.svg';
-import rightArrow from '../../../../assets/images/rightArrow.svg';
 import Room from './Room';
 import useSound from '../../../../hooks/useSound';
 import bgm from '../../../../assets/audio/bg.mp3';
+import roomListBanner from '../../../../assets/images/roomListBanner.svg';
+import leftArrow from '../../../../assets/images/leftArrow.svg';
+import rightArrow from '../../../../assets/images/rightArrow.svg';
+import refreshBtn from '../../../../assets/images/refreshBtn.svg';
 
 function RoomListCard() {
   const { totalPage, gameRoomResponseDtoList } = useSelector(
@@ -21,7 +22,7 @@ function RoomListCard() {
   const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
 
-  useSound(bgm, 0.1, 2000);
+  // useSound(bgm, 0.1, 2000);
 
   function refreshRoomList() {
     dispatch(readAllRooms({ page, limit }));
@@ -65,7 +66,9 @@ function RoomListCard() {
           <StEmptyDiv />
         )}
       </StRoomDiv>
-      <StRefreshBtn onClick={refreshRoomList}>새로고침</StRefreshBtn>
+      <StRefreshBtn onClick={refreshRoomList}>
+        <img src={refreshBtn} alt="새로고침" />
+      </StRefreshBtn>
     </StRoomListCardBox>
   );
 }
@@ -73,10 +76,11 @@ function RoomListCard() {
 const StRoomListCardBox = styled.div`
   position: relative;
   width: 1180px;
-  height: 532px;
+  height: calc(100vh - 260px);
   background-image: url(${roomListBanner});
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: bottom;
 `;
 
 const StRoomDiv = styled.div`
@@ -99,15 +103,12 @@ const StRightBtn = styled.button`
   margin-right: 100px;
 `;
 
-const StEmptyDiv = styled.div`
-  /* padding: 50px; */
-`;
+const StEmptyDiv = styled.div``;
 
 const StRefreshBtn = styled.button`
-  margin-left: 150px;
-  margin-top: 30px;
   color: white;
   font-size: 22px;
   font-weight: 500;
+  margin-left: 140px;
 `;
 export default RoomListCard;
