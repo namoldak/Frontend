@@ -21,14 +21,14 @@ function GameRuleModal() {
 
 const StModalContainer = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
-  margin-top: 10px;
-  background: rgba(4, 2, 0, 0.85);
+  /* margin-top: 10px; */
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 30px;
 
-  width: 750px;
-  height: 400px;
+  width: 800px;
+  height: 440px;
 
-  gap: 30px;
+  gap: 50px;
 `;
 
 export default GameRuleModal;
