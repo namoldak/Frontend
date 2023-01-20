@@ -17,7 +17,7 @@ function RuleModal({ onClose, content }) {
           }}
         >
           <StCloseBtn onClick={onClose}>
-            <img src={closeBtn} alt="방 닫기 버튼" />
+            <img src={closeBtn} alt="방 닫기" />
           </StCloseBtn>
           <div>{content}</div>
         </StModalBorder>

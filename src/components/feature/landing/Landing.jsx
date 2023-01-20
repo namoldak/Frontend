@@ -50,16 +50,16 @@ function Landing() {
             setIsSettingModalOn(true);
           }}
         >
-          <img src={settingBtn} alt="setting_image" />
+          <img src={settingBtn} alt="설정버튼" />
         </StSettingBtn>
       </StLandingHeader>
       <StLadingMain>
         <StBanner>
           <StBannerTitle>
-            <img src={landingTitle} alt="나만 모른 닭" />
+            <img src={landingTitle} alt="제목 이미지" />
           </StBannerTitle>
           <StBannerImg>
-            <img src={landingBanner} alt="banner_image" />
+            <img src={landingBanner} alt="닭 3마리 일러스트" />
           </StBannerImg>
           <GameRule />
           <StToGo>

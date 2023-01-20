@@ -25,7 +25,7 @@ function CreateRoom() {
           setIsModalOn(true);
         }}
       >
-        <img src={createRoomBtn} alt="방 만들기 버튼" />
+        <img src={createRoomBtn} alt="방 만들기" />
       </CreateRoomBtn>
     </StCreateRoom>
   );

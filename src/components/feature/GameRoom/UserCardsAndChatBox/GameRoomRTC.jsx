@@ -674,7 +674,7 @@ function GameRoomRTC() {
             leaveRoom();
           }}
         >
-          <img src={backBtn} alt="back_image" />
+          <img src={backBtn} alt="뒤로가기" />
         </StLeaveBtn>
         <StHeaderBtnBox>
           <div>
@@ -704,7 +704,7 @@ function GameRoomRTC() {
             </button>
           )}
           <StSettingBtn>
-            <img src={settingBtn} alt="setting_image" />
+            <img src={settingBtn} alt="설정버튼" />
           </StSettingBtn>
         </StHeaderBtnBox>
       </StGameRoomHeader>
@@ -718,7 +718,7 @@ function GameRoomRTC() {
               <StKeywordBack>
                 {isOwner ? (
                   <StStar>
-                    <img src={star} alt="star" />
+                    <img src={star} alt="별" />
                   </StStar>
                 ) : (
                   <div />
@@ -743,7 +743,7 @@ function GameRoomRTC() {
                 <Stimg
                   ref={userCardImgRef}
                   src={playerImg}
-                  alt=""
+                  alt="닭 일러스트"
                   // width={200}
                   // height={200}
                 />

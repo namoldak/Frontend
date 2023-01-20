@@ -134,13 +134,13 @@ function SignUp() {
     <>
       <StBackBtn>
         <Link to="/">
-          <img src={backBtn} alt="back_image" />
+          <img src={backBtn} alt="뒤로가기" />
         </Link>
       </StBackBtn>
       <StSignUp>
         <StSignUpContainer onSubmit={handleSubmit(onClickSignup)}>
           <StTitle>
-            <img src={signUpTitleBtn} alt="title_image" />
+            <img src={signUpTitleBtn} alt="회원가입" />
           </StTitle>
           <StInputCon>
             <StInputBox>
@@ -152,7 +152,7 @@ function SignUp() {
                 disabled={errors.nickname || !getValues('nickname')}
                 onClick={onClickCheckNickName}
               >
-                <img src={doubleCheckBtn} alt="double_check" />
+                <img src={doubleCheckBtn} alt="닉네임 중복확인" />
               </StDbCheckBtn>
             </StInputBox>
             {/* <HelpText>
@@ -169,7 +169,7 @@ function SignUp() {
                 // eslint-disable-next-line react/jsx-no-bind
                 onClick={onClickCheckEmail}
               >
-                <img src={doubleCheckBtn} alt="double_check" />
+                <img src={doubleCheckBtn} alt="이메일 중복확인" />
               </StDbCheckBtn>
             </StInputBox>
             {/* <HelpText>
@@ -191,7 +191,7 @@ function SignUp() {
           </StInputCon>
           <StBtnBox>
             <StSignUpBtn type="submit">
-              <img src={signUpBtn} alt="signUp_image" />
+              <img src={signUpBtn} alt="회원가입 버튼" />
             </StSignUpBtn>
             <StLogin>
               <p>아이디가 있으신가요?</p>

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import duckImg from '../../../../assets/images/duck.jpg';
 import keywordImg from '../../../../assets/images/keyword.svg';
 import star from '../../../../assets/images/star.svg';
 import playerImg from '../../../../assets/images/playerImg.svg';
@@ -40,7 +39,7 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
       </StKeywordBack>
       {isOwner ? (
         <StStar>
-          <img src={star} alt="star" />
+          <img src={star} alt="별" />
         </StStar>
       ) : (
         <div />
@@ -62,7 +61,7 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
         <Stimg
           ref={userCardImgRef}
           src={playerImg}
-          alt=""
+          alt="닭 이미지"
           // width={200}
           // height={200}
         />

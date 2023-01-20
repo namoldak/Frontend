@@ -10,10 +10,10 @@ function GameRuleModal() {
   return (
     <StModalContainer>
       <div>
-        <img src={ruletitle} alt="game rule title" />
+        <img src={ruletitle} alt="게임 제목" />
       </div>
       <div>
-        <img src={rule} alt="game rule" />
+        <img src={rule} alt="게임룰 내용" />
       </div>
     </StModalContainer>
   );

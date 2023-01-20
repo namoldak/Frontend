@@ -34,11 +34,12 @@ function CreateRoomModal() {
     <StModalContainer onKeyUp={onKeyUpEnter}>
       <StTitle>방 만들기</StTitle>
       <Input
-        placeholder="방 제목을 입력해주세요"
+        placeholder="방 제목을 입력해주세요. (최대 10글자)"
         value={gameRoomName}
         onChange={(e) => {
           setGameRoomName(e.target.value);
         }}
+        maxLength={15}
       />
       <button onClick={onClickRoomCreate}>
         <img src={modalCreateBtn} alt="방 만들기" />

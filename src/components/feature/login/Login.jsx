@@ -74,13 +74,13 @@ function Login() {
     <>
       <StBackBtn>
         <Link to="/">
-          <img src={backBtn} alt="back_image" />
+          <img src={backBtn} alt="뒤로가기" />
         </Link>
       </StBackBtn>
       <StLogin>
         <StLoginContainer onSubmit={handleSubmit(onClickLogin)}>
           <StTitle>
-            <img src={loginTitleBtn} alt="title_image" />
+            <img src={loginTitleBtn} alt="로그인" />
           </StTitle>
           <StInputBox>
             <input
@@ -101,7 +101,7 @@ function Login() {
           </StInputBox>
           <StBtnBox>
             <StLoginBtn type="submit">
-              <img src={loginBtn} alt="login_image" />
+              <img src={loginBtn} alt="로그인 버튼" />
             </StLoginBtn>
             <KaKaoBtn />
             <StSignUp>

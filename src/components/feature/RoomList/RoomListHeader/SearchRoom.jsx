@@ -41,7 +41,7 @@ function SearchRoom() {
       />
       {/* eslint-disable-next-line react/jsx-no-bind */}
       <SearchBtn onClick={onClickSearchRoom}>
-        <img src={search} alt="search icon" />
+        <img src={search} alt="검색버튼" />
       </SearchBtn>
     </StSearchRoom>
   );
