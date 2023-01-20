@@ -11,7 +11,6 @@ function Header() {
 
   useEffect(() => {
     if (getCookie('my_token')) {
-      console.log('cookie');
       setIsLoggedIn(true);
     }
   }, [getCookie]);

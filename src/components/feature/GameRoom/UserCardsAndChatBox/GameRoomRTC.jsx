@@ -97,16 +97,13 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      console.log('data', data);
       switch (data.type) {
         case 'ENTER': {
           // console.log('enter');
           break;
         }
         case 'CHAT': {
-          console.log('chat 수신');
           setChatMessages((chatMessages) => [...chatMessages, data]);
-          console.log(chatMessages);
           break;
         }
         case 'START': {
@@ -260,8 +257,6 @@ function GameRoomRTC() {
   /// ////////////////////////////////////////!SECTION
 
   function sendChat(message) {
-    console.log('msg', message);
-    console.log('rtc sendchat');
     if (message.trim() === '') {
       return;
     }
@@ -337,12 +332,8 @@ function GameRoomRTC() {
       ],
     });
     // add pc to peerConnections object
-    console.log(socketID);
-    console.log(socket);
-    console.log(peerConnectionLocalStream);
     const keyName = socketID;
     pcs = { ...pcs, [`${keyName}`]: pc };
-    console.log(pcs);
     pc.onicecandidate = (e) => {
       if (e.candidate) {
         socket.send(
@@ -398,7 +389,6 @@ function GameRoomRTC() {
 
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
-      console.log(track);
       track.enabled = !track.enabled;
     });
 
@@ -507,17 +497,13 @@ function GameRoomRTC() {
         case 'all_users': {
           const { allUsers } = data;
           const { allUsersNickNames } = data;
-          console.log(allUsers);
-          console.log(allUsersNickNames);
           for (let i = 0; i < allUsers.length; i += 1) {
-            console.log(stream);
             createPeerConnection(
               allUsers[i],
               socketRef.current,
               stream,
               allUsersNickNames[`${allUsers[i]}`],
             );
-            console.log(pcs);
 
             const allUsersEachPc = pcs[`${allUsers[i]}`];
             if (allUsersEachPc) {
@@ -595,7 +581,6 @@ function GameRoomRTC() {
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
             .then(async (res) => {
-              console.log(res.data.ownerNickname);
               await sessionStorage.setItem('owner', res.data.ownerNickname);
               if (sessionStorage.getItem('owner') === myNickName) {
                 setIsOwner(true);
@@ -653,9 +638,7 @@ function GameRoomRTC() {
     }
   }
 
-  useEffect(() => {
-    console.log('stream:', stream);
-  }, [stream, socketRef.current]);
+  useEffect(() => {}, [stream, socketRef.current]);
 
   return (
     <StGameRoomRTC>

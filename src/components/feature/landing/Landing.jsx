@@ -27,9 +27,6 @@ function Landing() {
   const nickname = getNicknameCookie('nickname');
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
-  console.log('nickname', nickname);
-  console.log(isLoggedIn);
-
   useEffect(() => {
     if (getCookie('my_token')) {
       setIsLoggedIn(true);
