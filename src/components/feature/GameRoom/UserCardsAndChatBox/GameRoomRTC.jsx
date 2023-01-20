@@ -703,18 +703,10 @@ function GameRoomRTC() {
               <img src={gameStartBtn} alt="게임시작" />
             </button>
           )}
-          {/* {isOwner ? (
-            <button ref={startBtn} onClick={gameStart}>
-              <img src={gameStartBtn} alt="게임시작" />
-            </button>
-          ) : (
-            <div>방장이아닙니다</div>
-          )} */}
-          <StSettingBtn>
+          {/* <StSettingBtn>
             <img src={settingBtn} alt="setting_image" />
-          </StSettingBtn>
+          </StSettingBtn> */}
         </StHeaderBtnBox>
-        {/* <button onClick={sendSpotlight}>스팟보내기</button> */}
       </StGameRoomHeader>
       <StGameRoomMain>
         <StGameCategoryAndUserCards>

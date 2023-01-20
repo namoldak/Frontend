@@ -4,15 +4,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
-import MySetting from './MySetting';
 import GameRule from './GameRule';
-import TextButton from '../../common/TextButton';
-import {
-  getCookie,
-  getNicknameCookie,
-  removeCookie,
-} from '../../../utils/cookies';
-import backBtn from '../../../assets/images/backBtn.svg';
+import { getCookie, getNicknameCookie } from '../../../utils/cookies';
 import settingBtn from '../../../assets/images/settingBtn.svg';
 import landingBack from '../../../assets/images/landingBack.svg';
 import landingTitle from '../../../assets/images/landingTitle.svg';
@@ -44,7 +37,12 @@ function Landing() {
             onClose={() => {
               setIsSettingModalOn(false);
             }}
-            content={<MyPageModal loggedIn={setIsLoggedIn} />}
+            content={
+              <MyPageModal
+                loggedIn={setIsLoggedIn}
+                modalOn={setIsSettingModalOn}
+              />
+            }
           />
         )}
         <StSettingBtn
