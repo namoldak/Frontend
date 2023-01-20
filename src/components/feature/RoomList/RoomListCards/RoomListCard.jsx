@@ -42,7 +42,7 @@ function RoomListCard() {
                 setPage(page - 1);
               }}
             >
-              <img src={leftArrow} alt="leftArrow icone" />
+              <img src={leftArrow} alt="이전" />
             </StLeftBtn>
           ) : (
             <StEmptyDiv />
@@ -61,7 +61,7 @@ function RoomListCard() {
                 setPage(page + 1);
               }}
             >
-              <img src={rightArrow} alt="rightArrow icon" />
+              <img src={rightArrow} alt="다음" />
             </StRightBtn>
           ) : (
             <StEmptyDiv />

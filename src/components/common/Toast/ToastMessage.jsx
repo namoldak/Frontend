@@ -21,11 +21,11 @@ function Toast({ setToastState, type }) {
       <StToastBorder>
         {type === 'start' ? (
           <StToastMessage>
-            <img src={gameStart} alt="game start" />
+            <img src={gameStart} alt="게임 시작" />
           </StToastMessage>
         ) : (
           <StToastAnswer>
-            <img src={gameAnswer} alt="game finished" />
+            <img src={gameAnswer} alt="게임 끝" />
           </StToastAnswer>
         )}
       </StToastBorder>

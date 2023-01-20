@@ -1,16 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
 import { getNicknameCookie, removeCookie } from '../../../../utils/cookies';
-import { instance } from '../../../../api/core/axios';
 import useToast from '../../../../hooks/useToast';
 
-function LogOutTab(loggedIn) {
+function LogOutTab(loggedIn, modalOn) {
   const [isLoggedIn, setIsLoggedIn] = useState(loggedIn);
+  const [isSettingModalOn, setIsSettingModalOn] = useState(modalOn);
   const nickname = getNicknameCookie('nickname');
+  const navigate = useNavigate;
 
   function onClickLogOut() {
     if (nickname === undefined) {
@@ -19,17 +21,12 @@ function LogOutTab(loggedIn) {
       removeCookie('my_token', 'nickname');
       useToast('재밌었닭!');
       setIsLoggedIn(false);
+      setTimeout(() => {
+        setIsSettingModalOn(false);
+        window.location.href = `/`;
+      }, 2500);
     }
   }
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.location.reload();
-    }, 2500);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   return (
     <StLogoutBtnDiv>

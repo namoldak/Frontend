@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Router />
-      <ToastContainer limit={2} />
+      <ToastContainer limit={1} />
     </>
   );
 }

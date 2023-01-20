@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
+import closeBtn from 'assets/images/closeBtn.svg';
 import ModalPortal from '../ModalPortal';
-import closeBtn from '../../../../assets/images/closeBtn.svg';
 import landingBack from '../../../../assets/images/landingBack.svg';
 import landingToLoginBtn from '../../../../assets/images/landingToLoginBtn.svg';
+
 
 function RuleModal({ onClose, content }) {
   return (
@@ -20,7 +21,7 @@ function RuleModal({ onClose, content }) {
           }}
         >
           <StCloseBtn onClick={onClose}>
-            <img src={closeBtn} alt="방 닫기 버튼" />
+            <img src={closeBtn} alt="방 닫기" />
           </StCloseBtn>
           <StRuleText>{content}</StRuleText>
           <StToGo>
