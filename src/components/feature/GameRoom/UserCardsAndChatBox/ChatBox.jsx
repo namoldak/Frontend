@@ -107,9 +107,9 @@ const StNoticeBack = styled.div`
 `;
 
 const StNoticeText = styled.p`
-  font-size: 16px;
-  color: ${({ theme }) => theme.colors.white};
-  font-weight: 600;
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.text};
+  font-weight: 700;
   line-height: 60px;
   text-align: center;
 

@@ -668,7 +668,9 @@ function GameRoomRTC() {
       <StGameRoomMain>
         <StGameCategoryAndUserCards>
           <StCategoryBack>
-            <StCategoryText>{category || '주제'}</StCategoryText>
+            <StCategoryText style={{ color: '#4e2d0a' }}>
+              {category || '주제'}
+            </StCategoryText>
           </StCategoryBack>
           <StUserCards>
             <StCard className={isMyTurn ? 'spotLight' : ''}>
@@ -693,11 +695,7 @@ function GameRoomRTC() {
                     playsInline
                   />
                 </StVideo>
-                <Stimg
-                  ref={userCardImgRef}
-                  src={playerImg}
-                  alt="닭 일러스트"
-                />
+                <Stimg ref={userCardImgRef} src={playerImg} alt="닭 일러스트" />
                 <StVoiceCameraBox>
                   <StCameraImg
                     ref={cameraBtn}
@@ -743,7 +741,7 @@ function GameRoomRTC() {
           notice={
             notice || (
               <p>
-                게임 진행 시 <span>공지사항</span>을 안내해 드립니다.
+                게임 진행 시 <span>공지사항</span> 을 안내해 드립니다.
               </p>
             )
           }
@@ -806,7 +804,6 @@ const StCategoryText = styled.div`
   font-weight: 900;
   text-align: center;
   line-height: 130px;
-  color: '#5D3714';
 `;
 
 const StUserCards = styled.div`
@@ -858,8 +855,8 @@ const StKeyword = styled.div`
 
 const StStar = styled.div`
   position: absolute;
-  top: -16%;
-  left: -6%;
+  top: 0;
+  left: 0;
   height: 60px;
   z-index: 100;
 `;

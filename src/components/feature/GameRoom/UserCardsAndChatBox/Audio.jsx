@@ -109,8 +109,8 @@ const StKeyword = styled.div`
 
 const StStar = styled.div`
   position: absolute;
-  top: -16%;
-  left: -6%;
+  top: 0;
+  left: 0;
   height: 60px;
   z-index: 100;
 `;
