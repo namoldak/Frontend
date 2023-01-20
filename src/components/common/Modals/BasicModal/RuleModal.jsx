@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
+import closeBtn from 'assets/images/closeBtn.svg';
 import ModalPortal from '../ModalPortal';
-import closeBtn from '../../../../assets/images/closeBtn.svg';
 
 function RuleModal({ onClose, content }) {
   return (

@@ -10,8 +10,8 @@ import { useCookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
-import { instance } from '../../../../api/core/axios';
 import { getNicknameCookie } from '../../../../utils/cookies';
+import { instance } from '../../../../api/core/axios';
 import ChatBox from './ChatBox';
 import Audio from './Audio';
 import ToastMessage from '../../../common/Toast/ToastMessage';
@@ -703,9 +703,9 @@ function GameRoomRTC() {
               <img src={gameStartBtn} alt="게임시작" />
             </button>
           )}
-          {/* <StSettingBtn>
+          <StSettingBtn>
             <img src={settingBtn} alt="setting_image" />
-          </StSettingBtn> */}
+          </StSettingBtn>
         </StHeaderBtnBox>
       </StGameRoomHeader>
       <StGameRoomMain>

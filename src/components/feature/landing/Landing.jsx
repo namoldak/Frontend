@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
+import { getCookie, getNicknameCookie } from 'utils/cookies';
+import settingBtn from 'assets/images/settingBtn.svg';
+import landingBack from 'assets/images/landingBack.svg';
+import landingTitle from 'assets/images/landingTitle.svg';
+import landingBanner from 'assets/images/landingBanner.svg';
+import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
+import landingToLoginBtn from 'assets/images/landingToLoginBtn.svg';
 import GameRule from './GameRule';
-import { getCookie, getNicknameCookie } from '../../../utils/cookies';
-import settingBtn from '../../../assets/images/settingBtn.svg';
-import landingBack from '../../../assets/images/landingBack.svg';
-import landingTitle from '../../../assets/images/landingTitle.svg';
-import landingBanner from '../../../assets/images/landingBanner.svg';
-import landingToGameBtn from '../../../assets/images/landingToGameBtn.svg';
-import landingToLoginBtn from '../../../assets/images/landingToLoginBtn.svg';
 import Modal from '../../common/Modals/BasicModal/Modal';
 import MyPageModal from '../../common/Modals/BasicModal/MyPageModal';
 
