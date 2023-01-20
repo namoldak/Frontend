@@ -34,41 +34,43 @@ function RoomListCard() {
 
   return (
     <StRoomListCardBox>
-      <StRoomDiv>
-        {page > 0 ? (
-          <StLeftBtn
-            onClick={() => {
-              setPage(page - 1);
-            }}
-          >
-            <img src={leftArrow} alt="leftArrow icone" />
-          </StLeftBtn>
-        ) : (
-          <StEmptyDiv />
-        )}
-        {gameRoomResponseDtoList &&
-          gameRoomResponseDtoList.map((room) => {
-            return (
-              <div key={room.id}>
-                <Room roomInfo={room} />
-              </div>
-            );
-          })}
-        {page <= totalPage - 2 ? (
-          <StRightBtn
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          >
-            <img src={rightArrow} alt="rightArrow icon" />
-          </StRightBtn>
-        ) : (
-          <StEmptyDiv />
-        )}
-      </StRoomDiv>
-      <StRefreshBtn onClick={refreshRoomList}>
-        <img src={refreshBtn} alt="새로고침" />
-      </StRefreshBtn>
+      <StRoomCon>
+        <StRoomBox>
+          {page > 0 ? (
+            <StLeftBtn
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              <img src={leftArrow} alt="leftArrow icone" />
+            </StLeftBtn>
+          ) : (
+            <StEmptyDiv />
+          )}
+          {gameRoomResponseDtoList &&
+            gameRoomResponseDtoList.map((room) => {
+              return (
+                <div key={room.id}>
+                  <Room roomInfo={room} />
+                </div>
+              );
+            })}
+          {page <= totalPage - 2 ? (
+            <StRightBtn
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              <img src={rightArrow} alt="rightArrow icon" />
+            </StRightBtn>
+          ) : (
+            <StEmptyDiv />
+          )}
+        </StRoomBox>
+        <StRefreshBtn onClick={refreshRoomList}>
+          <img src={refreshBtn} alt="새로고침" />
+        </StRefreshBtn>
+      </StRoomCon>
     </StRoomListCardBox>
   );
 }
@@ -81,16 +83,23 @@ const StRoomListCardBox = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
+  padding-top: 10%;
 `;
 
-const StRoomDiv = styled.div`
+const StRoomCon = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  margin: 0 auto;
+`;
+
+const StRoomBox = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  column-gap: 40px;
+  column-gap: 60px;
   place-items: center;
-  /* min-width: 80%; */
-  /* max-width: 100%; */
-  padding-top: 10%;
 `;
 
 const StLeftBtn = styled.button`
@@ -106,9 +115,11 @@ const StRightBtn = styled.button`
 const StEmptyDiv = styled.div``;
 
 const StRefreshBtn = styled.button`
+  position: absolute;
+  left: 120px;
+  bottom: 0;
   color: white;
   font-size: 22px;
   font-weight: 500;
-  margin-left: 140px;
 `;
 export default RoomListCard;
