@@ -112,7 +112,9 @@ const StRightBtn = styled.button`
   margin-right: 100px;
 `;
 
-const StEmptyDiv = styled.div``;
+const StEmptyDiv = styled.div`
+  height: 300px;
+`;
 
 const StRefreshBtn = styled.button`
   position: absolute;
