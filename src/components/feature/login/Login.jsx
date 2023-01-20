@@ -43,9 +43,7 @@ function Login() {
 
   // 로그인 api
   async function onClickLogin(data) {
-    // console.log('로그인 data', data);
     await authAPI.Login(data).then((response) => {
-      // console.log('로그인 response', response);
       setCookie(response.headers.authorization);
       setNicknameCookie(response.data.nickname);
       alert('로그인 되었습니다.');
@@ -57,7 +55,6 @@ function Login() {
   const KakaoLogin = async (code) => {
     await authAPI.KakaoLogin(code).then((response) => {
       setCookie(response.headers.authorization);
-      // console.log('클라이언트 카카오 data', response.data);
       setNicknameCookie(response.data);
       alert('카카오 로그인 성공');
       navigate('/');

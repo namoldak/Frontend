@@ -67,7 +67,7 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
         />
       </StVideoBox>
       <StNickName className={isMyTurn ? 'spotLight' : ''}>
-        {nickName}님
+        {nickName}
       </StNickName>
     </>
   );

@@ -122,7 +122,15 @@ const StUserChatBox = styled.div`
   margin: 20px auto;
   overflow: auto;
   max-height: 500px;
-  overflow-y: hidden;
+  padding-right: 10px;
+  /* overflow-y: hidden; */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: #f5c86f;
+  }
   /* border: 1px solid black; */
 `;
 

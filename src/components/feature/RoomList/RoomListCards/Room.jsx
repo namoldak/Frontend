@@ -13,7 +13,6 @@ import inprogress from '../../../../assets/images/inprogress.svg';
 import useToast from '../../../../hooks/useToast';
 
 function Room({ roomInfo }) {
-  // console.log('roomInfo', roomInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

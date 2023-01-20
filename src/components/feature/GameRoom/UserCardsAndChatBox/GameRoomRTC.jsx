@@ -20,6 +20,7 @@ import Timer from '../TitleAndTimer/Timer';
 import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
 import GameModal from '../../../common/Modals/InGameModal/GameModal';
 
+// 이미지 파일
 import voiceOn from '../../../../assets/images/voiceOn.png';
 import voiceOff from '../../../../assets/images/voiceOff.png';
 import cameraOff from '../../../../assets/images/cameraOff.png';
@@ -34,9 +35,11 @@ import userCardImg from '../../../../assets/images/userCardImg.svg';
 import playerImg from '../../../../assets/images/playerImg.svg';
 import ownerImg from '../../../../assets/images/ownerImg.svg';
 
+// let 전역변수
 let stream = null;
 let pcs = {};
 let myPeerConnection;
+
 function GameRoomRTC() {
   const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
 
@@ -45,10 +48,12 @@ function GameRoomRTC() {
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const navigate = useNavigate();
-
   const owner = sessionStorage.getItem('owner');
-  const socketRef = useRef();
+  const param = useParams();
+  const { roomId } = param;
+  const [cookie] = useCookies();
 
+  const socketRef = useRef();
   const userCardImgRef = useRef(null);
   const videoRef = useRef(null);
   const muteBtn = useRef(null);
@@ -57,9 +62,8 @@ function GameRoomRTC() {
   const cameraOption = useRef(null);
   const startBtn = useRef(null);
   const leaveBtn = useRef(null);
+  const client = useRef({});
 
-  const param = useParams();
-  const { roomId } = param;
   const [isStartModal, setIsStartModal] = useState(false);
   const [isSpotTimer, setIsSpotTimer] = useState(false);
   const [isTimer, setIsTimer] = useState(false);
@@ -73,40 +77,26 @@ function GameRoomRTC() {
   const [chatMessages, setChatMessages] = useState([]);
   const [isVoiceOn, setIsVoiceOn] = useState(true);
   const [isCameraOn, setIsCameraOn] = useState(true);
-  function usePrevious(users) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = users;
-    });
-    return ref.current;
-  }
-  usePrevious(users);
-
   const [category, setCategory] = useState('');
   const [keyword, setKeyword] = useState('');
   const [myKeyword, setMyKeyword] = useState('');
 
-  /// ////////////////////////////////////////!SECTION
-  const client = useRef({});
-  const [cookie] = useCookies();
   const connectHeaders = {
     Authorization: cookie.access_token,
     'Refresh-Token': cookie.refresh_token,
   };
 
+  // stomp client section
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      console.log('data', data);
       switch (data.type) {
         case 'ENTER': {
           // console.log('enter');
           break;
         }
         case 'CHAT': {
-          console.log('chat 수신');
           setChatMessages((chatMessages) => [...chatMessages, data]);
-          console.log(chatMessages);
           break;
         }
         case 'START': {
@@ -123,7 +113,6 @@ function GameRoomRTC() {
           } else {
             leaveBtn.current.disabled = true;
           }
-
           break;
         }
         case 'SPOTLIGHT': {
@@ -132,9 +121,9 @@ function GameRoomRTC() {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
             });
+            muteBtn.current.style.display = 'block';
             setIsVoiceOn(true);
             setIsSpotTimer(true);
-            muteBtn.current.style.display = 'inline-blcok';
             setIsMyTurn(true);
           } else {
             stream.getAudioTracks().forEach((track) => {
@@ -201,10 +190,10 @@ function GameRoomRTC() {
 
           if (myNickName === owner) {
             startBtn.current.disabled = false;
-            muteBtn.current.disabled = false;
+            muteBtn.current.style.display = 'blcok';
             leaveBtn.current.disabled = false;
           } else {
-            muteBtn.current.disabled = false;
+            muteBtn.current.style.display = 'blcok';
             leaveBtn.current.disabled = false;
           }
 
@@ -253,15 +242,10 @@ function GameRoomRTC() {
     client.current.activate();
   };
 
-  useEffect(() => {
-    connect(); // 연결된 경우 렌더링
-  }, []);
+  // end stomp client section
 
-  /// ////////////////////////////////////////!SECTION
-
+  // stomp client method
   function sendChat(message) {
-    console.log('msg', message);
-    console.log('rtc sendchat');
     if (message.trim() === '') {
       return;
     }
@@ -322,7 +306,9 @@ function GameRoomRTC() {
       sendSpotlight();
     }, 5000);
   }
+  // end stomp client method
 
+  // WebRTC createPeerConnection method for using WebRTC, section
   function createPeerConnection(
     socketID,
     socket,
@@ -337,12 +323,8 @@ function GameRoomRTC() {
       ],
     });
     // add pc to peerConnections object
-    console.log(socketID);
-    console.log(socket);
-    console.log(peerConnectionLocalStream);
     const keyName = socketID;
     pcs = { ...pcs, [`${keyName}`]: pc };
-    console.log(pcs);
     pc.onicecandidate = (e) => {
       if (e.candidate) {
         socket.send(
@@ -396,12 +378,13 @@ function GameRoomRTC() {
     return pc;
   }
 
+  // end WebRTC createPeerConnection method for using WebRTC, section
+
+  // section about user's media
   function onClickCameraOffHandler() {
     stream.getVideoTracks().forEach((track) => {
-      console.log(track);
       track.enabled = !track.enabled;
     });
-
     if (isCameraOn) {
       videoRef.current.style.display = 'none';
       userCardImgRef.current.style.display = 'block';
@@ -439,28 +422,6 @@ function GameRoomRTC() {
     }
   }
 
-  async function getCameras() {
-    try {
-      // 유저의 장치를 얻어옵니다
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      // 얻어온 유저의 장치들에서 카메라장치만 필터링 합니다
-      const cameras = devices.filter((device) => device.kind === 'videoinput');
-      // 현재내가 사용중인 카메라의 label명을 셀렉트란에 보여주기위한 과정입니다.
-      //  아래의 if문과 이어서 확인 해주세요
-      const currentCamera = stream.getVideoTracks()[0];
-      cameras.forEach((camera) => {
-        cameraOption.current.value = camera.deviceId;
-        cameraOption.current.innerText = camera.label;
-        if (currentCamera.label === camera.label) {
-          cameraOption.current.selected = true;
-        }
-        camerasSelect.current.appendChild(cameraOption.current);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async function getUserMedias() {
     const initialConstrains = {
       video: true,
@@ -469,12 +430,9 @@ function GameRoomRTC() {
     stream = await navigator.mediaDevices.getUserMedia(initialConstrains);
     return stream;
   }
+  // end section about user's media
 
-  useEffect(() => {
-    if (myNickName === owner) {
-      setIsOwner(true);
-    }
-  }, [isOwner, owner]);
+  // WebRTC signaling section
   useEffect(() => {
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
 
@@ -507,17 +465,13 @@ function GameRoomRTC() {
         case 'all_users': {
           const { allUsers } = data;
           const { allUsersNickNames } = data;
-          console.log(allUsers);
-          console.log(allUsersNickNames);
           for (let i = 0; i < allUsers.length; i += 1) {
-            console.log(stream);
             createPeerConnection(
               allUsers[i],
               socketRef.current,
               stream,
               allUsersNickNames[`${allUsers[i]}`],
             );
-            console.log(pcs);
 
             const allUsersEachPc = pcs[`${allUsers[i]}`];
             if (allUsersEachPc) {
@@ -595,7 +549,6 @@ function GameRoomRTC() {
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
             .then(async (res) => {
-              console.log(res.data.ownerNickname);
               await sessionStorage.setItem('owner', res.data.ownerNickname);
               if (sessionStorage.getItem('owner') === myNickName) {
                 setIsOwner(true);
@@ -636,26 +589,30 @@ function GameRoomRTC() {
         });
     };
   }, []);
+  // end WebRTC signaling section
 
   function leaveRoom() {
     sessionStorage.clear();
     navigate('/rooms');
   }
 
-  async function onInputCameraChange() {
-    await getUserMedias(camerasSelect.current.value);
-    if (myPeerConnection) {
-      const videoTrack = stream.getVideoTracks()[0];
-      const videoSender = myPeerConnection
-        .getSenders()
-        .find((sender) => sender.track.kind === 'video');
-      videoSender.replaceTrack(videoTrack);
-    }
+  function usePrevious(users) {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = users;
+    });
+    return ref.current;
   }
-
+  usePrevious(users);
   useEffect(() => {
-    console.log('stream:', stream);
-  }, [stream, socketRef.current]);
+    if (myNickName === owner) {
+      setIsOwner(true);
+    }
+  }, [isOwner, owner]);
+  useEffect(() => {}, [stream, socketRef.current]);
+  useEffect(() => {
+    connect(); // 연결된 경우 렌더링
+  }, []);
 
   return (
     <StGameRoomRTC>
@@ -734,18 +691,12 @@ function GameRoomRTC() {
                     id="myFace"
                     autoPlay
                     playsInline
-                    // width={200}
-                    // height={200}
-                  >
-                    비디오
-                  </video>
+                  />
                 </StVideo>
                 <Stimg
                   ref={userCardImgRef}
                   src={playerImg}
                   alt="닭 일러스트"
-                  // width={200}
-                  // height={200}
                 />
                 <StVoiceCameraBox>
                   <StCameraImg
@@ -764,7 +715,7 @@ function GameRoomRTC() {
                   />
                 </StVoiceCameraBox>
               </StVideoBox>
-              <StNickName>{myNickName}님</StNickName>
+              <StNickName>{myNickName}</StNickName>
             </StCard>
             {users.map((user) => {
               return (
