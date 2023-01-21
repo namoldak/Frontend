@@ -34,6 +34,8 @@ import keywordImg from '../../../../assets/images/keyword.svg';
 import userCardImg from '../../../../assets/images/userCardImg.svg';
 import playerImg from '../../../../assets/images/playerImg.svg';
 import ownerImg from '../../../../assets/images/ownerImg.svg';
+import mikeIcon from '../../../../assets/images/mikeIcon.svg';
+import cameraIcon from '../../../../assets/images/cameraIcon.svg';
 
 // let 전역변수
 let stream = null;
@@ -670,7 +672,10 @@ function GameRoomRTC() {
             </StCategoryText>
           </StCategoryBack>
           <StUserCards>
-            <StCard className={isMyTurn ? 'spotLight' : ''}>
+            <StCard
+              className={isMyTurn ? 'spotLight' : ''}
+              // style={{ backgroundColor: 'red' }}
+            >
               <StKeywordBack>
                 {isOwner ? (
                   <StStar>
@@ -696,13 +701,13 @@ function GameRoomRTC() {
                 <StVoiceCameraBox>
                   <StCameraImg
                     ref={cameraBtn}
-                    src={isCameraOn ? cameraOn : cameraOff}
+                    src={isCameraOn ? cameraOn : cameraIcon}
                     onClick={() => {
                       onClickCameraOffHandler();
                     }}
                   />
                   <StVoiceImg
-                    src={isVoiceOn ? voiceOn : voiceOff}
+                    src={isVoiceOn ? mikeIcon : voiceOff}
                     ref={muteBtn}
                     onClick={() => {
                       onClickMuteHandler();
@@ -825,11 +830,10 @@ const StCard = styled.div`
   overflow: hidden;
   position: relative;
 
-  /* .spotLight {
-    background: rgba(103, 138, 41, 1);
-    border-color: rgba(147, 191, 69, 1);
-    z-index: 2;
-  } */
+  .spotLight {
+    background: ${({ theme }) => theme.colors.green};
+    border-color: ${({ theme }) => theme.colors.deepGreen};
+  }
 `;
 
 const StKeywordBack = styled.div`
@@ -840,6 +844,12 @@ const StKeywordBack = styled.div`
   width: 214px;
   height: 53px;
   margin: 10px auto 0 auto;
+
+  .spotLight {
+    background: ${({ theme }) => theme.colors.green};
+    border-color: ${({ theme }) => theme.colors.deepGreen};
+    z-index: 900;
+  }
 `;
 
 const StKeyword = styled.div`
@@ -884,7 +894,8 @@ const StNickName = styled.span`
   padding-top: 16px;
 
   /* .spotLight {
-    border-top: 6px solid rgba(190, 220, 138, 1);
+    background: ${({ theme }) => theme.colors.lightGreen};
+    border-color: ${({ theme }) => theme.colors.green};
   } */
 `;
 

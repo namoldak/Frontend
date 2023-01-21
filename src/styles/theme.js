@@ -19,6 +19,9 @@ const colors = {
   brown: '#643B11', // 갈색
   text: '#321D07', // 짙은 갈색
   text2: '#212121', // 연한 검정
+  lightGreen: '#BEDC8A', // 연한 연두색
+  green: '#93BF45', // 연두색
+  deepGreen: '#76A427', // 초록색
 };
 
 const common = {
