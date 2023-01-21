@@ -1,7 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function Input({ width, height, placeholder, onChange, value, type }) {
+function Input({
+  width,
+  height,
+  placeholder,
+  onChange,
+  value,
+  type,
+  maxLength,
+}) {
   return (
     <StyledInput
       width={width}
@@ -10,6 +18,7 @@ function Input({ width, height, placeholder, onChange, value, type }) {
       onChange={onChange}
       value={value}
       type={type}
+      maxLength={maxLength}
       // onFocus={onFocus}
     />
   );
