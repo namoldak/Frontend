@@ -1,4 +1,8 @@
+// 외부 모듈
 import axios from 'axios';
+import { useToast } from 'react-toastify';
+
+// 내부 모듈
 import { getCookie } from '../../utils/cookies';
 
 // 인스턴스 생성
@@ -29,7 +33,7 @@ instance.interceptors.request.use((config) => {
 // Unauthorized Error 처리
 axios.interceptors.response.use((error) => {
   if (error.response.status === 401) {
-    alert('로그인이 만료되었습니다.', 'error');
+    useToast('로그인이 만료되었습니다.', 'error');
     window.location.href('/login');
   }
 });

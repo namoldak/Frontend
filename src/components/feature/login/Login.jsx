@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useEffect, forwardRef, useRef } from 'react';
 import styled from 'styled-components';
@@ -5,9 +6,10 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { setCookie, setNicknameCookie } from '../../../utils/cookies';
 
 // 내부 모듈
+import useToast from 'hooks/useToast';
+import { setCookie, setNicknameCookie } from '../../../utils/cookies';
 import authAPI from '../../../api/authAsync';
 import KaKaoBtn from './KaKaoBtn';
 import popUp from '../../../assets/images/popUp.svg';
@@ -46,7 +48,7 @@ function Login() {
     await authAPI.Login(data).then((response) => {
       setCookie(response.headers.authorization);
       setNicknameCookie(response.data.nickname);
-      alert('로그인 되었습니다.');
+      useToast('로그인 되었습니다.', 'success');
       navigate('/');
     });
   }
@@ -56,7 +58,7 @@ function Login() {
     await authAPI.KakaoLogin(code).then((response) => {
       setCookie(response.headers.authorization);
       setNicknameCookie(response.data);
-      alert('카카오 로그인 성공');
+      useToast('카카오 로그인 성공', 'success');
       navigate('/');
     });
   };

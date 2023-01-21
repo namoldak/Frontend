@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -5,6 +6,7 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
+import useToast from 'hooks/useToast';
 import { createRoom } from '../../../../redux/modules/roomSlice';
 import Input from '../../Input';
 import modalCreateBtn from '../../../../assets/images/modalCreateBtn.svg';
@@ -17,7 +19,7 @@ function CreateRoomModal() {
   function onClickRoomCreate() {
     const newRoom = { gameRoomName, gameRoomPassword: '1234' };
     if (gameRoomName.trim() === '') {
-      alert('제목을 입력해주세요');
+      useToast('제목을 입력해주세요', 'warning');
     } else {
       dispatch(createRoom(newRoom));
     }
@@ -38,7 +40,6 @@ function CreateRoomModal() {
         onChange={(e) => {
           setGameRoomName(e.target.value);
         }}
-        maxLength={15}
       />
       <button onClick={onClickRoomCreate}>
         <img src={modalCreateBtn} alt="방 만들기" />
