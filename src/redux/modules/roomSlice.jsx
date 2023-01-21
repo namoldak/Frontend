@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import useToast from 'hooks/useToast';
 import { instance } from '../../api/core/axios';
 
 const initialState = {
@@ -14,11 +15,11 @@ export const createRoom = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       if (error.response.status === 403) {
-        alert('로그인이 안되어있닭! 로그인을 하고와야한닭!');
+        useToast('로그인이 안되어있닭! 로그인을 하고와야한닭!', 'error');
         window.location.href = `/login`;
       } else {
         // console.log('create room error:', error);
-        alert('지금은 만들 수 없닭... 다시 시도해야한닭');
+        useToast('지금은 만들 수 없닭... 다시 시도해야한닭', 'error');
       }
       return thunkAPI.rejectWithValue(error);
     }
@@ -35,10 +36,10 @@ export const enterRoom = createAsyncThunk(
     } catch (error) {
       // console.log(error);
       if (error.response.status === 403) {
-        alert('로그인이 안되어있닭! 로그인을 하고와야한닭!');
+        useToast('로그인이 안되어있닭! 로그인을 하고와야한닭!', 'error');
         window.location.href = `/login`;
       } else {
-        alert('마음의 준비가 안됐닭! 다시 입장 시도를 해야겠닭!');
+        useToast('마음의 준비가 안됐닭! 다시 입장 시도를 해야겠닭!', 'error');
         window.location.href = `/rooms`;
       }
       return thunkAPI.rejectWithValue(error);
@@ -71,7 +72,7 @@ export const searchRoom = createAsyncThunk(
       return thunkAPI.fulfillWithValue(response.data.gameRoomResponseDtoList);
     } catch (error) {
       // console.log('search room error', error);
-      alert(error.response.data.statusMsg);
+      useToast(`${error.response.data.statusMsg}`, 'warning');
       return thunkAPI.rejectWithValue(error);
     }
   },

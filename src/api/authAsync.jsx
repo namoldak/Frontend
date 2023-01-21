@@ -1,3 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+// 외부 모듈
+
+// 내부 모듈
+import useToast from 'hooks/useToast';
 import { instance } from './core/axios';
 
 const SignUp = async (data) => {
@@ -7,7 +12,7 @@ const SignUp = async (data) => {
     return response;
   } catch (error) {
     // console.log('postSignup response error:', error);
-    alert('회원가입이 실패했습니다. 다시 시도해주세요.');
+    useToast('회원가입이 실패했습니다. 다시 시도해주세요.', 'error');
     // window.location.reload();
   }
   return null;
@@ -21,7 +26,7 @@ const Login = async (data) => {
     return response;
   } catch (error) {
     // console.log('Login response error:', error);
-    alert('로그인에 실패했습니다. 다시 한번 시도해주세요.');
+    useToast('로그인에 실패했습니다. 다시 한번 시도해주세요.', 'error');
   }
   return null;
 };
@@ -34,7 +39,7 @@ const KakaoLogin = async (code) => {
     console.log('서버 카카오 response', response);
     return response;
   } catch (error) {
-    alert('에러가 발생했습니다', 'error');
+    useToast('에러가 발생했습니다', 'error');
   }
   return null;
 };
@@ -49,7 +54,7 @@ const checkNickName = async (nickname) => {
     // console.log('서버 nick response', response);
     return response;
   } catch (error) {
-    alert('에러가 발생했습니다', 'error');
+    useToast('에러가 발생했습니다', 'error');
   }
   return null;
 };
@@ -60,7 +65,7 @@ const checkEmail = async (email) => {
     const response = await instance.post(`/auth/emailCheck?email=${email}`);
     return response;
   } catch (error) {
-    alert('에러가 발생했습니다', 'error');
+    useToast('에러가 발생했습니다', 'error');
   }
   return null;
 };

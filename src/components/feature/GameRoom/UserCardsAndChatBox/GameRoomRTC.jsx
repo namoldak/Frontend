@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable func-names */
 /* eslint-disable no-use-before-define */
 // 외부모듈
@@ -10,6 +11,7 @@ import { useCookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
+import useToast from 'hooks/useToast';
 import { getNicknameCookie } from '../../../../utils/cookies';
 import { instance } from '../../../../api/core/axios';
 import ChatBox from './ChatBox';
@@ -290,7 +292,7 @@ function GameRoomRTC() {
 
   function gameStart() {
     if (users.length < 2) {
-      alert('최소 3마리가 필요하닭!');
+      useToast('최소 3마리가 필요하닭!', 'warning');
     }
     client.current.publish({
       destination: `/pub/game/${param.roomId}/start`,
