@@ -4,20 +4,19 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
-import { getCookie, getNicknameCookie } from 'utils/cookies';
+import { getCookie } from 'utils/cookies';
 import settingBtn from 'assets/images/settingBtn.svg';
 import landingBack from 'assets/images/landingBack.svg';
 import landingTitle from 'assets/images/landingTitle.svg';
 import landingBanner from 'assets/images/landingBanner.svg';
 import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
 import landingToLoginBtn from 'assets/images/landingToLoginBtn.svg';
+import MyPageModal from 'components/common/Modals/BasicModal/MyPageModal';
+import Modal from 'components/common/Modals/BasicModal/Modal';
 import GameRule from './GameRule';
-import Modal from '../../common/Modals/BasicModal/Modal';
-import MyPageModal from '../../common/Modals/BasicModal/MyPageModal';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const nickname = getNicknameCookie('nickname');
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
   useEffect(() => {
@@ -47,7 +46,7 @@ function Landing() {
             setIsSettingModalOn(true);
           }}
         >
-          <img src={settingBtn} alt="설정버튼" />
+          {isLoggedIn ? <img src={settingBtn} alt="설정버튼" /> : ''}
         </StSettingBtn>
       </StLandingHeader>
       <StLadingMain>
