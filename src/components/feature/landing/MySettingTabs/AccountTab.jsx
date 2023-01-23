@@ -4,8 +4,8 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { removeCookie } from '../../../../utils/cookies';
-import { instance } from '../../../../api/core/axios';
+import { removeCookie } from 'utils/cookies';
+import { instance } from 'api/core/axios';
 
 function AccountTab() {
   const [password, setPassword] = useState('');

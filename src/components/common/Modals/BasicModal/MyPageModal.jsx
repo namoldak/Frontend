@@ -6,8 +6,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import LogOutTab from '../../../feature/Landing/MySettingTabs/LogOutTab';
-import AccountTab from '../../../feature/Landing/MySettingTabs/AccountTab';
+import LogOutTab from 'components/feature/Landing/MySettingTabs/LogOutTab';
+import AccountTab from 'components/feature/Landing/MySettingTabs/AccountTab';
 
 function MyPageModal(loggedIn) {
   const [currentTab, clickTab] = useState(0);

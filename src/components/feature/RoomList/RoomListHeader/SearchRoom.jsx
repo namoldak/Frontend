@@ -4,9 +4,8 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { searchRoom } from '../../../../redux/modules/roomSlice';
-// import Input from '../../../common/Input';
-import search from '../../../../assets/images/search.svg';
+import { searchRoom } from 'redux/modules/roomSlice';
+import search from 'assets/images/search.svg';
 
 function SearchRoom() {
   const dispatch = useDispatch();

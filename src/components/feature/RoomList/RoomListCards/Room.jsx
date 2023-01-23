@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
-import egg from '../../../../assets/images/egg.svg';
-import { enterRoom } from '../../../../redux/modules/roomSlice';
-import inprogress from '../../../../assets/images/inprogress.svg';
-import useToast from '../../../../hooks/useToast';
+import egg from 'assets/images/egg.svg';
+import { enterRoom } from 'redux/modules/roomSlice';
+import inprogress from 'assets/images/inprogress.svg';
+import useToast from 'hooks/useToast';
 
 function Room({ roomInfo }) {
   const navigate = useNavigate();

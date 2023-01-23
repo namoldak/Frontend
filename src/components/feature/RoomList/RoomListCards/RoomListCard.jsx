@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { readAllRooms } from '../../../../redux/modules/roomSlice';
+import { readAllRooms } from 'redux/modules/roomSlice';
+import useSound from 'hooks/useSound';
+import bgm from 'assets/audio/bg.mp3';
+import roomListBanner from 'assets/images/roomListBanner.svg';
+import leftArrow from 'assets/images/leftArrow.svg';
+import rightArrow from 'assets/images/rightArrow.svg';
+import refreshBtn from 'assets/images/refreshBtn.svg';
 import Room from './Room';
-import useSound from '../../../../hooks/useSound';
-import bgm from '../../../../assets/audio/bg.mp3';
-import roomListBanner from '../../../../assets/images/roomListBanner.svg';
-import leftArrow from '../../../../assets/images/leftArrow.svg';
-import rightArrow from '../../../../assets/images/rightArrow.svg';
-import refreshBtn from '../../../../assets/images/refreshBtn.svg';
 
 function RoomListCard() {
   const { totalPage, gameRoomResponseDtoList } = useSelector(

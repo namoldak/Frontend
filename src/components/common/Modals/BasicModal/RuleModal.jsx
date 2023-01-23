@@ -1,15 +1,25 @@
 // 외부 모듈
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
+import { getCookie } from 'utils/cookies';
 import closeBtn from 'assets/images/closeBtn.svg';
+import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
+import landingBack from 'assets/images/landingBack.svg';
+import landingToLoginBtn from 'assets/images/landingToLoginBtn.svg';
 import ModalPortal from '../ModalPortal';
-import landingBack from '../../../../assets/images/landingBack.svg';
-import landingToLoginBtn from '../../../../assets/images/landingToLoginBtn.svg';
 
 function RuleModal({ onClose, content }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (getCookie('my_token')) {
+      setIsLoggedIn(true);
+    }
+  }, [getCookie]);
+
   return (
     <ModalPortal>
       <StBackground onClick={onClose}>
@@ -24,9 +34,15 @@ function RuleModal({ onClose, content }) {
           </StCloseBtn>
           <StRuleText>{content}</StRuleText>
           <StToGo>
-            <Link to="/login">
-              <img src={landingToLoginBtn} alt="로그인하러가기" />
-            </Link>
+            {isLoggedIn ? (
+              <Link to="/rooms">
+                <img src={landingToGameBtn} alt="게임하러가기" />
+              </Link>
+            ) : (
+              <Link to="/login">
+                <img src={landingToLoginBtn} alt="로그인하러가기" />
+              </Link>
+            )}
           </StToGo>
         </StModalBorder>
       </StBackground>

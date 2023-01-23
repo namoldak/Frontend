@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useCookies } from 'react-cookie';
-import { getNicknameCookie } from '../../../../utils/cookies';
 // 내부 모듈
-import chatBack from '../../../../assets/images/chatBack.svg';
-import chatBack2 from '../../../../assets/images/chatBack2.svg';
-import chatEnterBtn from '../../../../assets/images/chatEnterBtn.svg';
-import chatNotice from '../../../../assets/images/chatNotice.svg';
+import chatBack from 'assets/images/chatBack.svg';
+import chatBack2 from 'assets/images/chatBack2.svg';
+import chatEnterBtn from 'assets/images/chatEnterBtn.svg';
+import chatNotice from 'assets/images/chatNotice.svg';
+import { getNicknameCookie } from 'utils/cookies';
 
 function ChatBox({ notice, sendChat, chatMessages }) {
   const nickname = getNicknameCookie('nickname');

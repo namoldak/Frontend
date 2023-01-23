@@ -3,13 +3,13 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // 내부 모듈
-import GameRoom from '../pages/GameRoom';
-import LandingPage from '../pages/LandingPage';
-import LoginPage from '../pages/LoginPage';
-import SignupPage from '../pages/SignupPage';
-import RoomList from '../pages/RoomList';
-import Layout from '../components/common/Layout/Layout';
-import RoomListLayout from '../components/common/Layout/RoomListLayout';
+import Layout from 'components/common/Layout/Layout';
+import RoomListLayout from 'components/common/Layout/RoomListLayout';
+import GameRoom from 'pages/GameRoom';
+import LandingPage from 'pages/LandingPage';
+import LoginPage from 'pages/LoginPage';
+import SignupPage from 'pages/SignupPage';
+import RoomList from 'pages/RoomList';
 
 function Router() {
   return (

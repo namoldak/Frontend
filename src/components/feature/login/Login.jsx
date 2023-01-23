@@ -9,14 +9,14 @@ import * as yup from 'yup';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
-import { setCookie, setNicknameCookie } from '../../../utils/cookies';
-import authAPI from '../../../api/authAsync';
+import { setCookie, setNicknameCookie } from 'utils/cookies';
+import authAPI from 'api/authAsync';
+import popUp from 'assets/images/popUp.svg';
+import loginTitleBtn from 'assets/images/loginTitleBtn.svg';
+import loginBtn from 'assets/images/loginBtn.svg';
+import backBtn from 'assets/images/backBtn.svg';
+import miniSignUpBtn from 'assets/images/miniSignUpBtn.svg';
 import KaKaoBtn from './KaKaoBtn';
-import popUp from '../../../assets/images/popUp.svg';
-import loginTitleBtn from '../../../assets/images/loginTitleBtn.svg';
-import loginBtn from '../../../assets/images/loginBtn.svg';
-import backBtn from '../../../assets/images/backBtn.svg';
-import miniSignUpBtn from '../../../assets/images/miniSignUpBtn.svg';
 
 // useForm
 const schema = yup.object().shape({
