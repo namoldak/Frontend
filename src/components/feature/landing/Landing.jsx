@@ -17,7 +17,6 @@ import MyPageModal from '../../common/Modals/BasicModal/MyPageModal';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const nickname = getNicknameCookie('nickname');
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
   useEffect(() => {
@@ -42,13 +41,17 @@ function Landing() {
             }
           />
         )}
-        <StSettingBtn
-          onClick={() => {
-            setIsSettingModalOn(true);
-          }}
-        >
-          <img src={settingBtn} alt="설정버튼" />
-        </StSettingBtn>
+        {isLoggedIn ? (
+          <StSettingBtn
+            onClick={() => {
+              setIsSettingModalOn(true);
+            }}
+          >
+            <img src={settingBtn} alt="설정버튼" />
+          </StSettingBtn>
+        ) : (
+          <StSettingBtn />
+        )}
       </StLandingHeader>
       <StLadingMain>
         <StBanner>
