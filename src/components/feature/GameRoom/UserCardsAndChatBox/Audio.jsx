@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import keywordImg from '../../../../assets/images/keyword.svg';
-import star from '../../../../assets/images/star.svg';
-import playerImg from '../../../../assets/images/playerImg.svg';
+import keywordImg from 'assets/images/keyword.svg';
+import star from 'assets/images/star.svg';
+import playerImg from 'assets/images/playerImg.svg';
 
 function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
   const videoRef = useRef(null);

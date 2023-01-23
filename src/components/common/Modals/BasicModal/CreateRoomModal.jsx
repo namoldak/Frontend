@@ -7,9 +7,9 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
-import { createRoom } from '../../../../redux/modules/roomSlice';
-import Input from '../../Input';
-import modalCreateBtn from '../../../../assets/images/modalCreateBtn.svg';
+import modalCreateBtn from 'assets/images/modalCreateBtn.svg';
+import Input from 'components/common/Input';
+import { createRoom } from 'redux/modules/roomSlice';
 
 function CreateRoomModal() {
   const [gameRoomName, setGameRoomName] = useState('');

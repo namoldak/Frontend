@@ -3,9 +3,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
+import modalBack from 'assets/images/modalBack.svg';
+import closeBtn from 'assets/images/closeBtn.svg';
 import ModalPortal from '../ModalPortal';
-import modalBack from '../../../../assets/images/modalBack.svg';
-import closeBtn from '../../../../assets/images/closeBtn.svg';
 
 function Modal({ onClose, content }) {
   return (

@@ -1,12 +1,11 @@
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Button from '../../Button';
 
 // 내부 모듈
-import Input from '../../Input';
-import skipBtn from '../../../../assets/images/skipBtn.svg';
-import okBtn from '../../../../assets/images/okBtn.svg';
+import skipBtn from 'assets/images/skipBtn.svg';
+import okBtn from 'assets/images/okBtn.svg';
+import Input from 'components/common/Input';
 
 function GameAnswerModal({
   skipAnswer,

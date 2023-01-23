@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import gameStart from '../../../assets/images/gameStart.svg';
-import gameAnswer from '../../../assets/images/gameAnswer.svg';
+import gameStart from 'assets/images/gameStart.svg';
+import gameAnswer from 'assets/images/gameAnswer.svg';
 
 function Toast({ setToastState, type }) {
   useEffect(() => {

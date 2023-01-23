@@ -12,32 +12,30 @@ import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
 import useToast from 'hooks/useToast';
-import { getNicknameCookie } from '../../../../utils/cookies';
-import { instance } from '../../../../api/core/axios';
-import ChatBox from './ChatBox';
-import Audio from './Audio';
-import ToastMessage from '../../../common/Toast/ToastMessage';
-import SpotTimer from '../TitleAndTimer/SpotTimer';
-import Timer from '../TitleAndTimer/Timer';
-import GameAnswerModal from '../../../common/Modals/InGameModal/GameAnswerModal';
-import GameModal from '../../../common/Modals/InGameModal/GameModal';
 
 // 이미지 파일
-import voiceOn from '../../../../assets/images/voiceOn.png';
-import voiceOff from '../../../../assets/images/voiceOff.png';
-import cameraOff from '../../../../assets/images/cameraOff.png';
-import cameraOn from '../../../../assets/images/cameraOn.png';
-import backBtn from '../../../../assets/images/backBtn.svg';
-import settingBtn from '../../../../assets/images/settingBtn.svg';
-import gameStartBtn from '../../../../assets/images/startBtn.svg';
-import categoryImg from '../../../../assets/images/category.svg';
-import star from '../../../../assets/images/star.svg';
-import keywordImg from '../../../../assets/images/keyword.svg';
-import userCardImg from '../../../../assets/images/userCardImg.svg';
-import playerImg from '../../../../assets/images/playerImg.svg';
-import ownerImg from '../../../../assets/images/ownerImg.svg';
-import mikeIcon from '../../../../assets/images/mikeIcon.svg';
-import cameraIcon from '../../../../assets/images/cameraIcon.svg';
+import voiceOn from 'assets/images/voiceOn.svg';
+import voiceOff from 'assets/images/voiceOff.svg';
+import cameraOff from 'assets/images/cameraOff.svg';
+import cameraOn from 'assets/images/cameraOn.svg';
+import backBtn from 'assets/images/backBtn.svg';
+import settingBtn from 'assets/images/settingBtn.svg';
+import gameStartBtn from 'assets/images/startBtn.svg';
+import categoryImg from 'assets/images/category.svg';
+import star from 'assets/images/star.svg';
+import keywordImg from 'assets/images/keyword.svg';
+import userCardImg from 'assets/images/userCardImg.svg';
+import playerImg from 'assets/images/playerImg.svg';
+import ownerImg from 'assets/images/ownerImg.svg';
+import GameModal from 'components/common/Modals/InGameModal/GameModal';
+import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModal';
+import ToastMessage from 'components/common/Toast/ToastMessage';
+import { instance } from 'api/core/axios';
+import { getNicknameCookie } from 'utils/cookies';
+import Timer from '../TitleAndTimer/Timer';
+import SpotTimer from '../TitleAndTimer/SpotTimer';
+import Audio from './Audio';
+import ChatBox from './ChatBox';
 
 // let 전역변수
 let stream = null;
@@ -703,13 +701,13 @@ function GameRoomRTC() {
                 <StVoiceCameraBox>
                   <StCameraImg
                     ref={cameraBtn}
-                    src={isCameraOn ? cameraOn : cameraIcon}
+                    src={isCameraOn ? cameraOn : cameraOff}
                     onClick={() => {
                       onClickCameraOffHandler();
                     }}
                   />
                   <StVoiceImg
-                    src={isVoiceOn ? mikeIcon : voiceOff}
+                    src={isVoiceOn ? voiceOn : voiceOff}
                     ref={muteBtn}
                     onClick={() => {
                       onClickMuteHandler();

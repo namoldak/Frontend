@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import useToast from 'hooks/useToast';
-import { instance } from '../../api/core/axios';
+import { instance } from 'api/core/axios';
 
 const initialState = {
   rooms: [],

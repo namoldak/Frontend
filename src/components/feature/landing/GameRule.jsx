@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import ruleBtn from '../../../assets/images/ruleBtn.svg';
-import GameRuleModal from '../../common/Modals/BasicModal/GameRuleModal';
-import RuleModal from '../../common/Modals/BasicModal/RuleModal';
+import ruleBtn from 'assets/images/ruleBtn.svg';
+import GameRuleModal from 'components/common/Modals/BasicModal/GameRuleModal';
+import RuleModal from 'components/common/Modals/BasicModal/RuleModal';
 
 function GameRule() {
   const [isModalOn, setIsModalOn] = useState(false);

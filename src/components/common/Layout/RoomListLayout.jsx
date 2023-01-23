@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import backImg2 from '../../../assets/images/backImg2.svg';
+import backImg2 from 'assets/images/backImg2.png';
 import Container from './Container';
 
 function RoomListLayout() {

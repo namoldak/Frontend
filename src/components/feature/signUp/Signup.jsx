@@ -9,15 +9,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 // 내부 모듈
-import authAPI from '../../../api/authAsync';
-import useDidMountEffect from '../../../hooks/useDidMountEffect';
-import useToast from '../../../hooks/useToast';
-import popUp from '../../../assets/images/popUp.svg';
-import signUpTitleBtn from '../../../assets/images/signUpTitleBtn.svg';
-import doubleCheckBtn from '../../../assets/images/doubleCheckBtn.svg';
-import signUpBtn from '../../../assets/images/signUpBtn.svg';
-import backBtn from '../../../assets/images/backBtn.svg';
-import miniLoginBtn from '../../../assets/images/miniLoginBtn.svg';
+import authAPI from 'api/authAsync';
+import useDidMountEffect from 'hooks/useDidMountEffect';
+import useToast from 'hooks/useToast';
+import popUp from 'assets/images/popUp.svg';
+import signUpTitleBtn from 'assets/images/signUpTitleBtn.svg';
+import doubleCheckBtn from 'assets/images/doubleCheckBtn.svg';
+import signUpBtn from 'assets/images/signUpBtn.svg';
+import backBtn from 'assets/images/backBtn.svg';
+import miniLoginBtn from 'assets/images/miniLoginBtn.svg';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -130,6 +130,13 @@ function SignUp() {
       clearErrors('email', { type: 'custom' });
     }
   }, [emailValid]);
+
+  console.log('nick error', errors.nickname?.message);
+  console.log('nick check error', errors.nicknameCheck?.message);
+  console.log('email error', errors.email?.message);
+  console.log('email check error', errors.emailCheck?.message);
+  console.log('pw error', errors.password?.message);
+  console.log('confirm error', errors.confirmPw?.message);
 
   return (
     <>

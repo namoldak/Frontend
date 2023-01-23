@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { getNicknameCookie, removeCookie } from '../../../../utils/cookies';
-import useToast from '../../../../hooks/useToast';
+import { getNicknameCookie, removeCookie } from 'utils/cookies';
+import useToast from 'hooks/useToast';
 
 function LogOutTab(loggedIn, modalOn) {
   const [isLoggedIn, setIsLoggedIn] = useState(loggedIn);

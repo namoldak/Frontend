@@ -2,7 +2,7 @@
 import React from 'react';
 
 // 내부모듈
-import GameRoomRTC from '../components/feature/GameRoom/UserCardsAndChatBox/GameRoomRTC';
+import GameRoomRTC from 'components/feature/GameRoom/UserCardsAndChatBox/GameRoomRTC';
 
 function GameRoom() {
   return <GameRoomRTC />;
