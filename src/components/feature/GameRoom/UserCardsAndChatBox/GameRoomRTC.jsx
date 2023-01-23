@@ -290,6 +290,7 @@ function GameRoomRTC() {
     });
   }
 
+  // eslint-disable-next-line consistent-return
   function gameStart() {
     if (users.length < 2) {
       useToast('최소 3마리가 필요하닭!', 'warning');
@@ -630,7 +631,8 @@ function GameRoomRTC() {
             leaveRoom();
           }}
         >
-          <img src={backBtn} alt="뒤로가기" />
+          {/* <img src={backBtn} alt="뒤로가기" /> */}
+          뒤로가기
         </StLeaveBtn>
         <StHeaderBtnBox>
           <div>
@@ -656,7 +658,8 @@ function GameRoomRTC() {
           </div>
           {isOwner && (
             <button ref={startBtn} onClick={gameStart}>
-              <img src={gameStartBtn} alt="게임시작" />
+              {/* <img src={gameStartBtn} alt="게임시작" /> */}
+              게임 시작
             </button>
           )}
           <StSettingBtn>
@@ -767,6 +770,9 @@ const StGameRoomHeader = styled.div`
 `;
 
 const StLeaveBtn = styled.button`
+  background-image: url(${backBtn});
+  background-size: cover;
+  background-repeat: no-repeat;
   margin-right: auto;
 `;
 
