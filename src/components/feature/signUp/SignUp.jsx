@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-props-no-spreading */
 // 외부 모듈
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -66,12 +66,12 @@ function SignUp() {
     mode: 'onChange',
   });
 
-  console.log('nick error', errors.nickname?.message);
-  console.log('nick check error', errors.nicknameCheck?.message);
-  console.log('email error', errors.email?.message);
-  console.log('email check error', errors.emailCheck?.message);
-  console.log('pw error', errors.password?.message);
-  console.log('confirm error', errors.confirmPw?.message);
+  console.log('nick error', errors.nickname);
+  console.log('nick check error', errors.nicknameCheck);
+  console.log('email error', errors.email);
+  console.log('email check error', errors.emailCheck);
+  console.log('pw error', errors.password);
+  console.log('confirm error', errors.confirmPw);
 
   // 회원가입 api
   async function onClickSignup(data) {
@@ -91,7 +91,7 @@ function SignUp() {
     const data = getValues('nickname');
 
     authAPI.checkNickName(data).then((response) => {
-      if (response.data === false) {
+      if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
       } else {
         useToast('이미 사용 중인 닉네임입니다.', 'error');
@@ -103,8 +103,9 @@ function SignUp() {
   // 이메일 중복 확인
   function onClickCheckEmail() {
     const data = getValues('email');
+
     authAPI.checkEmail(data).then((response) => {
-      if (response.data === false) {
+      if (response.data) {
         useToast('유효한 이메일입니다.', 'success');
       } else {
         useToast('이미 사용중인 이메일입니다.', 'error');
@@ -116,11 +117,11 @@ function SignUp() {
   // 첫번째 렌더링 시 실행 안 됨
   useDidMountEffect(() => {
     if (nickValid) {
-      useToast('이미 사용 중인 닉네임입니다.', 'error');
-      //   setError('nickname', {
-      //     type: 'custom',
-      //     message: '이미 사용 중인 닉네임입니다.',
-      //   });
+      // useToast('이미 사용 중인 닉네임입니다.', 'error');
+      // setError('nickname', {
+      //   type: 'custom',
+      //   message: '이미 사용 중인 닉네임입니다.',
+      // });
     } else {
       clearErrors('nickname', { type: 'custom' });
     }
@@ -128,36 +129,37 @@ function SignUp() {
 
   useDidMountEffect(() => {
     if (emailValid) {
-      useToast('이미 사용 중인 이메일입니다.', 'error');
-      //   setError('email', {
-      //     type: 'custom',
-      //     message: '이미 사용 중인 이메일입니다.',
-      //   });
+      // setError('email', {
+      //   type: 'custom',
+      // });
     } else {
       clearErrors('email', { type: 'custom' });
     }
   }, [emailValid]);
 
-  console.log('nick error', errors.nickname?.message);
-  console.log('nick check error', errors.nicknameCheck?.message);
-  console.log('email error', errors.email?.message);
-  console.log('email check error', errors.emailCheck?.message);
-  console.log('pw error', errors.password?.message);
-  console.log('confirm error', errors.confirmPw?.message);
+  // useDidMountEffect(() => {
+  //   if (passwordCheck) {
+  //     // setError('password', {
+  //     //   type: 'custom',
+  //     // });
+  //   } else {
+  //     clearErrors('password', { type: 'custom' });
+  //   }
+  // }, [passwordCheck]);
 
   return (
     <>
-      {errors.nicknameCheck?.message &&
-        useToast(`${errors.nicknameCheck?.message}`, 'error')}
-      {errors.nickname?.message &&
-        useToast(`${errors.nickname?.message}`, 'error')}
-      {errors.emailCheck?.message &&
+      {/* {errors.nicknameCheck?.message &&
+        useToast(`${errors.nicknameCheck?.message}`, 'error')} */}
+      {/* {errors.nickname?.message &&
+        useToast(`${errors.nickname?.message}`, 'error')} */}
+      {/* {errors.emailCheck?.message &&
         useToast(`${errors.emailCheck?.message}`, 'error')}
       {errors.email?.message && useToast(`${errors.email?.message}`, 'error')}
       {errors.password?.message &&
         useToast(`${errors.password?.message}`, 'error')}
       {errors.confirmPw?.message &&
-        useToast(`${errors.confirmPw?.message}`, 'error')}
+        useToast(`${errors.confirmPw?.message}`, 'error')} */}
       <StBackBtn>
         <Link to="/">
           <img src={backBtn} alt="뒤로가기" />
@@ -181,6 +183,10 @@ function SignUp() {
                 <img src={doubleCheckBtn} alt="닉네임 중복확인" />
               </StDbCheckBtn>
             </StInputBox>
+            <StToastMessage>
+              {errors.nickname &&
+                useToast(`${errors.nickname?.message}`, 'error')}
+            </StToastMessage>
             <StInputBox>
               <input
                 className="emailInput"
@@ -194,6 +200,10 @@ function SignUp() {
               >
                 <img src={doubleCheckBtn} alt="이메일 중복확인" />
               </StDbCheckBtn>
+              <StToastMessage>
+                {errors.emailCheck &&
+                  useToast(`${errors.emailCheck?.message}`, 'error')}
+              </StToastMessage>
             </StInputBox>
             <input
               className="pwInput"
@@ -201,14 +211,22 @@ function SignUp() {
               placeholder="비밀번호를 입력해주세요."
               {...register('password', { required: true })}
             />
+            <StToastMessage>
+              {errors.password &&
+                useToast(`${errors.password?.message}`, 'error')}
+            </StToastMessage>
             <input
               type="password"
               placeholder="비밀번호를 다시 입력해주세요."
               {...register('confirmPw', { required: true })}
             />
+            {/* <StToastMessage>
+              {errors.confirmPw &&
+                useToast(`${errors.confirmPw?.message}`, 'error')}
+            </StToastMessage> */}
           </StInputCon>
           <StBtnBox>
-            <StSignUpBtn type="submit">
+            <StSignUpBtn type="submit" disabled={!isValid}>
               <img src={signUpBtn} alt="회원가입 버튼" />
             </StSignUpBtn>
             <StLogin>
@@ -285,6 +303,10 @@ const StDbCheckBtn = styled.button`
   width: 173px;
   height: 64px;
   margin-left: 18px;
+`;
+
+const StToastMessage = styled.div`
+  display: none;
 `;
 
 const StBtnBox = styled.div`
