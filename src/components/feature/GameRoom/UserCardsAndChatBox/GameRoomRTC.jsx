@@ -124,6 +124,17 @@ function GameRoomRTC() {
         case 'SPOTLIGHT': {
           setNotice(data.content);
           if (myNickName === data.sender) {
+            setIsMyTurn(true);
+            muteBtn.current.style.display = 'block';
+            setIsVoiceOn(true);
+            setIsSpotTimer(true);
+            setUsers((users) =>
+              users.map((user) =>
+                user.nickName === data.sender
+                  ? { ...user, isMyTurn: true }
+                  : { ...user, isMyTurn: false },
+              ),
+            );
             try {
               stream.getAudioTracks().forEach((track) => {
                 track.enabled = true;
@@ -131,10 +142,6 @@ function GameRoomRTC() {
             } catch (e) {
               console.log(e);
             }
-            muteBtn.current.style.display = 'block';
-            setIsVoiceOn(true);
-            setIsSpotTimer(true);
-            setIsMyTurn(true);
           } else {
             try {
               stream.getAudioTracks().forEach((track) => {
@@ -733,7 +740,9 @@ function GameRoomRTC() {
                   />
                 </StVoiceCameraBox>
               </StVideoBox>
-              <StNickName>{myNickName}</StNickName>
+              <StNickName className={isMyTurn ? 'spotLight' : ''}>
+                {myNickName}
+              </StNickName>
             </StCard>
             {users.map((user) => {
               return (
@@ -792,7 +801,7 @@ const StLeaveBtn = styled.button`
   background-size: center;
   background-repeat: no-repeat;
   margin-right: auto;
-  width: 100%;
+  width: 80px;
 `;
 
 const StStartBtn = styled.button`
@@ -800,6 +809,7 @@ const StStartBtn = styled.button`
   background-size: center;
   background-repeat: no-repeat;
   margin-right: auto;
+  width: 210px;
 `;
 
 const StHeaderBtnBox = styled.div`
@@ -922,10 +932,10 @@ const StNickName = styled.span`
   border-top: 6px solid #f5c86f;
   padding-top: 16px;
 
-  /* .spotLight {
+  .spotLight {
     background: ${({ theme }) => theme.colors.lightGreen};
     border-color: ${({ theme }) => theme.colors.green};
-  } */
+  }
 `;
 
 const Stimg = styled.img`
