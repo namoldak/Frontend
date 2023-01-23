@@ -66,6 +66,13 @@ function SignUp() {
     mode: 'onChange',
   });
 
+  console.log('nick error', errors.nickname?.message);
+  console.log('nick check error', errors.nicknameCheck?.message);
+  console.log('email error', errors.email?.message);
+  console.log('email check error', errors.emailCheck?.message);
+  console.log('pw error', errors.password?.message);
+  console.log('confirm error', errors.confirmPw?.message);
+
   // 회원가입 api
   async function onClickSignup(data) {
     await authAPI
@@ -140,6 +147,17 @@ function SignUp() {
 
   return (
     <>
+      {errors.nicknameCheck?.message &&
+        useToast(`${errors.nicknameCheck?.message}`, 'error')}
+      {errors.nickname?.message &&
+        useToast(`${errors.nickname?.message}`, 'error')}
+      {errors.emailCheck?.message &&
+        useToast(`${errors.emailCheck?.message}`, 'error')}
+      {errors.email?.message && useToast(`${errors.email?.message}`, 'error')}
+      {errors.password?.message &&
+        useToast(`${errors.password?.message}`, 'error')}
+      {errors.confirmPw?.message &&
+        useToast(`${errors.confirmPw?.message}`, 'error')}
       <StBackBtn>
         <Link to="/">
           <img src={backBtn} alt="뒤로가기" />
@@ -163,9 +181,6 @@ function SignUp() {
                 <img src={doubleCheckBtn} alt="닉네임 중복확인" />
               </StDbCheckBtn>
             </StInputBox>
-            {/* <HelpText>
-            {errors.nicknameCheck?.message || errors.nickname?.message}
-          </HelpText> */}
             <StInputBox>
               <input
                 className="emailInput"
@@ -180,22 +195,17 @@ function SignUp() {
                 <img src={doubleCheckBtn} alt="이메일 중복확인" />
               </StDbCheckBtn>
             </StInputBox>
-            {/* <HelpText>
-            {errors.emailCheck?.message || errors.email?.message}
-          </HelpText> */}
             <input
               className="pwInput"
               type="password"
               placeholder="비밀번호를 입력해주세요."
               {...register('password', { required: true })}
             />
-            {/* <HelpText>{errors.password?.message}</HelpText> */}
             <input
               type="password"
               placeholder="비밀번호를 다시 입력해주세요."
               {...register('confirmPw', { required: true })}
             />
-            {/* <HelpText>{errors.confirmPw?.message}</HelpText> */}
           </StInputCon>
           <StBtnBox>
             <StSignUpBtn type="submit">

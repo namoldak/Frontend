@@ -15,6 +15,7 @@ function CreateRoomModal() {
   const [gameRoomName, setGameRoomName] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [inputCount, setInputCount] = useState(0);
 
   function onClickRoomCreate() {
     const newRoom = { gameRoomName, gameRoomPassword: '1234' };
@@ -28,6 +29,7 @@ function CreateRoomModal() {
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
       onClickRoomCreate();
+      document.activeElement.blur();
     }
   }
 
@@ -35,12 +37,15 @@ function CreateRoomModal() {
     <StModalContainer onKeyUp={onKeyUpEnter}>
       <StTitle>방 만들기</StTitle>
       <Input
-        placeholder="방 제목을 입력해주세요. (최대 10글자)"
+        placeholder="방 제목을 입력해주세요."
         value={gameRoomName}
         onChange={(e) => {
           setGameRoomName(e.target.value);
+          setInputCount(e.target.value.length);
         }}
+        maxLength={7}
       />
+      <StLimit>{inputCount}/7</StLimit>
       <button onClick={onClickRoomCreate}>
         <img src={modalCreateBtn} alt="방 만들기" />
       </button>
@@ -55,13 +60,21 @@ const StModalContainer = styled.div`
   input {
     width: 420px;
     margin-top: 47px;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
   }
 `;
 
 const StTitle = styled.div`
   font-size: 38px;
   font-weight: 900;
+`;
+
+const StLimit = styled.span`
+  position: absolute;
+  top: 207px;
+  right: 125px;
+  font-size: 22px;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export default CreateRoomModal;

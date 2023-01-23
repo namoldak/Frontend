@@ -102,9 +102,13 @@ function GameRoomRTC() {
           break;
         }
         case 'START': {
-          stream.getAudioTracks().forEach((track) => {
-            track.enabled = false;
-          });
+          try {
+            stream.getAudioTracks().forEach((track) => {
+              track.enabled = false;
+            });
+          } catch (erorr) {
+            console.log(erorr);
+          }
           setIsStartModal(true);
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
@@ -120,17 +124,25 @@ function GameRoomRTC() {
         case 'SPOTLIGHT': {
           setNotice(data.content);
           if (myNickName === data.sender) {
-            stream.getAudioTracks().forEach((track) => {
-              track.enabled = true;
-            });
+            try {
+              stream.getAudioTracks().forEach((track) => {
+                track.enabled = true;
+              });
+            } catch (e) {
+              console.log(e);
+            }
             muteBtn.current.style.display = 'block';
             setIsVoiceOn(true);
             setIsSpotTimer(true);
             setIsMyTurn(true);
           } else {
-            stream.getAudioTracks().forEach((track) => {
-              track.enabled = false;
-            });
+            try {
+              stream.getAudioTracks().forEach((track) => {
+                track.enabled = false;
+              });
+            } catch (e) {
+              console.log(e);
+            }
             setIsVoiceOn(false);
             setIsTimer(true);
             muteBtn.current.style.display = 'none';
@@ -181,9 +193,13 @@ function GameRoomRTC() {
           setCategory('');
           setKeyword('');
           setMyKeyword('');
-          stream.getAudioTracks().forEach((track) => {
-            track.enabled = true;
-          });
+          try {
+            stream.getAudioTracks().forEach((track) => {
+              track.enabled = true;
+            });
+          } catch (e) {
+            console.log(e);
+          }
           setIsVoiceOn(true);
           setUsers((users) =>
             users.map((user) => {
@@ -290,6 +306,7 @@ function GameRoomRTC() {
     });
   }
 
+  // eslint-disable-next-line consistent-return
   function gameStart() {
     if (users.length < 2) {
       useToast('최소 3마리가 필요하닭!', 'warning');
@@ -630,7 +647,7 @@ function GameRoomRTC() {
             leaveRoom();
           }}
         >
-          <img src={backBtn} alt="뒤로가기" />
+          &nbsp;
         </StLeaveBtn>
         <StHeaderBtnBox>
           <div>
@@ -655,9 +672,10 @@ function GameRoomRTC() {
             )}
           </div>
           {isOwner && (
-            <button ref={startBtn} onClick={gameStart}>
-              <img src={gameStartBtn} alt="게임시작" />
-            </button>
+            <StStartBtn ref={startBtn} onClick={gameStart}>
+              {/* <img src={gameStartBtn} alt="게임시작" /> */}
+              &nbsp;
+            </StStartBtn>
           )}
           <StSettingBtn>
             <img src={settingBtn} alt="설정버튼" />
@@ -770,6 +788,17 @@ const StGameRoomHeader = styled.div`
 `;
 
 const StLeaveBtn = styled.button`
+  background-image: url(${backBtn});
+  background-size: center;
+  background-repeat: no-repeat;
+  margin-right: auto;
+  width: 100%;
+`;
+
+const StStartBtn = styled.button`
+  background-image: url(${gameStartBtn});
+  background-size: center;
+  background-repeat: no-repeat;
   margin-right: auto;
 `;
 
