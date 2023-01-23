@@ -631,8 +631,7 @@ function GameRoomRTC() {
             leaveRoom();
           }}
         >
-          {/* <img src={backBtn} alt="뒤로가기" /> */}
-          뒤로가기
+          &nbsp;
         </StLeaveBtn>
         <StHeaderBtnBox>
           <div>
@@ -657,10 +656,10 @@ function GameRoomRTC() {
             )}
           </div>
           {isOwner && (
-            <button ref={startBtn} onClick={gameStart}>
+            <StStartBtn ref={startBtn} onClick={gameStart}>
               {/* <img src={gameStartBtn} alt="게임시작" /> */}
-              게임 시작
-            </button>
+              &nbsp;
+            </StStartBtn>
           )}
           <StSettingBtn>
             <img src={settingBtn} alt="설정버튼" />
@@ -771,7 +770,15 @@ const StGameRoomHeader = styled.div`
 
 const StLeaveBtn = styled.button`
   background-image: url(${backBtn});
-  background-size: cover;
+  background-size: center;
+  background-repeat: no-repeat;
+  margin-right: auto;
+  width: 100%;
+`;
+
+const StStartBtn = styled.button`
+  background-image: url(${gameStartBtn});
+  background-size: center;
   background-repeat: no-repeat;
   margin-right: auto;
 `;
