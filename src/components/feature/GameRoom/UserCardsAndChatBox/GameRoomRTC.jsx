@@ -100,9 +100,13 @@ function GameRoomRTC() {
           break;
         }
         case 'START': {
-          stream.getAudioTracks().forEach((track) => {
-            track.enabled = false;
-          });
+          try {
+            stream.getAudioTracks().forEach((track) => {
+              track.enabled = false;
+            });
+          } catch (erorr) {
+            console.log(erorr);
+          }
           setIsStartModal(true);
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
@@ -118,17 +122,25 @@ function GameRoomRTC() {
         case 'SPOTLIGHT': {
           setNotice(data.content);
           if (myNickName === data.sender) {
-            stream.getAudioTracks().forEach((track) => {
-              track.enabled = true;
-            });
+            try {
+              stream.getAudioTracks().forEach((track) => {
+                track.enabled = true;
+              });
+            } catch (e) {
+              console.log(e);
+            }
             muteBtn.current.style.display = 'block';
             setIsVoiceOn(true);
             setIsSpotTimer(true);
             setIsMyTurn(true);
           } else {
-            stream.getAudioTracks().forEach((track) => {
-              track.enabled = false;
-            });
+            try {
+              stream.getAudioTracks().forEach((track) => {
+                track.enabled = false;
+              });
+            } catch (e) {
+              console.log(e);
+            }
             setIsVoiceOn(false);
             setIsTimer(true);
             muteBtn.current.style.display = 'none';
@@ -179,9 +191,13 @@ function GameRoomRTC() {
           setCategory('');
           setKeyword('');
           setMyKeyword('');
-          stream.getAudioTracks().forEach((track) => {
-            track.enabled = true;
-          });
+          try {
+            stream.getAudioTracks().forEach((track) => {
+              track.enabled = true;
+            });
+          } catch (e) {
+            console.log(e);
+          }
           setIsVoiceOn(true);
           setUsers((users) =>
             users.map((user) => {
