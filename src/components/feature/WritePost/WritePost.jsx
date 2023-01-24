@@ -9,10 +9,10 @@ import backBtn from 'assets/images/backBtn.svg';
 import okBtn from 'assets/images/okBtn.svg';
 
 function WritePost() {
-  const [check, setCheck] = useState([]);
+  const [categoryCheck, setCategoryCheck] = useState('');
 
   function onChangeCheck(e) {
-    setCheck(e.target.value);
+    setCategoryCheck(e.target.value);
   }
 
   return (
@@ -31,7 +31,7 @@ function WritePost() {
             <input
               type="radio"
               value="1"
-              checked={check === '1'}
+              checked={categoryCheck === '1'}
               onChange={onChangeCheck}
             />
             자유 게시판
@@ -40,7 +40,7 @@ function WritePost() {
             <input
               type="radio"
               value="2"
-              checked={check === '2'}
+              checked={categoryCheck === '2'}
               onChange={onChangeCheck}
             />
             유저 피드백
