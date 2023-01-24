@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const useToast = (message, type) => {
   const config = {
     position: 'top-center',
-    autoClose: 3000,
+    autoClose: 2000,
     hideProgressBar: true,
     newestOnTop: false,
     closeOnClick: true,
