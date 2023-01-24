@@ -169,7 +169,7 @@ function GameRoomRTC() {
           if (myNickName === data.sender) {
             setTimeout(function () {
               sendSpotlight();
-            }, 2000);
+            }, 3500);
           }
           break;
         }
@@ -178,7 +178,7 @@ function GameRoomRTC() {
           if (myNickName === data.nickname) {
             setTimeout(function () {
               sendSpotlight();
-            }, 2000);
+            }, 3500);
           }
           break;
         }
@@ -187,7 +187,7 @@ function GameRoomRTC() {
           if (myNickName === data.nickname) {
             setTimeout(function () {
               endGame();
-            }, 2000);
+            }, 3500);
           }
           setWinner(data.nickname);
           setIsEndGameModal(true);
@@ -244,7 +244,6 @@ function GameRoomRTC() {
           break;
         }
         default: {
-          // console.log('default');
           break;
         }
       }
@@ -329,7 +328,7 @@ function GameRoomRTC() {
     });
     setTimeout(function () {
       sendSpotlight();
-    }, 5000);
+    }, 6000);
   }
   // end stomp client method
 
@@ -521,6 +520,7 @@ function GameRoomRTC() {
                   console.log(error);
                 });
             }
+            console.log('user length', users.length);
           }
           break;
         }
@@ -594,12 +594,6 @@ function GameRoomRTC() {
           setUsers((oldUsers) =>
             oldUsers.filter((user) => user.id !== data.sender),
           );
-
-          if (users.length - 1) {
-            endGame();
-            useToast('친구가 사라졌닭! 게임을 끝내야한닭!', 'warning');
-          }
-
           break;
         }
         default: {
