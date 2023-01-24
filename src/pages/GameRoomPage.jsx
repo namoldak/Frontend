@@ -4,8 +4,8 @@ import React from 'react';
 // 내부모듈
 import GameRoomRTC from 'components/feature/GameRoom/UserCardsAndChatBox/GameRoomRTC';
 
-function GameRoom() {
+function GameRoomPage() {
   return <GameRoomRTC />;
 }
 
-export default GameRoom;
+export default GameRoomPage;

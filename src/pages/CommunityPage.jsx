@@ -1,15 +1,11 @@
 // 외부 모듈
-import CardList from 'components/feature/RoomList/Community/CardList';
+import PostList from 'components/feature/Community/PostList';
 import React from 'react';
 
 // 내부 모듈
 
-function Community() {
-  return (
-    <div>
-      <CardList />
-    </div>
-  );
+function CommunityPage() {
+  return <PostList />;
 }
 
-export default Community;
+export default CommunityPage;
