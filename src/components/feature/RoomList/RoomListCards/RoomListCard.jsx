@@ -17,12 +17,10 @@ function RoomListCard() {
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
-
+  // useSound(bgm, 0.1, 2000);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
-
-  // useSound(bgm, 0.1, 2000);
 
   function refreshRoomList() {
     dispatch(readAllRooms({ page, limit }));

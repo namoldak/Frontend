@@ -92,7 +92,7 @@ function SignUp() {
     const data = getValues('nickname');
 
     authAPI.checkNickName(data).then((response) => {
-      console.log(response.data);
+      console.log('e', response);
       if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
       } else {
@@ -187,6 +187,7 @@ function SignUp() {
                   useToast(`${errors.emailCheck?.message}`, 'error')}
               </StToastMessage>
             </StInputBox>
+            {/* {errors.emailCheck?.message || errors.email?.message} */}
             <input
               className="pwInput"
               type="password"
