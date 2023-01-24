@@ -337,6 +337,7 @@ function GameRoomRTC() {
     socket,
     peerConnectionLocalStream,
     userNickName,
+    ownerNickName,
   ) {
     const pc = new RTCPeerConnection({
       iceServers: [
@@ -363,29 +364,56 @@ function GameRoomRTC() {
     pc.oniceconnectionstatechange = (e) => {
       // console.log(e);
     };
-    setUsers((oldUsers) => [
-      ...oldUsers,
-      {
-        id: socketID,
-        stream: null,
-        nickName: userNickName,
-        isCameraOn: false,
-        isMyTurn: false,
-        isOwner: false,
-      },
-    ]);
+    // eslint-disable-next-line no-unused-expressions
+    userNickName === ownerNickName
+      ? setUsers((oldUsers) => [
+          ...oldUsers,
+          {
+            id: socketID,
+            stream: null,
+            nickName: userNickName,
+            isCameraOn: false,
+            isMyTurn: false,
+            isOwner: true,
+          },
+        ])
+      : setUsers((oldUsers) => [
+          ...oldUsers,
+          {
+            id: socketID,
+            stream: null,
+            nickName: userNickName,
+            isCameraOn: false,
+            isMyTurn: false,
+            isOwner: false,
+          },
+        ]);
     pc.ontrack = (e) => {
       setUsers((oldUsers) => oldUsers.filter((user) => user.id !== socketID));
-      setUsers((oldUsers) => [
-        ...oldUsers,
-        {
-          id: socketID,
-          stream: e.streams[0],
-          nickName: userNickName,
-          isCameraOn: true,
-          isMyTurn: false,
-        },
-      ]);
+      // eslint-disable-next-line no-unused-expressions
+      userNickName === ownerNickName
+        ? setUsers((oldUsers) => [
+            ...oldUsers,
+            {
+              id: socketID,
+              stream: e.streams[0],
+              nickName: userNickName,
+              isCameraOn: false,
+              isMyTurn: false,
+              isOwner: true,
+            },
+          ])
+        : setUsers((oldUsers) => [
+            ...oldUsers,
+            {
+              id: socketID,
+              stream: e.streams[0],
+              nickName: userNickName,
+              isCameraOn: false,
+              isMyTurn: false,
+              isOwner: false,
+            },
+          ]);
     };
     try {
       if (peerConnectionLocalStream) {
@@ -488,68 +516,76 @@ function GameRoomRTC() {
         case 'all_users': {
           const { allUsers } = data;
           const { allUsersNickNames } = data;
-          for (let i = 0; i < allUsers.length; i += 1) {
-            createPeerConnection(
-              allUsers[i],
-              socketRef.current,
-              stream,
-              allUsersNickNames[`${allUsers[i]}`],
-            );
+          instance.get(`/rooms/${param.roomId}/ownerInfo`).then((res) => {
+            for (let i = 0; i < allUsers.length; i += 1) {
+              createPeerConnection(
+                allUsers[i],
+                socketRef.current,
+                stream,
+                allUsersNickNames[`${allUsers[i]}`],
+                res.data.ownerNickname,
+              );
 
-            const allUsersEachPc = pcs[`${allUsers[i]}`];
-            if (allUsersEachPc) {
-              allUsersEachPc
-                .createOffer({
-                  offerToReceiveAudio: true,
-                  offerToReceiveVideo: true,
-                })
-                .then((offer) => {
-                  allUsersEachPc.setLocalDescription(offer);
-                  socketRef.current?.send(
-                    JSON.stringify({
-                      type: 'offer',
-                      offer,
-                      receiver: allUsers[i],
-                      roomId: param.roomId,
-                      nickname: myNickName,
-                    }),
-                  );
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
+              const allUsersEachPc = pcs[`${allUsers[i]}`];
+              if (allUsersEachPc) {
+                allUsersEachPc
+                  .createOffer({
+                    offerToReceiveAudio: true,
+                    offerToReceiveVideo: true,
+                  })
+                  .then((offer) => {
+                    allUsersEachPc.setLocalDescription(offer);
+                    socketRef.current?.send(
+                      JSON.stringify({
+                        type: 'offer',
+                        offer,
+                        receiver: allUsers[i],
+                        roomId: param.roomId,
+                        nickname: myNickName,
+                      }),
+                    );
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }
             }
-          }
+          });
+
           break;
         }
         case 'offer': {
-          createPeerConnection(
-            data.sender,
-            socketRef.current,
-            stream,
-            data.senderNickName,
-          );
-          const offerPc = pcs[`${data.sender}`];
-          if (offerPc) {
-            offerPc.setRemoteDescription(data.offer).then(() => {
-              offerPc
-                .createAnswer()
-                .then((answer) => {
-                  offerPc.setLocalDescription(answer);
-                  socketRef.current?.send(
-                    JSON.stringify({
-                      type: 'answer',
-                      answer,
-                      receiver: data.sender,
-                      roomId: param.roomId,
-                    }),
-                  );
-                })
-                .catch((error) => {
-                  console.log(error);
-                });
-            });
-          }
+          instance.get(`/rooms/${param.roomId}/ownerInfo`).then((res) => {
+            createPeerConnection(
+              data.sender,
+              socketRef.current,
+              stream,
+              data.senderNickName,
+              res.data.ownerNickname,
+            );
+            const offerPc = pcs[`${data.sender}`];
+            if (offerPc) {
+              offerPc.setRemoteDescription(data.offer).then(() => {
+                offerPc
+                  .createAnswer()
+                  .then((answer) => {
+                    offerPc.setLocalDescription(answer);
+                    socketRef.current?.send(
+                      JSON.stringify({
+                        type: 'answer',
+                        answer,
+                        receiver: data.sender,
+                        roomId: param.roomId,
+                      }),
+                    );
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              });
+            }
+          });
+
           break;
         }
         case 'answer': {
