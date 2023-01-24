@@ -91,7 +91,6 @@ function SignUp() {
   // 닉네임 중복확인
   function onClickCheckNickName() {
     const data = getValues('nickname');
-
     authAPI.checkNickName(data).then((response) => {
       if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
@@ -141,17 +140,6 @@ function SignUp() {
 
   return (
     <>
-      {/* {errors.nicknameCheck?.message &&
-        useToast(`${errors.nicknameCheck?.message}`, 'error')} */}
-      {/* {errors.nickname?.message &&
-        useToast(`${errors.nickname?.message}`, 'error')} */}
-      {/* {errors.emailCheck?.message &&
-        useToast(`${errors.emailCheck?.message}`, 'error')}
-      {errors.email?.message && useToast(`${errors.email?.message}`, 'error')}
-      {errors.password?.message &&
-        useToast(`${errors.password?.message}`, 'error')}
-      {errors.confirmPw?.message &&
-        useToast(`${errors.confirmPw?.message}`, 'error')} */}
       <StBackBtn>
         <Link to="/">
           <img src={backBtn} alt="뒤로가기" />
@@ -197,6 +185,7 @@ function SignUp() {
                   useToast(`${errors.emailCheck?.message}`, 'error')}
               </StToastMessage>
             </StInputBox>
+            {errors.emailCheck?.message || errors.email?.message}
             <input
               className="pwInput"
               type="password"
