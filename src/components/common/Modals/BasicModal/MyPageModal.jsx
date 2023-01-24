@@ -8,6 +8,7 @@ import styled from 'styled-components';
 // 내부 모듈
 import LogOutTab from 'components/feature/Landing/MySettingTabs/LogOutTab';
 import AccountTab from 'components/feature/Landing/MySettingTabs/AccountTab';
+import BGMTab from 'components/feature/Landing/MySettingTabs/BGMTab';
 
 function MyPageModal(loggedIn) {
   const [currentTab, setCurrentTab] = useState(0);
@@ -15,6 +16,7 @@ function MyPageModal(loggedIn) {
   const menuArr = [
     { id: 0, name: '계정', content: <LogOutTab loggedIn={loggedIn} /> },
     { id: 1, name: '탈퇴', content: <AccountTab /> },
+    { id: 2, name: '사운드', content: <BGMTab /> },
   ];
 
   const selectMenuHandler = (index) => {
@@ -61,7 +63,7 @@ const TabMenu = styled.ul`
 
   .submenu {
     display: flex;
-    width: calc(100% / 2);
+    width: calc(100% / 3);
     height: 55px;
     padding: 15px;
     font-size: 15px;
