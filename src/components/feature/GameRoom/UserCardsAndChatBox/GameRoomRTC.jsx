@@ -733,10 +733,13 @@ function GameRoomRTC() {
             </StCategoryText>
           </StCategoryBack>
           <StUserCards>
-            <StCard
-              className={isMyTurn ? 'spotLight' : ''}
-              // style={{ backgroundColor: 'red' }}
-            >
+            <StCard>
+              {isMyTurn && (
+                <>
+                  <StCardSpotLight />
+                  <StNickSpotLight>{myNickName}</StNickSpotLight>
+                </>
+              )}
               <StKeywordBack>
                 {isOwner ? (
                   <StStar>
@@ -748,9 +751,10 @@ function GameRoomRTC() {
                 <StKeyword>{myKeyword || '키워드'}</StKeyword>
               </StKeywordBack>
               <StVideoBox>
-                <StVideo>
+                <StVideo className={isMyTurn ? 'spotLight' : ''}>
                   {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                   <video
+                    className={isMyTurn ? 'spotLight' : ''}
                     muted
                     ref={videoRef}
                     id="myFace"
@@ -758,27 +762,30 @@ function GameRoomRTC() {
                     playsInline
                   />
                 </StVideo>
-                <Stimg ref={userCardImgRef} src={playerImg} alt="닭 일러스트" />
-                <StVoiceCameraBox>
-                  <StCameraImg
-                    ref={cameraBtn}
-                    src={isCameraOn ? cameraOn : cameraOff}
-                    onClick={() => {
-                      onClickCameraOffHandler();
-                    }}
-                  />
-                  <StVoiceImg
-                    src={isVoiceOn ? voiceOn : voiceOff}
-                    ref={muteBtn}
-                    onClick={() => {
-                      onClickMuteHandler();
-                    }}
-                  />
-                </StVoiceCameraBox>
+                <Stimg
+                  className={isMyTurn ? 'spotLight' : ''}
+                  ref={userCardImgRef}
+                  src={playerImg}
+                  alt="닭 일러스트"
+                />
               </StVideoBox>
-              <StNickName className={isMyTurn ? 'spotLight' : ''}>
-                {myNickName}
-              </StNickName>
+              <StVoiceCameraBox>
+                <StCameraImg
+                  ref={cameraBtn}
+                  src={isCameraOn ? cameraOn : cameraOff}
+                  onClick={() => {
+                    onClickCameraOffHandler();
+                  }}
+                />
+                <StVoiceImg
+                  src={isVoiceOn ? voiceOn : voiceOff}
+                  ref={muteBtn}
+                  onClick={() => {
+                    onClickMuteHandler();
+                  }}
+                />
+              </StVoiceCameraBox>
+              <StNickName>{myNickName}</StNickName>
             </StCard>
             {users.map((user) => {
               return (
@@ -902,13 +909,35 @@ const StCard = styled.div`
   background-color: #f5f5f5;
   border: 6px solid #f5c86f;
   border-radius: 20px;
-  overflow: hidden;
   position: relative;
+`;
 
-  .spotLight {
-    background: ${({ theme }) => theme.colors.green};
-    border-color: ${({ theme }) => theme.colors.deepGreen};
-  }
+const StCardSpotLight = styled.div`
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 261px;
+  height: 274px;
+  border-radius: 20px;
+  background: #76a427;
+  border: 6px solid #93bf45;
+`;
+
+const StNickSpotLight = styled.div`
+  position: absolute;
+  bottom: -6px;
+  left: -6px;
+  width: 260px;
+  height: 65px;
+  border-radius: 0 0 20px 20px;
+  background: #bedc8a;
+  border: 6px solid #93bf45;
+  font-family: MapoBackpacking;
+  font-size: 22px;
+  font-weight: 400;
+  color: #5d3714;
+  text-align: center;
+  padding-top: 16px;
 `;
 
 const StKeywordBack = styled.div`
@@ -919,12 +948,6 @@ const StKeywordBack = styled.div`
   width: 214px;
   height: 53px;
   margin: 10px auto 0 auto;
-
-  .spotLight {
-    background: ${({ theme }) => theme.colors.green};
-    border-color: ${({ theme }) => theme.colors.deepGreen};
-    z-index: 900;
-  }
 `;
 
 const StKeyword = styled.div`
@@ -949,36 +972,35 @@ const StVideoBox = styled.div`
   height: 140px;
   overflow: hidden;
   margin: 0 auto;
+
+  .spotLight {
+    position: relative;
+  }
 `;
 
 const StVideo = styled.div`
   video {
     width: 150px;
     height: 143px;
-  }
-`;
 
-const StNickName = styled.span`
-  display: block;
-  height: 50%;
-  font-family: MapoBackpacking;
-  font-size: 22px;
-  font-weight: 400;
-  color: #5d3714;
-  text-align: center;
-  background: #ffe9bc;
-  border-top: 6px solid #f5c86f;
-  padding-top: 16px;
-
-  .spotLight {
-    background: ${({ theme }) => theme.colors.lightGreen};
-    border-color: ${({ theme }) => theme.colors.green};
+    .spotLight {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
   }
 `;
 
 const Stimg = styled.img`
   display: none;
   height: unset;
+
+  .spotLight {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 200px;
+  }
 `;
 
 const StVoiceImg = styled.img`
@@ -1004,6 +1026,22 @@ const StVoiceCameraBox = styled.div`
   top: 70px;
   z-index: 900;
   margin-left: auto;
+`;
+
+const StNickName = styled.span`
+  background: #ffe9bc;
+  border-top: 6px solid #f5c86f;
+  display: block;
+  height: 23%;
+  border-radius: 0 0 17px 17px;
+  padding-bottom: 17px;
+
+  font-family: MapoBackpacking;
+  font-size: 22px;
+  font-weight: 400;
+  color: #5d3714;
+  text-align: center;
+  padding-top: 16px;
 `;
 
 export default GameRoomRTC;
