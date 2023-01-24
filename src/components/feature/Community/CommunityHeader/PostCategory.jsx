@@ -1,14 +1,19 @@
 // 외부 모듈
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
 import select from 'assets/images/select.png';
+import { useSelector } from 'react-redux';
 
 function PostCategory() {
+  const posts = useSelector((state) => state.posts.posts);
+  console.log('posts', posts);
+
   return (
     <StPostCategory>
       <select>
+        <option value="전체보기">전체 보기</option>
         <option value="자유게시판">자유 게시판</option>
         <option value="유저피드백">유저 피드백</option>
       </select>
