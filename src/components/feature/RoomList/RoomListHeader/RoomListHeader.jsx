@@ -2,12 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import CreateRoom from './CreateRoom';
 import SearchRoom from './SearchRoom';
-import Header from './Header';
+import RoomListTopBar from './RoomListTopBar';
 
 function RoomListHeaderLayout() {
   return (
     <StRoomListHeader>
-      <Header />
+      <RoomListTopBar />
       <StRoomListHeaderBox>
         <SearchRoom />
         <CreateRoom />

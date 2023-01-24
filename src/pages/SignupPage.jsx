@@ -2,7 +2,7 @@
 import React from 'react';
 
 // 내부 모듈
-import SignUp from 'components/feature/signUp/SignUp';
+import SignUp from 'components/feature/SignUp/SignUp';
 
 function SignupPage() {
   return <SignUp />;

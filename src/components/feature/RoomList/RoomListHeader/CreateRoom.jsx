@@ -11,7 +11,7 @@ function CreateRoom() {
   const [isModalOn, setIsModalOn] = useState(false);
 
   return (
-    <StCreateRoom>
+    <>
       {isModalOn && (
         <Modal
           onClose={() => {
@@ -20,20 +20,18 @@ function CreateRoom() {
           content={<CreateRoomModal />}
         />
       )}
-      <CreateRoomBtn
+      <StCreateRoomBtn
         onClick={() => {
           setIsModalOn(true);
         }}
       >
         <img src={createRoomBtn} alt="방 만들기" />
-      </CreateRoomBtn>
-    </StCreateRoom>
+      </StCreateRoomBtn>
+    </>
   );
 }
 
-const StCreateRoom = styled.div``;
-
-const CreateRoomBtn = styled.button`
+const StCreateRoomBtn = styled.button`
   width: 238px;
   height: 80px;
   margin-top: 10px;

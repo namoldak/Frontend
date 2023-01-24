@@ -32,8 +32,8 @@ import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModa
 import ToastMessage from 'components/common/Toast/ToastMessage';
 import { instance } from 'api/core/axios';
 import { getNicknameCookie } from 'utils/cookies';
-import Timer from '../TitleAndTimer/Timer';
-import SpotTimer from '../TitleAndTimer/SpotTimer';
+import Timer from '../Timer/Timer';
+import SpotTimer from '../Timer/SpotTimer';
 import Audio from './Audio';
 import ChatBox from './ChatBox';
 
@@ -892,6 +892,7 @@ const StKeywordBack = styled.div`
 `;
 
 const StKeyword = styled.div`
+  font-family: MapoBackpacking;
   font-size: 22px;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.white};
@@ -924,6 +925,7 @@ const StVideo = styled.div`
 const StNickName = styled.span`
   display: block;
   height: 50%;
+  font-family: MapoBackpacking;
   font-size: 22px;
   font-weight: 400;
   color: #5d3714;

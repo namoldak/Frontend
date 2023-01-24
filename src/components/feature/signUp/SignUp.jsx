@@ -64,7 +64,6 @@ function SignUp() {
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { password: '' },
     mode: 'onChange',
   });
 
@@ -91,7 +90,9 @@ function SignUp() {
   // 닉네임 중복확인
   function onClickCheckNickName() {
     const data = getValues('nickname');
+
     authAPI.checkNickName(data).then((response) => {
+      console.log(response.data);
       if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
       } else {
@@ -106,6 +107,7 @@ function SignUp() {
     const data = getValues('email');
 
     authAPI.checkEmail(data).then((response) => {
+      console.log(response.data);
       if (response.data) {
         useToast('유효한 이메일입니다.', 'success');
       } else {
@@ -185,26 +187,25 @@ function SignUp() {
                   useToast(`${errors.emailCheck?.message}`, 'error')}
               </StToastMessage>
             </StInputBox>
-            {errors.emailCheck?.message || errors.email?.message}
             <input
               className="pwInput"
               type="password"
               placeholder="비밀번호를 입력해주세요."
               {...register('password', { required: true })}
             />
-            <StToastMessage>
+            {/* <StToastMessage>
               {errors.password &&
                 useToast(`${errors.password?.message}`, 'error')}
-            </StToastMessage>
+            </StToastMessage> */}
             <input
               type="password"
               placeholder="비밀번호를 다시 입력해주세요."
               {...register('confirmPw', { required: true })}
             />
-            {/* <StToastMessage>
+            <StToastMessage>
               {errors.confirmPw &&
                 useToast(`${errors.confirmPw?.message}`, 'error')}
-            </StToastMessage> */}
+            </StToastMessage>
           </StInputCon>
           <StBtnBox>
             <StSignUpBtn type="submit" disabled={!isValid}>

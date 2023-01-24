@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import LogOutTab from 'components/feature/Landing/MySettingTabs/LogOutTab';
 import AccountTab from 'components/feature/Landing/MySettingTabs/AccountTab';
 
-function MyPageModal(loggedIn) {
+function SettingModal(loggedIn) {
   const [currentTab, setCurrentTab] = useState(0);
 
   const menuArr = [
@@ -84,4 +84,4 @@ const StContent = styled.div`
   margin-top: 10rem;
 `;
 
-export default MyPageModal;
+export default SettingModal;
