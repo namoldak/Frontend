@@ -4,10 +4,12 @@ import { combineReducers } from 'redux';
 import errorToastMsg from 'redux/modules/errorToastMsg';
 
 // 내부 모듈
+import posts from 'redux/modules/postSlice';
 import rooms from '../modules/roomSlice';
 
 const rootReducer = combineReducers({
   rooms,
+  posts,
 });
 
 const store = configureStore({
