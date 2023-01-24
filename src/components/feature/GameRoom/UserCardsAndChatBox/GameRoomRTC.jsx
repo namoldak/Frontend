@@ -2,8 +2,8 @@
 /* eslint-disable func-names */
 /* eslint-disable no-use-before-define */
 // 외부모듈
-import styled from 'styled-components';
 import React, { useRef, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { useDispatch } from 'react-redux';
