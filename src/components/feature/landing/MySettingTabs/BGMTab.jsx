@@ -1,30 +1,37 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Howl } from 'howler';
+import { createBrowserHistory } from 'history';
 
 // 내부 모듈
 import useSound from 'hooks/useSound';
+import bgm from 'assets/audio/bg.mp3';
 
 function BGMTab() {
   const sound = new Howl({
-    src: ['bg.mp3'],
-    autoplay: true,
+    src: [bgm],
     loop: true,
-    volume: 0.5,
-    onend() {
+    volume: 0.1,
+    onseek() {
       console.log('Finished!');
     },
   });
 
-  sound.play();
-
   function changeVolume() {
     const currentVolume = document.activeElement.value;
-    console.log('currentVolume', currentVolume);
     sound.volume(currentVolume);
   }
+
+  // function start() {
+  //   const history = createBrowserHistory();
+  //   if (history.location.pathname === '/rooms') {
+  //     sound.play();
+  //   } else {
+  //     sound.stop();
+  //   }
+  // }
 
   return (
     <StModalContainer>
@@ -32,11 +39,17 @@ function BGMTab() {
         id="volume"
         type="range"
         min={0}
-        max={1}
-        step={0.01}
+        max={0.1}
+        step={0.001}
         onChange={changeVolume}
       />
-      <button>pause</button>
+      <button
+        onClick={() => {
+          sound.pause();
+        }}
+      >
+        pause
+      </button>
       <button
         onClick={() => {
           sound.play();
