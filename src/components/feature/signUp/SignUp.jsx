@@ -64,7 +64,6 @@ function SignUp() {
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { password: '' },
     mode: 'onChange',
   });
 
@@ -92,6 +91,7 @@ function SignUp() {
   function onClickCheckNickName() {
     const data = getValues('nickname');
     authAPI.checkNickName(data).then((response) => {
+      console.log('e', response);
       if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
       } else {
@@ -185,7 +185,7 @@ function SignUp() {
                   useToast(`${errors.emailCheck?.message}`, 'error')}
               </StToastMessage>
             </StInputBox>
-            {errors.emailCheck?.message || errors.email?.message}
+            {/* {errors.emailCheck?.message || errors.email?.message} */}
             <input
               className="pwInput"
               type="password"
