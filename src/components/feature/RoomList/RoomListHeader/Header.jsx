@@ -8,7 +8,7 @@ import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
 import { getCookie, getNicknameCookie } from 'utils/cookies';
 import Modal from 'components/common/Modals/BasicModal/Modal';
-import MyPageModal from 'components/common/Modals/BasicModal/MyPageModal';
+import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,7 +44,7 @@ function Header() {
           onClose={() => {
             setIsSettingModalOn(false);
           }}
-          content={<MyPageModal loggedIn={setIsLoggedIn} />}
+          content={<SettingModal loggedIn={setIsLoggedIn} />}
         />
       )}
       <Link to="/community">
