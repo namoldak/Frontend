@@ -11,7 +11,7 @@ import landingTitle from 'assets/images/landingTitle.svg';
 import landingBanner from 'assets/images/landingBanner.svg';
 import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
 import landingToLoginBtn from 'assets/images/landingToLoginBtn.svg';
-import MyPageModal from 'components/common/Modals/BasicModal/SettingModal';
+import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import Modal from 'components/common/Modals/BasicModal/Modal';
 import GameRule from './GameRule';
 
@@ -34,7 +34,7 @@ function Landing() {
               setIsSettingModalOn(false);
             }}
             content={
-              <MyPageModal
+              <SettingModal
                 loggedIn={setIsLoggedIn}
                 modalOn={setIsSettingModalOn}
               />
