@@ -595,9 +595,9 @@ function GameRoomRTC() {
             oldUsers.filter((user) => user.id !== data.sender),
           );
 
-          if (users.length < 2) {
+          if (users.length - 1) {
             endGame();
-            useToast('멤버가 부족하닭!', 'warning');
+            useToast('친구가 사라졌닭! 게임을 끝내야한닭!', 'warning');
           }
 
           break;
