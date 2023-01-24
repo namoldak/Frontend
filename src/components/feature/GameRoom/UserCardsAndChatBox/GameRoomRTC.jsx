@@ -200,6 +200,8 @@ function GameRoomRTC() {
           setCategory('');
           setKeyword('');
           setMyKeyword('');
+          setIsSpotTimer(false);
+          setIsTimer(false);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
@@ -592,6 +594,11 @@ function GameRoomRTC() {
           setUsers((oldUsers) =>
             oldUsers.filter((user) => user.id !== data.sender),
           );
+
+          if (users.length < 2) {
+            endGame();
+            useToast('멤버가 부족하닭!', 'warning');
+          }
 
           break;
         }
