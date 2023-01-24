@@ -10,6 +10,7 @@ import LandingPage from 'pages/LandingPage';
 import LoginPage from 'pages/LoginPage';
 import SignupPage from 'pages/SignupPage';
 import RoomList from 'pages/RoomList';
+import Community from 'pages/CommunityPage';
 
 function Router() {
   return (
@@ -17,6 +18,7 @@ function Router() {
       <Routes>
         <Route element={<RoomListLayout />}>
           <Route path="/rooms" element={<RoomList />} />
+          <Route path="/community" element={<Community />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/gameroom/:roomId" element={<GameRoom />} />

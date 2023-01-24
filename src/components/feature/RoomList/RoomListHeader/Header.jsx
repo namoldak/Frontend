@@ -47,6 +47,9 @@ function Header() {
           content={<MyPageModal loggedIn={setIsLoggedIn} />}
         />
       )}
+      <Link to="/community">
+        <button>커뮤니티로 이동하기</button>
+      </Link>
       <StSettingBtn
         onClick={() => {
           setIsSettingModalOn(true);
