@@ -1,13 +1,12 @@
 // 외부 모듈
 import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 // 내부 모듈
-import { searchRoom } from 'redux/modules/roomSlice';
 import search from 'assets/images/search.svg';
 
-function SearchRoom() {
+function SearchPost() {
   const dispatch = useDispatch();
   const [keyword, setKeyword] = useState('');
   const input = useRef(null);
@@ -17,7 +16,7 @@ function SearchRoom() {
     if (keyword.trim() === '') {
       return null;
     }
-    dispatch(searchRoom(keyword));
+    // dispatch(searchPost(keyword));
     setKeyword('');
   }
 
@@ -33,7 +32,7 @@ function SearchRoom() {
     <StSearchRoom>
       <input
         ref={input}
-        placeholder="방 제목을 검색하닭"
+        placeholder="키워드로 게시글 검색이 가능하닭"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         onKeyUp={onKeyUpEnter}
@@ -52,8 +51,8 @@ const StSearchRoom = styled.div`
   justify-content: space-between;
 
   input {
-    width: 913px;
-    height: 70px;
+    width: 700px;
+    height: 60px;
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
     outline: 7px solid ${({ theme }) => theme.colors.brown};
@@ -72,8 +71,9 @@ const StSearchRoom = styled.div`
 
 const SearchBtn = styled.button`
   position: absolute;
-  top: 23%;
-  right: 4%;
+  top: 20%;
+  right: 6%;
+  height: 30px;
 `;
 
-export default SearchRoom;
+export default SearchPost;

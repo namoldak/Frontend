@@ -1,27 +1,35 @@
 // 외부 모듈
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 
 // 내부 모듈
 import Layout from 'components/common/Layout/Layout';
 import RoomListLayout from 'components/common/Layout/RoomListLayout';
-import GameRoom from 'pages/GameRoom';
+import GameRoomPage from 'pages/GameRoomPage';
 import LandingPage from 'pages/LandingPage';
 import LoginPage from 'pages/LoginPage';
 import SignupPage from 'pages/SignupPage';
-import RoomList from 'pages/RoomList';
-import Community from 'pages/CommunityPage';
+import RoomListPage from 'pages/RoomListPage';
+import CommunityPage from 'pages/CommunityPage';
+import WritePostPage from 'pages/WritePostPage';
+import PostPage from 'pages/PostPage';
+import ModifyPostPage from 'pages/ModifyPostPage';
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<RoomListLayout />}>
-          <Route path="/rooms" element={<RoomList />} />
-          <Route path="/community" element={<Community />} />
+          <Route path="/rooms" element={<RoomListPage />} />
+          <Route path="/posts" element={<Navigate to="/rooms" replace />} />
+          <Route path="/posts/all" element={<CommunityPage />} />
+          <Route path="/posts/:id" element={<PostPage />} />
+          <Route path="/posts/write" element={<WritePostPage />} />
+          <Route path="/posts/modify" element={<ModifyPostPage />} />
         </Route>
         <Route element={<Layout />}>
-          <Route path="/gameroom/:roomId" element={<GameRoom />} />
+          <Route path="/gameroom" element={<Navigate to="/rooms" replace />} />
+          <Route path="/gameroom/:roomId" element={<GameRoomPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/" element={<LandingPage />} />

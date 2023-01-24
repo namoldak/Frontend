@@ -32,8 +32,8 @@ import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModa
 import ToastMessage from 'components/common/Toast/ToastMessage';
 import { instance } from 'api/core/axios';
 import { getNicknameCookie } from 'utils/cookies';
-import Timer from '../TitleAndTimer/Timer';
-import SpotTimer from '../TitleAndTimer/SpotTimer';
+import Timer from '../Timer/Timer';
+import SpotTimer from '../Timer/SpotTimer';
 import Audio from './Audio';
 import ChatBox from './ChatBox';
 
@@ -200,6 +200,8 @@ function GameRoomRTC() {
           setCategory('');
           setKeyword('');
           setMyKeyword('');
+          setIsSpotTimer(false);
+          setIsTimer(false);
           setIsSpotTimer(false);
           setIsTimer(false);
           try {

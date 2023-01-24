@@ -57,7 +57,6 @@ function Landing() {
           <StBannerImg>
             <img src={landingBanner} alt="닭 3마리 일러스트" />
           </StBannerImg>
-          <GameRule />
           <StToGo>
             {isLoggedIn ? (
               <Link to="/rooms">
@@ -69,6 +68,7 @@ function Landing() {
               </Link>
             )}
           </StToGo>
+          <GameRule />
         </StBanner>
       </StLadingMain>
     </StLanding>
@@ -120,7 +120,7 @@ const StBannerImg = styled.div`
 `;
 
 const StToGo = styled.button`
-  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export default Landing;

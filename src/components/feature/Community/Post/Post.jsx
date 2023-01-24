@@ -4,8 +4,10 @@ import styled from 'styled-components';
 
 // 내부 모듈
 
-function Card() {
-  return <div>게시글 하나</div>;
+function Post() {
+  return <StPost>게시글</StPost>;
 }
 
-export default Card;
+const StPost = styled.div``;
+
+export default Post;
