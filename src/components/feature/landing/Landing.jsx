@@ -11,7 +11,7 @@ import landingTitle from 'assets/images/landingTitle.svg';
 import landingBanner from 'assets/images/landingBanner.svg';
 import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
 import landingToLoginBtn from 'assets/images/landingToLoginBtn.svg';
-import MyPageModal from 'components/common/Modals/BasicModal/MyPageModal';
+import MyPageModal from 'components/common/Modals/BasicModal/SettingModal';
 import Modal from 'components/common/Modals/BasicModal/Modal';
 import GameRule from './GameRule';
 
@@ -57,7 +57,6 @@ function Landing() {
           <StBannerImg>
             <img src={landingBanner} alt="닭 3마리 일러스트" />
           </StBannerImg>
-          <GameRule />
           <StToGo>
             {isLoggedIn ? (
               <Link to="/rooms">
@@ -69,6 +68,7 @@ function Landing() {
               </Link>
             )}
           </StToGo>
+          <GameRule />
         </StBanner>
       </StLadingMain>
     </StLanding>
@@ -120,7 +120,7 @@ const StBannerImg = styled.div`
 `;
 
 const StToGo = styled.button`
-  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export default Landing;
