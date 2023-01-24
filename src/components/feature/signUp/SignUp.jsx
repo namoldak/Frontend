@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/jsx-props-no-spreading */
 // 외부 모듈
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -52,6 +52,7 @@ function SignUp() {
   const navigate = useNavigate();
   const [nickValid, setNickValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
+  // const [pwValid, setPwValid] = useState(false);
 
   // 유효성 검사
   const {
@@ -63,15 +64,16 @@ function SignUp() {
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: { password: '' },
     mode: 'onChange',
   });
 
-  console.log('nick error', errors.nickname);
-  console.log('nick check error', errors.nicknameCheck);
-  console.log('email error', errors.email);
-  console.log('email check error', errors.emailCheck);
-  console.log('pw error', errors.password);
-  console.log('confirm error', errors.confirmPw);
+  // console.log('nick error', errors.nickname);
+  // console.log('nick check error', errors.nicknameCheck);
+  // console.log('email error', errors.email);
+  // console.log('email check error', errors.emailCheck);
+  // console.log('pw error', errors.password);
+  // console.log('confirm error', errors.confirmPw);
 
   // 회원가입 api
   async function onClickSignup(data) {
@@ -136,16 +138,6 @@ function SignUp() {
       clearErrors('email', { type: 'custom' });
     }
   }, [emailValid]);
-
-  // useDidMountEffect(() => {
-  //   if (passwordCheck) {
-  //     // setError('password', {
-  //     //   type: 'custom',
-  //     // });
-  //   } else {
-  //     clearErrors('password', { type: 'custom' });
-  //   }
-  // }, [passwordCheck]);
 
   return (
     <>
