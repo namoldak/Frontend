@@ -58,6 +58,7 @@ const StSearchRoom = styled.div`
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
     outline: 7px solid ${({ theme }) => theme.colors.brown};
     border-radius: 32px;
+    font-family: 'MapoBackpacking';
     font-size: 18px;
     color: ${({ theme }) => theme.colors.text};
     text-indent: 16px;

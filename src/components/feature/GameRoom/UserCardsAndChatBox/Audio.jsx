@@ -100,6 +100,7 @@ const StKeywordBack = styled.div`
 `;
 
 const StKeyword = styled.div`
+  font-family: MapoBackpacking;
   font-size: 22px;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.white};
@@ -132,6 +133,7 @@ const StVideo = styled.div`
 const StNickName = styled.span`
   display: block;
   height: 50%;
+  font-family: MapoBackpacking;
   font-size: 22px;
   font-weight: 400;
   color: #5d3714;
