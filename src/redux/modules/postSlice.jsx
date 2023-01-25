@@ -13,7 +13,7 @@ export const createPost = createAsyncThunk(
       const formData = new FormData();
       const json = JSON.stringify(payload.post);
       const blob = new Blob([json], { type: 'application/json' });
-      formData.append('postRequestDto: ', blob);
+      formData.append('postRequestDto', blob);
       formData.append('data', payload.img);
 
       const response = await instance.post('/posts/write', formData, {
@@ -78,6 +78,7 @@ export const postSlice = createSlice({
       state.isLoading = true;
     },
     [createPost.fulfilled]: (state, action) => {
+      window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
     [createPost.rejected]: (state, action) => {
@@ -102,3 +103,4 @@ export const postSlice = createSlice({
 });
 
 export default postSlice.reducer;
+
