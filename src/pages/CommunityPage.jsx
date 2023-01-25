@@ -2,10 +2,10 @@
 import React from 'react';
 
 // 내부 모듈
-import Community from 'components/feature/Community/Community';
+import PostList from 'components/feature/Community/Post/PostList';
 
 function CommunityPage() {
-  return <Community />;
+  return <PostList />;
 }
 
 export default CommunityPage;
