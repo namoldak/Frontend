@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
-import Post from './Post/Post';
-import CommunityHeader from './CommunityHeader/CommunityHeader';
+import Post from './Post';
+import CommunityHeader from '../CommunityHeader/CommunityHeader';
 
 function PostList() {
   const { totalPage, postResponseDtoList } = useSelector(

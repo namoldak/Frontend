@@ -18,10 +18,8 @@ function Post({ postInfo }) {
 
   return (
     <StPost>
-      <StPostBorder key={postInfo.id}>
-        <div role="presentation" onClick={clickPost}>
-          {postInfo.title}
-        </div>
+      <StPostBorder key={postInfo.id} role="presentation" onClick={clickPost}>
+        <div>{postInfo.title}</div>
         <div>{postInfo.category}</div>
         <div>댓글 수: {postInfo.cmtCnt}</div>
         <div>{postInfo.createdAt}</div>
