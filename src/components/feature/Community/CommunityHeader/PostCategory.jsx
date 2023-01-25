@@ -1,14 +1,36 @@
 // 외부 모듈
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import select from 'assets/images/select.png';
+import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
 
 function PostCategory() {
+  // const posts = useSelector((state) => state.posts.posts);
+  // console.log('posts', posts);
+  const dispatch = useDispatch();
+
+  const [category, setCategory] = useState('전체보기');
+  console.log('cate', category);
+
+  function changeValue(target) {
+    setCategory(target.target.value);
+  }
+
+  useEffect(() => {
+    if (category === '전체보기') {
+      dispatch(readAllPosts());
+    } else {
+      dispatch(readPostsByCategory(category));
+    }
+  }, [category]);
+
   return (
     <StPostCategory>
-      <select>
+      <select onChange={changeValue}>
+        <option value="전체보기">전체 보기</option>
         <option value="자유게시판">자유 게시판</option>
         <option value="유저피드백">유저 피드백</option>
       </select>

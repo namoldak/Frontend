@@ -15,11 +15,10 @@ function useSound(src, volume = 0.1) {
     soundPlay(src);
     sound.on('play', () => {
       const history = createBrowserHistory();
-      history.listen(({ action }) => {
-        if (action === 'POP') {
-          sound.stop();
-        }
-      });
+      console.log('history', history.location.pathname);
+      if (history.location.pathname !== '/rooms') {
+        sound.stop();
+      }
     });
     return soundStop;
   }, []);
