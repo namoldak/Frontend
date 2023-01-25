@@ -30,7 +30,7 @@ export const createPost = createAsyncThunk(
 
 export const readAllPosts = createAsyncThunk(
   'post/READ_ALL_POST',
-  async (thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`/posts/all`);
       console.log('readall response', response.data);
@@ -48,8 +48,6 @@ export const readPostsByCategory = createAsyncThunk(
       const response = await instance.get(
         `/posts/category?category=${payload}`,
       );
-      console.log('payload', payload);
-      console.log('response', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -86,11 +84,8 @@ export const postSlice = createSlice({
       state.error = action.payload;
     },
     [readAllPosts.fulfilled]: (state, action) => {
-      console.log('readAll action payload', action.payload);
+      console.log('readAll action', action.payload);
       state.posts = action.payload;
-    },
-    [readAllPosts.rejected]: (state, action) => {
-      state.error = action.payload;
     },
     [readPostsByCategory.fulfilled]: (state, action) => {
       console.log('readCategory action payload', action.payload);
@@ -103,4 +98,3 @@ export const postSlice = createSlice({
 });
 
 export default postSlice.reducer;
-

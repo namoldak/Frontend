@@ -12,7 +12,7 @@ function PostCategory() {
   // console.log('posts', posts);
   const dispatch = useDispatch();
 
-  const [category, setCategory] = useState('전체보기');
+  const [category, setCategory] = useState('all');
   console.log('cate', category);
 
   function changeValue(target) {
@@ -20,7 +20,7 @@ function PostCategory() {
   }
 
   useEffect(() => {
-    if (category === '전체보기') {
+    if (category === 'all') {
       dispatch(readAllPosts());
     } else {
       dispatch(readPostsByCategory(category));
@@ -30,9 +30,9 @@ function PostCategory() {
   return (
     <StPostCategory>
       <select onChange={changeValue}>
-        <option value="전체보기">전체 보기</option>
-        <option value="자유게시판">자유 게시판</option>
-        <option value="유저피드백">유저 피드백</option>
+        <option value="all">전체 보기</option>
+        <option value="freeboard">자유 게시판</option>
+        <option value="feedback">유저 피드백</option>
       </select>
     </StPostCategory>
   );
