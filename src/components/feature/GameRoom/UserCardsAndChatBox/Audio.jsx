@@ -33,7 +33,13 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
   }, [stream, keyword]);
 
   return (
-    <>
+    <StAudio>
+      {isMyTurn && (
+        <>
+          <StCardSpotLight />
+          <StNickSpotLight>{nickName}</StNickSpotLight>
+        </>
+      )}
       <StKeywordBack>
         <StKeyword>{userkeyword || '키워드'}</StKeyword>
       </StKeywordBack>
@@ -45,9 +51,10 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
         <div />
       )}
       <StVideoBox>
-        <StVideo>
+        <StVideo className={isMyTurn ? 'spotLight' : ''}>
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <video
+            className={isMyTurn ? 'spotLight' : ''}
             ref={videoRef}
             id="myFace"
             autoPlay
@@ -59,6 +66,7 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
           </video>
         </StVideo>
         <Stimg
+          className={isMyTurn ? 'spotLight' : ''}
           ref={userCardImgRef}
           src={playerImg}
           alt="닭 이미지"
@@ -69,28 +77,46 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
       <StNickName className={isMyTurn ? 'spotLight' : ''}>
         {nickName}
       </StNickName>
-    </>
+    </StAudio>
   );
 }
 
 export default Audio;
 
 const StAudio = styled.div`
-  width: 260px;
-  height: 274px;
-  background-color: #f5f5f5;
-  border: 6px solid #f5c86f;
-  border-radius: 20px;
-  overflow: hidden;
+  /* position: relative; */
+`;
 
-  /* .spotLight {
-    background: rgba(103, 138, 41, 1);
-    border-color: rgba(147, 191, 69, 1);
-    z-index: 2;
-  } */
+const StCardSpotLight = styled.div`
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 261px;
+  height: 274px;
+  border-radius: 20px;
+  background: #76a427;
+  border: 6px solid #93bf45;
+`;
+
+const StNickSpotLight = styled.div`
+  position: absolute;
+  bottom: -6px;
+  left: -6px;
+  width: 260px;
+  height: 65px;
+  border-radius: 0 0 20px 20px;
+  background: #bedc8a;
+  border: 6px solid #93bf45;
+  font-family: MapoBackpacking;
+  font-size: 22px;
+  font-weight: 400;
+  color: #5d3714;
+  text-align: center;
+  padding-top: 16px;
 `;
 
 const StKeywordBack = styled.div`
+  position: relative;
   background-image: url(${keywordImg});
   background-size: cover;
   background-repeat: no-repeat;
@@ -121,32 +147,48 @@ const StVideoBox = styled.div`
   height: 140px;
   overflow: hidden;
   margin: 0 auto;
+
+  .spotLight {
+    position: relative;
+  }
 `;
 
 const StVideo = styled.div`
   video {
     width: 150px;
     height: 143px;
+
+    .spotLight {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+  }
+`;
+
+const Stimg = styled.img`
+  height: unset;
+
+  .spotLight {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 200px;
   }
 `;
 
 const StNickName = styled.span`
+  background: #ffe9bc;
+  border-top: 6px solid #f5c86f;
   display: block;
-  height: 50%;
+  height: 23%;
+  border-radius: 0 0 17px 17px;
+  padding-bottom: 17px;
+
   font-family: MapoBackpacking;
   font-size: 22px;
   font-weight: 400;
   color: #5d3714;
   text-align: center;
-  background: #ffe9bc;
-  border-top: 6px solid #f5c86f;
   padding-top: 16px;
-
-  /* .spotLight {
-    border-top: 6px solid rgba(190, 220, 138, 1);
-  } */
-`;
-
-const Stimg = styled.img`
-  height: unset;
 `;
