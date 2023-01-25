@@ -72,6 +72,9 @@ function Login() {
 
   return (
     <>
+      {errors.email?.message && useToast(`${errors.email?.message}`, 'error')}
+      {errors.password?.message &&
+        useToast(`${errors.password?.message}`, 'error')}
       <StBackBtn>
         <Link to="/">
           <img src={backBtn} alt="뒤로가기" />

@@ -2,8 +2,8 @@
 /* eslint-disable func-names */
 /* eslint-disable no-use-before-define */
 // 외부모듈
-import styled from 'styled-components';
 import React, { useRef, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { useDispatch } from 'react-redux';
@@ -171,7 +171,7 @@ function GameRoomRTC() {
           if (myNickName === data.sender) {
             setTimeout(function () {
               sendSpotlight();
-            }, 2000);
+            }, 3500);
           }
           break;
         }
@@ -180,7 +180,7 @@ function GameRoomRTC() {
           if (myNickName === data.nickname) {
             setTimeout(function () {
               sendSpotlight();
-            }, 2000);
+            }, 3500);
           }
           break;
         }
@@ -189,7 +189,7 @@ function GameRoomRTC() {
           if (myNickName === data.nickname) {
             setTimeout(function () {
               endGame();
-            }, 2000);
+            }, 3500);
           }
           setWinner(data.nickname);
           setIsEndGameModal(true);
@@ -202,6 +202,10 @@ function GameRoomRTC() {
           setCategory('');
           setKeyword('');
           setMyKeyword('');
+          setIsSpotTimer(false);
+          setIsTimer(false);
+          setIsSpotTimer(false);
+          setIsTimer(false);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
@@ -245,7 +249,6 @@ function GameRoomRTC() {
           break;
         }
         default: {
-          // console.log('default');
           break;
         }
       }
@@ -330,7 +333,7 @@ function GameRoomRTC() {
     });
     setTimeout(function () {
       sendSpotlight();
-    }, 5000);
+    }, 6000);
   }
   // end stomp client method
 
@@ -340,7 +343,6 @@ function GameRoomRTC() {
     socket,
     peerConnectionLocalStream,
     userNickName,
-    ownerNickName,
   ) {
     const pc = new RTCPeerConnection({
       iceServers: [
@@ -367,56 +369,29 @@ function GameRoomRTC() {
     pc.oniceconnectionstatechange = (e) => {
       // console.log(e);
     };
-    // eslint-disable-next-line no-unused-expressions
-    userNickName === ownerNickName
-      ? setUsers((oldUsers) => [
-          ...oldUsers,
-          {
-            id: socketID,
-            stream: null,
-            nickName: userNickName,
-            isCameraOn: false,
-            isMyTurn: false,
-            isOwner: true,
-          },
-        ])
-      : setUsers((oldUsers) => [
-          ...oldUsers,
-          {
-            id: socketID,
-            stream: null,
-            nickName: userNickName,
-            isCameraOn: false,
-            isMyTurn: false,
-            isOwner: false,
-          },
-        ]);
+    setUsers((oldUsers) => [
+      ...oldUsers,
+      {
+        id: socketID,
+        stream: null,
+        nickName: userNickName,
+        isCameraOn: false,
+        isMyTurn: false,
+        isOwner: false,
+      },
+    ]);
     pc.ontrack = (e) => {
       setUsers((oldUsers) => oldUsers.filter((user) => user.id !== socketID));
-      // eslint-disable-next-line no-unused-expressions
-      userNickName === ownerNickName
-        ? setUsers((oldUsers) => [
-            ...oldUsers,
-            {
-              id: socketID,
-              stream: e.streams[0],
-              nickName: userNickName,
-              isCameraOn: true,
-              isMyTurn: false,
-              isOwner: true,
-            },
-          ])
-        : setUsers((oldUsers) => [
-            ...oldUsers,
-            {
-              id: socketID,
-              stream: e.streams[0],
-              nickName: userNickName,
-              isCameraOn: true,
-              isMyTurn: false,
-              isOwner: false,
-            },
-          ]);
+      setUsers((oldUsers) => [
+        ...oldUsers,
+        {
+          id: socketID,
+          stream: e.streams[0],
+          nickName: userNickName,
+          isCameraOn: true,
+          isMyTurn: false,
+        },
+      ]);
     };
     try {
       if (peerConnectionLocalStream) {
@@ -519,76 +494,69 @@ function GameRoomRTC() {
         case 'all_users': {
           const { allUsers } = data;
           const { allUsersNickNames } = data;
-          instance.get(`/rooms/${param.roomId}/ownerInfo`).then((res) => {
-            for (let i = 0; i < allUsers.length; i += 1) {
-              createPeerConnection(
-                allUsers[i],
-                socketRef.current,
-                stream,
-                allUsersNickNames[`${allUsers[i]}`],
-                res.data.ownerNickname,
-              );
+          for (let i = 0; i < allUsers.length; i += 1) {
+            createPeerConnection(
+              allUsers[i],
+              socketRef.current,
+              stream,
+              allUsersNickNames[`${allUsers[i]}`],
+            );
 
-              const allUsersEachPc = pcs[`${allUsers[i]}`];
-              if (allUsersEachPc) {
-                allUsersEachPc
-                  .createOffer({
-                    offerToReceiveAudio: true,
-                    offerToReceiveVideo: true,
-                  })
-                  .then((offer) => {
-                    allUsersEachPc.setLocalDescription(offer);
-                    socketRef.current?.send(
-                      JSON.stringify({
-                        type: 'offer',
-                        offer,
-                        receiver: allUsers[i],
-                        roomId: param.roomId,
-                        nickname: myNickName,
-                      }),
-                    );
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              }
+            const allUsersEachPc = pcs[`${allUsers[i]}`];
+            if (allUsersEachPc) {
+              allUsersEachPc
+                .createOffer({
+                  offerToReceiveAudio: true,
+                  offerToReceiveVideo: true,
+                })
+                .then((offer) => {
+                  allUsersEachPc.setLocalDescription(offer);
+                  socketRef.current?.send(
+                    JSON.stringify({
+                      type: 'offer',
+                      offer,
+                      receiver: allUsers[i],
+                      roomId: param.roomId,
+                      nickname: myNickName,
+                    }),
+                  );
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
             }
-          });
-
+            console.log('user length', users.length);
+          }
           break;
         }
         case 'offer': {
-          instance.get(`/rooms/${param.roomId}/ownerInfo`).then((res) => {
-            createPeerConnection(
-              data.sender,
-              socketRef.current,
-              stream,
-              data.senderNickName,
-              res.data.ownerNickname,
-            );
-            const offerPc = pcs[`${data.sender}`];
-            if (offerPc) {
-              offerPc.setRemoteDescription(data.offer).then(() => {
-                offerPc
-                  .createAnswer()
-                  .then((answer) => {
-                    offerPc.setLocalDescription(answer);
-                    socketRef.current?.send(
-                      JSON.stringify({
-                        type: 'answer',
-                        answer,
-                        receiver: data.sender,
-                        roomId: param.roomId,
-                      }),
-                    );
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              });
-            }
-          });
-
+          createPeerConnection(
+            data.sender,
+            socketRef.current,
+            stream,
+            data.senderNickName,
+          );
+          const offerPc = pcs[`${data.sender}`];
+          if (offerPc) {
+            offerPc.setRemoteDescription(data.offer).then(() => {
+              offerPc
+                .createAnswer()
+                .then((answer) => {
+                  offerPc.setLocalDescription(answer);
+                  socketRef.current?.send(
+                    JSON.stringify({
+                      type: 'answer',
+                      answer,
+                      receiver: data.sender,
+                      roomId: param.roomId,
+                    }),
+                  );
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            });
+          }
           break;
         }
         case 'answer': {
@@ -631,7 +599,6 @@ function GameRoomRTC() {
           setUsers((oldUsers) =>
             oldUsers.filter((user) => user.id !== data.sender),
           );
-
           break;
         }
         default: {
@@ -958,7 +925,6 @@ const StKeywordBack = styled.div`
 `;
 
 const StKeyword = styled.div`
-  font-family: MapoBackpacking;
   font-size: 22px;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.white};
@@ -989,7 +955,19 @@ const StVideo = styled.div`
   video {
     width: 150px;
     height: 143px;
+  }
+`;
 
+const StNickName = styled.span`
+  display: block;
+  height: 50%;
+  font-size: 22px;
+  font-weight: 400;
+  color: #5d3714;
+  text-align: center;
+  background: #ffe9bc;
+  border-top: 6px solid #f5c86f;
+  padding-top: 16px;
     .spotLight {
       position: absolute;
       left: 0;
