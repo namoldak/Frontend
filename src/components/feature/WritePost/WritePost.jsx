@@ -3,16 +3,29 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
 // 내부 모듈
 import backBtn from 'assets/images/backBtn.svg';
 import okBtn from 'assets/images/okBtn.svg';
+import { createPost } from 'redux/modules/postSlice';
 
 function WritePost() {
-  const [check, setCheck] = useState([]);
-
+  const dispatch = useDispatch();
+  const [categoryCheck, setCategoryCheck] = useState('freeBoard');
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [img, setImg] = useState(null);
   function onChangeCheck(e) {
-    setCheck(e.target.value);
+    setCategoryCheck(e.target.value);
+  }
+
+  function sendPost() {
+    const post = {
+      category: categoryCheck,
+      content,
+      title,
+    };
+    dispatch(createPost({ post, img }));
   }
 
   return (
@@ -30,8 +43,8 @@ function WritePost() {
           <label className="free">
             <input
               type="radio"
-              value="1"
-              checked={check === '1'}
+              value="freeBoard"
+              checked={categoryCheck === 'freeBoard'}
               onChange={onChangeCheck}
             />
             자유 게시판
@@ -39,20 +52,36 @@ function WritePost() {
           <label>
             <input
               type="radio"
-              value="2"
-              checked={check === '2'}
+              value="feedbackBoard"
+              checked={categoryCheck === 'feedbackBoard'}
               onChange={onChangeCheck}
             />
             유저 피드백
           </label>
         </StRadioBox>
-        <input type="file" accept="image/*" />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            setImg(e.target.files[0]);
+          }}
+        />
       </StInputBox>
       <StPostSection>
-        <StTitleArea placeholder="제목을 입력해주세요." />
-        <StContentArea placeholder="내용을 입력해주세요." />
+        <StTitleArea
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          placeholder="제목을 입력해주세요."
+        />
+        <StContentArea
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+          placeholder="내용을 입력해주세요."
+        />
       </StPostSection>
-      <StWritePostBtn>
+      <StWritePostBtn type="button" onClick={sendPost}>
         <img src={okBtn} alt="확인" />
       </StWritePostBtn>
     </StWritePost>
