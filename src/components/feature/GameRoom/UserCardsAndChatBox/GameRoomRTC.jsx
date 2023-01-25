@@ -67,6 +67,7 @@ function GameRoomRTC() {
   const client = useRef({});
 
   const [isStartModal, setIsStartModal] = useState(false);
+  const [isShowStartBtn, setIsShowStartBtn] = useState(true);
   const [isSpotTimer, setIsSpotTimer] = useState(false);
   const [isTimer, setIsTimer] = useState(false);
   const [isMyTurnModal, setIsMyTurnModal] = useState(false);
@@ -109,6 +110,7 @@ function GameRoomRTC() {
           } catch (erorr) {
             console.log(erorr);
           }
+          setIsShowStartBtn(false);
           setIsStartModal(true);
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
@@ -214,6 +216,7 @@ function GameRoomRTC() {
             }),
           );
           setIsMyTurn(false);
+          setIsShowStartBtn(true);
 
           if (myNickName === owner) {
             startBtn.current.disabled = false;
@@ -693,6 +696,13 @@ function GameRoomRTC() {
           &nbsp;
         </StLeaveBtn>
         <StHeaderBtnBox>
+          {isShowStartBtn
+            ? isOwner && (
+                <StStartBtn ref={startBtn} onClick={gameStart}>
+                  &nbsp;
+                </StStartBtn>
+              )
+            : ''}
           <div>
             {isSpotTimer && (
               <SpotTimer
@@ -714,12 +724,6 @@ function GameRoomRTC() {
               />
             )}
           </div>
-          {isOwner && (
-            <StStartBtn ref={startBtn} onClick={gameStart}>
-              {/* <img src={gameStartBtn} alt="게임시작" /> */}
-              &nbsp;
-            </StStartBtn>
-          )}
           <StSettingBtn>
             <img src={settingBtn} alt="설정버튼" />
           </StSettingBtn>
@@ -828,6 +832,7 @@ function GameRoomRTC() {
 
 const StGameRoomRTC = styled.div`
   width: 100%;
+  padding-top: 55px;
 `;
 
 const StGameRoomHeader = styled.div`
@@ -847,21 +852,23 @@ const StLeaveBtn = styled.button`
   width: 80px;
 `;
 
+const StHeaderBtnBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const StStartBtn = styled.button`
   background-image: url(${gameStartBtn});
   background-size: center;
   background-repeat: no-repeat;
   margin-right: auto;
   width: 210px;
-`;
 
-const StHeaderBtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+  /* display: none; */
 `;
 
 const StSettingBtn = styled.button`
-  margin-left: 100px;
+  margin-left: 93px;
 `;
 
 const StGameRoomMain = styled.div`
