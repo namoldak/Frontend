@@ -3,18 +3,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import Post from './Post/Post';
+import PostList from './Post/PostList';
 import CommunityHeader from './CommunityHeader/CommunityHeader';
 
-function PostList() {
+function Community() {
   return (
     <StPostList>
       <CommunityHeader />
-      <Post />
+      <PostList />
     </StPostList>
   );
 }
 
 const StPostList = styled.div``;
 
-export default PostList;
+export default Community;
