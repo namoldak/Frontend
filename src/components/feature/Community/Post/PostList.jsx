@@ -35,6 +35,7 @@ function PostList() {
             </div>
           );
         })}
+
     </StPostList>
   );
 }
