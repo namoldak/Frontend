@@ -7,9 +7,10 @@ import useToast from 'hooks/useToast';
 
 const errorToastMsg = (MiddlewareAPI) => (next) => (action) => {
   if (isRejectedWithValue(action)) {
+    console.log('action', action);
     if (action.payload.response.data.message) {
       useToast(`${action.payload.response.data.message}`, 'error');
-      window.location.href = '/login';
+      // window.location.href = '/login';
     } else if (action.payload.response.data.statusMsg) {
       useToast(`${action.payload.response.data.statusMsg}`, 'error');
     }

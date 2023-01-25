@@ -5,14 +5,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
-import { useSearchParams } from 'react-router-dom';
 import Post from './Post/Post';
 import CommunityHeader from './CommunityHeader/CommunityHeader';
 
 function PostList() {
-  const postList = useSelector((state) => state.posts.posts);
-  console.log(postList);
+  const { totalPage, postResponseDtoList } = useSelector(
+    (state) => state.posts.posts,
+  );
+
+  // const post = useSelector((state) => state.posts.posts);
+
   const dispatch = useDispatch();
+
+  console.log('postlist', postResponseDtoList);
+  console.log('totalPage', totalPage);
 
   useEffect(() => {
     dispatch(readAllPosts());
@@ -21,8 +27,8 @@ function PostList() {
   return (
     <StPostList>
       <CommunityHeader />
-      {postList &&
-        postList.map((post) => {
+      {postResponseDtoList &&
+        postResponseDtoList.map((post) => {
           return (
             <div key={post.id}>
               <Post postInfo={post} />
