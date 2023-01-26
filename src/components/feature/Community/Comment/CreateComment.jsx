@@ -1,30 +1,36 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
-import { createComment } from 'redux/modules/commentSlice';
+import { instance } from 'api/core/axios';
+import { readOnePost } from 'redux/modules/postSlice';
 
 function CreateComment() {
   const [comment, setComment] = useState('');
-  const dispatch = useDispatch();
 
   const param = useParams();
   const { id } = param;
-  //   console.log('param', postId);
 
   async function postComment() {
     const data = { comment, id };
     if (comment === '') {
       useToast('댓글 내용이 없닭!', 'warning');
     } else {
-      dispatch(createComment(data));
+      try {
+        await instance.post(`/posts/${data.id}/comments`, data);
+      } catch (error) {
+        console.log(error);
+      }
       setComment('');
     }
   }
+
+  useEffect(() => {
+    readOnePost(id);
+  }, [postComment]);
 
   return (
     <div>

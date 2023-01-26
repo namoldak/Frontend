@@ -15,17 +15,16 @@ export const createPost = createAsyncThunk(
       const json = JSON.stringify(payload.post);
       const blob = new Blob([json], { type: 'application/json' });
       formData.append('data', blob);
-      formData.append('file', payload.img);
+      for (let i = 0; i < payload.imgs.length; i += 1) {
+        formData.append('file', payload.imgs[i]);
+      }
 
-      const response = await instance.post(
-        `/posts/${payload.postId}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      const response = await instance.post(`/posts/write`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      );
+      });
+      console.log('res data', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -107,7 +106,7 @@ export const postSlice = createSlice({
     },
     [createPost.fulfilled]: (state, action) => {
       console.log(action.payload.id);
-      // window.location.href = `/posts/${action.payload.id}`;
+      window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
     [createPost.rejected]: (state, action) => {
