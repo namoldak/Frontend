@@ -124,8 +124,8 @@ function Login() {
 
 const StLogin = styled.div`
   ${({ theme }) => theme.common.absoluteCenter}
-  width: 942px;
-  height: 700px;
+  width: 994px;
+  height: 731px;
   background-image: url(${popUp});
   background-size: cover;
   background-repeat: no-repeat;
@@ -139,13 +139,16 @@ const StLoginContainer = styled.form`
 
 const StTitle = styled.div`
   width: 284px;
-  height: 88px;
+  height: 78px;
+  margin-bottom: 20px;
 `;
 
 const StInputBox = styled.div`
+  ${({ theme }) => theme.common.flexCenterColumn};
+  gap: 20px;
   input {
     width: 484px;
-    height: 64px;
+    height: 54px;
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
     outline: 7px solid ${({ theme }) => theme.colors.brown};
@@ -166,6 +169,7 @@ const StInputBox = styled.div`
 
 const StBtnBox = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
+  margin-top: 20px;
 `;
 
 const StLoginBtn = styled.button`

@@ -121,10 +121,10 @@ function SignUp() {
   useDidMountEffect(() => {
     if (nickValid) {
       // useToast('이미 사용 중인 닉네임입니다.', 'error');
-      // setError('nickname', {
-      //   type: 'custom',
-      //   message: '이미 사용 중인 닉네임입니다.',
-      // });
+      setError('nickname', {
+        type: 'custom',
+        message: '이미 사용 중인 닉네임입니다.',
+      });
     } else {
       clearErrors('nickname', { type: 'custom' });
     }
@@ -132,9 +132,9 @@ function SignUp() {
 
   useDidMountEffect(() => {
     if (emailValid) {
-      // setError('email', {
-      //   type: 'custom',
-      // });
+      setError('email', {
+        type: 'custom',
+      });
     } else {
       clearErrors('email', { type: 'custom' });
     }
@@ -164,11 +164,14 @@ function SignUp() {
               >
                 <img src={doubleCheckBtn} alt="닉네임 중복확인" />
               </StDbCheckBtn>
+              <StHelpText>
+                {errors.nicknameCheck?.message || errors.nickname?.message}
+              </StHelpText>
             </StInputBox>
-            <StToastMessage>
+            {/* <StToastMessage>
               {errors.nickname &&
                 useToast(`${errors.nickname?.message}`, 'error')}
-            </StToastMessage>
+            </StToastMessage> */}
             <StInputBox>
               <input
                 className="emailInput"
@@ -182,12 +185,14 @@ function SignUp() {
               >
                 <img src={doubleCheckBtn} alt="이메일 중복확인" />
               </StDbCheckBtn>
-              <StToastMessage>
+              {/* <StToastMessage>
                 {errors.emailCheck &&
                   useToast(`${errors.emailCheck?.message}`, 'error')}
-              </StToastMessage>
+              </StToastMessage> */}
+              <StHelpText>
+                {errors.emailCheck?.message || errors.email?.message}
+              </StHelpText>
             </StInputBox>
-            {/* {errors.emailCheck?.message || errors.email?.message} */}
             <input
               className="pwInput"
               type="password"
@@ -198,15 +203,17 @@ function SignUp() {
               {errors.password &&
                 useToast(`${errors.password?.message}`, 'error')}
             </StToastMessage> */}
+            <StHelpText>{errors.password?.message}</StHelpText>
             <input
               type="password"
               placeholder="비밀번호를 다시 입력해주세요."
               {...register('confirmPw', { required: true })}
             />
-            <StToastMessage>
+            {/* <StToastMessage>
               {errors.confirmPw &&
                 useToast(`${errors.confirmPw?.message}`, 'error')}
-            </StToastMessage>
+            </StToastMessage> */}
+            {errors.confirmPw?.message}
           </StInputCon>
           <StBtnBox>
             <StSignUpBtn type="submit" disabled={!isValid}>
@@ -229,8 +236,8 @@ function SignUp() {
 
 const StSignUp = styled.div`
   ${({ theme }) => theme.common.absoluteCenter}
-  width: 942px;
-  height: 700px;
+  width: 994px;
+  height: 731px;
   background-image: url(${popUp});
   background-size: cover;
   background-repeat: no-repeat;
@@ -238,18 +245,20 @@ const StSignUp = styled.div`
 
 const StSignUpContainer = styled.form`
   ${({ theme }) => theme.common.flexCenterColumn};
+  margin-top: 10px;
   height: 100%;
   text-align: center;
 `;
 
 const StTitle = styled.div`
   width: 284px;
-  height: 88px;
-  margin-bottom: 30px;
+  height: 78px;
+  margin-bottom: 20px;
 `;
 
 const StInputCon = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
+  gap: 20px;
   input {
     width: 528px;
     height: 54px;
@@ -273,6 +282,7 @@ const StInputCon = styled.div`
 const StInputBox = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
   input {
     width: 337px;
   }
@@ -294,6 +304,7 @@ const StToastMessage = styled.div`
 
 const StBtnBox = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
+  margin-top: 20px;
 `;
 
 const StSignUpBtn = styled.button`
@@ -327,6 +338,12 @@ const StBackBtn = styled.button`
   margin-left: 10px;
   width: 78px;
   height: 78px;
+`;
+
+const StHelpText = styled.div`
+  position: absolute;
+  top: 120%;
+  left: 35%;
 `;
 
 export default SignUp;
