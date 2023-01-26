@@ -31,7 +31,7 @@ const StyledInput = styled.input`
   height: ${(props) => props.width || '64px'};
   background: ${({ theme }) => theme.colors.lightBeige};
   border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-  outline: 7px solid ${({ theme }) => theme.colors.brown};
+  outline: 4px solid ${({ theme }) => theme.colors.brown};
   border-radius: ${(props) => props.width || '50px'};
   font-size: 22px;
   color: ${({ theme }) => theme.colors.text};
