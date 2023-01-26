@@ -2,19 +2,14 @@
 // 외부 모듈
 import { instance } from 'api/core/axios';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 // 내부 모듈
 
 function CommentList(props) {
-  const { id, content, createdAt, nickname } = props;
-
-  console.log('content', content);
+  const { id, comment, createdAt, nickname } = props;
 
   const [commentType, setCommentType] = useState('display');
-  const [comment, setComment] = useState('');
-  console.log('comment', comment);
-  const dispatch = useDispatch();
+  const [content, setContent] = useState(comment);
 
   function editComment() {
     if (commentType === 'display') {
@@ -26,9 +21,10 @@ function CommentList(props) {
 
   async function onClickEditComment() {
     console.log('id', id);
-    console.log('comment', comment);
+    console.log('content', content);
     try {
-      await instance.put(`/posts/comments/${id}`, { comment });
+      console.log('확인');
+      await instance.put(`/posts/comments/${id}`, { comment: content });
     } catch (error) {
       console.log(error);
     }
@@ -55,8 +51,9 @@ function CommentList(props) {
       <button onClick={onClickDeleteComment}>delete</button>
       {commentType === 'edit' ? (
         <input
+          value={content}
           onChange={(e) => {
-            setComment(e.target.value);
+            setContent(e.target.value);
           }}
         />
       ) : (

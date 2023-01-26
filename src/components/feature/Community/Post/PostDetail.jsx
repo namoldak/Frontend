@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 // 외부 모듈
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { readOnePost } from 'redux/modules/postSlice';
@@ -12,9 +12,9 @@ import CreateComment from '../Comment/CreateComment';
 function PostDetail() {
   const param = useParams();
   const post = useSelector((state) => state.posts.posts);
-  console.log('post', post);
   const comment = post.commentList;
 
+  const [display, setDisplay] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,13 +38,21 @@ function PostDetail() {
       <div>{post.createdAt}</div>
       <div>
         <CreateComment />
-        {comment &&
+        <button
+          onClick={() => {
+            setDisplay(!display);
+          }}
+        >
+          {display && '댓글 숨기기'}
+          {!display && `${post.cmtCnt}개의 댓글보기`}
+        </button>
+        {display &&
           comment.map((i) => {
             return (
               <CommentList
                 key={i.id}
                 id={i.id}
-                content={i.comment}
+                comment={i.comment}
                 nickname={i.nickname}
                 createdAt={i.createdAt}
               />
