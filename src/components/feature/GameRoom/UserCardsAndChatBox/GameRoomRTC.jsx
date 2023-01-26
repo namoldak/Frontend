@@ -26,7 +26,6 @@ import star from 'assets/images/star.svg';
 import keywordImg from 'assets/images/keyword.svg';
 import userCardImg from 'assets/images/userCardImg.svg';
 import playerImg from 'assets/images/playerImg.svg';
-import ownerImg from 'assets/images/ownerImg.svg';
 import GameModal from 'components/common/Modals/InGameModal/GameModal';
 import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModal';
 import ToastMessage from 'components/common/Toast/ToastMessage';
