@@ -18,6 +18,7 @@ import doubleCheckBtn from 'assets/images/doubleCheckBtn.svg';
 import signUpBtn from 'assets/images/signUpBtn.svg';
 import backBtn from 'assets/images/backBtn.svg';
 import miniLoginBtn from 'assets/images/miniLoginBtn.svg';
+import check from 'assets/images/check.svg';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -68,6 +69,16 @@ function SignUp() {
 
   // 회원가입 api
   async function onClickSignup(data) {
+    if (nickValid === false) {
+      useToast('닉네임 중복 확인을 해주세요.', 'warning');
+      return;
+    }
+
+    if (emailValid === false) {
+      useToast('이메일 중복 확인을 해주세요.', 'warning');
+      return;
+    }
+
     await authAPI
       .SignUp(data)
       .then(
@@ -88,7 +99,7 @@ function SignUp() {
       if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
       } else {
-        useToast('이미 사용 중인 닉네임입니다.', 'error');
+        useToast('이미 사용 중인 닉네임입니다.', 'warning');
       }
       setNickValid(response.data);
     });
@@ -109,12 +120,10 @@ function SignUp() {
     });
   }
 
-  // 첫번째 렌더링 시 실행 안 됨
   useDidMountEffect(() => {
     if (nickValid) {
       setError('nickname', {
         type: 'custom',
-        message: '이미 사용 중인 닉네임입니다.',
       });
     } else {
       clearErrors('nickname', { type: 'custom' });
@@ -132,13 +141,13 @@ function SignUp() {
   }, [emailValid]);
 
   return (
-    <>
+    <StSignUp>
       <StBackBtn>
         <Link to="/">
           <img src={backBtn} alt="뒤로가기" />
         </Link>
       </StBackBtn>
-      <StSignUp>
+      <StSignUpWrapper>
         <StSignUpContainer onSubmit={handleSubmit(onClickSignup)}>
           <StTitle>
             <img src={signUpTitleBtn} alt="회원가입" />
@@ -155,13 +164,15 @@ function SignUp() {
               >
                 <img src={doubleCheckBtn} alt="닉네임 중복확인" />
               </StDbCheckBtn>
+              {errors.nickname?.message && (
+                <StHelpText className="nickText">
+                  <img src={check} alt="체크" />
+                  {errors.nickname?.message}
+                </StHelpText>
+              )}
             </StInputBox>
-            <StHelpText>
-              {errors.nicknameCheck?.message || errors.nickname?.message}
-            </StHelpText>
-            <StInputBox>
+            <StInputBox className="emailBox">
               <input
-                className="emailInput"
                 placeholder="이메일을 입력해주세요"
                 {...register('email', { required: true })}
               />
@@ -172,23 +183,40 @@ function SignUp() {
               >
                 <img src={doubleCheckBtn} alt="이메일 중복확인" />
               </StDbCheckBtn>
+              {errors.email?.message && (
+                <StHelpText>
+                  <img src={check} alt="체크" />
+                  {errors.email?.message}
+                </StHelpText>
+              )}
             </StInputBox>
-            <StHelpText>
-              {errors.emailCheck?.message || errors.email?.message}
-            </StHelpText>
-            <input
-              className="pwInput"
-              type="password"
-              placeholder="비밀번호를 입력해주세요."
-              {...register('password', { required: true })}
-            />
-            <StHelpText>{errors.password?.message}</StHelpText>
-            <input
-              type="password"
-              placeholder="비밀번호를 다시 입력해주세요."
-              {...register('confirmPw', { required: true })}
-            />
-            <StHelpText>{errors.confirmPw?.message}</StHelpText>
+            <StPwInputBox>
+              <input
+                className="pwInput"
+                type="password"
+                placeholder="비밀번호를 입력해주세요."
+                {...register('password', { required: true })}
+              />
+              {errors.password?.message && (
+                <StHelpText>
+                  <img src={check} alt="체크" />
+                  {errors.password?.message}
+                </StHelpText>
+              )}
+            </StPwInputBox>
+            <StCfPwInputBox>
+              <input
+                type="password"
+                placeholder="비밀번호를 다시 입력해주세요."
+                {...register('confirmPw', { required: true })}
+              />
+              {errors.confirmPw?.message && (
+                <StHelpText>
+                  <img src={check} alt="체크" />
+                  {errors.confirmPw?.message}
+                </StHelpText>
+              )}
+            </StCfPwInputBox>
           </StInputCon>
           <StBtnBox>
             <StSignUpBtn type="submit" disabled={!isValid}>
@@ -204,112 +232,138 @@ function SignUp() {
             </StLogin>
           </StBtnBox>
         </StSignUpContainer>
-      </StSignUp>
-    </>
+      </StSignUpWrapper>
+    </StSignUp>
   );
 }
 
-const StBackBtn = styled.button`
-  /* padding-top: 72px; */
-  margin-top: 10px;
-  margin-left: 10px;
-  width: 78px;
-  height: 78px;
+const StSignUp = styled.div`
+  padding-top: 72px;
 `;
 
-const StSignUp = styled.div`
-  ${({ theme }) => theme.common.absoluteCenter}
-  width: 994px;
-  height: 731px;
+const StBackBtn = styled.button`
+  width: 78px;
+`;
+
+const StSignUpWrapper = styled.div`
+  width: 942px;
+  height: 694px;
   background-image: url(${popUp});
   background-size: cover;
   background-repeat: no-repeat;
+  margin: 0 auto;
+  margin-top: 44px;
 `;
 
 const StSignUpContainer = styled.form`
-  ${({ theme }) => theme.common.flexCenterColumn};
-  margin-top: 10px;
-  height: 100%;
-  text-align: center;
+  padding-top: 68px;
+
+  input {
+    width: 454px;
+    height: 54px;
+    background: ${({ theme }) => theme.colors.lightBeige};
+    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
+    outline: 4px solid ${({ theme }) => theme.colors.brown};
+    border-radius: 30px;
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 16px;
+    font-weight: 200;
+    line-height: 19px;
+    letter-spacing: 0.06em;
+    text-indent: 17px;
+  }
+  input::placeholder {
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0.06em;
+  }
 `;
 
 const StTitle = styled.div`
-  width: 284px;
-  height: 78px;
-  margin-bottom: 20px;
+  width: 256px;
+  height: 80px;
+  margin: 0 auto;
 `;
 
 const StInputCon = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
-  gap: 20px;
-  input {
-    width: 528px;
-    height: 54px;
-    background: ${({ theme }) => theme.colors.lightBeige};
-    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    outline: 7px solid ${({ theme }) => theme.colors.brown};
-    border-radius: 32px;
-    font-size: 18px;
-    color: ${({ theme }) => theme.colors.text};
-    text-indent: 16px;
-    line-height: 22px;
-  }
-  input::placeholder {
-    color: ${({ theme }) => theme.colors.text};
-  }
-  .pwInput {
-    margin-bottom: 24px;
-  }
+  margin-top: 22px;
 `;
 
 const StInputBox = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
+
   input {
-    width: 337px;
+    width: 307px;
   }
-  .emailInput {
-    margin-top: 20px;
-    margin-bottom: 24px;
+
+  &.emailBox {
+    margin-top: 34px;
+    margin-bottom: 34px;
   }
+`;
+
+const StPwInputBox = styled.div`
+  position: relative;
+  margin-bottom: 34px;
+`;
+
+const StCfPwInputBox = styled.div`
+  position: relative;
 `;
 
 const StDbCheckBtn = styled.button`
-  width: 173px;
-  height: 64px;
-  margin-left: 18px;
+  width: 131px;
+  height: 54px;
+  margin-left: 16px;
 `;
 
-const StHelpText = styled.div``;
+const StHelpText = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: -20px;
+  bottom: -28px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #fff;
+  width: 454px;
+  margin-left: 40px;
+
+  img {
+    width: 18px;
+    margin-right: 6px;
+  }
+`;
 
 const StBtnBox = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
-  margin-top: 20px;
 `;
 
 const StSignUpBtn = styled.button`
-  margin-top: 20px;
-  margin-bottom: 11px;
+  margin-top: 40px;
+  margin-bottom: 6px;
 `;
 
 const StLogin = styled.div`
   display: flex;
   align-items: center;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
   font-size: ${({ theme }) => theme.fontSizes.paragraph};
   font-weight: 500;
-  line-height: 22px;
+  line-height: 19px;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-left: 30px;
 
   a {
-    height: 40px;
-  }
-
-  button {
-    color: ${({ theme }) => theme.colors.white};
-    font-size: ${({ theme }) => theme.fontSizes.paragraph};
-    font-weight: 800;
-    margin-left: -12px;
+    height: 39px;
+    margin-left: -16px;
   }
 `;
 

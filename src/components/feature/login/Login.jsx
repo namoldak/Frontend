@@ -85,7 +85,7 @@ function Login() {
           <StTitle>
             <img src={loginTitleBtn} alt="로그인" />
           </StTitle>
-          <StInputBox className="emailInput">
+          <StInputBox className="emailBox">
             <input
               type="text"
               placeholder="이메일을 입력해주세요"
@@ -93,13 +93,13 @@ function Login() {
               {...register('email', { required: true })}
             />
             {errors.email && (
-              <StHelpText className="emailText">
+              <StHelpText>
                 <img src={check} alt="체크" />
                 {errors.email?.message}
               </StHelpText>
             )}
           </StInputBox>
-          <StInputBox className="pwInput">
+          <StInputBox>
             <input
               type="password"
               placeholder="비밀번호를 입력해주세요."
@@ -107,7 +107,7 @@ function Login() {
               {...register('password', { required: true })}
             />
             {errors.password && (
-              <StHelpText className="pwText">
+              <StHelpText>
                 <img src={check} alt="체크" />
                 {errors.password?.message}
               </StHelpText>
@@ -186,44 +186,30 @@ const StTitle = styled.div`
 
 const StInputBox = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
+  position: relative;
 
-  &.emailInput {
-    position: relative;
+  &.emailBox {
     margin-top: 40px;
     margin-bottom: 53px;
-  }
-
-  &.pwInput {
-    position: relative;
   }
 `;
 
 const StHelpText = styled.div`
   display: flex;
   align-items: center;
+  position: absolute;
+  left: 225px;
+  bottom: -32px;
   font-weight: 500;
   font-size: 14px;
   line-height: 24px;
   color: #fff;
   width: 454px;
   margin-left: 40px;
-  padding-top: 8px;
 
   img {
     width: 18px;
     margin-right: 6px;
-  }
-
-  &.emailText {
-    position: absolute;
-    left: 225px;
-    bottom: -32px;
-  }
-
-  &.pwText {
-    position: absolute;
-    left: 225px;
-    bottom: -32px;
   }
 `;
 
