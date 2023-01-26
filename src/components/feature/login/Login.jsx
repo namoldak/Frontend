@@ -9,7 +9,7 @@ import * as yup from 'yup';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
-import { setCookie, setNicknameCookie } from 'utils/cookies';
+import { setRefreshToken, setCookie, setNicknameCookie } from 'utils/cookies';
 import authAPI from 'api/authAsync';
 import popUp from 'assets/images/popUp.svg';
 import loginTitleBtn from 'assets/images/loginTitleBtn.svg';
@@ -46,6 +46,7 @@ function Login() {
   // 로그인 api
   async function onClickLogin(data) {
     await authAPI.Login(data).then((response) => {
+      setRefreshToken(response.headers.authorization);
       setCookie(response.headers.authorization);
       setNicknameCookie(response.data.nickname);
       useToast('로그인 되었습니다.', 'success');
@@ -56,6 +57,7 @@ function Login() {
   // 카카오 로그인 api
   const KakaoLogin = async (code) => {
     await authAPI.KakaoLogin(code).then((response) => {
+      setRefreshToken(response.headers.authorization);
       setCookie(response.headers.authorization);
       setNicknameCookie(response.data);
       useToast('카카오 로그인 성공', 'success');
@@ -72,9 +74,9 @@ function Login() {
 
   return (
     <>
-      {errors.email?.message && useToast(`${errors.email?.message}`, 'error')}
+      {/* {errors.email?.message && useToast(`${errors.email?.message}`, 'error')}
       {errors.password?.message &&
-        useToast(`${errors.password?.message}`, 'error')}
+        useToast(`${errors.password?.message}`, 'error')} */}
       <StBackBtn>
         <Link to="/">
           <img src={backBtn} alt="뒤로가기" />
