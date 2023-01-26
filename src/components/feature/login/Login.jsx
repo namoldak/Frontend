@@ -88,7 +88,7 @@ function Login() {
           <StTitle>
             <img src={loginTitleBtn} alt="로그인" />
           </StTitle>
-          <StEmailBox>
+          <StInputBox className="emailInput">
             <input
               type="text"
               placeholder="이메일을 입력해주세요"
@@ -96,13 +96,13 @@ function Login() {
               {...register('email', { required: true })}
             />
             {errors.email && (
-              <StHelpText>
+              <StHelpText className="emailText">
                 <img src={check} alt="체크" />
                 {errors.email?.message}
               </StHelpText>
             )}
-          </StEmailBox>
-          <StPwBox>
+          </StInputBox>
+          <StInputBox className="pwInput">
             <input
               type="password"
               placeholder="비밀번호를 입력해주세요."
@@ -110,12 +110,12 @@ function Login() {
               {...register('password', { required: true })}
             />
             {errors.password && (
-              <StHelpText>
+              <StHelpText className="pwText">
                 <img src={check} alt="체크" />
                 {errors.password?.message}
               </StHelpText>
             )}
-          </StPwBox>
+          </StInputBox>
           <StBtnBox>
             <StLoginBtn type="submit">
               <img src={loginBtn} alt="로그인 버튼" />
@@ -187,11 +187,18 @@ const StTitle = styled.div`
   margin: 0 auto;
 `;
 
-const StEmailBox = styled.div`
+const StInputBox = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
-  position: relative;
-  margin-top: 40px;
-  margin-bottom: 53px;
+
+  &.emailInput {
+    position: relative;
+    margin-top: 40px;
+    margin-bottom: 53px;
+  }
+
+  &.pwInput {
+    position: relative;
+  }
 `;
 
 const StHelpText = styled.div`
@@ -209,10 +216,18 @@ const StHelpText = styled.div`
     width: 18px;
     margin-right: 6px;
   }
-`;
 
-const StPwBox = styled.div`
-  ${({ theme }) => theme.common.flexCenterColumn};
+  &.emailText {
+    position: absolute;
+    left: 225px;
+    bottom: -32px;
+  }
+
+  &.pwText {
+    position: absolute;
+    left: 225px;
+    bottom: -32px;
+  }
 `;
 
 const StBtnBox = styled.div`
@@ -221,7 +236,7 @@ const StBtnBox = styled.div`
 
 const StLoginBtn = styled.button`
   width: 160px;
-  margin-top: 44px;
+  margin-top: 74px;
   margin-bottom: 28px;
 `;
 
