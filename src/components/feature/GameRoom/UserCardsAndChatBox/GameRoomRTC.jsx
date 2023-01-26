@@ -372,33 +372,60 @@ function GameRoomRTC() {
     };
     // eslint-disable-next-line no-unused-expressions
 
-    setUsers((oldUsers) => [
-      ...oldUsers,
-      {
-        id: socketID,
-        stream: null,
-        nickName: userNickName,
-        isCameraOn: false,
-        isMyTurn: false,
-        isOwner: false,
-      },
-    ]);
-
-    pc.ontrack = (e) => {
-      setUsers((oldUsers) => oldUsers.filter((user) => user.id !== socketID));
-      // eslint-disable-next-line no-unused-expressions
-
+    if (userNickName === sessionStorage.getItem('owner')) {
       setUsers((oldUsers) => [
         ...oldUsers,
         {
           id: socketID,
-          stream: e.streams[0],
+          stream: null,
           nickName: userNickName,
-          isCameraOn: true,
+          isCameraOn: false,
+          isMyTurn: false,
+          isOwner: true,
+        },
+      ]);
+    } else {
+      setUsers((oldUsers) => [
+        ...oldUsers,
+        {
+          id: socketID,
+          stream: null,
+          nickName: userNickName,
+          isCameraOn: false,
           isMyTurn: false,
           isOwner: false,
         },
       ]);
+    }
+
+    pc.ontrack = (e) => {
+      setUsers((oldUsers) => oldUsers.filter((user) => user.id !== socketID));
+      // eslint-disable-next-line no-unused-expressions
+      if (userNickName === sessionStorage.getItem('owner')) {
+        setUsers((oldUsers) => [
+          ...oldUsers,
+          {
+            id: socketID,
+            stream: e.streams[0],
+            nickName: userNickName,
+            isCameraOn: true,
+            isMyTurn: false,
+            isOwner: true,
+          },
+        ]);
+      } else {
+        setUsers((oldUsers) => [
+          ...oldUsers,
+          {
+            id: socketID,
+            stream: e.streams[0],
+            nickName: userNickName,
+            isCameraOn: true,
+            isMyTurn: false,
+            isOwner: false,
+          },
+        ]);
+      }
     };
     try {
       if (peerConnectionLocalStream) {
