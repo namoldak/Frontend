@@ -25,7 +25,7 @@ function Router() {
           <Route path="/posts/all" element={<CommunityPage />} />
           <Route path="/posts/:id" element={<PostPage />} />
           <Route path="/posts/write" element={<WritePostPage />} />
-          <Route path="/posts/modify" element={<ModifyPostPage />} />
+          <Route path="/posts/modify/:id" element={<ModifyPostPage />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/gameroom" element={<Navigate to="/rooms" replace />} />
