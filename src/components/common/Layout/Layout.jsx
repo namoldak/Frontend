@@ -17,7 +17,6 @@ const StLayout = styled.div`
   background-image: url(${backImg});
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom;
 `;
 
 export default Layout;
