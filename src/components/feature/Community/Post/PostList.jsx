@@ -13,8 +13,6 @@ function PostList() {
     (state) => state.posts.posts,
   );
 
-  // const post = useSelector((state) => state.posts.posts);
-
   const dispatch = useDispatch();
 
   console.log('postlist', postResponseDtoList);
