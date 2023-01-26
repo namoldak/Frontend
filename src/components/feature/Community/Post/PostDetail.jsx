@@ -3,51 +3,40 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { readOnePost } from 'redux/modules/postSlice';
-import CommentList from '../Comment/CommentList';
+// import CommentList from '../Comment/CommentList';
 import CreateComment from '../Comment/CreateComment';
 
 // 내부 모듈
 
 function PostDetail() {
   const param = useParams();
+  const post = useSelector((state) => state.posts.posts);
+  const comment = post.commentList;
+
   const dispatch = useDispatch();
-  console.log('postId', param.id);
-
-  const select = useSelector((state) => state.posts.posts);
-  console.log('select', select);
-  const post = select.postResponseDtoList;
-  const comment = select.postResponseDtoList.commentList;
-
-  console.log('post', post);
-  console.log('comment', comment);
-
-  const postDetail = post.find((item) => item.id === Number(param.id));
-
-  console.log('postDetail', postDetail);
 
   useEffect(() => {
-    dispatch(readOnePost(Number(param.id)));
+    dispatch(readOnePost(param.id));
   }, []);
 
   return (
     <div>
-      <div>
-        <div>{postDetail.title}</div>
-        <div>{postDetail.content}</div>
-        <div>{postDetail.nickname}</div>
-        <div>{postDetail.commentList}</div>
-      </div>
+      <div>{post.title}</div>
+      <div>{post.content}</div>
+      <div>{post.nickname}</div>
+      <div>{post.createdAt}</div>
       <div>
         <CreateComment />
-        <CommentList />
-        {/* {commentList &&
-          commentList.map((comment) => {
+        {comment &&
+          comment.map((item) => {
             return (
-              <div>
-                <div>{comment.comment}</div>
+              <div key={item.id}>
+                <div>{item.comment}</div>
+                <div>{item.nickname}</div>
+                <div>{item.createdAt}</div>
               </div>
             );
-          })} */}
+          })}
       </div>
     </div>
   );
