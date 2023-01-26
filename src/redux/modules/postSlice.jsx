@@ -124,6 +124,7 @@ export const postSlice = createSlice({
     },
     [readPostsByCategory.fulfilled]: (state, action) => {
       console.log('readCategory action payload', action.payload);
+      state.posts = action.payload;
     },
     [readPostsByCategory.rejected]: (state, action) => {
       state.error = action.payload;
