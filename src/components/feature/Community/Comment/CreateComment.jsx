@@ -7,6 +7,7 @@ import { useParams } from 'react-router';
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import { createComment } from 'redux/modules/postSlice';
+import CommentList from './CommentList';
 
 function CreateComment() {
   const [comment, setComment] = useState('');
@@ -17,10 +18,11 @@ function CreateComment() {
   //   console.log('param', postId);
 
   async function postComment() {
+    const data = { comment, id };
     if (comment === '') {
       useToast('댓글 내용이 없닭!', 'warning');
     } else {
-      dispatch(createComment({ comment, id }));
+      dispatch(createComment(data));
       setComment('');
     }
   }

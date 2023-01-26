@@ -14,14 +14,15 @@ export const createPost = createAsyncThunk(
       const formData = new FormData();
       const json = JSON.stringify(payload.post);
       const blob = new Blob([json], { type: 'application/json' });
-      formData.append('postRequestDto', blob);
-      formData.append('data', payload.img);
+      formData.append('data', blob);
+      formData.append('file', payload.img);
 
       const response = await instance.post('/posts/write', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log('res', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -72,7 +73,6 @@ export const createComment = createAsyncThunk(
   'comment/CREATE_COMMENT',
   async (payload, thunkAPI) => {
     console.log('comment payload', payload);
-    // console.log('comment', JSON.stringify(payload.comment));
     try {
       const response = await instance.post(
         `/posts/${payload.id}/comments`,
@@ -96,9 +96,9 @@ export const postSlice = createSlice({
       state.isLoading = true;
     },
     [createPost.fulfilled]: (state, action) => {
+      console.log(action);
       console.log(action.payload);
-      console.log(action.payload.id);
-      state.posts.postResponseDtoList.push(action.payload);
+      // state.posts.postResponseDtoList.push(action.payload);
       window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
@@ -118,7 +118,7 @@ export const postSlice = createSlice({
       state.error = action.payload;
     },
     [createComment.fulfilled]: (state, action) => {
-      console.log(action.payload);
+      console.log('state', state);
     },
   },
 });
