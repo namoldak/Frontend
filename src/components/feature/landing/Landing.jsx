@@ -92,9 +92,9 @@ const StSettingBtn = styled.button`
 
 // background image 적용
 const StLadingMain = styled.div`
-  width: 1180px;
-  height: calc(100vh - 120px);
-  max-height: 800px;
+  width: 100%;
+  height: calc(100vh - 87px);
+  height: 800px;
   background-image: url(${landingBack});
   background-size: contain;
   background-repeat: no-repeat;
