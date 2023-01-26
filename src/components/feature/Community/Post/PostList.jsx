@@ -35,7 +35,6 @@ function PostList() {
             </div>
           );
         })}
-
     </StPostList>
   );
 }
