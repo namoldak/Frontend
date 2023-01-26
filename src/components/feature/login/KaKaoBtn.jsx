@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 // 내부 이미지
-import kakao from 'assets/images/kakaoLoginMedium.png';
+import kakao from 'assets/images/kakaoLoginBtn.svg';
 
 function KaKaoBtn() {
   return (
@@ -14,7 +14,7 @@ function KaKaoBtn() {
 }
 
 const KakaoBox = styled.div`
-  width: 180px;
+  width: 202px;
 
   img {
     width: 100%;
