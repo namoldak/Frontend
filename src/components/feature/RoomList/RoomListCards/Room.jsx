@@ -63,7 +63,9 @@ const StRoomCardBox = styled.div`
 `;
 
 const StRoomTitle = styled.div`
-  font-size: 26px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
   ${({ theme }) => theme.colors.text2}
 `;
 
@@ -71,7 +73,8 @@ const StEgg = styled.div`
   position: relative;
   width: 150px;
   height: 200px;
-  margin: 20px 0;
+  margin-top: 30px;
+  margin-bottom: 34px;
 `;
 
 const StRoomInfo = styled.div`
@@ -83,10 +86,11 @@ const StRoomInfo = styled.div`
 
   p {
     font-size: 18px;
+    line-height: 21px;
     font-weight: 600;
-    color: ${({ theme }) => theme.colors.black};
+    color: #000;
     text-align: center;
-    padding-top: 10px;
+    padding-top: 8px;
   }
 `;
 

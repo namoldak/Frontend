@@ -76,40 +76,35 @@ function RoomListCard() {
 }
 
 const StRoomListCardBox = styled.div`
-  position: relative;
-  width: 1180px;
-  height: calc(100vh - 260px);
+  /* position: relative; */
+  display: flex;
+  align-items: center;
+  height: calc(100vh - 300px);
   background-image: url(${roomListBanner});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
-  padding-top: 10%;
 `;
 
 const StRoomCon = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  margin: 0 auto;
+  position: relative;
 `;
 
 const StRoomBox = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  column-gap: 60px;
+  column-gap: 110px;
   place-items: center;
 `;
 
 const StLeftBtn = styled.button`
-  height: 40px;
-  margin-left: 100px;
+  height: 42px;
+  margin-left: 56px;
 `;
 
 const StRightBtn = styled.button`
-  height: 40px;
-  margin-right: 100px;
+  height: 42px;
+  margin-right: 56px;
 `;
 
 const StEmptyDiv = styled.div`
@@ -117,11 +112,9 @@ const StEmptyDiv = styled.div`
 `;
 
 const StRefreshBtn = styled.button`
+  height: 20px;
   position: absolute;
-  left: 120px;
-  bottom: 0;
-  color: white;
-  font-size: 22px;
-  font-weight: 500;
+  bottom: -34px;
+  left: 75px;
 `;
 export default RoomListCard;

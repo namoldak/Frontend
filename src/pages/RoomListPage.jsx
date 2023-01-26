@@ -15,6 +15,8 @@ function RoomListPage() {
   );
 }
 
-const StRoomList = styled.div``;
+const StRoomList = styled.div`
+  padding-top: 100px;
+`;
 
 export default RoomListPage;
