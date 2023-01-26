@@ -104,7 +104,7 @@ const StNoticeBack = styled.div`
   height: 62px;
 `;
 
-const StNoticeText = styled.p`
+const StNoticeText = styled.div`
   font-size: 18px;
   color: ${({ theme }) => theme.colors.text};
   font-weight: 700;
