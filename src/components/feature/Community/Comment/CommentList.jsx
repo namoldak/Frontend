@@ -1,15 +1,20 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
-import { instance } from 'api/core/axios';
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 // 내부 모듈
+import { getNicknameCookie } from 'utils/cookies';
+import { instance } from 'api/core/axios';
 
 function CommentList(props) {
   const { id, comment, createdAt, nickname } = props;
 
   const [commentType, setCommentType] = useState('display');
   const [content, setContent] = useState(comment);
+
+  const myNickName = getNicknameCookie('nickname');
 
   function editComment() {
     if (commentType === 'display') {
@@ -40,27 +45,62 @@ function CommentList(props) {
   }
 
   return (
-    <div style={{ border: '1px solid black' }}>
-      {commentType === 'display' ? (
-        <button onClick={editComment}>수정</button>
-      ) : (
-        <button onClick={onClickEditComment}>완료</button>
-      )}
-      <div>{nickname}</div>
-      <div>{createdAt}</div>
-      <button onClick={onClickDeleteComment}>delete</button>
-      {commentType === 'edit' ? (
-        <input
-          value={content}
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
-        />
-      ) : (
-        <div>{content}</div>
-      )}
-    </div>
+    <StCommentContainer>
+      <StBtnContainer>
+        {nickname === myNickName ? (
+          commentType === 'display' ? (
+            <button onClick={editComment}>수정</button>
+          ) : (
+            <button onClick={onClickEditComment}>완료</button>
+          )
+        ) : (
+          ''
+        )}
+        {nickname === myNickName ? (
+          <button onClick={onClickDeleteComment}>삭제</button>
+        ) : (
+          ''
+        )}
+      </StBtnContainer>
+      <StContentContainer>
+        {commentType === 'edit' ? (
+          <input
+            value={content}
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+          />
+        ) : (
+          <div>{content}</div>
+        )}
+        <StInfoContainer>
+          <span>{nickname}</span>
+          <span>{createdAt}</span>
+        </StInfoContainer>
+      </StContentContainer>
+    </StCommentContainer>
   );
 }
 
+const StCommentContainer = styled.div`
+  border: 1px solid black;
+`;
+
+const StBtnContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const StContentContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const StInfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
 export default CommentList;

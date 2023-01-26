@@ -7,6 +7,7 @@ import { useParams } from 'react-router';
 import useToast from 'hooks/useToast';
 import { instance } from 'api/core/axios';
 import { readOnePost } from 'redux/modules/postSlice';
+import { useSelector } from 'react-redux';
 
 function CreateComment() {
   const [comment, setComment] = useState('');
@@ -27,10 +28,6 @@ function CreateComment() {
       setComment('');
     }
   }
-
-  useEffect(() => {
-    readOnePost(id);
-  }, [postComment]);
 
   return (
     <div>
