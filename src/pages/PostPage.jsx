@@ -1,5 +1,7 @@
+// 외부 모듈
 import React from 'react';
-import Post from 'components/feature/Community/Post/Post';
+
+// 내부 모듈
 import PostDetail from 'components/feature/Community/Post/PostDetail';
 
 function PostPage() {
