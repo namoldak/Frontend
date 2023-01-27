@@ -1,10 +1,10 @@
 // 외부 모듈
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
-import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
+import { readAllPosts } from 'redux/modules/postSlice';
 import Post from './Post';
 import CommunityHeader from '../CommunityHeader/CommunityHeader';
 

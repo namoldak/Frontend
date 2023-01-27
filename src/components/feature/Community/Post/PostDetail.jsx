@@ -68,7 +68,7 @@ function PostDetail() {
       <div>{post.nickname}</div>
       <div>{post.createdAt}</div>
       <div>
-        <CreateComment />
+        <CreateComment postId={param.id} />
         <button
           onClick={() => {
             setDisplay(!display);
@@ -81,6 +81,7 @@ function PostDetail() {
           comment.map((i) => {
             return (
               <CommentList
+                postId={param.id}
                 key={i.id}
                 id={i.id}
                 comment={i.comment}
