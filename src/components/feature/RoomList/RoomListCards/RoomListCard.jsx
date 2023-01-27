@@ -35,18 +35,18 @@ function RoomListCard() {
   return (
     <StRoomListCardBox>
       <StRoomCon>
+        {page > 0 ? (
+          <StLeftBtn
+            onClick={() => {
+              setPage(page - 1);
+            }}
+          >
+            <img src={leftArrow} alt="이전" />
+          </StLeftBtn>
+        ) : (
+          <StEmptyDiv />
+        )}
         <StRoomBox>
-          {page > 0 ? (
-            <StLeftBtn
-              onClick={() => {
-                setPage(page - 1);
-              }}
-            >
-              <img src={leftArrow} alt="이전" />
-            </StLeftBtn>
-          ) : (
-            <StEmptyDiv />
-          )}
           {gameRoomResponseDtoList &&
             gameRoomResponseDtoList.map((room) => {
               return (
@@ -55,18 +55,18 @@ function RoomListCard() {
                 </div>
               );
             })}
-          {page <= totalPage - 2 ? (
-            <StRightBtn
-              onClick={() => {
-                setPage(page + 1);
-              }}
-            >
-              <img src={rightArrow} alt="다음" />
-            </StRightBtn>
-          ) : (
-            <StEmptyDiv />
-          )}
         </StRoomBox>
+        {page <= totalPage - 2 ? (
+          <StRightBtn
+            onClick={() => {
+              setPage(page + 1);
+            }}
+          >
+            <img src={rightArrow} alt="다음" />
+          </StRightBtn>
+        ) : (
+          <StEmptyDiv />
+        )}
         <StRefreshBtn onClick={refreshRoomList}>
           <img src={refreshBtn} alt="새로고침" />
         </StRefreshBtn>
@@ -76,7 +76,6 @@ function RoomListCard() {
 }
 
 const StRoomListCardBox = styled.div`
-  /* position: relative; */
   display: flex;
   align-items: center;
   height: calc(100vh - 300px);
@@ -88,23 +87,26 @@ const StRoomListCardBox = styled.div`
 
 const StRoomCon = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
 `;
 
 const StRoomBox = styled.div`
+  max-width: 930px;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   column-gap: 110px;
-  place-items: center;
 `;
 
 const StLeftBtn = styled.button`
   height: 42px;
-  margin-left: 56px;
+  margin-right: 40px;
 `;
 
 const StRightBtn = styled.button`
   height: 42px;
-  margin-right: 56px;
+  margin-left: 40px;
 `;
 
 const StEmptyDiv = styled.div`
@@ -114,7 +116,7 @@ const StEmptyDiv = styled.div`
 const StRefreshBtn = styled.button`
   height: 20px;
   position: absolute;
-  bottom: -34px;
-  left: 75px;
+  bottom: -35px;
+  left: 13px;
 `;
 export default RoomListCard;
