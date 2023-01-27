@@ -7,10 +7,11 @@ import { useParams } from 'react-router';
 import useToast from 'hooks/useToast';
 import { instance } from 'api/core/axios';
 import { readOnePost } from 'redux/modules/postSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-function CreateComment() {
+function CreateComment({ postId }) {
   const [comment, setComment] = useState('');
+  const dispatch = useDispatch();
 
   const param = useParams();
   const { id } = param;
@@ -25,6 +26,7 @@ function CreateComment() {
       } catch (error) {
         console.log(error);
       }
+      dispatch(readOnePost(postId));
       setComment('');
     }
   }
