@@ -2,12 +2,12 @@
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { useDispatch } from 'react-redux';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import { instance } from 'api/core/axios';
 import { readOnePost } from 'redux/modules/postSlice';
-import { useDispatch } from 'react-redux';
 
 function CreateComment({ postId }) {
   const [comment, setComment] = useState('');

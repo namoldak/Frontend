@@ -26,7 +26,6 @@ import star from 'assets/images/star.svg';
 import keywordImg from 'assets/images/keyword.svg';
 import userCardImg from 'assets/images/userCardImg.svg';
 import playerImg from 'assets/images/playerImg.svg';
-import ownerImg from 'assets/images/ownerImg.svg';
 import GameModal from 'components/common/Modals/InGameModal/GameModal';
 import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModal';
 import ToastMessage from 'components/common/Toast/ToastMessage';
@@ -67,7 +66,6 @@ function GameRoomRTC() {
   const client = useRef({});
 
   const [isStartModal, setIsStartModal] = useState(false);
-  // const [isShowStartBtn, setIsShowStartBtn] = useState(true);
   const [isSpotTimer, setIsSpotTimer] = useState(false);
   const [isTimer, setIsTimer] = useState(false);
   const [isMyTurnModal, setIsMyTurnModal] = useState(false);
@@ -110,7 +108,6 @@ function GameRoomRTC() {
           } catch (erorr) {
             console.log(erorr);
           }
-          // setIsShowStartBtn(false);
           setIsStartModal(true);
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
@@ -219,7 +216,6 @@ function GameRoomRTC() {
             }),
           );
           setIsMyTurn(false);
-          // setIsShowStartBtn(true);
 
           if (myNickName === owner) {
             // startBtn.current.disabled = false;
@@ -725,7 +721,7 @@ function GameRoomRTC() {
               />
             )}
           </div>
-          <StSettingBtn>
+          <StSettingBtn className={isStartModal ? '' : 'clock'}>
             <img src={settingBtn} alt="설정버튼" />
           </StSettingBtn>
         </StHeaderBtnBox>
@@ -733,9 +729,7 @@ function GameRoomRTC() {
       <StGameRoomMain>
         <StGameCategoryAndUserCards>
           <StCategoryBack>
-            <StCategoryText style={{ color: '#4e2d0a' }}>
-              {category || '주제'}
-            </StCategoryText>
+            <StCategoryText>{category || '주제'}</StCategoryText>
           </StCategoryBack>
           <StUserCards>
             <StCard>
@@ -832,17 +826,14 @@ function GameRoomRTC() {
 }
 
 const StGameRoomRTC = styled.div`
-  width: 100%;
-  padding-top: 65px;
+  height: calc(100vh - 85px);
+  padding-top: 40px;
 `;
 
 const StGameRoomHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  height: 78px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 45px;
 `;
 
 const StLeaveBtn = styled.button`
@@ -853,27 +844,32 @@ const StLeaveBtn = styled.button`
   width: 80px;
 `;
 
-const StStartBtn = styled.button`
-  background-image: url(${gameStartBtn});
-  background-size: center;
-  background-repeat: no-repeat;
-  margin-right: auto;
-  width: 210px;
-`;
-
 const StHeaderBtnBox = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
+const StStartBtn = styled.button`
+  background-image: url(${gameStartBtn});
+  background-size: center;
+  background-repeat: no-repeat;
+  margin-right: 93px;
+  width: 210px;
+`;
+
 const StSettingBtn = styled.button`
-  margin-left: 100px;
+  margin-left: auto;
+  height: 80px;
+
+  &.clock {
+    margin-left: 58px;
+  }
 `;
 
 const StGameRoomMain = styled.div`
   display: grid;
-  grid-template-columns: 600px 520px;
-  grid-gap: 40px;
+  grid-template-columns: 585px 540px;
+  grid-gap: 44px;
 `;
 
 const StGameCategoryAndUserCards = styled.div`
@@ -884,16 +880,19 @@ const StCategoryBack = styled.div`
   background-image: url(${categoryImg});
   background-size: cover;
   background-repeat: no-repeat;
-  width: 410px;
-  height: 140px;
+  width: 403px;
+  height: 133px;
   margin: 0 auto;
 `;
 
 const StCategoryText = styled.div`
   font-size: 40px;
-  font-weight: 900;
+  font-weight: 800;
   text-align: center;
-  line-height: 130px;
+  line-height: 48px;
+  letter-spacing: 0.08em;
+  color: #5d3714;
+  padding-top: 34px;
 `;
 
 const StUserCards = styled.div`
@@ -903,10 +902,10 @@ const StUserCards = styled.div`
   background-image: url(${userCardImg});
   background-size: cover;
   background-repeat: no-repeat;
-  width: 590px;
-  height: 620px;
-  margin-top: 22px;
-  padding: 30px;
+  width: 585px;
+  height: 614px;
+  margin-top: 38px;
+  padding: 25px;
 `;
 
 const StCard = styled.div`
@@ -958,17 +957,18 @@ const StKeywordBack = styled.div`
 
 const StKeyword = styled.div`
   font-family: MapoBackpacking;
-  font-size: 22px;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.white};
+  font-size: 22px;
+  line-height: 24px;
+  color: #fff;
   text-align: center;
   padding-top: 15px;
 `;
 
 const StStar = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -9px;
+  left: -20px;
   height: 60px;
   z-index: 100;
 `;
@@ -1011,17 +1011,17 @@ const Stimg = styled.img`
 
 const StVoiceImg = styled.img`
   cursor: pointer;
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   display: inline-block;
 `;
 
 const StCameraImg = styled.img`
   cursor: pointer;
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   display: inline-block;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 `;
 
 const StVoiceCameraBox = styled.div`
@@ -1032,6 +1032,7 @@ const StVoiceCameraBox = styled.div`
   top: 70px;
   z-index: 900;
   margin-left: auto;
+  margin-top: 10px;
 `;
 
 const StNickName = styled.span`

@@ -104,12 +104,15 @@ const StNoticeBack = styled.div`
   height: 62px;
 `;
 
-const StNoticeText = styled.div`
-  font-size: 18px;
+const StNoticeText = styled.span`
+  display: block;
+  width: 100%;
   color: ${({ theme }) => theme.colors.text};
-  font-weight: 700;
-  line-height: 60px;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0.08em;
   text-align: center;
+  padding-top: 22px;
 
   span {
     color: #cc0202;
@@ -135,8 +138,9 @@ const StUserChatBox = styled.div`
 const Chat = styled.div`
   font-size: 18px;
   font-weight: 600;
+  line-height: 22px;
   color: ${({ theme }) => theme.colors.text};
-  padding: 4px 0 4px 0;
+  /* padding: 4px 0 4px 0; */
 
   &.my {
     text-align: right;
@@ -158,15 +162,16 @@ const StSendChat = styled.div`
 
   input {
     width: 374px;
-    height: 70px;
+    height: 76px;
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    outline: 7px solid ${({ theme }) => theme.colors.brown};
+    outline: 4px solid ${({ theme }) => theme.colors.brown};
     border-radius: 10px;
     font-size: 18px;
+    font-weight: 500;
     color: ${({ theme }) => theme.colors.text};
+    line-height: 21px;
     text-indent: 16px;
-    line-height: 22px;
     margin-right: 20px;
   }
   input::placeholder {

@@ -55,40 +55,38 @@ const StBackground = styled.div`
   width: 100%;
   height: 100vh;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
   z-index: 999;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 `;
 
 const StModalBorder = styled.div`
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 1180px;
-  height: 750px;
+  height: 800px;
   background-image: url(${landingBack});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
+  margin-top: 46px;
 `;
 
 const StCloseBtn = styled.button`
   position: absolute;
-  top: 50px;
-  right: 110px;
+  top: 66px;
+  right: 90px;
   width: 60px;
 `;
 
 const StRuleText = styled.div`
-  ${({ theme }) => theme.common.absoluteCenter}
-  padding-bottom: 50px
+  ${({ theme }) => theme.common.absoluteCenter};
+  padding-bottom: 30px;
 `;
 
 const StToGo = styled.button`
-  width: 485px;
   position: absolute;
   left: 50%;
   bottom: 80px;

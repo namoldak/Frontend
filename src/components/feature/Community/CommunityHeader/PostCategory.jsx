@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
-import select from 'assets/images/select.png';
+import select from 'assets/images/select.svg';
 import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
 
 function PostCategory() {

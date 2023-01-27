@@ -5,19 +5,15 @@ import { Link } from 'react-router-dom';
 
 // 내부 모듈
 import { getCookie } from 'utils/cookies';
-import settingBtn from 'assets/images/settingBtn.svg';
 import landingBack from 'assets/images/landingBack.svg';
 import landingTitle from 'assets/images/landingTitle.svg';
 import landingBanner from 'assets/images/landingBanner.svg';
 import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
 import landingToLoginBtn from 'assets/images/landingToLoginBtn.svg';
-import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
-import Modal from 'components/common/Modals/BasicModal/Modal';
 import GameRule from './GameRule';
 
 function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
   useEffect(() => {
     if (getCookie('my_token')) {
@@ -27,33 +23,11 @@ function Landing() {
 
   return (
     <StLanding>
-      <StLandingHeader>
-        {isSettingModalOn && (
-          <Modal
-            onClose={() => {
-              setIsSettingModalOn(false);
-            }}
-            content={
-              <SettingModal
-                loggedIn={setIsLoggedIn}
-                modalOn={setIsSettingModalOn}
-              />
-            }
-          />
-        )}
-        <StSettingBtn
-          onClick={() => {
-            setIsSettingModalOn(true);
-          }}
-        >
-          {isLoggedIn ? <img src={settingBtn} alt="설정버튼" /> : ''}
-        </StSettingBtn>
-      </StLandingHeader>
       <StLadingMain>
+        <StBannerTitle>
+          <img src={landingTitle} alt="제목 이미지" />
+        </StBannerTitle>
         <StBanner>
-          <StBannerTitle>
-            <img src={landingTitle} alt="제목 이미지" />
-          </StBannerTitle>
           <StBannerImg>
             <img src={landingBanner} alt="닭 3마리 일러스트" />
           </StBannerImg>
@@ -76,29 +50,19 @@ function Landing() {
 }
 
 // header + main
-const StLanding = styled.div``;
-
-const StLandingHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-`;
-
-const StSettingBtn = styled.button`
-  width: 78px;
-  height: 78px;
-  margin-left: auto;
+const StLanding = styled.div`
+  width: 100%;
+  padding-top: 42px;
 `;
 
 // background image 적용
 const StLadingMain = styled.div`
-  width: 100%;
-  height: calc(100vh - 87px);
-  height: 800px;
+  height: calc(100vh - 84px);
   background-image: url(${landingBack});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
+  position: relative;
 `;
 
 // 하위 컴포넌트 정렬 위함
@@ -111,16 +75,18 @@ const StBanner = styled.div`
 
 const StBannerTitle = styled.div`
   position: absolute;
-  top: 0;
+  top: -23px;
+  left: 187px;
 `;
 
 const StBannerImg = styled.div`
-  width: 100%;
-  height: 60%;
+  height: 482px;
+  margin-top: 119px;
 `;
 
 const StToGo = styled.button`
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  margin-top: -30px;
 `;
 
 export default Landing;

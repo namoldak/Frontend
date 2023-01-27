@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 // 내부 모듈
 import { getNicknameCookie } from 'utils/cookies';
-import Modal from 'components/common/Modals/BasicModal/Modal';
+import ModalForSetting from 'components/common/Modals/BasicModal/ModalForSetting';
 import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
@@ -28,7 +28,7 @@ function CommunityTopBar() {
         </span>
       </StUserName>
       {isSettingModalOn && (
-        <Modal
+        <ModalForSetting
           onClose={() => {
             setIsSettingModalOn(false);
           }}
@@ -49,29 +49,32 @@ function CommunityTopBar() {
 const StPostListHeader = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const StBackBtn = styled.button`
-  width: 78px;
   height: 78px;
 `;
 
 const StUserName = styled.div`
   font-family: MapoBackpacking;
-  font-size: 22px;
-  line-height: 22px;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 35px;
+  color: #fff;
   margin-right: auto;
   margin-left: 20px;
-  padding-top: 30px;
-  color: ${({ theme }) => theme.colors.lightBeige};
+  margin-bottom: 12px;
 
   em {
+    font-size: 34px;
+    line-height: 37px;
     text-decoration: underline;
+    margin-right: 5px;
   }
 `;
 
 const StSettingBtn = styled.button`
-  width: 78px;
   height: 78px;
 `;
 
