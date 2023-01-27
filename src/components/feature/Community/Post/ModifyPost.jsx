@@ -1,33 +1,44 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // 외부 모듈
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import backBtn from 'assets/images/backBtn.svg';
 import okBtn from 'assets/images/okBtn.svg';
-import { updatePost } from 'redux/modules/postSlice';
+import { updatePost, readOnePost } from 'redux/modules/postSlice';
 
 function ModifyPost() {
+  const post = useSelector((state) => state.posts.posts);
   const param = useParams();
   const dispatch = useDispatch();
-  const [categoryCheck, setCategoryCheck] = useState('freeBoard');
-  const [content, setContent] = useState('');
-  const [title, setTitle] = useState('');
-  const [img, setImg] = useState(null);
-  function onChangeCheck(e) {
-    setCategoryCheck(e.target.value);
-  }
+  const [content, setContent] = useState(post.content);
+  const [title, setTitle] = useState(post.title);
+  const [imgs, setImgs] = useState([]);
+  const navigate = useNavigate();
 
-  function sendPost() {
+  const handleImage = (event) => {
+    const imageLists = [];
+    for (let i = 0; i < event.target.files.length; i += 1) {
+      imageLists.push(event.target.files[i]);
+    }
+    console.log(imageLists);
+    setImgs(imageLists);
+  };
+
+  function modifyPost() {
     const post = {
       content,
       title,
     };
-    dispatch(updatePost({ post, img, postId: param.id }));
+    dispatch(updatePost({ post, imgs, postId: param.id }));
   }
+
+  useEffect(() => {
+    dispatch(readOnePost(param.id));
+  }, []);
 
   return (
     <StWritePost>
@@ -42,27 +53,29 @@ function ModifyPost() {
       <StInputBox>
         <input
           type="file"
+          multiple
           accept="image/*"
           onChange={(e) => {
-            setImg(e.target.files[0]);
+            handleImage(e);
           }}
         />
       </StInputBox>
       <StPostSection>
         <StTitleArea
+          value={title}
           onChange={(e) => {
             setTitle(e.target.value);
           }}
-          placeholder="제목을 입력해주세요."
         />
+
         <StContentArea
+          value={content}
           onChange={(e) => {
             setContent(e.target.value);
           }}
-          placeholder="내용을 입력해주세요."
         />
       </StPostSection>
-      <StWritePostBtn type="button" onClick={sendPost}>
+      <StWritePostBtn type="button" onClick={modifyPost}>
         <img src={okBtn} alt="확인" />
       </StWritePostBtn>
     </StWritePost>
