@@ -30,26 +30,20 @@ function LogOutTab(loggedIn, modalOn) {
 
   return (
     <StLogoutBtnDiv>
+      <StName>계정</StName>
       <button onClick={onClickLogOut}>로그아웃</button>
     </StLogoutBtnDiv>
   );
 }
 
+const StName = styled.div``;
+
 const StLogoutBtnDiv = styled.div`
-  position: absolute;
-  top: 127px;
-  left: 60px;
-  background-color: ${({ theme }) => theme.colors.lightBeige};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  outline: none;
-  border-radius: 0px 15px 5px 5px;
-
-  width: 450px;
-  height: 250px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 42px;
+  letter-spacing: 0.08em;
 `;
 
 export default LogOutTab;

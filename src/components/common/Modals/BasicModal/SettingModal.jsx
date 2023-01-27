@@ -26,7 +26,7 @@ function SettingModal(loggedIn) {
   };
 
   return (
-    <div>
+    <StSettingModal>
       <TabMenu>
         {menuArr.map((el, index) => (
           <li
@@ -38,52 +38,57 @@ function SettingModal(loggedIn) {
           </li>
         ))}
       </TabMenu>
-      <StContent>
+      <StContentBack>
         <div>{menuArr[currentTab].content}</div>
-      </StContent>
-    </div>
+      </StContentBack>
+    </StSettingModal>
   );
 }
 
-const TabMenu = styled.ul`
-  position: absolute;
-  top: 83px;
-  left: 60px;
-
+const StSettingModal = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  width: 920px;
+  margin-top: 125px;
+  margin-left: 103px;
+`;
 
-  background-color: ${({ theme }) => theme.colors.yellowBrown};
-  color: rgb(232, 234, 237);
-  font-weight: bold;
-  border-radius: 15px 15px 0px 0px;
-  width: 300px;
-  height: 55px;
+const StContentBack = styled.div`
+  background: #040200;
+  opacity: 0.6;
+  border-radius: 0px 30px 30px 30px;
+  width: 745px;
+  height: 474px;
+`;
+
+const TabMenu = styled.ul`
+  display: flex;
+  flex-direction: column;
+  color: #fce7b3;
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 31px;
+  letter-spacing: 0.2em;
 
   .submenu {
     display: flex;
-    width: calc(100% / 3);
-    height: 55px;
-    padding: 15px;
-    font-size: 15px;
-    transition: 0.1s;
-    border-radius: 15px 15px 0px 0px;
+    justify-content: center;
+    width: 175px;
+    /* height: calc(100% / 3); */
+    height: 94px;
+    background: #040200;
+    opacity: 0.6;
+    border-radius: 30px 0px 0px 30px;
+    padding-top: 30px;
+    transition: all 0.1s;
   }
 
   .focused {
-    background-color: ${({ theme }) => theme.colors.lightBeige};
-    color: rgb(21, 20, 20);
+    background: #040200;
+    opacity: 0.8;
+    color: #fff;
+    font-size: 30px;
+    line-height: 36px;
   }
-`;
-
-const StContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  margin-top: 10rem;
 `;
 
 export default SettingModal;
