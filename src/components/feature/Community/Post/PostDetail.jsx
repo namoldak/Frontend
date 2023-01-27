@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
 import { readOnePost } from 'redux/modules/postSlice';
-import { getNicknameCookie } from 'utils/cookies';
 import Modal from 'components/common/Modals/BasicModal/Modal';
 import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import CommentList from '../Comment/CommentList';
@@ -59,7 +58,7 @@ function PostDetail() {
         {post.imageList?.map((image, index) => {
           return (
             <div key={index}>
-              <img src={image} alt="이미지" />
+              <StImg src={image} alt="이미지" />
             </div>
           );
         })}
@@ -104,6 +103,11 @@ const StPostDetail = styled.div`
 const StTopBar = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const StImg = styled.img`
+  max-width: 300px;
+  max-height: 300px;
 `;
 
 const StBackBtn = styled.button`
