@@ -81,6 +81,7 @@ export const readPostsByCategory = createAsyncThunk(
       const response = await instance.get(
         `/posts/category?category=${payload}`,
       );
+      console.log('res data', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

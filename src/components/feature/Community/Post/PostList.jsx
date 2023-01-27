@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -18,14 +19,9 @@ function PostList() {
 
   const [page, setPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(page + 1);
-  const firstNum = currentPage - (currentPage % 5) + 1;
-  const lastNum = currentPage - (currentPage % 5) + 5;
 
   console.log('page', page);
   console.log('currentPage', currentPage);
-
-  // console.log('firstNum', firstNum);
-  // console.log('lastNum', lastNum);
 
   const pageNumber = [];
   for (let i = 1; i <= Math.ceil(postCnt / 10); i += 1) {
@@ -39,7 +35,7 @@ function PostList() {
   return (
     <StPostList>
       <CommunityHeader />
-      <button
+      {/* <button
         onClick={() => {
           setPage(page - 1);
           setCurrentPage(page - 2);
@@ -47,12 +43,12 @@ function PostList() {
         disabled={page === 0}
       >
         이전
-      </button>
+      </button> */}
       <div>
         {pageNumber.map((num) => (
           <li
             role="presentation"
-            key={num}
+            key={num + 1}
             onClick={() => {
               setPage(num - 1);
               setCurrentPage(num);
@@ -62,7 +58,7 @@ function PostList() {
           </li>
         ))}
       </div>
-      <button
+      {/* <button
         onClick={() => {
           setPage(page + 1);
           setCurrentPage(page + 2);
@@ -70,7 +66,7 @@ function PostList() {
         disabled={page === pageNumber.length - 1}
       >
         다음
-      </button>
+      </button> */}
       <StInfoBanner>
         <div>카테고리</div>
         <div>제목</div>

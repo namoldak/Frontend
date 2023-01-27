@@ -21,7 +21,7 @@ function Room({ roomInfo }) {
       useToast('꽉 차서 못 들어간닭...', 'warning');
       return null;
     }
-    if (roomInfo.status === 'false') {
+    if (roomInfo.status === false) {
       useToast('지금은 끼어들 수 없닭!', 'warning');
       return null;
     }
@@ -39,7 +39,7 @@ function Room({ roomInfo }) {
           }}
         >
           <img src={egg} alt="계란 이미지" />
-          {roomInfo.status === 'false' ? (
+          {roomInfo.status === false ? (
             <StInProgress>
               <img src={inprogress} alt="진행 중" />
             </StInProgress>

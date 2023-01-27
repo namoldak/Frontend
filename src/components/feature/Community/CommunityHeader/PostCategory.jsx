@@ -11,7 +11,7 @@ function PostCategory() {
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState('all');
-  // console.log('cate', category);
+  console.log('cate', category);
 
   function changeValue(target) {
     setCategory(target.target.value);
