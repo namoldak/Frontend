@@ -8,8 +8,6 @@ import select from 'assets/images/select.svg';
 import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
 
 function PostCategory() {
-  // const posts = useSelector((state) => state.posts.posts);
-  // console.log('posts', posts);
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState('all');
@@ -31,8 +29,8 @@ function PostCategory() {
     <StPostCategory>
       <select onChange={changeValue}>
         <option value="all">전체 보기</option>
-        <option value="freeboard">자유 게시판</option>
-        <option value="feedback">유저 피드백</option>
+        <option value="freeBoard">자유 게시판</option>
+        <option value="feedbackBoard">유저 피드백</option>
       </select>
     </StPostCategory>
   );

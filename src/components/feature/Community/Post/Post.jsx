@@ -19,12 +19,12 @@ function Post({ postInfo }) {
   return (
     <StPost>
       <StPostBorder key={postInfo.id} role="presentation" onClick={clickPost}>
-        <div>{postInfo.title}</div>
         <div>
-          {postInfo.category === 'freeboard' ? '유저피드백' : '자유게시판'}
+          {postInfo.category === 'freeBoard' ? '자유게시판' : '유저피드백'}
         </div>
-        <div>닉네임: {postInfo.nickname}</div>
-        <div>댓글 수: {postInfo.cmtCnt}</div>
+        <div>{postInfo.title}</div>
+        <div>{postInfo.cmtCnt}</div>
+        <div>{postInfo.nickname}</div>
         <div>{postInfo.createdAt}</div>
       </StPostBorder>
     </StPost>
@@ -34,7 +34,10 @@ function Post({ postInfo }) {
 const StPost = styled.div``;
 
 const StPostBorder = styled.div`
-  border: 1px solid black;
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr 1fr 1fr;
+  gap: 10px;
+  place-items: center;
 `;
 
 export default Post;
