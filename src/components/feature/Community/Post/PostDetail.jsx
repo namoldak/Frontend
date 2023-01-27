@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { readOnePost } from 'redux/modules/postSlice';
-import CommentList from '../Comment/CommentList';
+// import CommentList from '../Comment/CommentList';
 import CreateComment from '../Comment/CreateComment';
 
 // 내부 모듈
@@ -39,7 +39,7 @@ function PostDetail() {
       </div>
       <div>
         <CreateComment />
-        <CommentList />
+        {/* <CommentList /> */}
         {/* {commentList &&
           commentList.map((comment) => {
             return (

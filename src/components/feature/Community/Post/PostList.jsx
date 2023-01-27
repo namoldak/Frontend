@@ -24,7 +24,6 @@ function PostList() {
 
   return (
     <StPostList>
-      <CommunityHeader />
       {postResponseDtoList &&
         postResponseDtoList.map((post) => {
           return (

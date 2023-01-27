@@ -7,7 +7,7 @@ import { useParams } from 'react-router';
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import { createComment } from 'redux/modules/postSlice';
-import CommentList from './CommentList';
+// import CommentList from './CommentList';
 
 function CreateComment() {
   const [comment, setComment] = useState('');
