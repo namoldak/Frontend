@@ -35,7 +35,7 @@ const StTimer = styled.div`
 
 const StTimerText = styled.div`
   position: absolute;
-  top: -45px;
+  top: -35px;
   right: 0px;
   background: url(${clock});
   background-repeat: no-repeat;
@@ -44,8 +44,8 @@ const StTimerText = styled.div`
 
   span {
     position: absolute;
-    top: 127px;
-    left: 97px;
+    top: 115px;
+    left: 96px;
     font-size: 40px;
     font-weight: 600;
     color: #5d3714;
