@@ -7,7 +7,7 @@ import { useParams } from 'react-router';
 import useToast from 'hooks/useToast';
 import { instance } from 'api/core/axios';
 import { readOnePost } from 'redux/modules/postSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 function CreateComment({ postId }) {
   const [comment, setComment] = useState('');

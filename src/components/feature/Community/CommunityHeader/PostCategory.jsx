@@ -8,8 +8,6 @@ import select from 'assets/images/select.png';
 import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
 
 function PostCategory() {
-  // const posts = useSelector((state) => state.posts.posts);
-  // console.log('posts', posts);
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState('all');
