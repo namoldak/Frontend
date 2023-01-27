@@ -24,6 +24,7 @@ export const createPost = createAsyncThunk(
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log('res data', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -84,9 +85,11 @@ export const readPostsByCategory = createAsyncThunk(
 export const readOnePost = createAsyncThunk(
   'post/READ_ONE_POST',
   async (payload, thunkAPI) => {
+    console.log('payload', payload);
     try {
       const response = await instance.get(`posts/${payload}`);
-      return thunkAPI.fulfillWithValue(response.data);
+      console.log('res', response);
+      return thunkAPI.fulfillWithValue(response.data[0]);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -102,9 +105,7 @@ export const postSlice = createSlice({
       state.isLoading = true;
     },
     [createPost.fulfilled]: (state, action) => {
-      console.log(action);
-      console.log(action.payload);
-      state.posts = action.payload;
+      console.log(action.payload.id);
       window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
@@ -113,7 +114,12 @@ export const postSlice = createSlice({
       state.error = action.payload;
     },
     [readAllPosts.fulfilled]: (state, action) => {
-      console.log('readAll action', action.payload);
+      state.posts = action.payload;
+    },
+    [readAllPosts.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [readOnePost.fulfilled]: (state, action) => {
       state.posts = action.payload;
     },
     [readPostsByCategory.fulfilled]: (state, action) => {

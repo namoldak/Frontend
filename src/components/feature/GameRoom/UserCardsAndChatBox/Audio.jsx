@@ -129,7 +129,8 @@ const StKeyword = styled.div`
   font-family: MapoBackpacking;
   font-size: 22px;
   font-weight: 400;
-  color: ${({ theme }) => theme.colors.white};
+  line-height: 24px;
+  color: #fff;
   text-align: center;
   padding-top: 15px;
 `;

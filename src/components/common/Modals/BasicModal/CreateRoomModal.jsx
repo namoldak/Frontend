@@ -56,24 +56,40 @@ function CreateRoomModal() {
 const StModalContainer = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
   margin-top: 60px;
+  position: relative;
 
   input {
     width: 420px;
-    margin-top: 47px;
-    margin-bottom: 50px;
+    margin-top: 50px;
+    margin-bottom: 54px;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0.06em;
+  }
+
+  input::placeholder {
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0.06em;
   }
 `;
 
 const StTitle = styled.div`
   font-size: 38px;
   font-weight: 900;
+  line-height: 45px;
 `;
 
 const StLimit = styled.span`
   position: absolute;
-  top: 207px;
-  right: 125px;
-  font-size: 22px;
+  top: 116px;
+  right: 80px;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.06em;
   color: ${({ theme }) => theme.colors.text};
 `;
 

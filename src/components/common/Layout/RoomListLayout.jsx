@@ -17,7 +17,7 @@ const StLayout = styled.div`
   background-image: url(${backImg2});
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom;
+  background-position: center;
 `;
 
 export default RoomListLayout;

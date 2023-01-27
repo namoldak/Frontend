@@ -33,7 +33,7 @@ function SearchRoom() {
     <StSearchRoom>
       <input
         ref={input}
-        placeholder="방 제목을 검색하닭"
+        placeholder="방 제목을 검색하라닭"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         onKeyUp={onKeyUpEnter}
@@ -48,32 +48,30 @@ function SearchRoom() {
 
 const StSearchRoom = styled.div`
   position: relative;
-  display: flex;
-  justify-content: space-between;
 
   input {
     width: 913px;
-    height: 70px;
+    height: 78px;
     background: ${({ theme }) => theme.colors.lightBeige};
-    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    outline: 7px solid ${({ theme }) => theme.colors.brown};
-    border-radius: 32px;
-    font-family: 'MapoBackpacking';
-    font-size: 18px;
+    border: 6px solid ${({ theme }) => theme.colors.yellowBrown};
+    outline: 6px solid ${({ theme }) => theme.colors.brown};
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 26px;
     color: ${({ theme }) => theme.colors.text};
     text-indent: 16px;
-    line-height: 22px;
-    margin-right: 10px;
   }
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};
+    opacity: 0.8;
   }
 `;
 
 const SearchBtn = styled.button`
   position: absolute;
-  top: 23%;
-  right: 4%;
+  top: 19px;
+  right: 26px;
 `;
 
 export default SearchRoom;

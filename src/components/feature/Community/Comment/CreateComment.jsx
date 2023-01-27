@@ -2,18 +2,19 @@
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { useDispatch } from 'react-redux';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import { instance } from 'api/core/axios';
 import { readOnePost } from 'redux/modules/postSlice';
 
-function CreateComment() {
+function CreateComment({ postId }) {
   const [comment, setComment] = useState('');
+  const dispatch = useDispatch();
 
   const param = useParams();
   const { id } = param;
-  console.log('param', id);
 
   async function postComment() {
     const data = { comment, id };
@@ -25,13 +26,10 @@ function CreateComment() {
       } catch (error) {
         console.log(error);
       }
+      dispatch(readOnePost(postId));
       setComment('');
     }
   }
-
-  useEffect(() => {
-    readOnePost(id);
-  }, [postComment]);
 
   return (
     <div>

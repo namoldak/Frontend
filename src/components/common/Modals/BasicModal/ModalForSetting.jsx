@@ -3,11 +3,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import modalBack from 'assets/images/modalBack.svg';
+import settingBack from 'assets/images/settingBack.png';
 import closeBtn from 'assets/images/closeBtn.svg';
 import ModalPortal from '../ModalPortal';
 
-function Modal({ onClose, content }) {
+function ModalForSetting({ onClose, content }) {
   return (
     <ModalPortal>
       <StBackground onClick={onClose}>
@@ -40,21 +40,20 @@ const StBackground = styled.div`
 `;
 
 const StModalBorder = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-image: url(${modalBack});
-  background-size: cover;
+  ${({ theme }) => theme.common.absoluteCenter};
+  background-image: url(${settingBack});
+  background-size: contain;
   background-repeat: no-repeat;
-  width: 615px;
-  height: 453px;
-  padding: 40px;
+  background-position: bottom;
+  width: 1149px;
+  height: 677px;
+  margin-top: 65px;
 `;
 
 const StCloseBtn = styled.button`
   position: absolute;
-  top: 60px;
-  right: 70px;
+  top: 66px;
+  right: 90px;
+  width: 60px;
 `;
-export default Modal;
+export default ModalForSetting;

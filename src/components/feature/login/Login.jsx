@@ -16,6 +16,7 @@ import loginTitleBtn from 'assets/images/loginTitleBtn.svg';
 import loginBtn from 'assets/images/loginBtn.svg';
 import backBtn from 'assets/images/backBtn.svg';
 import miniSignUpBtn from 'assets/images/miniSignUpBtn.svg';
+import check from 'assets/images/check.svg';
 import KaKaoBtn from './KaKaoBtn';
 
 // useForm
@@ -73,36 +74,44 @@ function Login() {
   }, [code]);
 
   return (
-    <>
-      {/* {errors.email?.message && useToast(`${errors.email?.message}`, 'error')}
-      {errors.password?.message &&
-        useToast(`${errors.password?.message}`, 'error')} */}
+    <StLogin>
       <StBackBtn>
         <Link to="/">
           <img src={backBtn} alt="뒤로가기" />
         </Link>
       </StBackBtn>
-      <StLogin>
+      <StLoginWrapper>
         <StLoginContainer onSubmit={handleSubmit(onClickLogin)}>
           <StTitle>
             <img src={loginTitleBtn} alt="로그인" />
           </StTitle>
-          <StInputBox>
+          <StInputBox className="emailBox">
             <input
               type="text"
-              className="emailInput"
               placeholder="이메일을 입력해주세요"
               // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('email', { required: true })}
             />
-            {/* <StHelpText>{errors.email?.message}</StHelpText> */}
+            {errors.email && (
+              <StHelpText>
+                <img src={check} alt="체크" />
+                {errors.email?.message}
+              </StHelpText>
+            )}
+          </StInputBox>
+          <StInputBox>
             <input
               type="password"
               placeholder="비밀번호를 입력해주세요."
               // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('password', { required: true })}
             />
-            {/* <StHelpText>{errors.password?.message}</StHelpText> */}
+            {errors.password && (
+              <StHelpText>
+                <img src={check} alt="체크" />
+                {errors.password?.message}
+              </StHelpText>
+            )}
           </StInputBox>
           <StBtnBox>
             <StLoginBtn type="submit">
@@ -119,95 +128,117 @@ function Login() {
             </StSignUp>
           </StBtnBox>
         </StLoginContainer>
-      </StLogin>
-    </>
+      </StLoginWrapper>
+    </StLogin>
   );
 }
 
 const StLogin = styled.div`
-  ${({ theme }) => theme.common.absoluteCenter}
-  width: 994px;
-  height: 731px;
+  padding-top: 72px;
+`;
+
+const StBackBtn = styled.button`
+  width: 78px;
+`;
+
+const StLoginWrapper = styled.div`
+  width: 942px;
+  height: 694px;
   background-image: url(${popUp});
   background-size: cover;
   background-repeat: no-repeat;
+  margin: 0 auto;
+  margin-top: 44px;
 `;
 
 const StLoginContainer = styled.form`
-  ${({ theme }) => theme.common.flexCenterColumn};
-  height: 100%;
-  text-align: center;
+  /* ${({ theme }) => theme.common.flexCenterColumn}; */
+  padding-top: 85px;
+
+  input {
+    width: 454px;
+    height: 54px;
+    background: ${({ theme }) => theme.colors.lightBeige};
+    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
+    outline: 4px solid ${({ theme }) => theme.colors.brown};
+    border-radius: 30px;
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 16px;
+    font-weight: 200;
+    line-height: 19px;
+    letter-spacing: 0.06em;
+    text-indent: 17px;
+  }
+  input::placeholder {
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0.06em;
+  }
 `;
 
 const StTitle = styled.div`
-  width: 284px;
-  height: 78px;
-  margin-bottom: 20px;
+  width: 256px;
+  height: 80px;
+  margin: 0 auto;
 `;
 
 const StInputBox = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
-  gap: 20px;
-  input {
-    width: 484px;
-    height: 54px;
-    background: ${({ theme }) => theme.colors.lightBeige};
-    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    outline: 7px solid ${({ theme }) => theme.colors.brown};
-    border-radius: 32px;
-    font-size: 18px;
-    color: ${({ theme }) => theme.colors.text};
-    text-indent: 16px;
-    line-height: 22px;
+  position: relative;
+
+  &.emailBox {
+    margin-top: 40px;
+    margin-bottom: 53px;
   }
-  input::placeholder {
-    color: ${({ theme }) => theme.colors.text};
-  }
-  .emailInput {
-    margin-top: 50px;
-    margin-bottom: 32px;
+`;
+
+const StHelpText = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 225px;
+  bottom: -32px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  color: #fff;
+  width: 454px;
+  margin-left: 40px;
+
+  img {
+    width: 18px;
+    margin-right: 6px;
   }
 `;
 
 const StBtnBox = styled.div`
   ${({ theme }) => theme.common.flexCenterColumn};
-  margin-top: 20px;
 `;
 
 const StLoginBtn = styled.button`
-  width: 170px;
-  height: 60px;
-  margin-top: 38px;
-  margin-bottom: 34px;
+  width: 160px;
+  margin-top: 74px;
+  margin-bottom: 28px;
 `;
 
 const StSignUp = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 15px;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.white};
+  color: #fff;
   font-size: ${({ theme }) => theme.fontSizes.paragraph};
   font-weight: 500;
-  line-height: 22px;
+  line-height: 19px;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-top: 22px;
+  margin-left: 30px;
 
   a {
-    height: 40px;
-  }
-
-  button {
-    color: ${({ theme }) => theme.colors.white};
-    font-size: ${({ theme }) => theme.fontSizes.paragraph};
-    font-weight: 800;
+    height: 39px;
     margin-left: -12px;
   }
-`;
-
-const StBackBtn = styled.button`
-  margin-top: 10px;
-  margin-left: 10px;
-  width: 78px;
-  height: 78px;
 `;
 
 export default Login;
