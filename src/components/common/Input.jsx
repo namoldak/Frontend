@@ -32,16 +32,19 @@ const StyledInput = styled.input`
   background: ${({ theme }) => theme.colors.lightBeige};
   border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
   outline: 4px solid ${({ theme }) => theme.colors.brown};
-  border-radius: ${(props) => props.width || '50px'};
-  font-size: 22px;
+  border-radius: ${(props) => props.width || '30px'};
   color: ${({ theme }) => theme.colors.text};
-  text-indent: 16px;
-  line-height: 22px;
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 19px;
+  letter-spacing: 0.06em;
+  text-indent: 17px;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.text};
-  }
-
-  &:focus {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0.06em;
   }
 `;
