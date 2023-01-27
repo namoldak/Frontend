@@ -14,10 +14,19 @@ function WritePost() {
   const [categoryCheck, setCategoryCheck] = useState('freeBoard');
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
-  const [img, setImg] = useState(null);
+  const [imgs, setImgs] = useState([]);
   function onChangeCheck(e) {
     setCategoryCheck(e.target.value);
   }
+
+  const handleImage = (event) => {
+    const imageLists = [];
+    for (let i = 0; i < event.target.files.length; i += 1) {
+      imageLists.push(event.target.files[i]);
+    }
+    console.log(imageLists);
+    setImgs(imageLists);
+  };
 
   function sendPost() {
     const post = {
@@ -25,7 +34,7 @@ function WritePost() {
       content,
       title,
     };
-    dispatch(createPost({ post, img }));
+    dispatch(createPost({ post, imgs }));
   }
 
   return (
@@ -61,9 +70,10 @@ function WritePost() {
         </StRadioBox>
         <input
           type="file"
+          multiple
           accept="image/*"
           onChange={(e) => {
-            setImg(e.target.files[0]);
+            handleImage(e);
           }}
         />
       </StInputBox>

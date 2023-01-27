@@ -31,8 +31,8 @@ function PostCategory() {
     <StPostCategory>
       <select onChange={changeValue}>
         <option value="all">전체 보기</option>
-        <option value="freeboard">자유 게시판</option>
-        <option value="feedback">유저 피드백</option>
+        <option value="freeBoard">자유 게시판</option>
+        <option value="feedbackBoard">유저 피드백</option>
       </select>
     </StPostCategory>
   );
