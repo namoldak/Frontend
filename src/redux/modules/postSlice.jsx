@@ -15,17 +15,15 @@ export const createPost = createAsyncThunk(
       const json = JSON.stringify(payload.post);
       const blob = new Blob([json], { type: 'application/json' });
       formData.append('data', blob);
-      formData.append('file', payload.img);
+      for (let i = 0; i < payload.imgs.length; i += 1) {
+        formData.append('file', payload.imgs[i]);
+      }
 
-      const response = await instance.post(
-        `/posts/${payload.postId}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      const response = await instance.post(`/posts/write`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      );
+      });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -95,24 +93,6 @@ export const readOnePost = createAsyncThunk(
   },
 );
 
-export const createComment = createAsyncThunk(
-  'comment/CREATE_COMMENT',
-  async (payload, thunkAPI) => {
-    console.log('comment payload', payload);
-    try {
-      const response = await instance.post(
-        `/posts/${payload.id}/comments`,
-        payload,
-      );
-      console.log('comment response', response);
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      console.log('comment error', error);
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
 export const postSlice = createSlice({
   name: 'posts',
   initialState,
@@ -124,7 +104,7 @@ export const postSlice = createSlice({
     [createPost.fulfilled]: (state, action) => {
       console.log(action);
       console.log(action.payload);
-      // state.posts.postResponseDtoList.push(action.payload);
+      state.posts = action.payload;
       window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
@@ -142,9 +122,6 @@ export const postSlice = createSlice({
     },
     [readPostsByCategory.rejected]: (state, action) => {
       state.error = action.payload;
-    },
-    [createComment.fulfilled]: (state, action) => {
-      console.log('state', state);
     },
   },
 });

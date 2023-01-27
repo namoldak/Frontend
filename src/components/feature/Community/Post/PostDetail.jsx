@@ -1,53 +1,44 @@
 // 외부 모듈
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { readOnePost } from 'redux/modules/postSlice';
-import CommentList from '../Comment/CommentList';
 import CreateComment from '../Comment/CreateComment';
+import CommentList from '../Comment/CommentList';
 
 // 내부 모듈
 
 function PostDetail() {
   const param = useParams();
+  const post = useSelector((state) => state.posts.posts);
+  const comment = post.commentList;
+
   const dispatch = useDispatch();
-  console.log('postId', param.id);
-
-  const select = useSelector((state) => state.posts.posts);
-  console.log('select', select);
-  const post = select.postResponseDtoList;
-  const comment = select.postResponseDtoList.commentList;
-
-  console.log('post', post);
-  console.log('comment', comment);
-
-  const postDetail = post.find((item) => item.id === Number(param.id));
-
-  console.log('postDetail', postDetail);
 
   useEffect(() => {
-    dispatch(readOnePost(Number(param.id)));
+    dispatch(readOnePost(param.id));
   }, []);
 
   return (
     <div>
-      <div>
-        <div>{postDetail.title}</div>
-        <div>{postDetail.content}</div>
-        <div>{postDetail.nickname}</div>
-        <div>{postDetail.commentList}</div>
-      </div>
+      <div>{post.title}</div>
+      <div>{post.content}</div>
+      <div>{post.nickname}</div>
+      <div>{post.createdAt}</div>
       <div>
         <CreateComment />
-        <CommentList />
-        {/* {commentList &&
-          commentList.map((comment) => {
+        {comment &&
+          comment.map((i) => {
             return (
-              <div>
-                <div>{comment.comment}</div>
-              </div>
+              <CommentList
+                key={i.id}
+                id={i.id}
+                content={i.comment}
+                nickname={i.nickname}
+                createdAt={i.createdAt}
+              />
             );
-          })} */}
+          })}
       </div>
     </div>
   );
