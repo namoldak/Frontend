@@ -827,7 +827,7 @@ function GameRoomRTC() {
 
 const StGameRoomRTC = styled.div`
   height: calc(100vh - 85px);
-  padding-top: 50px;
+  padding-top: 40px;
 `;
 
 const StGameRoomHeader = styled.div`

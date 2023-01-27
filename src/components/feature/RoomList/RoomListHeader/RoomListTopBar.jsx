@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 // 내부 모듈
 import { getCookie, getNicknameCookie } from 'utils/cookies';
-import Modal from 'components/common/Modals/BasicModal/Modal';
+import ModalForSetting from 'components/common/Modals/BasicModal/ModalForSetting';
 import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
@@ -45,7 +45,7 @@ function RoomListTopBar() {
         </StCommunityBtn>
       </Link>
       {isSettingModalOn && (
-        <Modal
+        <ModalForSetting
           onClose={() => {
             setIsSettingModalOn(false);
           }}
