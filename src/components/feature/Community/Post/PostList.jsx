@@ -11,44 +11,66 @@ import Post from './Post';
 import CommunityHeader from '../CommunityHeader/CommunityHeader';
 
 function PostList() {
-  const { totalPage, postCnt, postResponseDtoList } = useSelector(
+  const { postCnt, postResponseDtoList } = useSelector(
     (state) => state.posts.posts,
   );
+  const dispatch = useDispatch();
 
-  const [start, setStart] = useState(0);
   const [page, setPage] = useState(0);
-  // const [pageArry, setPageArray] = useState([]);
-  // const [limit, setLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(page + 1);
+  const firstNum = currentPage - (currentPage % 5) + 1;
+  const lastNum = currentPage - (currentPage % 5) + 5;
+
+  console.log('page', page);
+  console.log('currentPage', currentPage);
+
+  // console.log('firstNum', firstNum);
+  // console.log('lastNum', lastNum);
 
   const pageNumber = [];
   for (let i = 1; i <= Math.ceil(postCnt / 10); i += 1) {
     pageNumber.push(i);
   }
 
-  const dispatch = useDispatch();
-
-  // console.log('postlist', postResponseDtoList);
-  // console.log('totalPage', totalPage);
-
-  // function onChangePage(page) {
-  //   setPage(page);
-  // }
-
   useEffect(() => {
     dispatch(readAllPosts(page));
-    setStart(page * 5);
   }, [page]);
 
   return (
     <StPostList>
       <CommunityHeader />
+      <button
+        onClick={() => {
+          setPage(page - 1);
+          setCurrentPage(page - 2);
+        }}
+        disabled={page === 0}
+      >
+        이전
+      </button>
       <div>
         {pageNumber.map((num) => (
-          <li role="presentation" key={num} onClick={() => setPage(num - 1)}>
+          <li
+            role="presentation"
+            key={num}
+            onClick={() => {
+              setPage(num - 1);
+              setCurrentPage(num);
+            }}
+          >
             <button>{num}</button>
           </li>
         ))}
       </div>
+      <button
+        onClick={() => {
+          setPage(page + 1);
+          setCurrentPage(page + 2);
+        }}
+        disabled={page === pageNumber.length - 1}
+      >
+        다음
+      </button>
       <StInfoBanner>
         <div>카테고리</div>
         <div>제목</div>

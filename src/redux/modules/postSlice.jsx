@@ -61,7 +61,7 @@ export const readAllPosts = createAsyncThunk(
     // console.log('payload', payload);
     try {
       const response = await instance.get(`/posts/all?page=${payload}&size=10`);
-      console.log('readall response', response.data);
+      // console.log('readall response', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
