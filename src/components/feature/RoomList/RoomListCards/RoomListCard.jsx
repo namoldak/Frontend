@@ -90,6 +90,7 @@ const StRoomCon = styled.div`
   display: flex;
   align-items: center;
   margin: 0 auto;
+  min-width: 80%;
 `;
 
 const StRoomBox = styled.div`
@@ -110,7 +111,7 @@ const StRightBtn = styled.button`
 `;
 
 const StEmptyDiv = styled.div`
-  height: 300px;
+  height: 340px;
 `;
 
 const StRefreshBtn = styled.button`
