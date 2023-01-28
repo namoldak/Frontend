@@ -10,18 +10,17 @@ import LogOutTab from 'components/feature/Landing/MySettingTabs/LogOutTab';
 import AccountTab from 'components/feature/Landing/MySettingTabs/AccountTab';
 import BGMTab from 'components/feature/Landing/MySettingTabs/BGMTab';
 
-function SettingModal(loggedIn) {
+function SettingModal({ setting }) {
   const [currentTab, setCurrentTab] = useState(0);
-  const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
   const menuArr = [
-    { id: 0, name: '계정', content: <LogOutTab loggedIn={loggedIn} /> },
     {
-      id: 1,
-      name: '사운드',
-      content: <BGMTab />,
+      id: 0,
+      name: '계정',
+      content: <LogOutTab setting={setting} />,
     },
-    { id: 2, name: '탈퇴', content: <AccountTab /> },
+    { id: 1, name: '탈퇴', content: <AccountTab /> },
+    { id: 2, name: '사운드', content: <BGMTab /> },
   ];
 
   const selectMenuHandler = (index) => {

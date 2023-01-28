@@ -1,30 +1,22 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
 import { getNicknameCookie, removeCookie } from 'utils/cookies';
 import useToast from 'hooks/useToast';
 import logout from 'assets/images/logout.svg';
-import Modal from 'components/common/Modals/BasicModal/Modal';
 
-function LogOutTab(loggedIn, modalOn) {
-  const [isLoggedIn, setIsLoggedIn] = useState(loggedIn);
-  const [isSettingModalOn, setIsSettingModalOn] = useState(modalOn);
+function LogOutTab({ setting }) {
   const nickname = getNicknameCookie('nickname');
-  const navigate = useNavigate;
-
   function onClickLogOut() {
     if (nickname === undefined) {
       useToast('로그인 하지도 않았닭!!');
     } else {
       removeCookie('my_token', 'nickname');
       useToast('재밌었닭!');
-      setIsLoggedIn(false);
       setTimeout(() => {
-        setIsSettingModalOn(false);
         window.location.href = `/`;
       }, 2500);
     }
@@ -39,7 +31,12 @@ function LogOutTab(loggedIn, modalOn) {
       </StUserInfo>
       <hr />
       <StNotice>게임을 로그아웃하시겠습니까?</StNotice>
-      <StLogOut onClick={onClickLogOut}>
+      <StLogOut
+        onClick={() => {
+          onClickLogOut();
+          setting(false);
+        }}
+      >
         <img src={logout} alt="로그아웃" />
       </StLogOut>
     </StLogOutTab>
