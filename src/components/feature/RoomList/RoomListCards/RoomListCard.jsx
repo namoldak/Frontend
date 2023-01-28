@@ -76,6 +76,7 @@ function RoomListCard() {
 }
 
 const StRoomListCardBox = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   height: calc(100vh - 300px);
@@ -86,11 +87,15 @@ const StRoomListCardBox = styled.div`
 `;
 
 const StRoomCon = styled.div`
-  position: relative;
+  position: absolute;
+  top: 155px;
+  left: 0;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin: 0 auto;
-  min-width: 80%;
+  margin-left: 55px;
+  width: 1070px;
+  height: 327px;
 `;
 
 const StRoomBox = styled.div`
@@ -111,13 +116,13 @@ const StRightBtn = styled.button`
 `;
 
 const StEmptyDiv = styled.div`
-  height: 340px;
+  width: 100%;
 `;
 
 const StRefreshBtn = styled.button`
   height: 20px;
   position: absolute;
-  bottom: -35px;
-  left: 13px;
+  bottom: -68px;
+  left: 15px;
 `;
 export default RoomListCard;
