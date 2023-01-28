@@ -8,16 +8,16 @@ import clock from 'assets/images/clock.png';
 function SpotTimer({ setIsSpotTimer, setIsMyTurnModal }) {
   const [seconds, setSeconds] = useState(30);
 
-  // useEffect(() => {
-  //   const countdown = setInterval(() => {
-  //     setSeconds(parseInt(seconds, 10) - 1);
-  //   }, 1000);
-  //   if (parseInt(seconds, 10) === 0) {
-  //     setIsSpotTimer(false);
-  //     setIsMyTurnModal(true);
-  //   }
-  //   return () => clearInterval(countdown);
-  // }, [seconds]);
+  useEffect(() => {
+    const countdown = setInterval(() => {
+      setSeconds(parseInt(seconds, 10) - 1);
+    }, 1000);
+    if (parseInt(seconds, 10) === 0) {
+      setIsSpotTimer(false);
+      setIsMyTurnModal(true);
+    }
+    return () => clearInterval(countdown);
+  }, [seconds]);
 
   return (
     <StTimer>

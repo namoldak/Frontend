@@ -8,9 +8,7 @@ import rule from 'assets/images/rule.svg';
 function GameRuleModal() {
   return (
     <StModalContainer>
-      <StRuleText>
-        <img src={rule} alt="게임룰" />
-      </StRuleText>
+      <img src={rule} alt="게임룰" />
     </StModalContainer>
   );
 }
@@ -25,7 +23,5 @@ const StModalContainer = styled.div`
   gap: 30px;
   color: white;
 `;
-
-const StRuleText = styled.div``;
 
 export default GameRuleModal;

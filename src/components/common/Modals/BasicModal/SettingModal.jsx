@@ -12,11 +12,16 @@ import BGMTab from 'components/feature/Landing/MySettingTabs/BGMTab';
 
 function SettingModal(loggedIn) {
   const [currentTab, setCurrentTab] = useState(0);
+  const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
   const menuArr = [
     { id: 0, name: '계정', content: <LogOutTab loggedIn={loggedIn} /> },
-    { id: 1, name: '탈퇴', content: <AccountTab /> },
-    { id: 2, name: '사운드', content: <BGMTab /> },
+    {
+      id: 1,
+      name: '사운드',
+      content: <BGMTab />,
+    },
+    { id: 2, name: '탈퇴', content: <AccountTab /> },
   ];
 
   const selectMenuHandler = (index) => {
@@ -53,11 +58,11 @@ const StSettingModal = styled.div`
 `;
 
 const StContentBack = styled.div`
-  background: #040200;
-  opacity: 0.6;
+  background: rgba(4, 2, 0, 0.6);
   border-radius: 0px 30px 30px 30px;
   width: 745px;
   height: 474px;
+  padding: 30px;
 `;
 
 const TabMenu = styled.ul`
@@ -75,16 +80,15 @@ const TabMenu = styled.ul`
     width: 175px;
     /* height: calc(100% / 3); */
     height: 94px;
-    background: #040200;
-    opacity: 0.6;
+    background: rgba(4, 2, 0, 0.8);
     border-radius: 30px 0px 0px 30px;
     padding-top: 30px;
     transition: all 0.1s;
+    border: 1px solid #321d07;
   }
 
   .focused {
-    background: #040200;
-    opacity: 0.8;
+    background: rgba(4, 2, 0, 0.6);
     color: #fff;
     font-size: 30px;
     line-height: 36px;
