@@ -8,6 +8,7 @@ import { createBrowserHistory } from 'history';
 // 내부 모듈
 import useSound from 'hooks/useSound';
 import bgm from 'assets/audio/bg.mp3';
+import confirm from 'assets/images/confirm.svg';
 
 function BGMTab() {
   const sound = new Howl({
@@ -24,6 +25,10 @@ function BGMTab() {
     sound.volume(currentVolume);
   }
 
+  function onClickClose() {
+    // setIsSettingModalOn(false);
+  }
+
   // function start() {
   //   const history = createBrowserHistory();
   //   if (history.location.pathname === '/rooms') {
@@ -34,66 +39,123 @@ function BGMTab() {
   // }
 
   return (
-    <StModalContainer>
-      <input
-        id="volume"
-        type="range"
-        min={0}
-        max={0.1}
-        step={0.001}
-        onChange={changeVolume}
-      />
-      <button
-        onClick={() => {
-          sound.pause();
-        }}
-      >
-        pause
-      </button>
-      <button
-        onClick={() => {
-          sound.play();
-        }}
-      >
-        play
-      </button>
-    </StModalContainer>
+    <StBGMTab>
+      <StTitle>
+        <hr />
+        사운드 조절 기능
+        <hr />
+      </StTitle>
+      <StSubTitle>BGM 음량 조절</StSubTitle>
+      <StVolumeCon>
+        <StVolumeBox>
+          <StVolume
+            className="rangeInput"
+            type="range"
+            min={0}
+            max={0.1}
+            step={0.001}
+            onChange={changeVolume}
+          />
+        </StVolumeBox>
+      </StVolumeCon>
+      <StBtnBox>
+        <button
+          onClick={() => {
+            sound.pause();
+          }}
+        >
+          <span>중지</span>
+        </button>
+        <button
+          onClick={() => {
+            sound.play();
+          }}
+        >
+          <span>재생</span>
+        </button>
+      </StBtnBox>
+      <StConfirm onClick={onClickClose}>
+        <img src={confirm} alt="확인" />
+      </StConfirm>
+    </StBGMTab>
   );
 }
 
-const StModalContainer = styled.div`
-  position: absolute;
-  top: 127px;
-  left: 60px;
-  background-color: ${({ theme }) => theme.colors.lightBeige};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+const StBGMTab = styled.div`
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  font-size: 26px;
+  line-height: 42px;
+`;
 
+const StTitle = styled.div`
+  font-size: 30px;
+`;
+
+const StSubTitle = styled.div`
+  margin-top: 26px;
+`;
+
+const StVolumeCon = styled.div`
+  width: 100%;
+  height: 40px;
+  background: #643b11;
+  border-radius: 30px;
+  margin: 20px 0;
+  padding-top: 5px;
+`;
+
+const StVolumeBox = styled.div`
+  width: 100%;
+  height: 30px;
+  margin: 0 auto;
+  border-radius: 20px;
+  background: #fff4d0;
+  padding-left: 6px;
+`;
+
+const StVolume = styled.input`
+  -webkit-appearance: none;
+  width: 99%;
+  height: 26px;
+  margin: 0 auto;
+  background: #643b11;
+  border-radius: 20px;
   outline: none;
-  border-radius: 0px 15px 5px 5px;
 
-  width: 450px;
-  height: 250px;
-`;
-
-const StInputCon = styled.div`
-  ${({ theme }) => theme.common.flexCenterColumn};
-  input {
-    width: 400px;
-    height: 54px;
-    background: ${({ theme }) => theme.colors.lightBeige};
-    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    outline: 7px solid ${({ theme }) => theme.colors.brown};
-    border-radius: 32px;
-    font-size: 18px;
-    color: ${({ theme }) => theme.colors.text};
-    text-indent: 16px;
-    line-height: 22px;
-  }
-  input::placeholder {
-    color: ${({ theme }) => theme.colors.text};
+  &::-webkit-slider-thumb {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 2px solid #fff4d0;
+    background-color: #643b11;
+    -webkit-appearance: none;
+    cursor: pointer;
   }
 `;
+
+const StBtnBox = styled.div`
+  display: flex;
+
+  span {
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-size: 26px;
+    line-height: 42px;
+  }
+
+  span:first-child {
+    margin-right: 20px;
+  }
+`;
+
+const StConfirm = styled.button`
+  width: 200px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 30px;
+`;
+
 export default BGMTab;
