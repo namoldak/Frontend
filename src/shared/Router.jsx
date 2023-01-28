@@ -22,17 +22,17 @@ function Router() {
         <Route element={<RoomListLayout />}>
           <Route path="/rooms" element={<RoomListPage />} />
           <Route path="/posts" element={<Navigate to="/rooms" replace />} />
+        </Route>
+        <Route element={<Layout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/gameroom" element={<Navigate to="/rooms" replace />} />
+          <Route path="/gameroom/:roomId" element={<GameRoomPage />} />
           <Route path="/posts/all" element={<CommunityPage />} />
           <Route path="/posts/:id" element={<PostPage />} />
           <Route path="/posts/write" element={<WritePostPage />} />
           <Route path="/posts/modify/:id" element={<ModifyPostPage />} />
-        </Route>
-        <Route element={<Layout />}>
-          <Route path="/gameroom" element={<Navigate to="/rooms" replace />} />
-          <Route path="/gameroom/:roomId" element={<GameRoomPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/" element={<LandingPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
