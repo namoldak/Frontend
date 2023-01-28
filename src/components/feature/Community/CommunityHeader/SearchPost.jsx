@@ -32,7 +32,7 @@ function SearchPost() {
     <StSearchRoom>
       <input
         ref={input}
-        placeholder="키워드로 게시글 검색이 가능하닭"
+        placeholder="키워드로 검색이 가능하닭."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         onKeyUp={onKeyUpEnter}
@@ -51,18 +51,16 @@ const StSearchRoom = styled.div`
   justify-content: space-between;
 
   input {
-    width: 700px;
+    width: 284px;
     height: 60px;
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    outline: 7px solid ${({ theme }) => theme.colors.brown};
-    border-radius: 32px;
+    border-radius: 10px;
     font-family: 'MapoBackpacking';
     font-size: 18px;
     color: ${({ theme }) => theme.colors.text};
     text-indent: 16px;
     line-height: 22px;
-    margin-right: 10px;
   }
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};
@@ -71,9 +69,9 @@ const StSearchRoom = styled.div`
 
 const SearchBtn = styled.button`
   position: absolute;
-  top: 20%;
+  top: 30%;
   right: 6%;
-  height: 30px;
+  height: 23px;
 `;
 
 export default SearchPost;

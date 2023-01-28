@@ -32,7 +32,7 @@ function CommunityTopBar() {
           onClose={() => {
             setIsSettingModalOn(false);
           }}
-          content={<SettingModal loggedIn={setIsLoggedIn} />}
+          content={<SettingModal setting={setIsSettingModalOn} />}
         />
       )}
       <StSettingBtn
@@ -50,6 +50,11 @@ const StPostListHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 78px;
+
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 40px;
 `;
 
 const StBackBtn = styled.button`
