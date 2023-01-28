@@ -49,7 +49,7 @@ function RoomListTopBar() {
           onClose={() => {
             setIsSettingModalOn(false);
           }}
-          content={<SettingModal loggedIn={setIsLoggedIn} />}
+          content={<SettingModal setting={setIsSettingModalOn} />}
         />
       )}
       <StSettingBtn
