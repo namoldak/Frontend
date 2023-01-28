@@ -3,6 +3,7 @@ import { instance } from 'api/core/axios';
 
 const initialState = {
   posts: [],
+  comments: [],
   error: null,
 };
 
@@ -63,9 +64,11 @@ export const updatePost = createAsyncThunk(
 export const readAllPosts = createAsyncThunk(
   'post/READ_ALL_POST',
   async (payload, thunkAPI) => {
-    // console.log('payload', payload);
+    console.log('payload', payload);
     try {
-      const response = await instance.get(`/posts/all?page=${payload}&size=10`);
+      const response = await instance.get(
+        `/posts?category=freeBoard&page=${payload}&size=5`,
+      );
       // console.log('readall response', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
@@ -95,8 +98,23 @@ export const readOnePost = createAsyncThunk(
     // console.log('payload', payload);
     try {
       const response = await instance.get(`posts/${payload}`);
-      // console.log('res', response);
       return thunkAPI.fulfillWithValue(response.data[0]);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const readAllComments = createAsyncThunk(
+  'comment/READ_ALL_COMMENT',
+  async (payload, thunkAPI) => {
+    // console.log('comment payload', payload);
+    try {
+      const response = await instance.get(
+        `/posts/${payload.id}/comments/all?page=${payload.commentPage}&size=10`,
+      );
+      // console.log('comment res', response);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -147,6 +165,10 @@ export const postSlice = createSlice({
     [updatePost.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+    },
+    [readAllComments.fulfilled]: (state, action) => {
+      // console.log('comment action', action.payload);
+      state.comments = action.payload;
     },
   },
 });

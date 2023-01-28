@@ -1,20 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import { instance } from 'api/core/axios';
-import { readOnePost } from 'redux/modules/postSlice';
+import { readAllComments, readOnePost } from 'redux/modules/postSlice';
 
-function CreateComment({ postId }) {
+function CreateComment({ commentPage }) {
   const [comment, setComment] = useState('');
   const dispatch = useDispatch();
-
-  const param = useParams();
-  const { id } = param;
+  const { id } = useParams();
 
   async function postComment() {
     const data = { comment, id };
@@ -26,7 +24,8 @@ function CreateComment({ postId }) {
       } catch (error) {
         console.log(error);
       }
-      dispatch(readOnePost(postId));
+      dispatch(readAllComments({ id, commentPage }));
+      dispatch(readOnePost(id));
       setComment('');
     }
   }
