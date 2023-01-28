@@ -28,17 +28,15 @@ function PostCategory() {
   return (
     <StPostCategory>
       <select onChange={changeValue}>
-        <option value="all">전체 보기</option>
-        <option value="freeBoard">자유 게시판</option>
-        <option value="feedbackBoard">유저 피드백</option>
+        <option value="all">자유게시판</option>
+        <option value="freeBoard">내가 쓴 게시글</option>
+        <option value="feedbackBoard">내가 쓴 피드백</option>
       </select>
     </StPostCategory>
   );
 }
 
 const StPostCategory = styled.div`
-  margin-right: auto;
-  margin-left: 20px;
   position: relative;
 
   select {
@@ -46,8 +44,7 @@ const StPostCategory = styled.div`
     height: 60px;
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    outline: 7px solid ${({ theme }) => theme.colors.brown};
-    border-radius: 32px;
+    border-radius: 10px;
     font-size: 18px;
     color: ${({ theme }) => theme.colors.text};
     text-indent: 16px;
@@ -59,7 +56,6 @@ const StPostCategory = styled.div`
     background-image: url(${select});
     background-repeat: no-repeat;
     background-position: 96% center;
-    padding-right: 10px;
     cursor: pointer;
   }
 

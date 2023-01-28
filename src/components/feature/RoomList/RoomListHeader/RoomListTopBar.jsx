@@ -68,6 +68,9 @@ const StHeaderBox = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 78px;
+
+  width: 100%;
+  margin: 0 auto;
 `;
 
 const StBackBtn = styled.button`

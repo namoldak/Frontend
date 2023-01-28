@@ -18,7 +18,7 @@ function RoomListCard() {
     (state) => state.rooms.rooms,
   );
 
-  // useSound(bgm, 0.1);
+  useSound(bgm, 0.01);
 
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(4);
