@@ -10,8 +10,8 @@ export const createRoom = createAsyncThunk(
   async (newRoom, thunkAPI) => {
     try {
       const response = await instance.post(`/rooms`, newRoom);
-      // console.log('roomId', response.data.data);
-      return thunkAPI.fulfillWithValue(response.data.data);
+      // console.log('response', response.data);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -38,7 +38,7 @@ export const readAllRooms = createAsyncThunk(
       const response = await instance.get(
         `/rooms?page=${payload.page}&size=${payload.limit}`,
       );
-      console.log('read rooms:', response);
+      // console.log('read rooms:', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       // console.log('read rooms error:', error);
@@ -49,7 +49,7 @@ export const readAllRooms = createAsyncThunk(
 export const searchRoom = createAsyncThunk(
   'room/searchRoom',
   async (keyword, thunkAPI) => {
-    console.log('keyword', keyword);
+    // console.log('keyword', keyword);
     try {
       const response = await instance.get(`/rooms/search?keyword=${keyword}`);
       // console.log('search room', response);
@@ -65,7 +65,7 @@ export const roomSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      // console.log('action payload', action.payload);
+      // console.log('action payload', action.payload.owner);
       sessionStorage.setItem('owner', action.payload.owner);
       state.rooms.gameRoomResponseDtoList.push(action.payload);
       // 세션스토리지에 오너저장
@@ -76,11 +76,11 @@ export const roomSlice = createSlice({
     },
     [enterRoom.fulfilled]: (state, action) => {
       // console.log(action.payload);
-      sessionStorage.setItem('owner', action.payload.data.owner);
+      sessionStorage.setItem('owner', action.payload.owner);
       state.rooms = action.payload;
     },
     [readAllRooms.fulfilled]: (state, action) => {
-      console.log('action payload readAllRooms', action.payload);
+      // console.log('action payload readAllRooms', action.payload);
       state.rooms = action.payload;
     },
     [readAllRooms.rejected]: (state, action) => {

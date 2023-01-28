@@ -143,6 +143,11 @@ const StTopBar = styled.div`
   justify-content: space-between;
 `;
 
+const StImg = styled.img`
+  max-width: 300px;
+  max-height: 300px;
+`;
+
 const StBackBtn = styled.button`
   width: 78px;
   height: 78px;

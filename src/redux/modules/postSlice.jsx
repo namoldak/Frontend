@@ -63,9 +63,10 @@ export const updatePost = createAsyncThunk(
 export const readAllPosts = createAsyncThunk(
   'post/READ_ALL_POST',
   async (payload, thunkAPI) => {
+    // console.log('payload', payload);
     try {
-      const response = await instance.get(`/posts/all`);
-      console.log('readall response', response.data);
+      const response = await instance.get(`/posts/all?page=${payload}&size=10`);
+      // console.log('readall response', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -80,6 +81,7 @@ export const readPostsByCategory = createAsyncThunk(
       const response = await instance.get(
         `/posts/category?category=${payload}`,
       );
+      console.log('res data', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -90,10 +92,10 @@ export const readPostsByCategory = createAsyncThunk(
 export const readOnePost = createAsyncThunk(
   'post/READ_ONE_POST',
   async (payload, thunkAPI) => {
-    console.log('payload', payload);
+    // console.log('payload', payload);
     try {
       const response = await instance.get(`posts/${payload}`);
-      console.log('res', response);
+      // console.log('res', response);
       return thunkAPI.fulfillWithValue(response.data[0]);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -110,7 +112,7 @@ export const postSlice = createSlice({
       state.isLoading = true;
     },
     [createPost.fulfilled]: (state, action) => {
-      console.log(action.payload.id);
+      // console.log(action.payload.id);
       window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
@@ -128,7 +130,7 @@ export const postSlice = createSlice({
       state.posts = action.payload;
     },
     [readPostsByCategory.fulfilled]: (state, action) => {
-      console.log('readCategory action payload', action.payload);
+      // console.log('readCategory action payload', action.payload);
       state.posts = action.payload;
     },
     [readPostsByCategory.rejected]: (state, action) => {

@@ -1,30 +1,72 @@
+/* eslint-disable react/no-array-index-key */
 // 외부 모듈
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import { readAllPosts } from 'redux/modules/postSlice';
+import leftArrow from 'assets/images/leftArrow.svg';
+import rightArrow from 'assets/images/rightArrow.svg';
 import Post from './Post';
 import CommunityHeader from '../CommunityHeader/CommunityHeader';
 
 function PostList() {
-  const { totalPage, postResponseDtoList } = useSelector(
+  const { postCnt, postResponseDtoList } = useSelector(
     (state) => state.posts.posts,
   );
-
   const dispatch = useDispatch();
 
-  console.log('postlist', postResponseDtoList);
-  console.log('totalPage', totalPage);
+  const [page, setPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(page + 1);
+
+  console.log('page', page);
+  console.log('currentPage', currentPage);
+
+  const pageNumber = [];
+  for (let i = 1; i <= Math.ceil(postCnt / 10); i += 1) {
+    pageNumber.push(i);
+  }
 
   useEffect(() => {
-    dispatch(readAllPosts());
-  }, []);
+    dispatch(readAllPosts(page));
+  }, [page]);
 
   return (
     <StPostList>
       <CommunityHeader />
+      {/* <button
+        onClick={() => {
+          setPage(page - 1);
+          setCurrentPage(page - 2);
+        }}
+        disabled={page === 0}
+      >
+        이전
+      </button> */}
+      <div>
+        {pageNumber.map((num) => (
+          <li
+            role="presentation"
+            key={num + 1}
+            onClick={() => {
+              setPage(num - 1);
+              setCurrentPage(num);
+            }}
+          >
+            <button>{num}</button>
+          </li>
+        ))}
+      </div>
+      {/* <button
+        onClick={() => {
+          setPage(page + 1);
+          setCurrentPage(page + 2);
+        }}
+        disabled={page === pageNumber.length - 1}
+      >
+        다음
+      </button> */}
       <StInfoBanner>
         <div>카테고리</div>
         <div>제목</div>
@@ -72,6 +114,20 @@ const StPostContainer = styled.div`
 
   padding: 20px;
   place-items: center;
+`;
+
+const StLeftBtn = styled.button`
+  height: 52px;
+  margin-right: 40px;
+`;
+
+const StRightBtn = styled.button`
+  height: 52px;
+  margin-left: 40px;
+`;
+
+const StEmptyDiv = styled.div`
+  height: 50px;
 `;
 
 export default PostList;
