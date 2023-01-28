@@ -1,46 +1,47 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { removeCookie } from 'utils/cookies';
-import { instance } from 'api/core/axios';
 import accountTabBtn from 'assets/images/accountTabBtn.svg';
 import Input from 'components/common/Input';
 import Modal from 'components/common/Modals/BasicModal/Modal';
 import DeleteAccountModal from 'components/common/Modals/BasicModal/DeleteAccountModal';
+import useToast from 'hooks/useToast';
 
-function AccountTab() {
+function AccountTab({ setting }) {
   const [isModalOn, setIsModalOn] = useState(false);
-
-  const [password, setPassword] = useState('');
-  const [passMsg, setPassMsg] = useState('');
+  const [input, setInput] = useState('');
 
   function onClickConfirm() {
-    setIsModalOn(true);
+    if (input === '') {
+      useToast('비밀번호를 입력해주세요', 'warning');
+    } else {
+      setIsModalOn(true);
+    }
   }
 
-  async function onClickDeleteAccount() {
-    instance
-      .delete(`/auth/deleteMember`, { data: { password } })
-      .then((response) => {
-        removeCookie('my_token', 'nickname');
-        setPassMsg(response.data.statusMsg);
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.data.statusCode === 401) {
-          setPassMsg(error.response.data.statusMsg);
-        } else {
-          setPassMsg('오류가 발생했습니다. 다시 시도해주세요.');
-        }
-      });
-  }
+  // async function onClickDeleteAccount() {
+  //   instance
+  //     .delete(`/auth/deleteMember`, { data: { password } })
+  //     .then((response) => {
+  //       removeCookie('my_token', 'nickname');
+  //       setPassMsg(response.data.statusMsg);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       if (error.response.data.statusCode === 401) {
+  //         setPassMsg(error.response.data.statusMsg);
+  //       } else {
+  //         setPassMsg('오류가 발생했습니다. 다시 시도해주세요.');
+  //       }
+  //     });
+  // }
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
-      onClickDeleteAccount();
+      onClickConfirm();
     }
   }
 
@@ -59,31 +60,21 @@ function AccountTab() {
         <Input
           placeholder="비밀번호를 입력해주세요"
           type="password"
-          value={password}
+          value={input}
           onChange={(e) => {
-            setPassword(e.target.value);
+            setInput(e.target.value);
           }}
-          // onFocus={() => {
-          //   setPassMsg('정말로 가는거닭?');
-          // }}
-          // onBlur={() => {
-          //   setPassMsg('');
-          // }}
         />
       </StInputBox>
-      {/* <div style={{ height: '30px' }}>{passMsg}</div> */}
-      {/* <StWithDraw onClick={onClickDeleteAccount}>
-        <img src={withdraw} alt="탈퇴 진행하기" />
-      </StWithDraw> */}
-      <StWithDraw onClick={onClickConfirm}>
+      <StConfirmBtn onClick={onClickConfirm}>
         <img src={accountTabBtn} alt="탈퇴 진행하기" />
-      </StWithDraw>
+      </StConfirmBtn>
       {isModalOn && (
         <Modal
           onClose={() => {
             setIsModalOn(false);
           }}
-          content={<DeleteAccountModal />}
+          content={<DeleteAccountModal input={input} setting={setting} />}
         />
       )}
     </StAccountTab>
@@ -117,7 +108,7 @@ const StInputBox = styled.div`
   }
 `;
 
-const StWithDraw = styled.button`
+const StConfirmBtn = styled.button`
   width: 272px;
   display: block;
   margin: 0 auto;
