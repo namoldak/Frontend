@@ -6,51 +6,96 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import leftArrow from 'assets/images/leftArrow.svg';
-import rightArrow from 'assets/images/rightArrow.svg';
+import arrow from 'assets/images/postLeftArrow.svg';
 
-function Pagination({ totalPage, page, setPage }) {
-  const firstNum = page - (totalPage % 5) + 1;
-  console.log('page', page);
+function Pagination({ totalPage, setLimit, limit, page, setPage }) {
+  const pageNumber = [];
+  for (let i = 1; i <= totalPage; i += 1) {
+    pageNumber.push(i);
+  }
+
+  const [currPage, setCurrPage] = useState(page);
+  //   const num = currPage - (currPage % limit) + 1;
+  //   console.log('num', pageNumber);
+
   return (
-    <div>
-      <div>
-        <button
-          onClick={() => {
-            setPage(page - 1);
-          }}
-          disabled={page === 0}
-        >
-          이전
-        </button>
-        {Array(4)
-          .fill()
-          .map((_, i) => {
-            return (
-              <button
-                border="true"
-                key={i}
-                onClick={() => {
-                  setPage(firstNum + i);
-                }}
-                aria-current={page === firstNum + i ? 'page' : null}
-              >
-                {firstNum + 1 + i}
-              </button>
-            );
-          })}
-        ;
-        <button
-          onClick={() => {
-            setPage(page + 1);
-          }}
-          //   disabled={page === totalPage}
-        >
-          다음
-        </button>
-      </div>
-    </div>
+    <StPagination>
+      {/* <button
+        onClick={() => {
+          setPage(0);
+          setCurrPage(firstNum);
+        }}
+        disabled={page === 0}
+      >
+        &lt;&lt;/
+      </button> */}
+      <StArrowBtn
+        onClick={() => {
+          setPage(page - 1);
+        }}
+        disabled={page === 0}
+      >
+        <img src={arrow} alt="왼쪽 화살표" />
+      </StArrowBtn>
+      {/* <button onClick={() => setPage(num)}>{num}</button> */}
+      {Array(pageNumber)
+        // .fill()
+        .map((i) => {
+          return (
+            <StPageNum
+              key={i + 1}
+              onClick={() => {
+                setPage(1 + i);
+              }}
+            >
+              {i}1
+            </StPageNum>
+          );
+        })}
+      <StArrowBtn
+        onClick={() => {
+          setPage(page + 1);
+          //   setCurrPage(page);
+        }}
+        disabled={page === totalPage - 1}
+      >
+        <img src={arrow} alt="오른쪽 화살표" className="right" />
+      </StArrowBtn>
+      {/* <button
+        onClick={() => {
+          setPage(totalPage - 1);
+          setCurrPage(totalPage);
+        }}
+        disabled={page === totalPage - 1}
+      >
+        / &gt;&gt;
+      </button> */}
+    </StPagination>
   );
 }
+
+const StPagination = styled.div`
+  display: flex;
+  height: 18px;
+`;
+
+const StPageNum = styled.button`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.white};
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const StArrowBtn = styled.button`
+  display: block;
+  height: 18px;
+
+  .right {
+    rotate: 180deg;
+  }
+`;
 
 export default Pagination;

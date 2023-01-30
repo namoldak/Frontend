@@ -2,174 +2,176 @@
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useParams, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
-import { readAllPosts } from 'redux/modules/postSlice';
+import {
+  readAllPosts,
+  readPostsByCategory,
+  searchPosts,
+} from 'redux/modules/postSlice';
 import settingBack from 'assets/images/settingBack.png';
-import leftArrow from 'assets/images/leftArrow.svg';
-import rightArrow from 'assets/images/rightArrow.svg';
+import postMy from 'assets/images/postMy.svg';
+import postWrite from 'assets/images/postWrite.svg';
+import Pagination from '../Pagination';
+import CommunityTopBar from '../CommunityHeader/CommunityTopBar';
 import Post from './Post';
-import CommunityHeader from '../CommunityHeader/CommunityHeader';
-import WritePostBtn from '../CommunityHeader/WritePostBtn';
+import PostCategory from '../CommunityHeader/PostCategory';
+import SearchPost from '../CommunityHeader/SearchPost';
 
 function PostList() {
   const { totalPage, postCnt, postResponseDtoList } = useSelector(
     (state) => state.posts.posts,
   );
-  const [page, setPage] = useState(0);
 
-  const pageNumber = [];
-  for (let i = 1; i <= totalPage - 1; i += 1) {
-    pageNumber.push(i);
-  }
+  const [page, setPage] = useState(0);
+  console.log('list page', page);
+  const [limit, setLimit] = useState(5);
+
+  const [category, setCategory] = useState('freeBoard');
+  console.log('list cate', category);
+  const [keyword, setKeyword] = useState('');
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(readAllPosts(page));
-  }, [page]);
+    if (category === 'freeBoard') {
+      dispatch(readAllPosts(page));
+    } else {
+      dispatch(readPostsByCategory(page));
+    }
+    if (category === keyword) {
+      dispatch(searchPosts(keyword, page));
+    }
+  }, [category, page]);
 
   return (
     <StPostList>
-      <StListBackground>
-        <StListBorder>
-          <CommunityHeader page={page} />
-          {page > 0 ? (
-            <StLeftBtn
-              onClick={() => {
-                setPage(page - 1);
-              }}
-            >
-              <img src={leftArrow} alt="이전" />
-            </StLeftBtn>
-          ) : (
-            <StEmptyDiv />
-          )}
-          <StInfoBanner>
-            <div>제목</div>
-            <div>댓글 수</div>
-            <div>닉네임</div>
-            <div>작성일</div>
-          </StInfoBanner>
-          {postResponseDtoList &&
-            postResponseDtoList.map((post) => {
-              return (
-                <StPostContainer key={post.id}>
-                  <Post postInfo={post} />
-                </StPostContainer>
-              );
-            })}
-          {page <= totalPage - 2 ? (
-            <StRightBtn
-              onClick={() => {
-                setPage(page + 1);
-              }}
-            >
-              <img src={rightArrow} alt="다음" />
-            </StRightBtn>
-          ) : (
-            <StEmptyDiv />
-          )}
-          {/* </div> */}
-          <WritePostBtn />
-          {/* <div>
-            <div>
-              <button onClick={() => setPage(page - 1)} disabled={page === 0}>
-                이전
-              </button>
-              {pageNumber.map((num) => {
-                return (
-                  <button key={num} onClick={() => setPage(num)}>
-                    {num}
-                  </button>
-                );
-              })}
-              <button
-                onClick={() => setPage(page + 1)}
-                disabled={page === totalPage - 1}
-              >
-                다음
-              </button>
-            </div>
-          </div> */}
-        </StListBorder>
-      </StListBackground>
+      <CommunityTopBar />
+      <StCommunityCon>
+        <StCommunityBack>
+          <StBlackBack>
+            <StCategoryAndSearch>
+              <PostCategory
+                setCategory={setCategory}
+                page={page}
+                setPage={setPage}
+              />
+              <SearchPost keyword={keyword} setKeyword={setKeyword} />
+            </StCategoryAndSearch>
+            <StPostBox>
+              <StInfoBanner>
+                <div>제목</div>
+                <div>댓글 수</div>
+                <div>작성일</div>
+                <div>닉네임</div>
+              </StInfoBanner>
+              {postResponseDtoList &&
+                postResponseDtoList.map((post) => {
+                  return (
+                    <StPostContainer key={post.id}>
+                      <Post postInfo={post} />
+                    </StPostContainer>
+                  );
+                })}
+            </StPostBox>
+            <StCommunityBottom>
+              <StMyPost>
+                <img src={postMy} alt="내가 쓴 게시글 확인하기" />
+              </StMyPost>
+              <Pagination />
+              <StWritePost>
+                <Link to="/posts/write">
+                  <img src={postWrite} alt="글 작성하기" />
+                </Link>
+              </StWritePost>
+            </StCommunityBottom>
+          </StBlackBack>
+        </StCommunityBack>
+      </StCommunityCon>
     </StPostList>
   );
 }
 
 const StPostList = styled.div`
-  height: calc(100vh - 201px);
+  padding-top: 85px;
+`;
+
+const StCommunityCon = styled.div`
+  padding-top: 38px;
+`;
+
+const StCommunityBack = styled.div`
+  height: calc(100vh - 166px);
   background-image: url(${settingBack});
   background-repeat: no-repeat;
-  background-position: center;
-
-  place-items: center;
-
-  position: relative;
+  background-size: contain;
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
 `;
 
-const StListBackground = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  position: relative;
-`;
-
-const StListBorder = styled.div`
-  background-color: rgba(4, 2, 0, 0.8);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 30px;
-  padding: 40px 35px;
-  margin-top: 95px;
-  gap: 12px;
-
+const StBlackBack = styled.div`
   width: 1004px;
   height: 590px;
+  background-color: rgba(4, 2, 0, 0.8);
+  border-radius: 30px;
+  padding: 40px 35px 40px 35px;
+`;
+
+const StCategoryAndSearch = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StPostBox = styled.div`
+  min-height: 384px;
 `;
 
 const StInfoBanner = styled.div`
+  width: 934px;
+  height: 54px;
   background-color: ${({ theme }) => theme.colors.yellowBeige};
+  border-radius: 10px;
+
   font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.text3};
+
   display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr;
+  grid-template-columns: 604px 110px 110px 110px;
+  /* grid-template-columns: 4fr 1fr 1fr 1fr; */
   place-items: center;
-  gap: 10px;
-  border-radius: 5px;
-  width: 100%;
-  height: 60px;
+  margin: 12px 0 12px 0;
 `;
 
 const StPostContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.lightBeige};
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  gap: 10px;
-  border-radius: 5px;
   width: 100%;
-  height: 60px;
+  background-color: ${({ theme }) => theme.colors.lightBeige};
+  border-radius: 4px;
+  margin-bottom: 12px;
 `;
 
+const StCommunityBottom = styled.div`
+  ${({ theme }) => theme.common.flexBetween}
+`;
+
+const StMyPost = styled.button``;
+
+const StWritePost = styled.button``;
+
 const StLeftBtn = styled.button`
-  height: 52px;
-  margin-right: 40px;
+  display: block;
+  height: 18px;
 `;
 
 const StRightBtn = styled.button`
-  height: 52px;
-  margin-left: 40px;
+  display: block;
+  height: 18px;
 `;
 
 const StEmptyDiv = styled.div`
