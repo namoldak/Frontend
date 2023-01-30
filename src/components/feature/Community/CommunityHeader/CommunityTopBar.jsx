@@ -4,15 +4,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
-import { getNicknameCookie } from 'utils/cookies';
-import ModalForSetting from 'components/common/Modals/BasicModal/ModalForSetting';
-import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
+// import { getNicknameCookie } from 'utils/cookies';
 import backBtn from 'assets/images/backBtn.svg';
-import settingBtn from 'assets/images/settingBtn.svg';
+import SettingBtn from 'components/common/SettingBtn';
 
 function CommunityTopBar(page) {
-  const nickname = getNicknameCookie('nickname');
-  const [isSettingModalOn, setIsSettingModalOn] = useState(false);
+  // const nickname = getNicknameCookie('nickname');
 
   return (
     <StCommunityTobBar>
@@ -26,21 +23,7 @@ function CommunityTopBar(page) {
           반갑닭 <em>{nickname}</em> 이 곳은 커뮤니티닭
         </span>
       </StUserName> */}
-      {isSettingModalOn && (
-        <ModalForSetting
-          onClose={() => {
-            setIsSettingModalOn(false);
-          }}
-          content={<SettingModal setting={setIsSettingModalOn} />}
-        />
-      )}
-      <StSettingBtn
-        onClick={() => {
-          setIsSettingModalOn(true);
-        }}
-      >
-        <img src={settingBtn} alt="설정" />
-      </StSettingBtn>
+      <SettingBtn />
     </StCommunityTobBar>
   );
 }
@@ -71,10 +54,6 @@ const StUserName = styled.div`
     text-decoration: underline;
     margin-right: 5px;
   }
-`;
-
-const StSettingBtn = styled.button`
-  height: 78px;
 `;
 
 export default CommunityTopBar;
