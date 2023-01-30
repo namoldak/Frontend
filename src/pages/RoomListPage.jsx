@@ -25,7 +25,8 @@ function RoomListPage() {
 }
 
 const StRoomList = styled.div`
-  padding-top: 100px;
+  /* padding-top: 100px; */
+  padding-top: 85px;
 `;
 
 const StRoomListHeader = styled.div`
