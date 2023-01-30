@@ -14,6 +14,7 @@ const colors = {
   lightGray: '#939393', // 연한 회색
   lightBeige: '#F5ECD9', // 베이지색
   yellowBeige: '#F6D5A1', // 옅은 베이지색
+  yellow: '#f0a430', // 노란색
   beige: '#F5C86F', // 연한 황갈색
   yellowBrown: '#E7AA47', // 황갈색
   lightBrown: '#6E3D12', // 밝은 갈색
