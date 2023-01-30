@@ -6,7 +6,7 @@ import { readOnePost } from 'redux/modules/postSlice';
 import styled from 'styled-components';
 
 // 내부 모듈
-import formatTime from 'utils/date';
+import { formatTime } from 'utils/date';
 
 function Post({ postInfo }) {
   const navigate = useNavigate();
