@@ -24,10 +24,10 @@ function Landing() {
   return (
     <StLanding>
       <StLadingMain>
-        <StBannerTitle>
-          <img src={landingTitle} alt="제목 이미지" />
-        </StBannerTitle>
         <StBanner>
+          <StBannerTitle>
+            <img src={landingTitle} alt="제목 이미지" />
+          </StBannerTitle>
           <StBannerImg>
             <img src={landingBanner} alt="닭 3마리 일러스트" />
           </StBannerImg>
@@ -53,6 +53,10 @@ function Landing() {
 const StLanding = styled.div`
   width: 100%;
   padding-top: 42px;
+
+  @media ${(props) => props.theme.laptop} {
+    padding-top: 24px;
+  }
 `;
 
 // background image 적용
@@ -63,6 +67,10 @@ const StLadingMain = styled.div`
   background-repeat: no-repeat;
   background-position: bottom;
   position: relative;
+
+  @media ${(props) => props.theme.laptop} {
+    height: calc(100vh - 42px);
+  }
 `;
 
 // 하위 컴포넌트 정렬 위함
@@ -77,6 +85,10 @@ const StBannerTitle = styled.div`
   position: absolute;
   top: -23px;
   left: 187px;
+
+  @media ${(props) => props.theme.laptop} {
+    top: -48px;
+  }
 `;
 
 const StBannerImg = styled.div`

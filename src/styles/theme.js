@@ -50,10 +50,17 @@ const common = {
   `,
 };
 
+const size = {
+  laptop: '1280px',
+  desktop: '1900px',
+};
+
 const theme = {
   fontSizes,
   colors,
   common,
+  desktop: `(min-width: ${size.laptop})`,
+  laptop: `(max-width: ${size.desktop})`,
 };
 
 export default theme;
