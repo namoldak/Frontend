@@ -15,6 +15,7 @@ import CommunityPage from 'pages/CommunityPage';
 import WritePostPage from 'pages/WritePostPage';
 import PostPage from 'pages/PostPage';
 import ModifyPostPage from 'pages/ModifyPostPage';
+import CommunityLayout from 'components/common/Layout/CommunityLayout';
 
 function Router() {
   return (
@@ -31,8 +32,10 @@ function Router() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/gameroom/:roomId" element={<GameRoomPage />} />
         </Route>
-        <Route element={<PostLayout />}>
+        <Route element={<CommunityLayout />}>
           <Route path="/posts/all" element={<CommunityPage />} />
+        </Route>
+        <Route element={<PostLayout />}>
           <Route path="/posts/:id" element={<PostPage />} />
           <Route path="/posts/write" element={<WritePostPage />} />
           <Route path="/posts/modify/:id" element={<ModifyPostPage />} />
