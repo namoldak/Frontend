@@ -15,8 +15,8 @@ import postMy from 'assets/images/postMy.svg';
 import postWrite from 'assets/images/postWrite.svg';
 import Pagination from './Pagination';
 import Post from './Post/Post';
-import PostCategory from './CommunityHeader/PostCategory';
-import SearchPost from './CommunityHeader/SearchPost';
+import PostCategory from './PostCategoryAndSearch/PostCategory';
+import SearchPost from './PostCategoryAndSearch/SearchPost';
 
 function PostList() {
   const dispatch = useDispatch();
