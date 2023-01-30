@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import { useParams, Link } from 'react-router-dom';
 
 // 내부 모듈
 import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
-import { readOnePost } from 'redux/modules/postSlice';
+import { readAllComments, readOnePost } from 'redux/modules/postSlice';
 import Modal from 'components/common/Modals/BasicModal/Modal';
 import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import { getNicknameCookie } from 'utils/cookies';
@@ -18,9 +18,9 @@ import CommentList from '../Comment/CommentList';
 import CreateComment from '../Comment/CreateComment';
 
 function PostDetail() {
-  const post = useSelector((state) => state.posts.posts);
-  const comment = post.commentList;
-  const param = useParams();
+  const { posts, comments } = useSelector((state) => state.posts);
+  const { id } = useParams();
+
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const [isWriter, setIsWriter] = useState(false);
@@ -30,25 +30,29 @@ function PostDetail() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
+  const [commentPage, setCommentPage] = useState(0);
+
   async function deletePost() {
-    instance.delete(`/posts/${param.id}`).then((res) => {
+    instance.delete(`/posts/${id}`).then((res) => {
       navigate('/posts/all');
     });
   }
 
   function updatePost() {
-    navigate(`/posts/modify/${param.id}`);
+    navigate(`/posts/modify/${id}`);
   }
+
   useEffect(() => {
-    if (myNickName === post.nickname) {
+    if (myNickName === posts.nickname) {
       setIsWriter(true);
     } else {
       setIsWriter(false);
     }
-  }, [myNickName, post.nickname]);
+  }, [myNickName, posts.nickname]);
 
   useEffect(() => {
-    dispatch(readOnePost(param.id));
+    dispatch(readOnePost(id));
+    dispatch(readAllComments({ id, commentPage }));
   }, []);
 
   return (
@@ -77,9 +81,9 @@ function PostDetail() {
       </StTopBar>
       <StPostDetailInner>
         <StTitleBox>
-          <StTitle>{post.title}</StTitle>
-          <StNickName>{post.nickname}</StNickName>
-          <StCreated>{post.createdAt}</StCreated>
+          <StTitle>{posts.title}</StTitle>
+          <StNickName>{posts.nickname}</StNickName>
+          <StCreated>{posts.createdAt}</StCreated>
         </StTitleBox>
         <StContentBox>
           {isWriter ? (
@@ -92,7 +96,7 @@ function PostDetail() {
           )}
 
           <StImgdiv>
-            {post.imageList?.map((image, index) => {
+            {posts.imageList?.map((image, index) => {
               return (
                 <div key={index}>
                   <img src={image} alt="이미지" />
@@ -100,26 +104,26 @@ function PostDetail() {
               );
             })}
           </StImgdiv>
-          <div>{post.content}</div>
-
+          <div>{posts.content}</div>
           <div>
-            <CreateComment postId={param.id} />
+            <CreateComment commentPage={commentPage} />
             <button
               onClick={() => {
                 setDisplay(!display);
               }}
             >
               {display && '댓글 숨기기'}
-              {!display && `${post.cmtCnt}개의 댓글보기`}
+              {!display && `${posts.cmtCnt}개의 댓글보기`}
             </button>
             {display &&
-              comment.map((i) => {
+              comments.commentResponseDtoList.map((i) => {
                 return (
                   <CommentList
-                    postId={param.id}
+                    id={id}
                     key={i.id}
-                    id={i.id}
+                    commentId={i.id}
                     comment={i.comment}
+                    commentPage={commentPage}
                     nickname={i.nickname}
                     createdAt={i.createdAt}
                   />

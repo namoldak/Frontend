@@ -18,10 +18,10 @@ function Post({ postInfo }) {
 
   return (
     <StPost>
-      <StPostBorder key={postInfo.id} role="presentation" onClick={clickPost}>
-        <div>
+      <StPostBorder key={postInfo.id} onClick={clickPost}>
+        {/* <div>
           {postInfo.category === 'freeBoard' ? '자유게시판' : '유저피드백'}
-        </div>
+        </div> */}
         <div>{postInfo.title}</div>
         <div>{postInfo.cmtCnt}</div>
         <div>{postInfo.nickname}</div>
@@ -31,12 +31,16 @@ function Post({ postInfo }) {
   );
 }
 
-const StPost = styled.div``;
+const StPost = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
 
 const StPostBorder = styled.div`
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: 4fr 1fr 1fr 1fr;
   place-items: center;
 `;
 

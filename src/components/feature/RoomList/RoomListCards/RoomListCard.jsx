@@ -18,19 +18,18 @@ function RoomListCard() {
     (state) => state.rooms.rooms,
   );
 
-  // useSound(bgm, 0.1);
+  // useSound(bgm, 0.01);
 
   const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(4);
   const dispatch = useDispatch();
 
   function refreshRoomList() {
-    dispatch(readAllRooms({ page, limit }));
+    dispatch(readAllRooms(page));
   }
 
   useEffect(() => {
-    dispatch(readAllRooms({ page, limit }));
-  }, [page, limit]);
+    dispatch(readAllRooms(page));
+  }, [page]);
 
   return (
     <StRoomListCardBox>

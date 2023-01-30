@@ -6,27 +6,25 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import { readAllPosts } from 'redux/modules/postSlice';
+import settingBack from 'assets/images/settingBack.png';
 import leftArrow from 'assets/images/leftArrow.svg';
 import rightArrow from 'assets/images/rightArrow.svg';
 import Post from './Post';
 import CommunityHeader from '../CommunityHeader/CommunityHeader';
+import WritePostBtn from '../CommunityHeader/WritePostBtn';
 
 function PostList() {
-  const { postCnt, postResponseDtoList } = useSelector(
+  const { totalPage, postCnt, postResponseDtoList } = useSelector(
     (state) => state.posts.posts,
   );
-  const dispatch = useDispatch();
-
   const [page, setPage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(page + 1);
-
-  console.log('page', page);
-  console.log('currentPage', currentPage);
 
   const pageNumber = [];
-  for (let i = 1; i <= Math.ceil(postCnt / 10); i += 1) {
+  for (let i = 1; i <= totalPage - 1; i += 1) {
     pageNumber.push(i);
   }
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(readAllPosts(page));
@@ -34,86 +32,134 @@ function PostList() {
 
   return (
     <StPostList>
-      <CommunityHeader />
-      {/* <button
-        onClick={() => {
-          setPage(page - 1);
-          setCurrentPage(page - 2);
-        }}
-        disabled={page === 0}
-      >
-        이전
-      </button> */}
-      <div>
-        {pageNumber.map((num) => (
-          <li
-            role="presentation"
-            key={num + 1}
-            onClick={() => {
-              setPage(num - 1);
-              setCurrentPage(num);
-            }}
-          >
-            <button>{num}</button>
-          </li>
-        ))}
-      </div>
-      {/* <button
-        onClick={() => {
-          setPage(page + 1);
-          setCurrentPage(page + 2);
-        }}
-        disabled={page === pageNumber.length - 1}
-      >
-        다음
-      </button> */}
-      <StInfoBanner>
-        <div>카테고리</div>
-        <div>제목</div>
-        <div>댓글 수</div>
-        <div>닉네임</div>
-        <div>작성일</div>
-      </StInfoBanner>
-      {postResponseDtoList &&
-        postResponseDtoList.map((post) => {
-          return (
-            <StPostContainer key={post.id}>
-              <Post postInfo={post} />
-            </StPostContainer>
-          );
-        })}
+      <StListBackground>
+        <StListBorder>
+          <CommunityHeader page={page} />
+          {page > 0 ? (
+            <StLeftBtn
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              <img src={leftArrow} alt="이전" />
+            </StLeftBtn>
+          ) : (
+            <StEmptyDiv />
+          )}
+          <StInfoBanner>
+            <div>제목</div>
+            <div>댓글 수</div>
+            <div>닉네임</div>
+            <div>작성일</div>
+          </StInfoBanner>
+          {postResponseDtoList &&
+            postResponseDtoList.map((post) => {
+              return (
+                <StPostContainer key={post.id}>
+                  <Post postInfo={post} />
+                </StPostContainer>
+              );
+            })}
+          {page <= totalPage - 2 ? (
+            <StRightBtn
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              <img src={rightArrow} alt="다음" />
+            </StRightBtn>
+          ) : (
+            <StEmptyDiv />
+          )}
+          {/* </div> */}
+          <WritePostBtn />
+          {/* <div>
+            <div>
+              <button onClick={() => setPage(page - 1)} disabled={page === 0}>
+                이전
+              </button>
+              {pageNumber.map((num) => {
+                return (
+                  <button key={num} onClick={() => setPage(num)}>
+                    {num}
+                  </button>
+                );
+              })}
+              <button
+                onClick={() => setPage(page + 1)}
+                disabled={page === totalPage - 1}
+              >
+                다음
+              </button>
+            </div>
+          </div> */}
+        </StListBorder>
+      </StListBackground>
     </StPostList>
   );
 }
 
 const StPostList = styled.div`
+  height: calc(100vh - 201px);
+  background-image: url(${settingBack});
+  background-repeat: no-repeat;
+  background-position: center;
+
+  place-items: center;
+
+  position: relative;
+`;
+
+const StListBackground = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
 `;
+
+const StListBorder = styled.div`
+  background-color: rgba(4, 2, 0, 0.8);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 30px;
+  padding: 40px 35px;
+  margin-top: 95px;
+  gap: 12px;
+
+  width: 1004px;
+  height: 590px;
+`;
+
 const StInfoBanner = styled.div`
-  background-color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ theme }) => theme.colors.yellowBeige};
+  font-weight: 500;
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr 1fr 1fr;
+  grid-template-columns: 4fr 1fr 1fr 1fr;
   place-items: center;
   gap: 10px;
   border-radius: 5px;
   width: 100%;
   height: 60px;
-
-  padding: 20px;
 `;
 
 const StPostContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.lightGray};
-  justify-content: center;
-  border-radius: 5px;
+  background-color: ${({ theme }) => theme.colors.lightBeige};
 
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+  border-radius: 5px;
   width: 100%;
   height: 60px;
-
-  padding: 20px;
-  place-items: center;
 `;
 
 const StLeftBtn = styled.button`

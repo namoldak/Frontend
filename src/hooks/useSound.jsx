@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Howl } from 'howler';
 import { createBrowserHistory } from 'history';
 
-function useSound(src, volume = 0.1) {
+function useSound(src, volume = 0.01) {
   let sound;
   const soundStop = () => sound.stop();
   const soundPlay = (src) => {
@@ -15,7 +15,7 @@ function useSound(src, volume = 0.1) {
     soundPlay(src);
     sound.on('play', () => {
       const history = createBrowserHistory();
-      console.log('history', history.location.pathname);
+      // console.log('history', history.location.pathname);
       if (history.location.pathname !== '/rooms') {
         sound.stop();
       }

@@ -10,7 +10,7 @@ import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
 
-function CommunityTopBar() {
+function CommunityTopBar(page) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const nickname = getNicknameCookie('nickname');
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
@@ -32,7 +32,7 @@ function CommunityTopBar() {
           onClose={() => {
             setIsSettingModalOn(false);
           }}
-          content={<SettingModal loggedIn={setIsLoggedIn} />}
+          content={<SettingModal setting={setIsSettingModalOn} />}
         />
       )}
       <StSettingBtn
@@ -50,6 +50,11 @@ const StPostListHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 78px;
+
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 40px;
 `;
 
 const StBackBtn = styled.button`
