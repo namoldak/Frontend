@@ -6,6 +6,7 @@ import { readOnePost } from 'redux/modules/postSlice';
 import styled from 'styled-components';
 
 // 내부 모듈
+import formatTime from 'utils/date';
 
 function Post({ postInfo }) {
   const navigate = useNavigate();
@@ -18,30 +19,44 @@ function Post({ postInfo }) {
 
   return (
     <StPost>
-      <StPostBorder key={postInfo.id} onClick={clickPost}>
+      <StPostBox key={postInfo.id} onClick={clickPost}>
         {/* <div>
           {postInfo.category === 'freeBoard' ? '자유게시판' : '유저피드백'}
         </div> */}
-        <div>{postInfo.title}</div>
-        <div>{postInfo.cmtCnt}</div>
+        <PostTitle>{postInfo.title}</PostTitle>
+        <CmtCnt>{postInfo.cmtCnt}</CmtCnt>
+        <CreatedAt>{formatTime(postInfo?.createdAt)}</CreatedAt>
         <div>{postInfo.nickname}</div>
-        <div>{postInfo.createdAt}</div>
-      </StPostBorder>
+      </StPostBox>
     </StPost>
   );
 }
 
 const StPost = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+  height: 54px;
 `;
 
-const StPostBorder = styled.div`
+const StPostBox = styled.div`
   display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr;
+  grid-template-columns: 604px 110px 110px 110px;
   place-items: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.text3};
 `;
+
+const PostTitle = styled.div`
+  font-size: 16px;
+  line-height: 19px;
+`;
+
+const CmtCnt = styled.div`
+  letter-spacing: 0.08em;
+`;
+
+const CreatedAt = styled.div``;
 
 export default Post;

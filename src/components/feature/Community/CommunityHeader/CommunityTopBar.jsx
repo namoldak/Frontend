@@ -11,22 +11,21 @@ import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
 
 function CommunityTopBar(page) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const nickname = getNicknameCookie('nickname');
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
   return (
-    <StPostListHeader>
+    <StCommunityTobBar>
       <Link to="/rooms">
         <StBackBtn>
           <img src={backBtn} alt="뒤로 가기" />
         </StBackBtn>
       </Link>
-      <StUserName>
+      {/* <StUserName>
         <span>
           반갑닭 <em>{nickname}</em> 이 곳은 커뮤니티닭
         </span>
-      </StUserName>
+      </StUserName> */}
       {isSettingModalOn && (
         <ModalForSetting
           onClose={() => {
@@ -42,19 +41,13 @@ function CommunityTopBar(page) {
       >
         <img src={settingBtn} alt="설정" />
       </StSettingBtn>
-    </StPostListHeader>
+    </StCommunityTobBar>
   );
 }
 
-const StPostListHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const StCommunityTobBar = styled.div`
+  ${({ theme }) => theme.common.flexBetween}
   height: 78px;
-
-  width: 100%;
-  margin: 0 auto;
-  padding-top: 40px;
 `;
 
 const StBackBtn = styled.button`

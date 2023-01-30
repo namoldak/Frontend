@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 // 내부 모듈
-import search from 'assets/images/search.svg';
+import search from 'assets/images/postSearch.svg';
 import { searchPosts } from 'redux/modules/postSlice';
 
 function SearchPost() {
@@ -31,8 +31,8 @@ function SearchPost() {
   }
 
   return (
-    <StSearchRoom>
-      <input
+    <StSearchPost>
+      <StPostInput
         ref={input}
         placeholder="키워드로 검색이 가능하닭."
         value={keyword}
@@ -43,37 +43,43 @@ function SearchPost() {
       <SearchBtn onClick={onClickSearchPost}>
         <img src={search} alt="검색버튼" />
       </SearchBtn>
-    </StSearchRoom>
+    </StSearchPost>
   );
 }
 
-const StSearchRoom = styled.div`
+const StSearchPost = styled.div`
   position: relative;
-  display: flex;
-  justify-content: space-between;
+`;
 
-  input {
-    width: 284px;
-    height: 60px;
-    background: ${({ theme }) => theme.colors.lightBeige};
-    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    border-radius: 10px;
-    font-family: 'MapoBackpacking';
-    font-size: 18px;
-    color: ${({ theme }) => theme.colors.text};
-    text-indent: 16px;
-    line-height: 22px;
+const StPostInput = styled.input`
+  width: 284px;
+  height: 54px;
+  background: ${({ theme }) => theme.colors.lightBeige};
+  border: 6px solid ${({ theme }) => theme.colors.yellowBrown};
+  border-radius: 10px;
+  color: ${({ theme }) => theme.colors.text3};
+  font-weight: 300;
+  line-height: 19px;
+  letter-spacing: 0.1em;
+  text-indent: 15px;
+
+  &:focus {
+    outline: none;
   }
-  input::placeholder {
-    color: ${({ theme }) => theme.colors.text};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.text3};
+    font-weight: 600;
+    line-height: 19px;
+    letter-spacing: 0.1em;
   }
 `;
 
 const SearchBtn = styled.button`
   position: absolute;
-  top: 30%;
-  right: 6%;
-  height: 23px;
+  top: 15px;
+  right: 15px;
+  height: 24px;
 `;
 
 export default SearchPost;
