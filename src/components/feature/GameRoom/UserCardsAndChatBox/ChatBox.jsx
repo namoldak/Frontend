@@ -30,7 +30,7 @@ function ChatBox({ notice, sendChat, chatMessages }) {
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
-      publish(message);
+      publish({ message, sender: nickname });
     }
   }
 
@@ -65,7 +65,7 @@ function ChatBox({ notice, sendChat, chatMessages }) {
             onChange={(e) => setMessage(e.target.value)}
             onKeyUp={onKeyUpEnter}
           />
-          <StChatEnter onClick={() => publish(message)}>
+          <StChatEnter onClick={() => publish({ message, sender: nickname })}>
             <img src={chatEnterBtn} alt="입력" />
           </StChatEnter>
         </StSendChat>
