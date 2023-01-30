@@ -14,7 +14,22 @@ function formatTime(date) {
   }
 
   // eslint-disable-next-line consistent-return
+  return intl; // 23.01.01
+}
+
+function settingDate(date) {
+  if (!date) {
+    return;
+  }
+
+  let intl = new Intl.DateTimeFormat('ko', { dateStyle: 'medium' }).format(
+    new Date(date),
+  );
+
+  intl = intl.replaceAll(' ', '').slice(0, -1);
+  console.log(intl);
+  // eslint-disable-next-line consistent-return
   return intl;
 }
 
-export default formatTime;
+export { formatTime, settingDate };
