@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 function formatTime(date) {
   if (!date) {
     return;
@@ -13,7 +14,6 @@ function formatTime(date) {
     intl = `${intl.slice(0, 3)}0${intl.slice(3, 8)}`;
   }
 
-  // eslint-disable-next-line consistent-return
   return intl; // 23.01.01
 }
 
@@ -27,9 +27,8 @@ function settingDate(date) {
   );
 
   intl = intl.replaceAll(' ', '').slice(0, -1);
-  console.log(intl);
-  // eslint-disable-next-line consistent-return
-  return intl;
+
+  return intl; // 2023.01.01
 }
 
 export { formatTime, settingDate };
