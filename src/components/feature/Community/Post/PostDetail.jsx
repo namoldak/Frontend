@@ -21,14 +21,11 @@ function PostDetail() {
   const { id } = useParams();
   const myNickName = getNicknameCookie('nickname');
   const { posts } = useSelector((state) => state.posts);
+  const [isWriter, setIsWriter] = useState(false);
 
   const [comments, setComments] = useState([]);
   const totalPage = 0;
   const [isLoading, setIsLoading] = useState(false);
-
-  const [isWriter, setIsWriter] = useState(false);
-  // const [display, setDisplay] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [pins, setPins] = useState([]); // 댓글 데이터를 담고 있는 state
   const [commentPage, setCommentPage] = useState(0); // 스크롤이 닿았을 때 새롭게 데이터 페이지를 바꿀 state
@@ -42,7 +39,7 @@ function PostDetail() {
     }
   };
 
-  async function deletePost() {
+  function deletePost() {
     instance.delete(`/posts/${id}`).then((res) => {
       navigate('/posts/all');
     });
@@ -117,14 +114,6 @@ function PostDetail() {
         <Content>{posts.content}</Content>
         <div>
           <CreateComment commentPage={commentPage} />
-          {/* <button
-            onClick={() => {
-              setDisplay(!display);
-            }}
-          >
-            {display && '댓글 숨기기'}
-            {!display && `댓글 보기 (${posts.cmtCnt})`}
-          </button> */}
           {comments?.map((i) => {
             return (
               <Comment
