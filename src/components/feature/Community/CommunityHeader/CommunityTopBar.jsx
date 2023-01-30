@@ -48,6 +48,7 @@ function CommunityTopBar(page) {
 const StCommunityTobBar = styled.div`
   ${({ theme }) => theme.common.flexBetween}
   height: 78px;
+  padding-bottom: 38px;
 `;
 
 const StBackBtn = styled.button`

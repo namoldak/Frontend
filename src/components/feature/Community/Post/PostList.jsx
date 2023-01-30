@@ -100,7 +100,7 @@ const StPostList = styled.div`
 `;
 
 const StCommunityCon = styled.div`
-  padding-top: 38px;
+  /* padding-top: 38px; */
 `;
 
 const StCommunityBack = styled.div`
