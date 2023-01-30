@@ -25,7 +25,7 @@ export const createPost = createAsyncThunk(
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('res data', response.data);
+      // console.log('res data', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -53,7 +53,7 @@ export const updatePost = createAsyncThunk(
           },
         },
       );
-      console.log('res', response);
+      // console.log('res', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -64,7 +64,7 @@ export const updatePost = createAsyncThunk(
 export const readAllPosts = createAsyncThunk(
   'post/READ_ALL_POST',
   async (payload, thunkAPI) => {
-    console.log('payload', payload);
+    // console.log('page payload', payload);
     try {
       const response = await instance.get(
         `/posts?category=freeBoard&page=${payload}&size=5`,
@@ -80,6 +80,7 @@ export const readAllPosts = createAsyncThunk(
 export const readPostsByCategory = createAsyncThunk(
   'post/READ_POST_BY_CATEGORY',
   async (payload, thunkAPI) => {
+    // console.log('cate slice', payload);
     try {
       const response = await instance.get(
         `/posts/myPost?category=feedbackBoard&page=${payload}&size=5`,
@@ -95,11 +96,27 @@ export const readPostsByCategory = createAsyncThunk(
 export const readOnePost = createAsyncThunk(
   'post/READ_ONE_POST',
   async (payload, thunkAPI) => {
-    console.log('payload', payload);
+    // console.log('payload', payload);
     try {
       const response = await instance.get(`posts/${payload}`);
-      console.log('res', response.data[0]);
+      // console.log('res', response.data[0]);
       return thunkAPI.fulfillWithValue(response.data[0]);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const searchPosts = createAsyncThunk(
+  `post/SEARCH_POSTS`,
+  async (payload, thunkAPI) => {
+    // console.log('search payload', payload);
+    try {
+      const response = await instance.get(
+        `posts/search?category=freeBoard&page=${payload.page}&keyword=${payload.keyword}`,
+      );
+      // console.log('search res', response);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -122,20 +139,6 @@ export const readAllComments = createAsyncThunk(
   },
 );
 
-export const searchPosts = createAsyncThunk(
-  `post/SEARCH_POSTS`,
-  async (payload, thunkAPI) => {
-    try {
-      const response = await instance.get(
-        `posts/search?category=freeBoard&keyword=${payload}`,
-      );
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
 export const postSlice = createSlice({
   name: 'posts',
   initialState,
@@ -146,7 +149,7 @@ export const postSlice = createSlice({
     },
     [createPost.fulfilled]: (state, action) => {
       // console.log(action.payload.id);
-      // window.location.href = `/posts/${action.payload.id}`;
+      window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
     [createPost.rejected]: (state, action) => {
@@ -163,7 +166,7 @@ export const postSlice = createSlice({
       state.posts = action.payload;
     },
     [readPostsByCategory.fulfilled]: (state, action) => {
-      console.log('readCategory action payload', action.payload);
+      // console.log('readCategory action payload', action.payload);
       state.posts = action.payload;
     },
     [readPostsByCategory.rejected]: (state, action) => {
@@ -173,7 +176,7 @@ export const postSlice = createSlice({
       state.isLoading = true;
     },
     [updatePost.fulfilled]: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
@@ -181,15 +184,19 @@ export const postSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    [searchPosts.fulfilled]: (state, action) => {
+      state.posts = action.payload;
+    },
+    [searchPosts.rejected]: (state, action) => {
+      console.log('no result', action.paylaod);
+      state.error = action.paylaod;
+    },
     [readAllComments.fulfilled]: (state, action) => {
       // console.log('comment action', action.payload);
       state.comments = action.payload;
     },
     [readAllComments.rejected]: (state, action) => {
       state.error = action.payload;
-    },
-    [searchPosts.fulfilled]: (state, action) => {
-      state.posts = action.payload;
     },
   },
 });

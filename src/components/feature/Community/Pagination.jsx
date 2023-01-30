@@ -7,14 +7,19 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import arrow from 'assets/images/postLeftArrow.svg';
+import { useSelector } from 'react-redux';
 
-function Pagination({ totalPage, setLimit, limit, page, setPage }) {
+function Pagination({ setLimit, limit, page, setPage }) {
+  const { totalPage } = useSelector((state) => state.posts.posts);
+
   const pageNumber = [];
   for (let i = 1; i <= totalPage; i += 1) {
     pageNumber.push(i);
   }
 
-  const [currPage, setCurrPage] = useState(page);
+  // console.log('pageNumber', pageNumber);
+
+  // const [currPage, setCurrPage] = useState(page);
   //   const num = currPage - (currPage % limit) + 1;
   //   console.log('num', pageNumber);
 
@@ -38,17 +43,12 @@ function Pagination({ totalPage, setLimit, limit, page, setPage }) {
         <img src={arrow} alt="왼쪽 화살표" />
       </StArrowBtn>
       {/* <button onClick={() => setPage(num)}>{num}</button> */}
-      {Array(pageNumber)
+      {pageNumber
         // .fill()
         .map((i) => {
           return (
-            <StPageNum
-              key={i + 1}
-              onClick={() => {
-                setPage(1 + i);
-              }}
-            >
-              {i}1
+            <StPageNum key={i} onClick={() => setPage(i - 1)}>
+              {i}
             </StPageNum>
           );
         })}

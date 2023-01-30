@@ -1,9 +1,8 @@
 /* eslint-disable react/no-array-index-key */
 // 외부 모듈
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useParams, Link } from 'react-router-dom';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
@@ -22,9 +21,7 @@ import PostCategory from '../CommunityHeader/PostCategory';
 import SearchPost from '../CommunityHeader/SearchPost';
 
 function PostList() {
-  const { totalPage, postCnt, postResponseDtoList } = useSelector(
-    (state) => state.posts.posts,
-  );
+  const { postResponseDtoList } = useSelector((state) => state.posts.posts);
 
   const [page, setPage] = useState(0);
   console.log('list page', page);
@@ -33,17 +30,17 @@ function PostList() {
   const [category, setCategory] = useState('freeBoard');
   console.log('list cate', category);
   const [keyword, setKeyword] = useState('');
+  console.log('list key', keyword);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (category === 'freeBoard') {
       dispatch(readAllPosts(page));
-    } else {
+    } else if (category === 'feedBackBoard') {
       dispatch(readPostsByCategory(page));
-    }
-    if (category === keyword) {
-      dispatch(searchPosts(keyword, page));
+    } else if (category === 'search') {
+      dispatch(searchPosts({ keyword, page }));
     }
   }, [category, page]);
 
@@ -56,10 +53,16 @@ function PostList() {
             <StCategoryAndSearch>
               <PostCategory
                 setCategory={setCategory}
+                setPage={setPage}
+                setKeyword={setKeyword}
+              />
+              <SearchPost
+                keyword={keyword}
+                setKeyword={setKeyword}
+                setCategory={setCategory}
                 page={page}
                 setPage={setPage}
               />
-              <SearchPost keyword={keyword} setKeyword={setKeyword} />
             </StCategoryAndSearch>
             <StPostBox>
               <StInfoBanner>
@@ -81,7 +84,7 @@ function PostList() {
               <StMyPost>
                 <img src={postMy} alt="내가 쓴 게시글 확인하기" />
               </StMyPost>
-              <Pagination />
+              <Pagination limit={limit} page={page} setPage={setPage} />
               <StWritePost>
                 <Link to="/posts/write">
                   <img src={postWrite} alt="글 작성하기" />
