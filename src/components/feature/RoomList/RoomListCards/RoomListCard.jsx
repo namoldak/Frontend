@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { readAllRooms } from 'redux/modules/roomSlice';
+import { readAllRooms, searchRoom } from 'redux/modules/roomSlice';
 import useSound from 'hooks/useSound';
 import bgm from 'assets/audio/bg.mp3';
 import roomListBanner from 'assets/images/roomListBanner.svg';
@@ -13,14 +13,13 @@ import rightArrow from 'assets/images/rightArrow.svg';
 import refreshBtn from 'assets/images/refreshBtn.svg';
 import Room from './Room';
 
-function RoomListCard() {
+function RoomListCard({ page, setPage, keyword, isSearch }) {
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
 
   // useSound(bgm, 0.01);
 
-  const [page, setPage] = useState(0);
   const dispatch = useDispatch();
 
   function refreshRoomList() {
@@ -28,8 +27,12 @@ function RoomListCard() {
   }
 
   useEffect(() => {
-    dispatch(readAllRooms(page));
-  }, [page]);
+    if (!isSearch) {
+      dispatch(readAllRooms(page));
+    } else {
+      dispatch(searchRoom({ keyword, page }));
+    }
+  }, [page, isSearch]);
 
   return (
     <StRoomListCardBox>
@@ -55,7 +58,7 @@ function RoomListCard() {
               );
             })}
         </StRoomBox>
-        {page <= totalPage - 2 ? (
+        {page < totalPage - 1 ? (
           <StRightBtn
             onClick={() => {
               setPage(page + 1);

@@ -90,6 +90,7 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
+      console.log('data', data);
       switch (data.type) {
         case 'ENTER': {
           // console.log('enter');
@@ -112,6 +113,7 @@ function GameRoomRTC() {
           setKeyword(data.content.keyword);
           setMyKeyword('???');
           if (myNickName === owner) {
+            sendChat({ message: data.content.startAlert, sender: data.sender });
             // startBtn.current.disabled = true;
             startBtn.current.style.display = 'none';
             leaveBtn.current.disabled = true;
@@ -269,7 +271,9 @@ function GameRoomRTC() {
   // end stomp client section
 
   // stomp client method
-  function sendChat(message) {
+  function sendChat({ message, sender }) {
+    console.log('msg', message);
+    console.log('sender', sender);
     if (message.trim() === '') {
       return;
     }
@@ -278,7 +282,7 @@ function GameRoomRTC() {
       body: JSON.stringify({
         type: 'CHAT',
         roomId: param.roomId,
-        sender: myNickName,
+        sender,
         message,
       }),
     });
