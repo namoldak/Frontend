@@ -18,7 +18,12 @@ const errorToastMsg = (MiddlewareAPI) => (next) => (action) => {
         window.location.href = '/login';
       }, 2000);
     }
-    if (action.payload.response.data.statusMsg) {
+    if (action.payload.response.data.statusCode === '400') {
+      useToast(`${action.payload.response.data.statusMsg}`, 'error');
+      setTimeout(function () {
+        window.location.href = '/login';
+      }, 2000);
+    } else if (action.payload.response.data.statusCode !== '400') {
       useToast(`${action.payload.response.data.statusMsg}`, 'error');
       setTimeout(function () {
         window.location.href = '/rooms';
