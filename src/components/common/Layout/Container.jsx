@@ -15,6 +15,9 @@ const StContainer = styled.div`
   height: 100vh;
   margin: 0 auto;
   /* padding-top: 20px; */
+  @media ${(props) => props.theme.laptop} {
+    width: 1080px;
+  }
 `;
 
 export default Container;

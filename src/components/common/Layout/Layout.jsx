@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import backImg from 'assets/images/backImg.png';
+import pageBack from 'assets/images/pageBack.png';
+import pageBackLaptop from 'assets/images/pageBackLaptop.png';
 import Container from './Container';
 
 function Layout() {
@@ -14,9 +15,13 @@ function Layout() {
 const StLayout = styled.div`
   width: 100%;
   height: 100vh;
-  background-image: url(${backImg});
+  background-image: url(${pageBack});
   background-size: cover;
   background-repeat: no-repeat;
+
+  @media ${(props) => props.theme.laptop} {
+    background-image: url(${pageBackLaptop});
+  }
 `;
 
 export default Layout;
