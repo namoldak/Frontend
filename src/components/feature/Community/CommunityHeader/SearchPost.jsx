@@ -14,15 +14,6 @@ function SearchPost({ keyword, setKeyword, page, setPage, setCategory }) {
   const dispatch = useDispatch();
   const input = useRef(null);
 
-  // function usePrevious(keyword) {
-  //   const ref = useRef();
-  //   useEffect(() => {
-  //     ref.current = keyword;
-  //   });
-  //   return ref.current;
-  // }
-  // usePrevious(keyword);
-
   function onClickSearchPost() {
     if (keyword.trim() === '') {
       return null;
@@ -54,7 +45,6 @@ function SearchPost({ keyword, setKeyword, page, setPage, setCategory }) {
         onChange={(e) => setKeyword(e.target.value)}
         onKeyUp={onKeyUpEnter}
       />
-      {/* eslint-disable-next-line react/jsx-no-bind */}
       {keyword === '' ? (
         <SearchBtn onClick={onClickSearchPost}>
           <img src={search} alt="검색버튼" />

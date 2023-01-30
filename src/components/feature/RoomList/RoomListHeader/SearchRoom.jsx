@@ -33,12 +33,11 @@ function SearchRoom() {
     <StSearchRoom>
       <input
         ref={input}
-        placeholder="방 제목을 검색하라닭"
+        placeholder="방 제목으로 검색이 가능하닭."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         onKeyUp={onKeyUpEnter}
       />
-      {/* eslint-disable-next-line react/jsx-no-bind */}
       <SearchBtn onClick={onClickSearchRoom}>
         <img src={search} alt="검색버튼" />
       </SearchBtn>
