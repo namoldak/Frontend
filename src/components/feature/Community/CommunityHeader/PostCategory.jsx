@@ -7,29 +7,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import select from 'assets/images/select.svg';
 import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
 
-function PostCategory() {
-  const dispatch = useDispatch();
+function PostCategory({ page }) {
+  const { totalPage, postCnt, postResponseDtoList } = useSelector(
+    (state) => state.posts.posts,
+  );
+  console.log('cate', totalPage);
+  console.log('cate posts', postResponseDtoList);
+  console.log('props', page);
 
-  const [category, setCategory] = useState('all');
-  console.log('cate', category);
+  const [category, setCategory] = useState('freeBoard');
+  const [myFeebackPage, setMyFeedbackPage] = useState(0);
+  const dispatch = useDispatch();
 
   function changeValue(target) {
     setCategory(target.target.value);
   }
 
   useEffect(() => {
-    if (category === 'all') {
-      dispatch(readAllPosts());
+    if (category === 'freeBoard') {
+      dispatch(readAllPosts(page));
     } else {
-      dispatch(readPostsByCategory(category));
+      dispatch(readPostsByCategory(myFeebackPage));
     }
   }, [category]);
 
   return (
     <StPostCategory>
       <select onChange={changeValue}>
-        <option value="all">자유게시판</option>
-        <option value="freeBoard">내가 쓴 게시글</option>
+        <option value="freeBoard">자유 게시판</option>
         <option value="feedbackBoard">내가 쓴 피드백</option>
       </select>
     </StPostCategory>

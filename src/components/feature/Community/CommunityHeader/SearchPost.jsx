@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 // 내부 모듈
 import search from 'assets/images/search.svg';
+import { searchPosts } from 'redux/modules/postSlice';
 
 function SearchPost() {
   const dispatch = useDispatch();
@@ -12,18 +13,19 @@ function SearchPost() {
   const input = useRef(null);
 
   // eslint-disable-next-line consistent-return
-  function onClickSearchRoom() {
+  function onClickSearchPost() {
     if (keyword.trim() === '') {
       return null;
     }
-    // dispatch(searchPost(keyword));
+    console.log('key', keyword);
+    dispatch(searchPosts(keyword));
     setKeyword('');
   }
 
   function onKeyUpEnter(event) {
     if (event.keyCode === 13) {
       document.activeElement.blur();
-      onClickSearchRoom();
+      onClickSearchPost();
       input.current.focus();
     }
   }
@@ -38,7 +40,7 @@ function SearchPost() {
         onKeyUp={onKeyUpEnter}
       />
       {/* eslint-disable-next-line react/jsx-no-bind */}
-      <SearchBtn onClick={onClickSearchRoom}>
+      <SearchBtn onClick={onClickSearchPost}>
         <img src={search} alt="검색버튼" />
       </SearchBtn>
     </StSearchRoom>

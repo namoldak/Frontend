@@ -6,30 +6,25 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import { readAllPosts } from 'redux/modules/postSlice';
+import settingBack from 'assets/images/settingBack.png';
 import leftArrow from 'assets/images/leftArrow.svg';
 import rightArrow from 'assets/images/rightArrow.svg';
-import landingBack from 'assets/images/landingBack.svg';
-import settingBack from 'assets/images/settingBack.png';
 import Post from './Post';
 import CommunityHeader from '../CommunityHeader/CommunityHeader';
 import WritePostBtn from '../CommunityHeader/WritePostBtn';
 
 function PostList() {
-  const { postCnt, postResponseDtoList } = useSelector(
+  const { totalPage, postCnt, postResponseDtoList } = useSelector(
     (state) => state.posts.posts,
   );
-  const dispatch = useDispatch();
-
   const [page, setPage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(page + 1);
-
-  console.log('page', page);
-  console.log('currentPage', currentPage);
 
   const pageNumber = [];
-  for (let i = 1; i <= Math.ceil(postCnt / 10); i += 1) {
+  for (let i = 1; i <= totalPage - 1; i += 1) {
     pageNumber.push(i);
   }
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(readAllPosts(page));
@@ -37,42 +32,20 @@ function PostList() {
 
   return (
     <StPostList>
-      {/* <button
-        onClick={() => {
-          setPage(page - 1);
-          setCurrentPage(page - 2);
-        }}
-        disabled={page === 0}
-      >
-        이전
-      </button>
-      <div>
-        {pageNumber.map((num) => (
-          <li
-            role="presentation"
-            key={num + 1}
-            onClick={() => {
-              setPage(num - 1);
-              setCurrentPage(num);
-            }}
-          >
-            <button>{num}</button>
-          </li>
-        ))}
-      </div>
-      <button
-        onClick={() => {
-          setPage(page + 1);
-          setCurrentPage(page + 2);
-        }}
-        disabled={page === pageNumber.length - 1}
-      >
-        다음
-      </button> */}
       <StListBackground>
         <StListBorder>
-          <CommunityHeader />
-          {/* <div style={{ marginTop: '20px' }}> */}
+          <CommunityHeader page={page} />
+          {page > 0 ? (
+            <StLeftBtn
+              onClick={() => {
+                setPage(page - 1);
+              }}
+            >
+              <img src={leftArrow} alt="이전" />
+            </StLeftBtn>
+          ) : (
+            <StEmptyDiv />
+          )}
           <StInfoBanner>
             <div>제목</div>
             <div>댓글 수</div>
@@ -87,8 +60,39 @@ function PostList() {
                 </StPostContainer>
               );
             })}
+          {page <= totalPage - 2 ? (
+            <StRightBtn
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              <img src={rightArrow} alt="다음" />
+            </StRightBtn>
+          ) : (
+            <StEmptyDiv />
+          )}
           {/* </div> */}
           <WritePostBtn />
+          {/* <div>
+            <div>
+              <button onClick={() => setPage(page - 1)} disabled={page === 0}>
+                이전
+              </button>
+              {pageNumber.map((num) => {
+                return (
+                  <button key={num} onClick={() => setPage(num)}>
+                    {num}
+                  </button>
+                );
+              })}
+              <button
+                onClick={() => setPage(page + 1)}
+                disabled={page === totalPage - 1}
+              >
+                다음
+              </button>
+            </div>
+          </div> */}
         </StListBorder>
       </StListBackground>
     </StPostList>

@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import PostCategory from './PostCategory';
 import SearchPost from './SearchPost';
 
-function CommunityHeader() {
+function CommunityHeader({ page }) {
   return (
     <StCommunityHeader>
-      <PostCategory />
+      <PostCategory page={page} />
       <SearchPost />
     </StCommunityHeader>
   );

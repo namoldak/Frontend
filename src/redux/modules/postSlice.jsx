@@ -82,7 +82,7 @@ export const readPostsByCategory = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(
-        `/posts/category?category=${payload}`,
+        `/posts/myPost?category=feedbackBoard&page=${payload}&size=5`,
       );
       console.log('res data', response.data);
       return thunkAPI.fulfillWithValue(response.data);
@@ -95,9 +95,10 @@ export const readPostsByCategory = createAsyncThunk(
 export const readOnePost = createAsyncThunk(
   'post/READ_ONE_POST',
   async (payload, thunkAPI) => {
-    // console.log('payload', payload);
+    console.log('payload', payload);
     try {
       const response = await instance.get(`posts/${payload}`);
+      console.log('res', response.data[0]);
       return thunkAPI.fulfillWithValue(response.data[0]);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -121,6 +122,20 @@ export const readAllComments = createAsyncThunk(
   },
 );
 
+export const searchPosts = createAsyncThunk(
+  `post/SEARCH_POSTS`,
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get(
+        `posts/search?category=freeBoard&keyword=${payload}`,
+      );
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
 export const postSlice = createSlice({
   name: 'posts',
   initialState,
@@ -131,7 +146,7 @@ export const postSlice = createSlice({
     },
     [createPost.fulfilled]: (state, action) => {
       // console.log(action.payload.id);
-      window.location.href = `/posts/${action.payload.id}`;
+      // window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
     [createPost.rejected]: (state, action) => {
@@ -148,7 +163,7 @@ export const postSlice = createSlice({
       state.posts = action.payload;
     },
     [readPostsByCategory.fulfilled]: (state, action) => {
-      // console.log('readCategory action payload', action.payload);
+      console.log('readCategory action payload', action.payload);
       state.posts = action.payload;
     },
     [readPostsByCategory.rejected]: (state, action) => {
@@ -169,6 +184,12 @@ export const postSlice = createSlice({
     [readAllComments.fulfilled]: (state, action) => {
       // console.log('comment action', action.payload);
       state.comments = action.payload;
+    },
+    [readAllComments.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [searchPosts.fulfilled]: (state, action) => {
+      state.posts = action.payload;
     },
   },
 });

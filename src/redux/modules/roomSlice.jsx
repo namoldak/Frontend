@@ -23,7 +23,7 @@ export const enterRoom = createAsyncThunk(
     // console.log('roomInfo', roomInfo);
     try {
       const response = await instance.post(`/rooms/${roomInfo.id}`);
-      // console.log('enterroom respose', response);
+      console.log('enterroom respose', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

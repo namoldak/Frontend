@@ -105,7 +105,6 @@ function PostDetail() {
             })}
           </StImgdiv>
           <div>{posts.content}</div>
-
           <div>
             <CreateComment commentPage={commentPage} />
             <button
