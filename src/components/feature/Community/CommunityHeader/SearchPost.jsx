@@ -31,7 +31,7 @@ function SearchPost({ keyword, setKeyword, page, setPage, setCategory }) {
     }
   }
 
-  function resetKeyword() {
+  function onClickResetKeyword() {
     setKeyword('');
     setCategory('freeBoard');
   }
@@ -50,7 +50,7 @@ function SearchPost({ keyword, setKeyword, page, setPage, setCategory }) {
           <img src={search} alt="검색버튼" />
         </SearchBtn>
       ) : (
-        <SearchBtn onClick={resetKeyword}>
+        <SearchBtn onClick={onClickResetKeyword}>
           <img src={smallClose} alt="검색 초기화" />
         </SearchBtn>
       )}

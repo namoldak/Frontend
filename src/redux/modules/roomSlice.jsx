@@ -8,9 +8,10 @@ const initialState = {
 export const createRoom = createAsyncThunk(
   'room/createRoom',
   async (newRoom, thunkAPI) => {
+    console.log('newRoom', newRoom);
     try {
       const response = await instance.post(`/rooms`, newRoom);
-      // console.log('response', response.data);
+      console.log('response', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -35,7 +36,7 @@ export const readAllRooms = createAsyncThunk(
   async (payload, thunkAPI) => {
     console.log('payload', payload);
     try {
-      const response = await instance.get(`/rooms?page=${payload}&size=4`);
+      const response = await instance.get(`/rooms?page=${payload}`);
       console.log('read rooms:', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
@@ -46,11 +47,13 @@ export const readAllRooms = createAsyncThunk(
 );
 export const searchRoom = createAsyncThunk(
   'room/searchRoom',
-  async (keyword, thunkAPI) => {
-    // console.log('keyword', keyword);
+  async (payload, thunkAPI) => {
+    console.log('keyword', payload);
     try {
-      const response = await instance.get(`/rooms/search?keyword=${keyword}`);
-      // console.log('search room', response);
+      const response = await instance.get(
+        `/rooms/search?page=${payload.page}&keyword=${payload.keyword}`,
+      );
+      console.log('search room', response);
       return thunkAPI.fulfillWithValue(response.data.gameRoomResponseDtoList);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

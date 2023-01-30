@@ -6,10 +6,10 @@ import styled from 'styled-components';
 // 내부 모듈
 import { searchRoom } from 'redux/modules/roomSlice';
 import search from 'assets/images/search.svg';
+import smallClose from 'assets/images/smallClose.svg';
 
-function SearchRoom() {
+function SearchRoom({ page, setPage, keyword, setKeyword, setIsSearch }) {
   const dispatch = useDispatch();
-  const [keyword, setKeyword] = useState('');
   const input = useRef(null);
 
   // eslint-disable-next-line consistent-return
@@ -17,8 +17,9 @@ function SearchRoom() {
     if (keyword.trim() === '') {
       return null;
     }
-    dispatch(searchRoom(keyword));
-    setKeyword('');
+    setPage(0);
+    dispatch(searchRoom({ keyword, page }));
+    setIsSearch(true);
   }
 
   function onKeyUpEnter(event) {
@@ -27,6 +28,11 @@ function SearchRoom() {
       onClickSearchRoom();
       input.current.focus();
     }
+  }
+
+  function onClickResetKeyword() {
+    setKeyword('');
+    setIsSearch(false);
   }
 
   return (
@@ -38,9 +44,15 @@ function SearchRoom() {
         onChange={(e) => setKeyword(e.target.value)}
         onKeyUp={onKeyUpEnter}
       />
-      <SearchBtn onClick={onClickSearchRoom}>
-        <img src={search} alt="검색버튼" />
-      </SearchBtn>
+      {keyword === '' ? (
+        <SearchBtn onClick={onClickSearchRoom}>
+          <img src={search} alt="검색버튼" />
+        </SearchBtn>
+      ) : (
+        <SearchBtn onClick={onClickResetKeyword}>
+          <img src={smallClose} alt="검색 초기화" />
+        </SearchBtn>
+      )}
     </StSearchRoom>
   );
 }
