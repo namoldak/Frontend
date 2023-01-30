@@ -30,7 +30,7 @@ function WritePost() {
   }
 
   return (
-    <StWritePost>
+    <>
       <StTitleCategory>
         <StWriteTitle
           onChange={(e) => {
@@ -53,48 +53,57 @@ function WritePost() {
       <StWritePostBtn type="button" onClick={sendPost}>
         <img src={postBtn} alt="확인" />
       </StWritePostBtn>
-    </StWritePost>
+    </>
   );
 }
 
-const StWritePost = styled.div`
-  width: 100%;
-  height: 521px;
-`;
-
 const StTitleCategory = styled.div`
-  width: 100%;
-  justify-content: center;
   display: flex;
   height: 54px;
   margin-bottom: 12px;
 `;
 
 const StWriteTitle = styled.input`
-  display: inline-block;
   width: 717px;
-  height: 100%;
-  resize: none;
-  font-size: 20px;
-  line-height: 54px;
+  background: ${({ theme }) => theme.colors.lightBeige};
   border-radius: 10px;
-  background-color: #f5ecd9;
+  padding-left: 17px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.text3};
+
   ::placeholder {
-    font-size: 20px;
-    line-height: 54px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0.1em;
+    color: ${({ theme }) => theme.colors.text3};
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 
 const StCategorySelect = styled.select`
-  display: inline-block;
   width: 205px;
-  height: 100%;
-  background-color: #f5ecd9;
-  border: 6px solid #f0a430;
+  background: ${({ theme }) => theme.colors.lightBeige};
+  border: 6px solid ${({ theme }) => theme.colors.yellow};
   border-radius: 10px;
   margin-left: 12px;
+  appearance: none;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.2em;
+  color: ${({ theme }) => theme.colors.text3};
   text-align: center;
-  font-size: 20px;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const StOption = styled.option`
@@ -105,13 +114,26 @@ const StWriteContent = styled.textarea`
   width: 934px;
   height: 340px;
   border-radius: 4px;
-  background-color: #f5ecd9;
-  resize: none;
-  font-size: 20px;
-  line-height: 20px;
+  background: ${({ theme }) => theme.colors.lightBeige};
+  padding: 15px 0 0 17px;
+  font-family: 'CoreDream';
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.text3};
+
   ::placeholder {
-    font-size: 20px;
-    line-height: 20px;
+    font-family: 'CoreDream';
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0.1em;
+    color: ${({ theme }) => theme.colors.text3};
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 

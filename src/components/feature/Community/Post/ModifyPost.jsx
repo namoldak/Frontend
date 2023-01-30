@@ -32,16 +32,16 @@ function ModifyPost() {
   }, []);
 
   return (
-    <StModifyPost>
+    <>
       <StTitleCategory>
-        <StTitleArea
+        <StModifyTitle
           value={title}
           onChange={(e) => {
             setTitle(e.target.value);
           }}
         />
       </StTitleCategory>
-      <StContentArea
+      <StModifyContent
         value={content}
         onChange={(e) => {
           setContent(e.target.value);
@@ -51,40 +51,41 @@ function ModifyPost() {
       <StWritePostBtn type="button" onClick={modifyPost}>
         <img src={postBtn} alt="확인" />
       </StWritePostBtn>
-    </StModifyPost>
+    </>
   );
 }
 
-const StModifyPost = styled.div`
+const StModifyTitle = styled.input`
   width: 100%;
-  height: 521px;
-`;
-
-const StTitleArea = styled.input`
-  display: inline-block;
-  width: 934px;
-  height: 100%;
-  resize: none;
-  font-size: 20px;
-  line-height: 54px;
+  background: ${({ theme }) => theme.colors.lightBeige};
   border-radius: 10px;
-  background-color: #f5ecd9;
-  ::placeholder {
-    font-size: 20px;
-    line-height: 54px;
+  padding-left: 17px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.text3};
+
+  &:focus {
+    outline: none;
   }
 `;
-const StContentArea = styled.textarea`
-  width: 934px;
+
+const StModifyContent = styled.textarea`
+  width: 100%;
   height: 340px;
   border-radius: 4px;
-  background-color: #f5ecd9;
-  resize: none;
-  font-size: 20px;
-  line-height: 20px;
-  ::placeholder {
-    font-size: 20px;
-    line-height: 20px;
+  background: ${({ theme }) => theme.colors.lightBeige};
+  padding: 15px 0 0 17px;
+  font-family: 'CoreDream';
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.text3};
+
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -95,6 +96,7 @@ const StTitleCategory = styled.div`
   height: 54px;
   margin-bottom: 12px;
 `;
+
 const StWritePostBtn = styled.button`
   margin-top: 12px;
   display: block;

@@ -24,10 +24,9 @@ function ImgUpload({ setImgs }) {
   return (
     <StImgUpload>
       <StSpan>첨부파일</StSpan>
+      <span>|</span>
       <StFileName readOnly ref={inputRef} />
-      <StLabel htmlFor="file">
-        <img src={imageUploadBtn} alt="이미지" />
-      </StLabel>
+      <StLabel htmlFor="file">첨부하기</StLabel>
       <StinputImg
         id="file"
         type="file"
@@ -42,39 +41,57 @@ function ImgUpload({ setImgs }) {
 }
 
 const StImgUpload = styled.div`
+  display: flex;
+  align-items: center;
   width: 338px;
   height: 46px;
   border-radius: 4px;
-  background-color: #f6d5a1;
-  display: flex;
-  align-items: center;
+  background: ${({ theme }) => theme.colors.yellowBeige};
   margin-top: 12px;
   margin-left: auto;
   padding-left: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+
+  span {
+    margin-right: 2px;
+  }
 `;
 
 const StSpan = styled.span`
-  width: 71px;
-  font-weight: 500;
+  width: 66px;
   font-size: 16px;
   line-height: 19px;
-  letter-spacing: 0.1em;
-  color: #020202;
+  color: ${({ theme }) => theme.colors.text3};
 `;
 
 const StFileName = styled.input`
   max-width: 160px;
   border: none;
-  background-color: #f6d5a1;
+  background: ${({ theme }) => theme.colors.yellowBeige};
   font-size: 14px;
+  line-height: 17px;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const StLabel = styled.label`
+  display: flex;
+  justify-content: center;
+  width: 78px;
+  height: 27px;
+  background: ${({ theme }) => theme.colors.lightBrown};
+  border-radius: 4px;
   margin-left: auto;
-  background-image: url(${imageUploadBtn});
-  background-size: cover;
-  background-repeat: no-repeat;
-  margin-right: 3px;
+  margin-right: 10px;
+  color: ${({ theme }) => theme.colors.lightBeige};
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 27px;
+  letter-spacing: 0.1em;
+  align-items: center;
 `;
 
 const StinputImg = styled.input`
