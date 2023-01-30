@@ -146,7 +146,7 @@ export const postSlice = createSlice({
     },
     [createPost.fulfilled]: (state, action) => {
       // console.log(action.payload.id);
-      // window.location.href = `/posts/${action.payload.id}`;
+      window.location.href = `/posts/${action.payload.id}`;
       state.isLoading = false;
     },
     [createPost.rejected]: (state, action) => {
