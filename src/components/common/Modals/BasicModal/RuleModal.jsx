@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { getCookie } from 'utils/cookies';
 import closeBtn from 'assets/images/closeBtn.svg';
 import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
-import landingBack from 'assets/images/landingBack.svg';
+import landingBack from 'assets/images/landingBack.png';
 import landingToLoginBtn from 'assets/images/landingToLoginBtn.svg';
 import ModalPortal from '../ModalPortal';
 
