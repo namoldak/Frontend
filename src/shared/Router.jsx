@@ -23,6 +23,9 @@ function Router() {
           <Route path="/rooms" element={<RoomListPage />} />
         </Route>
         <Route element={<Layout />}>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/gameroom" element={<Navigate to="/rooms" replace />} />
           <Route path="/gameroom/:roomId" element={<GameRoomPage />} />
           <Route path="/login" element={<LoginPage />} />
