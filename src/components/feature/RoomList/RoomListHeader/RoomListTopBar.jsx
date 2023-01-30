@@ -22,7 +22,7 @@ function RoomListTopBar() {
   }, [getCookie]);
 
   return (
-    <StHeaderBox>
+    <StRoomListTopBar>
       <Link to="/">
         <StBackBtn>
           <img src={backBtn} alt="뒤로 가기" />
@@ -59,18 +59,13 @@ function RoomListTopBar() {
       >
         <img src={settingBtn} alt="설정" />
       </StSettingBtn>
-    </StHeaderBox>
+    </StRoomListTopBar>
   );
 }
 
-const StHeaderBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+const StRoomListTopBar = styled.div`
+  ${({ theme }) => theme.common.flexBetween}
   height: 78px;
-
-  width: 100%;
-  margin: 0 auto;
 `;
 
 const StBackBtn = styled.button`
