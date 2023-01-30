@@ -5,6 +5,7 @@ const initialState = {
   posts: [],
   comments: [],
   error: null,
+  isLoading: false,
 };
 
 export const createPost = createAsyncThunk(
@@ -104,21 +105,6 @@ export const readOnePost = createAsyncThunk(
   },
 );
 
-export const readAllComments = createAsyncThunk(
-  'comment/READ_ALL_COMMENT',
-  async (payload, thunkAPI) => {
-    // console.log('comment payload', payload);
-    try {
-      const response = await instance.get(
-        `/posts/${payload.id}/comments/all?page=${payload.commentPage}&size=10`,
-      );
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
 export const searchPosts = createAsyncThunk(
   `post/SEARCH_POSTS`,
   async (payload, thunkAPI) => {
@@ -177,13 +163,6 @@ export const postSlice = createSlice({
     },
     [updatePost.rejected]: (state, action) => {
       state.isLoading = false;
-      state.error = action.payload;
-    },
-    [readAllComments.fulfilled]: (state, action) => {
-      // console.log('comment action', action.payload);
-      state.comments = action.payload;
-    },
-    [readAllComments.rejected]: (state, action) => {
       state.error = action.payload;
     },
     [searchPosts.fulfilled]: (state, action) => {
