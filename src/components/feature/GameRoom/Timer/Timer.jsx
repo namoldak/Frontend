@@ -41,6 +41,7 @@ const StTimerText = styled.div`
   background-repeat: no-repeat;
   width: 282px;
   height: 323px;
+  margin-right: 137px;
 
   span {
     position: absolute;

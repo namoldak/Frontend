@@ -19,7 +19,6 @@ import voiceOff from 'assets/images/voiceOff.svg';
 import cameraOff from 'assets/images/cameraOff.svg';
 import cameraOn from 'assets/images/cameraOn.svg';
 import backBtn from 'assets/images/backBtn.svg';
-import settingBtn from 'assets/images/settingBtn.svg';
 import gameStartBtn from 'assets/images/startBtn.svg';
 import categoryImg from 'assets/images/category.svg';
 import star from 'assets/images/star.svg';
@@ -694,37 +693,32 @@ function GameRoomRTC() {
         >
           &nbsp;
         </StLeaveBtn>
-        <StHeaderBtnBox>
-          {isOwner && (
-            <StStartBtn ref={startBtn} onClick={gameStart}>
-              &nbsp;
-            </StStartBtn>
+        {isOwner && (
+          <StStartBtn ref={startBtn} onClick={gameStart}>
+            &nbsp;
+          </StStartBtn>
+        )}
+        <>
+          {isSpotTimer && (
+            <SpotTimer
+              setIsSpotTimer={setIsSpotTimer}
+              setIsMyTurnModal={setIsMyTurnModal}
+            />
           )}
-          <div>
-            {isSpotTimer && (
-              <SpotTimer
-                setIsSpotTimer={setIsSpotTimer}
-                setIsMyTurnModal={setIsMyTurnModal}
-              />
-            )}
-            {isTimer && <Timer setIsTimer={setIsTimer} />}
-            {isMyTurnModal && (
-              <GameModal
-                content={
-                  <GameAnswerModal
-                    setIsMyTurnModal={setIsMyTurnModal}
-                    sendAnswer={sendAnswer}
-                    nickName={myNickName}
-                    skipAnswer={skipAnswer}
-                  />
-                }
-              />
-            )}
-          </div>
-          <StSettingBtn className={isStartModal ? '' : 'clock'}>
-            <img src={settingBtn} alt="설정버튼" />
-          </StSettingBtn>
-        </StHeaderBtnBox>
+          {isTimer && <Timer setIsTimer={setIsTimer} />}
+          {isMyTurnModal && (
+            <GameModal
+              content={
+                <GameAnswerModal
+                  setIsMyTurnModal={setIsMyTurnModal}
+                  sendAnswer={sendAnswer}
+                  nickName={myNickName}
+                  skipAnswer={skipAnswer}
+                />
+              }
+            />
+          )}
+        </>
       </StGameRoomHeader>
       <StGameRoomMain>
         <StGameCategoryAndUserCards>
@@ -842,28 +836,16 @@ const StLeaveBtn = styled.button`
   background-repeat: no-repeat;
   margin-right: auto;
   width: 80px;
-`;
-
-const StHeaderBtnBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+  height: 80px;
 `;
 
 const StStartBtn = styled.button`
   background-image: url(${gameStartBtn});
   background-size: center;
   background-repeat: no-repeat;
-  margin-right: 93px;
   width: 210px;
-`;
-
-const StSettingBtn = styled.button`
-  margin-left: auto;
-  height: 80px;
-
-  &.clock {
-    margin-left: 58px;
-  }
+  height: 79px;
+  margin-right: 171px;
 `;
 
 const StGameRoomMain = styled.div`

@@ -99,7 +99,7 @@ function SignUp() {
       if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
       } else {
-        useToast('이미 사용 중인 닉네임입니다.', 'warning');
+        useToast('이미 사용 중인 닉네임입니다.', 'error');
       }
       setNickValid(response.data);
     });
