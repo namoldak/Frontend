@@ -33,45 +33,50 @@ function PostCategory({ page }) {
 
   return (
     <StPostCategory>
-      <select onChange={changeValue}>
-        <option value="freeBoard">자유 게시판</option>
-        <option value="feedbackBoard">내가 쓴 피드백</option>
-      </select>
+      <StSelect onChange={changeValue}>
+        <StOption value="freeBoard">자유 게시판</StOption>
+        <StOption value="feedbackBoard">내가 쓴 피드백</StOption>
+      </StSelect>
     </StPostCategory>
   );
 }
 
 const StPostCategory = styled.div`
-  position: relative;
+  ${({ theme }) => theme.common.flexBetween}
 
-  select {
-    width: 240px;
-    height: 60px;
-    background: ${({ theme }) => theme.colors.lightBeige};
-    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    border-radius: 10px;
-    font-size: 18px;
-    color: ${({ theme }) => theme.colors.text};
-    text-indent: 16px;
-    line-height: 22px;
-    -webkit-appearance: none; /* for chrome */
-    -moz-appearance: none; /*for firefox*/
-    appearance: none;
+  width: 205px;
+  height: 54px;
+  background: ${({ theme }) => theme.colors.lightBeige};
+  border: 6px solid ${({ theme }) => theme.colors.yellowBrown};
+  border-radius: 10px;
+  padding-left: 20px;
 
-    background-image: url(${select});
-    background-repeat: no-repeat;
-    background-position: 96% center;
-    cursor: pointer;
-  }
+  background-image: url(${select}); // arrow
+  background-repeat: no-repeat;
+  background-position: 90% center;
+`;
 
-  select::-ms-expand {
+const StSelect = styled.select`
+  -webkit-appearance: none; /* for chrome */
+  -moz-appearance: none; /*for firefox*/
+  appearance: none; // select 태그 기본 css reset
+  cursor: pointer;
+  border: 0;
+
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  color: ${({ theme }) => theme.colors.text3};
+
+  &::-ms-expand {
     display: none; /*for IE10,11*/
   }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
-const StArrow = styled.image`
-  width: 20px;
-  height: 30px;
-`;
+const StOption = styled.option``;
 
 export default PostCategory;
