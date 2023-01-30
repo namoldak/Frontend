@@ -7,8 +7,11 @@ import styled from 'styled-components';
 import { getNicknameCookie, removeCookie } from 'utils/cookies';
 import useToast from 'hooks/useToast';
 import logout from 'assets/images/logout.svg';
+import { instance } from 'api/core/axios';
 
 function LogOutTab({ setting }) {
+  const [createAt, setCreateAt] = useState('');
+  const [myEmail, setMyEmail] = useState('');
   const nickname = getNicknameCookie('nickname');
   function onClickLogOut() {
     if (nickname === undefined) {
@@ -22,12 +25,18 @@ function LogOutTab({ setting }) {
     }
   }
 
+  useEffect(() => {
+    instance.get('/auth/myData').then((res) => {
+      setCreateAt(res.data.createdAt);
+      setMyEmail(res.data.email);
+    });
+  }, []);
   return (
     <StLogOutTab>
       <StUserInfo>
         <li>계정 : {nickname}님</li>
-        <li>가입 이메일 : </li>
-        <li>가입일 : </li>
+        <li>가입 이메일 : {myEmail} </li>
+        <li>가입일 : {createAt}</li>
       </StUserInfo>
       <hr />
       <StNotice>게임을 로그아웃하시겠습니까?</StNotice>
