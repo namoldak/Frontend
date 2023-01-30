@@ -239,6 +239,10 @@ function SignUp() {
 
 const StSignUp = styled.div`
   padding-top: 72px;
+
+  @media ${(props) => props.theme.laptop} {
+    padding-top: 30px;
+  }
 `;
 
 const StBackBtn = styled.button`
@@ -253,6 +257,10 @@ const StSignUpWrapper = styled.div`
   background-repeat: no-repeat;
   margin: 0 auto;
   margin-top: 44px;
+
+  @media ${(props) => props.theme.laptop} {
+    margin-top: 22px;
+  }
 `;
 
 const StSignUpContainer = styled.form`
