@@ -17,9 +17,7 @@ function Pagination({ setLimit, limit, page, setPage }) {
     pageNumber.push(i);
   }
 
-  // console.log('pageNumber', pageNumber);
-
-  // const [currPage, setCurrPage] = useState(page);
+  const [currPage, setCurrPage] = useState(1);
   //   const num = currPage - (currPage % limit) + 1;
   //   console.log('num', pageNumber);
 
@@ -37,25 +35,27 @@ function Pagination({ setLimit, limit, page, setPage }) {
       <StArrowBtn
         onClick={() => {
           setPage(page - 1);
+          setCurrPage(page - 2);
         }}
         disabled={page === 0}
       >
         <img src={arrow} alt="왼쪽 화살표" />
       </StArrowBtn>
       {/* <button onClick={() => setPage(num)}>{num}</button> */}
-      {pageNumber
-        // .fill()
-        .map((i) => {
-          return (
-            <StPageNum key={i} onClick={() => setPage(i - 1)}>
-              {i}
-            </StPageNum>
-          );
-        })}
+      {pageNumber &&
+        pageNumber
+          // .fill()
+          .map((n) => {
+            return (
+              <StPageNum key={n + 1} onClick={() => setPage(n - 1)}>
+                {n}
+              </StPageNum>
+            );
+          })}
       <StArrowBtn
         onClick={() => {
           setPage(page + 1);
-          //   setCurrPage(page);
+          setCurrPage(page + 2);
         }}
         disabled={page === totalPage - 1}
       >
