@@ -8,16 +8,12 @@ import select from 'assets/images/select.svg';
 import { readAllPosts, readPostsByCategory } from 'redux/modules/postSlice';
 
 function PostCategory({ page }) {
+  const dispatch = useDispatch();
+  const [category, setCategory] = useState('freeBoard');
+  const [myFeebackPage, setMyFeedbackPage] = useState(0);
   const { totalPage, postCnt, postResponseDtoList } = useSelector(
     (state) => state.posts.posts,
   );
-  console.log('cate', totalPage);
-  console.log('cate posts', postResponseDtoList);
-  console.log('props', page);
-
-  const [category, setCategory] = useState('freeBoard');
-  const [myFeebackPage, setMyFeedbackPage] = useState(0);
-  const dispatch = useDispatch();
 
   function changeValue(target) {
     setCategory(target.target.value);
@@ -67,6 +63,7 @@ const StSelect = styled.select`
   font-size: 18px;
   line-height: 21px;
   color: ${({ theme }) => theme.colors.text3};
+  background: transparent;
 
   &::-ms-expand {
     display: none; /*for IE10,11*/

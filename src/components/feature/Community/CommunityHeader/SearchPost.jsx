@@ -17,7 +17,6 @@ function SearchPost() {
     if (keyword.trim() === '') {
       return null;
     }
-    console.log('key', keyword);
     dispatch(searchPosts(keyword));
     setKeyword('');
   }

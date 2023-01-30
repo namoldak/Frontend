@@ -22,23 +22,6 @@ function AccountTab({ setting }) {
     }
   }
 
-  // async function onClickDeleteAccount() {
-  //   instance
-  //     .delete(`/auth/deleteMember`, { data: { password } })
-  //     .then((response) => {
-  //       removeCookie('my_token', 'nickname');
-  //       setPassMsg(response.data.statusMsg);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       if (error.response.data.statusCode === 401) {
-  //         setPassMsg(error.response.data.statusMsg);
-  //       } else {
-  //         setPassMsg('오류가 발생했습니다. 다시 시도해주세요.');
-  //       }
-  //     });
-  // }
-
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {
       onClickConfirm();

@@ -23,7 +23,7 @@ export const enterRoom = createAsyncThunk(
     // console.log('roomInfo', roomInfo);
     try {
       const response = await instance.post(`/rooms/${roomInfo.id}`);
-      console.log('enterroom respose', response);
+      // console.log('enterroom respose', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -33,10 +33,10 @@ export const enterRoom = createAsyncThunk(
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
   async (payload, thunkAPI) => {
-    console.log('payload', payload);
+    // console.log('payload', payload);
     try {
       const response = await instance.get(`/rooms?page=${payload}&size=4`);
-      console.log('read rooms:', response);
+      // console.log('read rooms:', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       // console.log('read rooms error:', error);

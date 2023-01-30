@@ -8,10 +8,8 @@ import { instance } from './core/axios';
 const SignUp = async (data) => {
   try {
     const response = await instance.post('/auth/signup', data);
-    // console.log('postSignup response:', response);
     return response;
   } catch (error) {
-    // console.log('postSignup response error:', error);
     useToast('회원가입이 실패했습니다. 다시 시도해주세요.', 'error');
     // window.location.reload();
   }
@@ -20,12 +18,9 @@ const SignUp = async (data) => {
 
 const Login = async (data) => {
   try {
-    // console.log('서버', data);
     const response = await instance.post('/auth/login', data);
-    // console.log('Login response:', response);
     return response;
   } catch (error) {
-    // console.log('Login response error:', error);
     useToast('로그인에 실패했습니다. 다시 한번 시도해주세요.', 'error');
   }
   return null;
@@ -36,7 +31,6 @@ const Login = async (data) => {
 const KakaoLogin = async (code) => {
   try {
     const response = await instance.get(`auth/kakao/callback?code=${code}`);
-    console.log('서버 카카오 response', response);
     return response;
   } catch (error) {
     useToast('에러가 발생했습니다', 'error');
@@ -47,11 +41,9 @@ const KakaoLogin = async (code) => {
 // 닉네임 중복 확인
 const checkNickName = async (nickname) => {
   try {
-    // console.log('서버 nick', nickname);
     const response = await instance.post(
       `/auth/nicknameCheck?nickname=${nickname}`,
     );
-    // console.log('서버 nick response', response);
     return response;
   } catch (error) {
     useToast('에러가 발생했습니다', 'error');

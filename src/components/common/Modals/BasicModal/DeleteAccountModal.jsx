@@ -14,8 +14,6 @@ function DeleteAccountModal({ input, setting }) {
   const [password, setPassword] = useState('');
 
   async function onClickDeleteAccount() {
-    console.log(password);
-    console.log(input);
     if (password === '') {
       useToast('비밀번호를 입력해주세요', 'warning');
     } else if (password !== input) {
@@ -31,7 +29,6 @@ function DeleteAccountModal({ input, setting }) {
           }, 1500);
         })
         .catch((error) => {
-          console.log(error);
           if (error.response.data.statusCode === 401) {
             useToast(`${error.response.data.statusMsg}`, 'error');
           } else {
