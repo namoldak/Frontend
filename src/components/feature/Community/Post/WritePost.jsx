@@ -106,7 +106,7 @@ function WritePost() {
 }
 
 const StTitleCategory = styled.div`
-  display: flex;
+  display: inline-block;
   height: 54px;
   margin-bottom: 12px;
 `;
