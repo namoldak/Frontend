@@ -19,30 +19,55 @@ import PostCategory from './PostCategoryAndSearch/PostCategory';
 import SearchPost from './PostCategoryAndSearch/SearchPost';
 
 function PostList() {
-  const dispatch = useDispatch();
   const [page, setPage] = useState(0);
+  const [currPage, setCurrPage] = useState(page + 1);
   const [category, setCategory] = useState('freeBoard');
   const [keyword, setKeyword] = useState('');
-  const { totalPage, postCnt, postResponseDtoList } = useSelector(
-    (state) => state.posts.posts,
-  );
+  const [isMyPost, setIsMyPost] = useState(false);
+  const { postResponseDtoList } = useSelector((state) => state.posts.posts);
+
+  console.log('mypost', isMyPost);
+
+  const dispatch = useDispatch();
+
+  function onClickMyPosts() {
+    setIsMyPost(true);
+    setCategory('freeBoard');
+    setPage(0);
+    setCurrPage(1);
+    dispatch(readPostsByCategory({ category, page }));
+  }
 
   useEffect(() => {
-    if (category === 'freeBoard') {
+    if (isMyPost === false && category === 'freeBoard') {
       dispatch(readAllPosts(page));
-    } else {
-      dispatch(readPostsByCategory(page));
+    } else if (category === 'feedBackBoard') {
+      dispatch(readPostsByCategory({ category, page }));
+    } else if (category === 'search') {
+      dispatch(searchPosts({ keyword, page }));
+    } else if (isMyPost === true && category === 'freeBoard') {
+      dispatch(readPostsByCategory({ category, page }));
     }
-    if (category === keyword) {
-      dispatch(searchPosts(keyword, page));
-    }
-  }, [category, page]);
+  }, [category, page, isMyPost]);
 
   return (
     <>
       <StCategoryAndSearch>
-        <PostCategory setCategory={setCategory} page={page} setPage={setPage} />
-        <SearchPost keyword={keyword} setKeyword={setKeyword} />
+        <PostCategory
+          setCategory={setCategory}
+          setPage={setPage}
+          setKeyword={setKeyword}
+          setCurrPage={setCurrPage}
+          setIsMyPost={setIsMyPost}
+        />
+        <SearchPost
+          keyword={keyword}
+          setKeyword={setKeyword}
+          setCategory={setCategory}
+          page={page}
+          setPage={setPage}
+          setCurrPage={setCurrPage}
+        />
       </StCategoryAndSearch>
       <StPostBox>
         <StInfoBanner>
@@ -61,10 +86,15 @@ function PostList() {
           })}
       </StPostBox>
       <StCommunityBottom>
-        <StMyPost>
+        <StMyPost onClick={onClickMyPosts}>
           <img src={postMy} alt="내가 쓴 게시글 확인하기" />
         </StMyPost>
-        <Pagination />
+        <Pagination
+          page={page}
+          setPage={setPage}
+          currPage={currPage}
+          setCurrPage={setCurrPage}
+        />
         <StWritePost>
           <Link to="/posts/write">
             <img src={postWrite} alt="글 작성하기" />
