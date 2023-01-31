@@ -24,13 +24,9 @@ function PostList() {
   const { postResponseDtoList } = useSelector((state) => state.posts.posts);
 
   const [page, setPage] = useState(0);
-  console.log('list page', page);
-  const [limit, setLimit] = useState(5);
-
+  const [currPage, setCurrPage] = useState(page + 1);
   const [category, setCategory] = useState('freeBoard');
-  console.log('list cate', category);
   const [keyword, setKeyword] = useState('');
-  console.log('list key', keyword);
 
   const dispatch = useDispatch();
 
@@ -55,6 +51,7 @@ function PostList() {
                 setCategory={setCategory}
                 setPage={setPage}
                 setKeyword={setKeyword}
+                setCurrPage={setCurrPage}
               />
               <SearchPost
                 keyword={keyword}
@@ -62,6 +59,7 @@ function PostList() {
                 setCategory={setCategory}
                 page={page}
                 setPage={setPage}
+                setCurrPage={setCurrPage}
               />
             </StCategoryAndSearch>
             <StPostBox>
@@ -84,7 +82,12 @@ function PostList() {
               <StMyPost>
                 <img src={postMy} alt="내가 쓴 게시글 확인하기" />
               </StMyPost>
-              <Pagination limit={limit} page={page} setPage={setPage} />
+              <Pagination
+                page={page}
+                setPage={setPage}
+                currPage={currPage}
+                setCurrPage={setCurrPage}
+              />
               <StWritePost>
                 <Link to="/posts/write">
                   <img src={postWrite} alt="글 작성하기" />

@@ -9,67 +9,32 @@ import styled from 'styled-components';
 import arrow from 'assets/images/postLeftArrow.svg';
 import { useSelector } from 'react-redux';
 
-function Pagination({ setLimit, limit, page, setPage }) {
+function Pagination({ page, setPage, currPage, setCurrPage }) {
   const { totalPage } = useSelector((state) => state.posts.posts);
-
-  const pageNumber = [];
-  for (let i = 1; i <= totalPage; i += 1) {
-    pageNumber.push(i);
-  }
-
-  const [currPage, setCurrPage] = useState(1);
-  //   const num = currPage - (currPage % limit) + 1;
-  //   console.log('num', pageNumber);
 
   return (
     <StPagination>
-      {/* <button
-        onClick={() => {
-          setPage(0);
-          setCurrPage(firstNum);
-        }}
-        disabled={page === 0}
-      >
-        &lt;&lt;/
-      </button> */}
       <StArrowBtn
         onClick={() => {
           setPage(page - 1);
-          setCurrPage(page - 2);
+          setCurrPage(currPage - 1);
         }}
         disabled={page === 0}
       >
         <img src={arrow} alt="왼쪽 화살표" />
       </StArrowBtn>
-      {/* <button onClick={() => setPage(num)}>{num}</button> */}
-      {pageNumber &&
-        pageNumber
-          // .fill()
-          .map((n) => {
-            return (
-              <StPageNum key={n + 1} onClick={() => setPage(n - 1)}>
-                {n}
-              </StPageNum>
-            );
-          })}
+      <StPageNum>
+        {currPage}/{totalPage}
+      </StPageNum>
       <StArrowBtn
         onClick={() => {
           setPage(page + 1);
-          setCurrPage(page + 2);
+          setCurrPage(currPage + 1);
         }}
         disabled={page === totalPage - 1}
       >
         <img src={arrow} alt="오른쪽 화살표" className="right" />
       </StArrowBtn>
-      {/* <button
-        onClick={() => {
-          setPage(totalPage - 1);
-          setCurrPage(totalPage);
-        }}
-        disabled={page === totalPage - 1}
-      >
-        / &gt;&gt;
-      </button> */}
     </StPagination>
   );
 }
