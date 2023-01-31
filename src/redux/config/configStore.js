@@ -6,10 +6,12 @@ import errorToastMsg from 'redux/modules/errorToastMsg';
 // 내부 모듈
 import posts from 'redux/modules/postSlice';
 import rooms from '../modules/roomSlice';
+import comments from '../modules/commentSlice';
 
 const rootReducer = combineReducers({
   rooms,
   posts,
+  // comments,
 });
 
 const store = configureStore({

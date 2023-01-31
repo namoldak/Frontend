@@ -3,7 +3,6 @@ import { instance } from 'api/core/axios';
 
 const initialState = {
   posts: [],
-  comments: [],
   error: null,
   isLoading: false,
 };
