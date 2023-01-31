@@ -24,25 +24,32 @@ function PostList() {
   const { postResponseDtoList } = useSelector((state) => state.posts.posts);
 
   const [page, setPage] = useState(0);
-  console.log('list page', page);
-  const [limit, setLimit] = useState(5);
-
+  const [currPage, setCurrPage] = useState(page + 1);
   const [category, setCategory] = useState('freeBoard');
-  console.log('list cate', category);
   const [keyword, setKeyword] = useState('');
-  console.log('list key', keyword);
+  const [isMyPost, setIsMyPost] = useState(false);
 
   const dispatch = useDispatch();
 
+  function onClickMyPosts() {
+    setIsMyPost(true);
+    setCategory('freeBoard');
+    setPage(0);
+    setCurrPage(1);
+    dispatch(readPostsByCategory({ category, page }));
+  }
+
   useEffect(() => {
-    if (category === 'freeBoard') {
+    if (isMyPost === false && category === 'freeBoard') {
       dispatch(readAllPosts(page));
     } else if (category === 'feedBackBoard') {
-      dispatch(readPostsByCategory(page));
+      dispatch(readPostsByCategory({ category, page }));
     } else if (category === 'search') {
       dispatch(searchPosts({ keyword, page }));
+    } else if (isMyPost === true && category === 'freeBoard') {
+      dispatch(readPostsByCategory({ category, page }));
     }
-  }, [category, page]);
+  }, [category, page, isMyPost]);
 
   return (
     <StPostList>
@@ -55,6 +62,8 @@ function PostList() {
                 setCategory={setCategory}
                 setPage={setPage}
                 setKeyword={setKeyword}
+                setCurrPage={setCurrPage}
+                setIsMyPost={setIsMyPost}
               />
               <SearchPost
                 keyword={keyword}
@@ -62,6 +71,7 @@ function PostList() {
                 setCategory={setCategory}
                 page={page}
                 setPage={setPage}
+                setCurrPage={setCurrPage}
               />
             </StCategoryAndSearch>
             <StPostBox>
@@ -81,10 +91,15 @@ function PostList() {
                 })}
             </StPostBox>
             <StCommunityBottom>
-              <StMyPost>
+              <StMyPost onClick={onClickMyPosts}>
                 <img src={postMy} alt="내가 쓴 게시글 확인하기" />
               </StMyPost>
-              <Pagination limit={limit} page={page} setPage={setPage} />
+              <Pagination
+                page={page}
+                setPage={setPage}
+                currPage={currPage}
+                setCurrPage={setCurrPage}
+              />
               <StWritePost>
                 <Link to="/posts/write">
                   <img src={postWrite} alt="글 작성하기" />

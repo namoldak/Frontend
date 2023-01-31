@@ -10,7 +10,14 @@ import search from 'assets/images/postSearch.svg';
 import smallClose from 'assets/images/smallClose.svg';
 import { searchPosts } from 'redux/modules/postSlice';
 
-function SearchPost({ keyword, setKeyword, page, setPage, setCategory }) {
+function SearchPost({
+  keyword,
+  setKeyword,
+  page,
+  setPage,
+  setCurrPage,
+  setCategory,
+}) {
   const dispatch = useDispatch();
   const input = useRef(null);
 
@@ -19,6 +26,7 @@ function SearchPost({ keyword, setKeyword, page, setPage, setCategory }) {
       return null;
     }
     setPage(0);
+    setCurrPage(1);
     dispatch(searchPosts({ keyword, page }));
     setCategory('search');
   }
