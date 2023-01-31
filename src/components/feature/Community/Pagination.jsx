@@ -12,9 +12,6 @@ import { useSelector } from 'react-redux';
 function Pagination({ page, setPage, currPage, setCurrPage }) {
   const { totalPage } = useSelector((state) => state.posts.posts);
 
-  console.log('total', totalPage);
-  console.log('curr', currPage);
-
   return (
     <StPagination>
       <StArrowBtn

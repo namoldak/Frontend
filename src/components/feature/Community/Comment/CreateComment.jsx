@@ -24,10 +24,8 @@ function CreateComment({ comment, setComment, comments }) {
     }
 
     await instance.post(`/posts/${id}/comments`, data).then((res) => {
-      const { comment, id } = res.data;
-      setComment(data.comment);
-      console.log(data.comment);
-      comments.push(data.comment);
+      console.log('comment res', res);
+      comments.unshift(res.data);
     });
     setComment('');
   }

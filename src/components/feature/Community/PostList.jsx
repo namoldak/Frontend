@@ -26,8 +26,6 @@ function PostList() {
   const [isMyPost, setIsMyPost] = useState(false);
   const { postResponseDtoList } = useSelector((state) => state.posts.posts);
 
-  console.log('mypost', isMyPost);
-
   const dispatch = useDispatch();
 
   function onClickMyPosts() {

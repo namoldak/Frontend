@@ -7,17 +7,12 @@ import styled from 'styled-components';
 // 내부 모듈
 import { getNicknameCookie } from 'utils/cookies';
 import { instance } from 'api/core/axios';
-import { useDispatch } from 'react-redux';
-import { readOnePost } from 'redux/modules/postSlice';
 import { formatTime } from 'utils/date';
-// import commentSlice from 'redux/modules/commentSlice';
-// import { readComments } from 'redux/modules/commentSlice';
 
 function Comment(props) {
   const { commentId, comment, nickname, createdAt, comments, setComments } =
     props;
 
-  const dispatch = useDispatch();
   const [commentType, setCommentType] = useState('display');
   const [content, setContent] = useState(comment);
   const myNickName = getNicknameCookie('nickname');
@@ -35,20 +30,20 @@ function Comment(props) {
       .put(`/posts/comments/${commentId}`, { comment: content })
       .then((res) => {
         const { comment } = res.data;
-        comments.push(comment);
+        setContent(comment);
       });
-    // dispatch(readComments({ id, commentPage }));
-    // dispatch(readOnePost(id));
     setCommentType('display');
   }
 
   async function onClickDeleteComment() {
     await instance.delete(`/posts/comments/${commentId}`).then((res) => {
-      const { comment } = res.data;
-      setComments((prev) => [...prev, ...comment]);
+      console.log('delete res', res);
+      setComments(
+        comments.filter((comment) => {
+          return comment.id !== commentId;
+        }),
+      );
     });
-    // dispatch(readComments({ id, commentPage }));
-    // dispatch(readOnePost(id));
   }
 
   return (
