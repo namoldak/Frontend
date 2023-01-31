@@ -35,6 +35,7 @@ export const readAllRooms = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`/rooms?page=${payload}`);
+      console.log('rooms', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

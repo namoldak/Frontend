@@ -91,6 +91,7 @@ export const readPostsByCategory = createAsyncThunk(
 export const readOnePost = createAsyncThunk(
   'post/READ_ONE_POST',
   async (payload, thunkAPI) => {
+    // console.log('read one', payload);
     try {
       const response = await instance.get(`posts/${payload}`);
       return thunkAPI.fulfillWithValue(response.data[0]);
