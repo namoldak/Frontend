@@ -72,6 +72,10 @@ const StModalBorder = styled.div`
   background-repeat: no-repeat;
   background-position: bottom;
   margin-top: 46px;
+
+  @media ${(props) => props.theme.laptop} {
+    margin-top: 0;
+  }
 `;
 
 const StCloseBtn = styled.button`

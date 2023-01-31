@@ -236,7 +236,14 @@ const StModify = styled.button`
 
 const ImgDiv = styled.div`
   max-width: 300px;
-  margin-bottom: 20px;
+  margin: 20px auto;
+  transition: all 0.1s;
+
+  img {
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
 `;
 
 const Content = styled.div`

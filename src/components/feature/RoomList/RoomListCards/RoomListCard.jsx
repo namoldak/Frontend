@@ -78,32 +78,43 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
 }
 
 const StRoomListCardBox = styled.div`
+  ${({ theme }) => theme.common.flexCenter}
   position: relative;
-  display: flex;
-  align-items: center;
   height: calc(100vh - 300px);
   background-image: url(${roomListBanner});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
+
+  @media ${(props) => props.theme.laptop} {
+    height: calc(100vh - 285px);
+  }
 `;
 
 const StRoomCon = styled.div`
   position: absolute;
   top: 155px;
-  left: 0;
+  /* left: 0; */
+  left: 40px;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   margin-left: 55px;
   width: 1070px;
   height: 327px;
+
+  @media ${(props) => props.theme.laptop} {
+    top: 90px;
+    left: 70px;
+    width: 850px;
+    height: 300px;
+  }
 `;
 
 const StRoomBox = styled.div`
   max-width: 930px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  /* grid-template-columns: repeat(4, 1fr); */
   column-gap: 110px;
 `;
 
@@ -118,7 +129,7 @@ const StRightBtn = styled.button`
 `;
 
 const StEmptyDiv = styled.div`
-  width: 100%;
+  /* width: 100%; */
 `;
 
 const StRefreshBtn = styled.button`
@@ -126,5 +137,10 @@ const StRefreshBtn = styled.button`
   position: absolute;
   bottom: -68px;
   left: 15px;
+
+  @media ${(props) => props.theme.laptop} {
+    bottom: -62px;
+    left: -12px;
+  }
 `;
 export default RoomListCard;
