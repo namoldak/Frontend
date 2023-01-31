@@ -94,11 +94,19 @@ const StBannerTitle = styled.div`
 const StBannerImg = styled.div`
   height: 482px;
   margin-top: 119px;
+
+  @media ${(props) => props.theme.laptop} {
+    margin-top: 60px;
+  }
 `;
 
 const StToGo = styled.button`
   margin-bottom: 15px;
   margin-top: -30px;
+
+  @media ${(props) => props.theme.laptop} {
+    margin-top: -50px;
+  }
 `;
 
 export default Landing;

@@ -30,12 +30,20 @@ function PostWrapper() {
 
 const StPostTopBar = styled.div`
   padding-top: 85px;
+
+  @media ${(props) => props.theme.laptop} {
+    padding-top: 22px;
+  }
 `;
 
 const StTopBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 38px;
+
+  @media ${(props) => props.theme.laptop} {
+    margin-bottom: 8px;
+  }
 `;
 
 const StBackBtn = styled.button`

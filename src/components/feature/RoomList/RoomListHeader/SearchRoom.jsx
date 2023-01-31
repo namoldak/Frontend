@@ -77,12 +77,23 @@ const StSearchRoom = styled.div`
     color: ${({ theme }) => theme.colors.text};
     opacity: 0.8;
   }
+
+  @media ${(props) => props.theme.laptop} {
+    input {
+      width: 692px;
+      height: 68px;
+    }
+  }
 `;
 
 const SearchBtn = styled.button`
   position: absolute;
   top: 19px;
   right: 26px;
+
+  @media ${(props) => props.theme.laptop} {
+    top: 14px;
+  }
 `;
 
 export default SearchRoom;

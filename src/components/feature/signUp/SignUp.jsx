@@ -24,7 +24,7 @@ const schema = yup.object().shape({
   nickname: yup
     .string()
     .min(2, '닉네임은 최소 2자리입니다')
-    .max(16, '닉네임은 최대 16자리입니다')
+    .max(6, '닉네임은 최대 6자리입니다')
     .matches(
       /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/,
       '닉네임은 한글, 영문, 숫자만 가능합니다.',
