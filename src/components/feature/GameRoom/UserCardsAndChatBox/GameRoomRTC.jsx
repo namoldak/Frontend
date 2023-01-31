@@ -113,10 +113,10 @@ function GameRoomRTC() {
           setKeyword(data.content.keyword);
           setMyKeyword('???');
           if (myNickName === owner) {
-            sendChat({ message: data.content.startAlert, sender: data.sender });
-            // startBtn.current.disabled = true;
             startBtn.current.style.display = 'none';
             leaveBtn.current.disabled = true;
+            sendChat({ message: data.content.startAlert, sender: data.sender });
+            // startBtn.current.disabled = true;
           } else {
             leaveBtn.current.disabled = true;
           }
@@ -496,10 +496,9 @@ function GameRoomRTC() {
 
   // WebRTC signaling section
   useEffect(() => {
+    connect();
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
-
     // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
-
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {
@@ -647,9 +646,12 @@ function GameRoomRTC() {
         .delete(`rooms/${param.roomId}/exit`)
         .then(async (res) => {
           socketRef.current.close();
+          console.log('클라이언트', client.current);
+          client.current.deactivate();
         })
         .catch(async (error) => {
           socketRef.current.close();
+          client.current.deactivate();
         });
     };
   }, []);
@@ -674,9 +676,6 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {}, [stream, socketRef.current]);
-  useEffect(() => {
-    connect(); // 연결된 경우 렌더링
-  }, []);
 
   return (
     <StGameRoomRTC>
