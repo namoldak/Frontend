@@ -95,7 +95,6 @@ function SignUp() {
     const data = getValues('nickname');
 
     authAPI.checkNickName(data).then((response) => {
-      console.log('e', response);
       if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
       } else {
@@ -110,7 +109,6 @@ function SignUp() {
     const data = getValues('email');
 
     authAPI.checkEmail(data).then((response) => {
-      console.log(response.data);
       if (response.data) {
         useToast('유효한 이메일입니다.', 'success');
       } else {

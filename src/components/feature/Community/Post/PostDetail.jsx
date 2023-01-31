@@ -1,38 +1,46 @@
 /* eslint-disable react/no-array-index-key */
 // 외부 모듈
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 // 내부 모듈
-import backBtn from 'assets/images/backBtn.svg';
-import settingBtn from 'assets/images/settingBtn.svg';
-import { readAllComments, readOnePost } from 'redux/modules/postSlice';
-import Modal from 'components/common/Modals/BasicModal/Modal';
-import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
+import { formatTime } from 'utils/date';
+import { readOnePost } from 'redux/modules/postSlice';
 import { getNicknameCookie } from 'utils/cookies';
 import { instance } from 'api/core/axios';
-import CommentList from '../Comment/CommentList';
+import Comment from '../Comment/Comment';
 import CreateComment from '../Comment/CreateComment';
 
 function PostDetail() {
-  const { posts, comments } = useSelector((state) => state.posts);
-  const { id } = useParams();
-
   const dispatch = useDispatch();
-  const myNickName = getNicknameCookie('nickname');
-  const [isWriter, setIsWriter] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams();
+  const myNickName = getNicknameCookie('nickname');
+  const { posts } = useSelector((state) => state.posts);
+  const [isWriter, setIsWriter] = useState(false);
+  const [comment, setComment] = useState('');
+  // initial state
+  const [comments, setComments] = useState([]);
+  const [totalPage, setTotalPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [commentPage, setCommentPage] = useState(0); // 스크롤이 닿았을 때 새롭게 데이터 페이지를 바꿀 state
+  const pageEnd = useRef(); // 페이지의 마지막 요소(infinite scroll의 탐색 타겟)
 
-  const [display, setDisplay] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isSettingModalOn, setIsSettingModalOn] = useState(false);
+  console.log('1');
 
-  const [commentPage, setCommentPage] = useState(0);
+  const loadMore = () => {
+    if (commentPage < totalPage) {
+      setCommentPage((commentPage) => commentPage + 1);
+    }
+    if (commentPage === totalPage - 1) {
+      setIsLoading(false);
+    }
+  };
 
-  async function deletePost() {
+  function deletePost() {
     instance.delete(`/posts/${id}`).then((res) => {
       navigate('/posts/all');
     });
@@ -52,147 +60,196 @@ function PostDetail() {
 
   useEffect(() => {
     dispatch(readOnePost(id));
-    dispatch(readAllComments({ id, commentPage }));
   }, []);
+
+  const getComment = async () => {
+    await instance
+      .get(`/posts/${id}/comments/all?page=${commentPage}&size=10`)
+      .then((res) => {
+        const { totalPage, commentResponseDtoList } = res.data;
+        setComments((prev) => [...prev, ...commentResponseDtoList]);
+        setTotalPage(totalPage);
+        setIsLoading(true);
+      });
+  };
+
+  useEffect(() => {
+    getComment(commentPage);
+  }, [commentPage]);
+
+  useEffect(() => {
+    if (isLoading) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            loadMore();
+          }
+        },
+        { threshold: 1 },
+      );
+      // 옵져버 탐색 시작
+      observer.observe(pageEnd.current);
+    }
+  }, [isLoading]);
+
+  // console.log(comments);
+  // console.log('commentPage', commentPage);
+  // console.log('totalPage', totalPage);
+  // console.log(isLoading);
+
+  // useEffect(() => {
+  //   getComment();
+  // }, [setComment]);
 
   return (
     <StPostDetail>
-      <StTopBar>
-        <Link to="/posts/all">
-          <StBackBtn>
-            <img src={backBtn} alt="뒤로 가기" />
-          </StBackBtn>
-        </Link>
-        {isSettingModalOn && (
-          <Modal
-            onClose={() => {
-              setIsSettingModalOn(false);
-            }}
-            content={<SettingModal loggedIn={setIsLoggedIn} />}
-          />
+      <StTitleBox>
+        <Title>{posts.title}</Title>
+        <StInfoBox>
+          <Nickname>{posts.nickname}</Nickname>
+          <span>|</span>
+          <CreatedAt>{formatTime(posts.createdAt)}</CreatedAt>
+        </StInfoBox>
+      </StTitleBox>
+      <StContentBox>
+        {isWriter && (
+          <StBtnBox>
+            <StModify onClick={updatePost}>수정하기</StModify>
+            <StModify onClick={deletePost}>삭제하기</StModify>
+          </StBtnBox>
         )}
-        <StSettingBtn
-          onClick={() => {
-            setIsSettingModalOn(true);
-          }}
-        >
-          <img src={settingBtn} alt="설정" />
-        </StSettingBtn>
-      </StTopBar>
-      <StPostDetailInner>
-        <StTitleBox>
-          <StTitle>{posts.title}</StTitle>
-          <StNickName>{posts.nickname}</StNickName>
-          <StCreated>{posts.createdAt}</StCreated>
-        </StTitleBox>
-        <StContentBox>
-          {isWriter ? (
-            <StBtnBox>
-              <button onClick={updatePost}>수정하기</button>
-              <button onClick={deletePost}>삭제하기</button>
-            </StBtnBox>
-          ) : (
-            <>작성자 불일치</>
-          )}
-
-          <StImgdiv>
-            {posts.imageList?.map((image, index) => {
-              return (
-                <div key={index}>
-                  <img src={image} alt="이미지" />
-                </div>
-              );
-            })}
-          </StImgdiv>
-          <div style={{ whiteSpace: 'pre-wrap' }}>{posts.content}</div>
-          <div>
-            <CreateComment commentPage={commentPage} />
-            <button
-              onClick={() => {
-                setDisplay(!display);
-              }}
-            >
-              {display && '댓글 숨기기'}
-              {!display && `${posts.cmtCnt}개의 댓글보기`}
-            </button>
-            {display &&
-              comments.commentResponseDtoList.map((i) => {
-                return (
-                  <CommentList
-                    id={id}
-                    key={i.id}
-                    commentId={i.id}
-                    comment={i.comment}
-                    commentPage={commentPage}
-                    nickname={i.nickname}
-                    createdAt={i.createdAt}
-                  />
-                );
-              })}
-          </div>
-        </StContentBox>
-      </StPostDetailInner>
+        <ImgDiv>
+          {posts.imageList?.map((image, index) => {
+            return (
+              <div key={index}>
+                <img src={image} alt="이미지" />
+              </div>
+            );
+          })}
+        </ImgDiv>
+        <Content>{posts.content}</Content>
+        <div>
+          <CreateComment
+            comments={comments}
+            setComment={setComment}
+            comment={comment}
+          />
+          {comments?.map((i) => {
+            return (
+              <Comment
+                id={id}
+                key={i.id}
+                commentId={i.id}
+                comment={i.comment}
+                nickname={i.nickname}
+                createdAt={i.createdAt}
+              />
+            );
+          })}
+          <Target ref={pageEnd} />
+        </div>
+      </StContentBox>
     </StPostDetail>
   );
 }
 
-const StPostDetail = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  margin-top: 20px;
+const Target = styled.div`
+  height: 20px;
 `;
 
-const StTopBar = styled.div`
+const StPostDetail = styled.div`
+  overflow: auto;
+  max-height: 517px;
+  padding-left: unset;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 517px;
+    background: #f5ecd9;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    min-height: 76px;
+    background: #6e3d12;
+    border: 2px solid #965e2e;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+  }
+`;
+
+const StTitleBox = styled.div`
+  ${({ theme }) => theme.common.flexBetween}
+  width: 916px;
+  height: 59px;
+  background-color: ${({ theme }) => theme.colors.lightBeige};
+  border-radius: 10px;
+  padding: 10px 12px 10px 12px;
+
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.text3};
+`;
+
+const Title = styled.div``;
+
+const StInfoBox = styled.div`
   display: flex;
   justify-content: space-between;
+  min-width: 130px;
+
+  span {
+    margin: 0 4px 0 4px;
+  }
 `;
 
-const StImg = styled.img`
-  max-width: 300px;
-  max-height: 300px;
-`;
+const Nickname = styled.div``;
 
-const StBackBtn = styled.button`
-  width: 78px;
-  height: 78px;
-`;
-
-const StSettingBtn = styled.button`
-  width: 78px;
-  height: 78px;
-`;
-
-const StPostDetailInner = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  border-radius: 10px;
-  background-color: black;
-  padding: 20px;
-`;
-const StImgdiv = styled.div`
-  max-width: 300px;
-  max-height: 300px;
+const CreatedAt = styled.div`
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.04em;
 `;
 
 const StContentBox = styled.div`
-  border: 2px solid white;
-  background-color: beige;
-  margin-top: 20px;
+  width: 916px;
+  min-height: 447px;
+  background-color: ${({ theme }) => theme.colors.lightBeige};
+  border-radius: 4px;
+  padding: 20px 15px 20px 15px;
+  margin-top: 10px;
 `;
-const StTitleBox = styled.div`
-  border: 2px solid blue;
-  background-color: beige;
+
+const StModify = styled.button`
+  width: 58px;
+  height: 24px;
+  background-color: ${({ theme }) => theme.colors.lightBrown};
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.lightBeige};
+
+  &:first-child {
+    margin-right: 8px;
+  }
 `;
+
+const ImgDiv = styled.div`
+  max-width: 300px;
+  margin-bottom: 20px;
+`;
+
+const Content = styled.div`
+  max-width: 600px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.text3};
+  margin-bottom: 38px;
+  white-space: pre-wrap;
+`;
+
 const StBtnBox = styled.div`
   float: right;
-`;
-const StTitle = styled.div`
-  display: inline-block;
-`;
-const StNickName = styled.div`
-  display: inline-block;
-`;
-const StCreated = styled.div`
-  display: inline-block;
 `;
 export default PostDetail;

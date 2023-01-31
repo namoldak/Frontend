@@ -15,7 +15,6 @@ function useSound(src, volume = 0.01) {
     soundPlay(src);
     sound.on('play', () => {
       const history = createBrowserHistory();
-      // console.log('history', history.location.pathname);
       if (history.location.pathname !== '/rooms') {
         sound.stop();
       }
