@@ -17,7 +17,7 @@ function Room({ roomInfo }) {
   const dispatch = useDispatch();
 
   function clickRoom(roomInfo) {
-    if (roomInfo.member.length >= 4) {
+    if (roomInfo.memberCnt >= 4) {
       useToast('꽉 차서 못 들어간닭...', 'warning');
       return null;
     }
@@ -48,7 +48,7 @@ function Room({ roomInfo }) {
           )}
         </StEgg>
         <StRoomInfo>
-          <p>{roomInfo.member.length} / 4</p>
+          <p>{roomInfo.memberCnt} / 4</p>
         </StRoomInfo>
       </div>
     </StRoomCardBox>

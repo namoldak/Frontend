@@ -1,24 +1,34 @@
+/* eslint-disable consistent-return */
+/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import search from 'assets/images/postSearch.svg';
+import smallClose from 'assets/images/smallClose.svg';
 import { searchPosts } from 'redux/modules/postSlice';
 
-function SearchPost() {
+function SearchPost({
+  keyword,
+  setKeyword,
+  page,
+  setPage,
+  setCurrPage,
+  setCategory,
+}) {
   const dispatch = useDispatch();
-  const [keyword, setKeyword] = useState('');
   const input = useRef(null);
 
-  // eslint-disable-next-line consistent-return
   function onClickSearchPost() {
     if (keyword.trim() === '') {
       return null;
     }
-    dispatch(searchPosts(keyword));
-    setKeyword('');
+    setPage(0);
+    setCurrPage(1);
+    dispatch(searchPosts({ keyword, page }));
+    setCategory('search');
   }
 
   function onKeyUpEnter(event) {
@@ -27,6 +37,11 @@ function SearchPost() {
       onClickSearchPost();
       input.current.focus();
     }
+  }
+
+  function onClickResetKeyword() {
+    setKeyword('');
+    setCategory('freeBoard');
   }
 
   return (
@@ -38,10 +53,15 @@ function SearchPost() {
         onChange={(e) => setKeyword(e.target.value)}
         onKeyUp={onKeyUpEnter}
       />
-      {/* eslint-disable-next-line react/jsx-no-bind */}
-      <SearchBtn onClick={onClickSearchPost}>
-        <img src={search} alt="검색버튼" />
-      </SearchBtn>
+      {keyword === '' ? (
+        <SearchBtn onClick={onClickSearchPost}>
+          <img src={search} alt="검색버튼" />
+        </SearchBtn>
+      ) : (
+        <SearchBtn onClick={onClickResetKeyword}>
+          <img src={smallClose} alt="검색 초기화" />
+        </SearchBtn>
+      )}
     </StSearchPost>
   );
 }

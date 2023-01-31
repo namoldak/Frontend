@@ -16,6 +16,44 @@ function WritePost() {
   const [content, setContent] = useState('');
   const [imgs, setImgs] = useState([]);
 
+  const feedbackFormat = `[나만 모른닭 🐓] 서비스의 솔직한 만족도를 알려주세요 😁
+
+정성스럽게 작성해 주실수록 당첨 확률이 올라갑니다! 
+
+*** 작성하신 피드백 게시글은 본인만 확인할 수 있습니다. ***
+
+
+
+1. 참여하신 분의 성별을 알려주세요. 
+
+
+
+2. 참여하신 분의 연령대를 알려주세요.
+
+
+
+3. 어떤 경로로 [나만 모른닭]을 알게 되셨나요?
+ 
+
+
+4. [나만 모른닭] 서비스에서 만족하신 부분을 말씀 부탁드립니다. 
+
+
+
+5. [나만 모른닭] 서비스에서 어떤 점들이 불편하셨나요? 
+   
+
+
+6. 서비스를 다시 이용하실 의향이 있으신가요? 
+    
+
+
+7. 당첨이 되셨을 경우 연락 가능한 연락처를 남겨주세요! (전화번호, 카카오톡, 슬랙, 이메일)
+
+
+
+`;
+
   function onChangeCheck(e) {
     setCategoryCheck(e.target.value);
   }
@@ -42,13 +80,23 @@ function WritePost() {
           <StOption value="freeBoard">자유게시판</StOption>
           <StOption value="feedbackBoard">유저 피드백</StOption>
         </StCategorySelect>
+        {categoryCheck === 'feedbackBoard' ? (
+          <StWriteContent
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+            defaultValue={feedbackFormat}
+          />
+        ) : (
+          <StWriteContent
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+            placeholder="내용을 입력해주세요."
+            defaultValue=""
+          />
+        )}
       </StTitleCategory>
-      <StWriteContent
-        onChange={(e) => {
-          setContent(e.target.value);
-        }}
-        placeholder="내용을 입력해주세요."
-      />
       <ImgUpload setImgs={setImgs} />
       <StWritePostBtn type="button" onClick={sendPost}>
         <img src={postBtn} alt="확인" />
@@ -85,6 +133,7 @@ const StWriteTitle = styled.input`
   &:focus {
     outline: none;
   }
+  white-space: pre-wrap;
 `;
 
 const StCategorySelect = styled.select`

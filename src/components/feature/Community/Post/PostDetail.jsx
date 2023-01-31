@@ -246,6 +246,7 @@ const Content = styled.div`
   letter-spacing: 0.1em;
   color: ${({ theme }) => theme.colors.text3};
   margin-bottom: 38px;
+  white-space: pre-wrap;
 `;
 
 const StBtnBox = styled.div`

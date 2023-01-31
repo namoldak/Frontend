@@ -5,58 +5,57 @@ const initialState = {
   rooms: [],
   error: null,
 };
+
 export const createRoom = createAsyncThunk(
   'room/createRoom',
   async (newRoom, thunkAPI) => {
     try {
       const response = await instance.post(`/rooms`, newRoom);
-      // console.log('response', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
+
 export const enterRoom = createAsyncThunk(
   'room/enterRoom',
   async (roomInfo, thunkAPI) => {
-    // console.log('roomInfo', roomInfo);
     try {
       const response = await instance.post(`/rooms/${roomInfo.id}`);
-      // console.log('enterroom respose', response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
+
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
   async (payload, thunkAPI) => {
-    // console.log('payload', payload);
     try {
-      const response = await instance.get(`/rooms?page=${payload}&size=4`);
-      // console.log('read rooms:', response);
+      const response = await instance.get(`/rooms?page=${payload}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      // console.log('read rooms error:', error);
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
+
 export const searchRoom = createAsyncThunk(
   'room/searchRoom',
-  async (keyword, thunkAPI) => {
-    // console.log('keyword', keyword);
+  async (payload, thunkAPI) => {
     try {
-      const response = await instance.get(`/rooms/search?keyword=${keyword}`);
-      // console.log('search room', response);
+      const response = await instance.get(
+        `/rooms/search?page=${payload.page}&keyword=${payload.keyword}`,
+      );
       return thunkAPI.fulfillWithValue(response.data.gameRoomResponseDtoList);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   },
 );
+
 export const roomSlice = createSlice({
   name: 'rooms',
   initialState,
@@ -93,4 +92,5 @@ export const roomSlice = createSlice({
     },
   },
 });
+
 export default roomSlice.reducer;
