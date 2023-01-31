@@ -11,25 +11,25 @@ import { instance } from 'api/core/axios';
 import { readOnePost } from 'redux/modules/postSlice';
 // import { readComments } from 'redux/modules/commentSlice';
 
-function CreateComment({ commentPage }) {
-  const [comment, setComment] = useState('');
+function CreateComment({ comment, setComment, comments }) {
+  // const [comment, setComment] = useState('');
   const dispatch = useDispatch();
   const { id } = useParams();
 
   async function postComment() {
     const data = { comment, id };
+
     if (comment === '') {
       useToast('댓글 내용이 없닭!', 'warning');
-    } else {
-      try {
-        await instance.post(`/posts/${data.id}/comments`, data);
-      } catch (error) {
-        console.log(error);
-      }
-      // dispatch(readComments({ id, commentPage }));
-      dispatch(readOnePost(id));
-      setComment('');
     }
+
+    await instance.post(`/posts/${id}/comments`, data).then((res) => {
+      const { comment, id } = res.data;
+      setComment(data.comment);
+      console.log(data.comment);
+      comments.push(data.comment);
+    });
+    setComment('');
   }
 
   return (

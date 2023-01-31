@@ -10,10 +10,12 @@ import { instance } from 'api/core/axios';
 import { useDispatch } from 'react-redux';
 import { readOnePost } from 'redux/modules/postSlice';
 import { formatTime } from 'utils/date';
+// import commentSlice from 'redux/modules/commentSlice';
 // import { readComments } from 'redux/modules/commentSlice';
 
 function Comment(props) {
-  const { id, commentId, comment, commentPage, nickname, createdAt } = props;
+  const { commentId, comment, nickname, createdAt, comments, setComments } =
+    props;
 
   const dispatch = useDispatch();
   const [commentType, setCommentType] = useState('display');
@@ -29,24 +31,24 @@ function Comment(props) {
   }
 
   async function onClickEditComment() {
-    try {
-      await instance.put(`/posts/comments/${commentId}`, { comment: content });
-    } catch (error) {
-      console.log(error);
-    }
+    await instance
+      .put(`/posts/comments/${commentId}`, { comment: content })
+      .then((res) => {
+        const { comment } = res.data;
+        comments.push(comment);
+      });
     // dispatch(readComments({ id, commentPage }));
-    dispatch(readOnePost(id));
+    // dispatch(readOnePost(id));
     setCommentType('display');
   }
 
   async function onClickDeleteComment() {
-    try {
-      await instance.delete(`/posts/comments/${commentId}`);
-    } catch (error) {
-      console.log(error);
-    }
+    await instance.delete(`/posts/comments/${commentId}`).then((res) => {
+      const { comment } = res.data;
+      setComments((prev) => [...prev, ...comment]);
+    });
     // dispatch(readComments({ id, commentPage }));
-    dispatch(readOnePost(id));
+    // dispatch(readOnePost(id));
   }
 
   return (
