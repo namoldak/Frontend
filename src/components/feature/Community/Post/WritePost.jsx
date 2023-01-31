@@ -80,23 +80,23 @@ function WritePost() {
           <StOption value="freeBoard">자유게시판</StOption>
           <StOption value="feedbackBoard">유저 피드백</StOption>
         </StCategorySelect>
-        {categoryCheck === 'feedbackBoard' ? (
-          <StWriteContent
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
-            defaultValue={feedbackFormat}
-          />
-        ) : (
-          <StWriteContent
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
-            placeholder="내용을 입력해주세요."
-            defaultValue=""
-          />
-        )}
       </StTitleCategory>
+      {categoryCheck === 'feedbackBoard' ? (
+        <StWriteContent
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+          defaultValue={feedbackFormat}
+        />
+      ) : (
+        <StWriteContent
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+          placeholder="내용을 입력해주세요."
+          defaultValue=""
+        />
+      )}
       <ImgUpload setImgs={setImgs} />
       <StWritePostBtn type="button" onClick={sendPost}>
         <img src={postBtn} alt="확인" />
