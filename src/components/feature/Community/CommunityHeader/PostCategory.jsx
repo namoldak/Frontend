@@ -6,14 +6,22 @@ import { useDispatch, useSelector } from 'react-redux';
 // 내부 모듈
 import select from 'assets/images/select.svg';
 
-function PostCategory({ setCategory, setPage, setCurrPage, setKeyword }) {
+function PostCategory({
+  setCategory,
+  setPage,
+  setCurrPage,
+  setKeyword,
+  setIsMyPost,
+}) {
   function changeValue(target) {
     setCategory(target.target.value);
+    setIsMyPost(false);
     setPage(0);
     setCurrPage(1);
   }
 
   function onClickCategory() {
+    setIsMyPost(false);
     setCategory('freeBoard');
     setKeyword('');
     setPage(0);

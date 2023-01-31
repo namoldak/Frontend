@@ -83,9 +83,9 @@ export const readPostsByCategory = createAsyncThunk(
     // console.log('cate slice', payload);
     try {
       const response = await instance.get(
-        `/posts/myPost?category=feedbackBoard&page=${payload}&size=5`,
+        `/posts/myPost?category=${payload.category}&page=${payload.page}&size=5`,
       );
-      console.log('res data', response.data);
+      // console.log('res data', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
