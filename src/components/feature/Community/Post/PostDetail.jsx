@@ -104,7 +104,7 @@ function PostDetail() {
               );
             })}
           </StImgdiv>
-          <div>{posts.content}</div>
+          <div style={{ whiteSpace: 'pre-wrap' }}>{posts.content}</div>
           <div>
             <CreateComment commentPage={commentPage} />
             <button

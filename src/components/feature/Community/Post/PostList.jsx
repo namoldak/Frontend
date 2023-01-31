@@ -40,13 +40,13 @@ function PostList() {
   }
 
   useEffect(() => {
-    if (isMyPost === false) {
+    if (isMyPost === false && category === 'freeBoard') {
       dispatch(readAllPosts(page));
     } else if (category === 'feedBackBoard') {
       dispatch(readPostsByCategory({ category, page }));
     } else if (category === 'search') {
       dispatch(searchPosts({ keyword, page }));
-    } else if (isMyPost === true) {
+    } else if (isMyPost === true && category === 'freeBoard') {
       dispatch(readPostsByCategory({ category, page }));
     }
   }, [category, page, isMyPost]);
