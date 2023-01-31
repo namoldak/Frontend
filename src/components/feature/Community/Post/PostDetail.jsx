@@ -11,7 +11,6 @@ import { formatTime } from 'utils/date';
 import { readOnePost } from 'redux/modules/postSlice';
 import { getNicknameCookie } from 'utils/cookies';
 import { instance } from 'api/core/axios';
-// import { readComments } from 'redux/modules/commentSlice';
 import Comment from '../Comment/Comment';
 import CreateComment from '../Comment/CreateComment';
 
@@ -22,20 +21,22 @@ function PostDetail() {
   const myNickName = getNicknameCookie('nickname');
   const { posts } = useSelector((state) => state.posts);
   const [isWriter, setIsWriter] = useState(false);
-
+  const [comment, setComment] = useState('');
+  // initial state
   const [comments, setComments] = useState([]);
-  const totalPage = 0;
+  const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [pins, setPins] = useState([]); // 댓글 데이터를 담고 있는 state
   const [commentPage, setCommentPage] = useState(0); // 스크롤이 닿았을 때 새롭게 데이터 페이지를 바꿀 state
-  const pageEnd = useRef();
+  const pageEnd = useRef(); // 페이지의 마지막 요소(infinite scroll의 탐색 타겟)
 
-  console.log(commentPage);
+  console.log('1');
 
   const loadMore = () => {
     if (commentPage < totalPage) {
       setCommentPage((commentPage) => commentPage + 1);
+    }
+    if (commentPage === totalPage - 1) {
+      setIsLoading(false);
     }
   };
 
@@ -61,13 +62,19 @@ function PostDetail() {
     dispatch(readOnePost(id));
   }, []);
 
-  useEffect(() => {
-    const response = instance.get(
-      `/posts/${id}/comments/all?page=${commentPage}&size=10`,
-    );
+  const getComment = async () => {
+    await instance
+      .get(`/posts/${id}/comments/all?page=${commentPage}&size=10`)
+      .then((res) => {
+        const { totalPage, commentResponseDtoList } = res.data;
+        setComments((prev) => [...prev, ...commentResponseDtoList]);
+        setTotalPage(totalPage);
+        setIsLoading(true);
+      });
+  };
 
-    console.log(response);
-    // dispatch(readComments({ id, commentPage }));
+  useEffect(() => {
+    getComment(commentPage);
   }, [commentPage]);
 
   useEffect(() => {
@@ -84,6 +91,15 @@ function PostDetail() {
       observer.observe(pageEnd.current);
     }
   }, [isLoading]);
+
+  // console.log(comments);
+  // console.log('commentPage', commentPage);
+  // console.log('totalPage', totalPage);
+  // console.log(isLoading);
+
+  // useEffect(() => {
+  //   getComment();
+  // }, [setComment]);
 
   return (
     <StPostDetail>
@@ -113,7 +129,11 @@ function PostDetail() {
         </ImgDiv>
         <Content>{posts.content}</Content>
         <div>
-          <CreateComment commentPage={commentPage} />
+          <CreateComment
+            comments={comments}
+            setComment={setComment}
+            comment={comment}
+          />
           {comments?.map((i) => {
             return (
               <Comment
@@ -121,7 +141,6 @@ function PostDetail() {
                 key={i.id}
                 commentId={i.id}
                 comment={i.comment}
-                // commentPage={commentPage}
                 nickname={i.nickname}
                 createdAt={i.createdAt}
               />
@@ -135,7 +154,7 @@ function PostDetail() {
 }
 
 const Target = styled.div`
-  height: 1px;
+  height: 20px;
 `;
 
 const StPostDetail = styled.div`
