@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // 외부 모듈
 import React, { useState } from 'react';
@@ -5,6 +6,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 // 내부 모듈
+import useToast from 'hooks/useToast';
 import { createPost } from 'redux/modules/postSlice';
 import postBtn from 'assets/images/postBtn.svg';
 import ImgUpload from 'components/common/ImgUpload';
@@ -59,6 +61,16 @@ function WritePost() {
   }
 
   function sendPost() {
+    if (title === '') {
+      useToast('제목을 입력하지 않았닭!', 'warning');
+      return;
+    }
+
+    if (content === '') {
+      useToast('내용을 입력하지 않았닭!', 'warning');
+      return;
+    }
+
     const post = {
       category: categoryCheck,
       content,
@@ -105,7 +117,7 @@ function WritePost() {
   );
 }
 
-const StTitleCategory = styled.div`
+const StTitleCategory = styled.form`
   display: flex;
   height: 54px;
   margin-bottom: 12px;
