@@ -41,10 +41,7 @@ function RoomListTopBar() {
         )}
       </StUserName>
       <Link to="/posts/all">
-        <StCommunityBtn>
-          {/* <img src={coummunityBtn} alt="커뮤니티" /> */}
-          커뮤니티
-        </StCommunityBtn>
+        <StCommunityBtn>커뮤니티</StCommunityBtn>
       </Link>
       {isSettingModalOn && (
         <ModalForSetting
@@ -102,7 +99,7 @@ const StCommunityBtn = styled.button`
   font-family: MapoBackpacking;
   font-weight: 400;
   font-size: 32px;
-  line-height: 35px;
+  line-height: 30px;
   color: #fff;
 
   a {
