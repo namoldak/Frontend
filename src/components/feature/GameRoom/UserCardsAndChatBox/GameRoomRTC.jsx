@@ -113,7 +113,7 @@ function GameRoomRTC() {
           setKeyword(data.content.keyword);
           setMyKeyword('???');
           if (myNickName === owner) {
-            startBtn.current.style.display = 'none';
+            startBtn.current.style.visibility = 'hidden';
             leaveBtn.current.disabled = true;
             sendChat({ message: data.content.startAlert, sender: data.sender });
             // startBtn.current.disabled = true;
@@ -219,8 +219,7 @@ function GameRoomRTC() {
           setIsMyTurn(false);
 
           if (myNickName === owner) {
-            // startBtn.current.disabled = false;
-            startBtn.current.style.display = 'block';
+            startBtn.current.style.visibility = 'visible';
           }
 
           break;
@@ -243,6 +242,36 @@ function GameRoomRTC() {
                 : user,
             ),
           );
+          break;
+        }
+        case 'STUPID': {
+          muteBtn.current.style.display = 'block';
+          leaveBtn.current.disabled = false;
+          setNotice('');
+          setCategory('');
+          setKeyword('');
+          setMyKeyword('');
+          setIsSpotTimer(false);
+          setIsTimer(false);
+          try {
+            stream.getAudioTracks().forEach((track) => {
+              track.enabled = true;
+            });
+          } catch (e) {
+            console.log(e);
+          }
+          setIsVoiceOn(true);
+          setUsers((users) =>
+            users.map((user) => {
+              return { ...user, isMyTurn: false };
+            }),
+          );
+          setIsMyTurn(false);
+
+          if (myNickName === owner) {
+            startBtn.current.style.visibility = 'visible';
+            sendChat({ message: data.content, sender: data.sender });
+          }
           break;
         }
         default: {
@@ -272,8 +301,6 @@ function GameRoomRTC() {
 
   // stomp client method
   function sendChat({ message, sender }) {
-    console.log('msg', message);
-    console.log('sender', sender);
     if (message.trim() === '') {
       return;
     }
