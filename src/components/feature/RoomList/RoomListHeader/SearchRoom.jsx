@@ -49,9 +49,9 @@ function SearchRoom({ page, setPage, keyword, setKeyword, setIsSearch }) {
           <img src={search} alt="검색버튼" />
         </SearchBtn>
       ) : (
-        <SearchBtn onClick={onClickResetKeyword}>
+        <CloseBtn onClick={onClickResetKeyword}>
           <img src={smallClose} alt="검색 초기화" />
-        </SearchBtn>
+        </CloseBtn>
       )}
     </StSearchRoom>
   );
@@ -93,6 +93,16 @@ const SearchBtn = styled.button`
 
   @media ${(props) => props.theme.laptop} {
     top: 14px;
+  }
+`;
+
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 25px;
+  right: 26px;
+
+  @media ${(props) => props.theme.laptop} {
+    top: 20px;
   }
 `;
 

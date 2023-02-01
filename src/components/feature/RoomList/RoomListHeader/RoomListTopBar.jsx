@@ -9,6 +9,7 @@ import ModalForSetting from 'components/common/Modals/BasicModal/ModalForSetting
 import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
+import coummunityBtn from 'assets/images/communityBtn.svg';
 
 function RoomListTopBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,9 +41,7 @@ function RoomListTopBar() {
         )}
       </StUserName>
       <Link to="/posts/all">
-        <StCommunityBtn>
-          <p>커뮤니티</p>
-        </StCommunityBtn>
+        <StCommunityBtn>커뮤니티</StCommunityBtn>
       </Link>
       {isSettingModalOn && (
         <ModalForSetting
@@ -91,13 +90,23 @@ const StUserName = styled.div`
 `;
 
 const StCommunityBtn = styled.button`
+  background-image: url(${coummunityBtn});
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 238px;
+  height: 78px;
+  margin: 4px 20px 12px 0;
   font-family: MapoBackpacking;
   font-weight: 400;
   font-size: 32px;
-  line-height: 35px;
+  line-height: 30px;
   color: #fff;
-  margin-bottom: 12px;
-  margin-right: 20px;
+
+  a {
+    display: block;
+    width: 238px;
+    height: 78px;
+  }
 `;
 
 const StSettingBtn = styled.button`

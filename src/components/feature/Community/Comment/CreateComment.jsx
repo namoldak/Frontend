@@ -21,6 +21,7 @@ function CreateComment({ comment, setComment, comments }) {
 
     if (comment === '') {
       useToast('댓글 내용이 없닭!', 'warning');
+      return;
     }
 
     await instance.post(`/posts/${id}/comments`, data).then((res) => {
