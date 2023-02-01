@@ -92,7 +92,7 @@ function GameRoomRTC() {
       console.log('data', data);
       switch (data.type) {
         case 'ENTER': {
-          // console.log('enter');
+          console.log('enter', data);
           break;
         }
         case 'CHAT': {
@@ -111,11 +111,10 @@ function GameRoomRTC() {
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
           setMyKeyword('???');
-          if (myNickName === owner) {
+          if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'hidden';
             leaveBtn.current.disabled = true;
             sendChat({ message: data.content.startAlert, sender: data.sender });
-            // startBtn.current.disabled = true;
           } else {
             leaveBtn.current.disabled = true;
           }
@@ -217,7 +216,7 @@ function GameRoomRTC() {
           );
           setIsMyTurn(false);
 
-          if (myNickName === owner) {
+          if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
           }
 
@@ -267,7 +266,7 @@ function GameRoomRTC() {
           );
           setIsMyTurn(false);
 
-          if (myNickName === owner) {
+          if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
             sendChat({ message: data.content, sender: data.sender });
           }
@@ -638,9 +637,14 @@ function GameRoomRTC() {
           delete pcs[`${data.sender}`];
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
-            .then(async (res) => {
-              await sessionStorage.setItem('owner', res.data.ownerNickname);
+            .then((res) => {
+              // console.log('leave', res);
+              sessionStorage.setItem('owner', res.data.ownerNickname);
+              // console.log('leave owner', sessionStorage.getItem('owner'));
+              // console.log('leave mynick ', myNickName);
               if (sessionStorage.getItem('owner') === myNickName) {
+                // console.log('leave owner 1', sessionStorage.getItem('owner'));
+                // console.log('leave mynick 1', myNickName);
                 setIsOwner(true);
               } else {
                 setUsers((oldUsers) =>
@@ -700,10 +704,10 @@ function GameRoomRTC() {
   }
   usePrevious(users);
   useEffect(() => {
-    if (myNickName === owner) {
+    if (myNickName === sessionStorage.getItem('owner')) {
       setIsOwner(true);
     }
-  }, [isOwner, owner]);
+  }, [isOwner, sessionStorage.getItem('owner')]);
   useEffect(() => {}, [stream, socketRef.current]);
 
   return (
