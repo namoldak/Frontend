@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable consistent-return */
 // 외부 모듈
@@ -25,8 +26,10 @@ function Room({ roomInfo }) {
       useToast('지금은 끼어들 수 없닭!', 'warning');
       return null;
     }
-    dispatch(enterRoom(roomInfo));
-    navigate(`/gameroom/${roomInfo.id}`);
+    setTimeout(function () {
+      dispatch(enterRoom(roomInfo));
+      navigate(`/gameroom/${roomInfo.id}`);
+    }, 500);
   }
 
   return (
