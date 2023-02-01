@@ -37,7 +37,6 @@ function Comment(props) {
 
   async function onClickDeleteComment() {
     await instance.delete(`/posts/comments/${commentId}`).then((res) => {
-      console.log('delete res', res);
       setComments(
         comments.filter((comment) => {
           return comment.id !== commentId;

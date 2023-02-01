@@ -2,7 +2,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react/no-array-index-key */
 // 외부 모듈
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈

@@ -20,9 +20,6 @@ function Post({ postInfo }) {
   return (
     <StPost>
       <StPostBox key={postInfo.id} onClick={clickPost}>
-        {/* <div>
-          {postInfo.category === 'freeBoard' ? '자유게시판' : '유저피드백'}
-        </div> */}
         <PostTitle>{postInfo.title}</PostTitle>
         <CmtCnt>{postInfo.cmtCnt}</CmtCnt>
         <CreatedAt>{formatTime(postInfo?.createdAt)}</CreatedAt>
