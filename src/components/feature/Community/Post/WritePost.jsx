@@ -10,6 +10,7 @@ import useToast from 'hooks/useToast';
 import { createPost } from 'redux/modules/postSlice';
 import postBtn from 'assets/images/postBtn.svg';
 import ImgUpload from 'components/common/ImgUpload';
+import select from 'assets/images/select.svg';
 
 function WritePost() {
   const dispatch = useDispatch();
@@ -160,7 +161,13 @@ const StCategorySelect = styled.select`
   line-height: 21px;
   letter-spacing: 0.2em;
   color: ${({ theme }) => theme.colors.text3};
-  text-align: center;
+  text-align: left;
+  padding-left: 30px;
+  cursor: pointer;
+
+  background-image: url(${select}); // arrow
+  background-repeat: no-repeat;
+  background-position: 90% center;
 
   &:focus {
     outline: none;
