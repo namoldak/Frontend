@@ -676,13 +676,11 @@ function GameRoomRTC() {
       instance
         .delete(`rooms/${param.roomId}/exit`)
         .then(async (res) => {
-          client.current.deactive();
           socketRef.current.close();
           console.log('클라이언트', client.current);
           client.current.deactivate();
         })
         .catch(async (error) => {
-          client.current.deactive();
           socketRef.current.close();
           client.current.deactivate();
         });
