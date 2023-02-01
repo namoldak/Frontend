@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 // 내부 모듈
@@ -48,7 +49,13 @@ function ChatBox({ notice, sendChat, chatMessages }) {
                 <Chat
                   // eslint-disable-next-line react/no-array-index-key
                   key={String(index)}
-                  className={message.sender === nickname ? 'my' : 'other'}
+                  className={
+                    message.sender === nickname
+                      ? 'my'
+                      : message.sender === '양계장 주인'
+                      ? 'chickenLord'
+                      : 'other'
+                  }
                 >
                   <div>{`${message.sender}: ${message.message}`}</div>
                 </Chat>
@@ -148,6 +155,11 @@ const Chat = styled.div`
 
   &.other {
     text-align: left;
+  }
+
+  &.chickenLord {
+    text-align: left;
+    color: rgb(205, 21, 22);
   }
 `;
 

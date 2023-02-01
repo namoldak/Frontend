@@ -30,7 +30,7 @@ instance.interceptors.request.use((config) => {
 
 // Unauthorized Error 처리
 axios.interceptors.response.use((error) => {
-  if (error.response.status === 401) {
+  if (error.response.status === 403) {
     useToast('로그인이 만료되었습니다.', 'error');
     window.location.href('/login');
   }
