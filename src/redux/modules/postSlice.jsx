@@ -157,6 +157,9 @@ export const postSlice = createSlice({
     [searchPosts.fulfilled]: (state, action) => {
       state.posts = action.payload;
     },
+    [searchPosts.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
   },
 });
 

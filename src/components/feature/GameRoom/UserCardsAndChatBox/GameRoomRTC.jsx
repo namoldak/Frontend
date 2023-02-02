@@ -4,14 +4,17 @@
 // 외부모듈
 import styled from 'styled-components';
 import React, { useRef, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
+import { createBrowserHistory } from 'history';
 
 // 내부모듈
 import useToast from 'hooks/useToast';
+import usePreventGoBack from 'hooks/usePreventGoBack';
+import usePreventRefresh from 'hooks/usePreventRefesh';
 
 // 이미지 파일
 import voiceOn from 'assets/images/voiceOn.svg';
