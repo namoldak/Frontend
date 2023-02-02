@@ -26,7 +26,6 @@ function Room({ roomInfo }) {
       return null;
     }
     dispatch(enterRoom(roomInfo));
-    navigate(`/gameroom/${roomInfo.id}`);
   }
 
   return (

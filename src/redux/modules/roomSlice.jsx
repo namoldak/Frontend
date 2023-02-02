@@ -64,6 +64,7 @@ export const roomSlice = createSlice({
     [createRoom.fulfilled]: (state, action) => {
       // console.log('action payload', action.payload.owner);
       sessionStorage.setItem('owner', action.payload.owner);
+      sessionStorage.setItem('normalEnter', true);
       state.rooms.gameRoomResponseDtoList.push(action.payload);
       // 세션스토리지에 오너저장
       window.location.href = `/gameroom/${action.payload.roomId}`;
@@ -74,7 +75,9 @@ export const roomSlice = createSlice({
     [enterRoom.fulfilled]: (state, action) => {
       // console.log(action.payload);
       sessionStorage.setItem('owner', action.payload.owner);
+      sessionStorage.setItem('normalEnter', true);
       state.rooms = action.payload;
+      window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [readAllRooms.fulfilled]: (state, action) => {
       // console.log('action payload readAllRooms', action.payload);

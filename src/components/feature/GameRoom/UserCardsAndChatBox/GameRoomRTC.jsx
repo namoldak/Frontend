@@ -496,6 +496,11 @@ function GameRoomRTC() {
 
   // WebRTC signaling section
   useEffect(() => {
+    if (!sessionStorage.getItem('normalEnter')) {
+      console.log(sessionStorage.getItem('normalEnter'));
+      alert('정상적인 접근이 아닙니다');
+      navigate('/rooms');
+    }
     connect();
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
     // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
