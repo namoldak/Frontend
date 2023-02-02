@@ -10,7 +10,7 @@ const usePreventGoBack = () => {
 
   const preventGoBack = () => {
     history.push(null, '', location.href);
-    useToast('뒤로갈 수 없닭! 🐓');
+    useToast('뒤로 갈 수 없닭! 🐓');
   };
 
   // 브라우저에 렌더링 시 한 번만 실행하는 코드
