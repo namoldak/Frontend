@@ -113,10 +113,10 @@ function GameRoomRTC() {
           setKeyword(data.content.keyword);
           setMyKeyword('???');
           if (myNickName === owner) {
-            sendChat({ message: data.content.startAlert, sender: data.sender });
-            // startBtn.current.disabled = true;
             startBtn.current.style.display = 'none';
             leaveBtn.current.disabled = true;
+            sendChat({ message: data.content.startAlert, sender: data.sender });
+            // startBtn.current.disabled = true;
           } else {
             leaveBtn.current.disabled = true;
           }
@@ -496,15 +496,18 @@ function GameRoomRTC() {
 
   // WebRTC signaling section
   useEffect(() => {
+    connect();
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
-
     // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
-
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {
           if (videoRef.current) {
             videoRef.current.srcObject = streamMedia;
+            streamMedia.getVideoTracks().forEach((track) => {
+              track.enabled = !track.enabled;
+            });
+            setIsCameraOn(false);
           }
         })
         .catch((error) => {
@@ -647,9 +650,12 @@ function GameRoomRTC() {
         .delete(`rooms/${param.roomId}/exit`)
         .then(async (res) => {
           socketRef.current.close();
+          console.log('클라이언트', client.current);
+          client.current.deactivate();
         })
         .catch(async (error) => {
           socketRef.current.close();
+          client.current.deactivate();
         });
     };
   }, []);
@@ -674,9 +680,6 @@ function GameRoomRTC() {
     }
   }, [isOwner, owner]);
   useEffect(() => {}, [stream, socketRef.current]);
-  useEffect(() => {
-    connect(); // 연결된 경우 렌더링
-  }, []);
 
   return (
     <StGameRoomRTC>
@@ -974,7 +977,7 @@ const StVideo = styled.div`
   video {
     width: 150px;
     height: 143px;
-
+    display: none;
     .spotLight {
       position: absolute;
       left: 0;
@@ -984,7 +987,6 @@ const StVideo = styled.div`
 `;
 
 const Stimg = styled.img`
-  display: none;
   height: unset;
 
   .spotLight {
