@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
-import { getCookie } from 'utils/cookies';
+import { getAccessToken } from 'utils/cookies';
 import landingBack from 'assets/images/landingBack.png';
 import landingTitle from 'assets/images/landingTitle.svg';
 import landingBanner from 'assets/images/landingBanner.svg';
@@ -16,10 +16,10 @@ function Landing() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (getCookie('my_token')) {
+    if (getAccessToken('AccessToken')) {
       setIsLoggedIn(true);
     }
-  }, [getCookie]);
+  }, [getAccessToken]);
 
   return (
     <StLanding>

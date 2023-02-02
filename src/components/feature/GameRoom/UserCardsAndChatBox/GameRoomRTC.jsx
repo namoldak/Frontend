@@ -83,6 +83,7 @@ function GameRoomRTC() {
 
   const connectHeaders = {
     Authorization: cookie.access_token,
+    'Refresh-Token': cookie.refresh_token,
   };
 
   // stomp client section
