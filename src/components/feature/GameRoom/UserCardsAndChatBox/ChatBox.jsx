@@ -160,7 +160,6 @@ const Chat = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
-  gap: 5px;
 
   &.my {
     text-align: right;
@@ -184,12 +183,12 @@ const StChatBubble = styled.div`
   // backgroundColor: '#fffff5',
   border: 1px solid ${({ theme }) => theme.colors.text};
   border-radius: 5px;
-  padding: 10px;
+  padding: 8px;
   width: fit-content;
 
   &.chickenLord {
-    border: none;
-    padding: 0;
+    border: 1px solid rgb(205, 21, 22);
+    padding: 8px;
   }
 `;
 
