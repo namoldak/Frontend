@@ -41,7 +41,9 @@ function RoomListTopBar() {
         )}
       </StUserName>
       <Link to="/posts/all">
-        <StCommunityBtn>커뮤니티</StCommunityBtn>
+        <StCommunityBtn>
+          <img src={coummunityBtn} alt="커뮤니티" />
+        </StCommunityBtn>
       </Link>
       {isSettingModalOn && (
         <ModalForSetting
@@ -90,23 +92,9 @@ const StUserName = styled.div`
 `;
 
 const StCommunityBtn = styled.button`
-  background-image: url(${coummunityBtn});
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 238px;
-  height: 78px;
-  margin: 4px 20px 12px 0;
-  font-family: MapoBackpacking;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 30px;
-  color: #fff;
-
-  a {
-    display: block;
-    width: 238px;
-    height: 78px;
-  }
+  width: 217px;
+  height: 71px;
+  margin: 8px 20px 0 0;
 `;
 
 const StSettingBtn = styled.button`
