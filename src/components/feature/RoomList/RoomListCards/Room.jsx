@@ -28,7 +28,6 @@ function Room({ roomInfo }) {
     }
     setTimeout(function () {
       dispatch(enterRoom(roomInfo));
-      navigate(`/gameroom/${roomInfo.id}`);
     }, 500);
   }
 
