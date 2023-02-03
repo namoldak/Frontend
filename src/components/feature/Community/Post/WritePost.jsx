@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { Navigate, useNavigate } from 'react-router';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
@@ -12,6 +13,7 @@ import postBtn from 'assets/images/postBtn.svg';
 import ImgUpload from 'components/common/ImgUpload';
 import select from 'assets/images/select.svg';
 import usePreventRefresh from 'hooks/usePreventRefesh';
+import { instance } from 'api/core/axios';
 
 function WritePost() {
   const dispatch = useDispatch();
@@ -19,6 +21,7 @@ function WritePost() {
   const [categoryCheck, setCategoryCheck] = useState('freeBoard');
   const [content, setContent] = useState('');
   const [imgs, setImgs] = useState([]);
+  const navigate = useNavigate();
 
   const feedbackFormat = `[나만 모른닭 🐓] 서비스의 솔직한 만족도를 알려주세요 😁
 
@@ -62,7 +65,7 @@ function WritePost() {
     setCategoryCheck(e.target.value);
   }
 
-  function sendPost() {
+  async function sendPost() {
     if (title === '') {
       useToast('제목을 입력하지 않았닭!', 'warning');
       return;
@@ -78,7 +81,28 @@ function WritePost() {
       content,
       title,
     };
-    dispatch(createPost({ post, imgs }));
+    try {
+      const formData = new FormData();
+      const json = JSON.stringify(post);
+      const blob = new Blob([json], { type: 'application/json' });
+      formData.append('data', blob);
+      for (let i = 0; i < imgs.length; i += 1) {
+        formData.append('file', imgs[i]);
+      }
+
+      instance
+        .post(`/posts/write`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          navigate(`/posts/${res.data.id}`);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   usePreventRefresh();
