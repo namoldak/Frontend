@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable func-names */
 /* eslint-disable no-use-before-define */
 // 외부모듈
@@ -43,9 +42,8 @@ let pcs = {};
 let myPeerConnection;
 
 function GameRoomRTC() {
-  // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
-
-  const SockJs = new SockJS('http://3.35.229.181:8080/ws-stomp');
+  const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
+  // const SockJs = new SockJS('http://3.35.229.181:8080/ws-stomp');
 
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
@@ -565,8 +563,8 @@ function GameRoomRTC() {
       navigate('/rooms');
     }
     connect();
-    // socketRef.current = new SockJS('https://api.namoldak.com/signal');
-    socketRef.current = new SockJS('http://3.35.229.181:8080/signal');
+    socketRef.current = new SockJS('https://api.namoldak.com/signal');
+    // socketRef.current = new SockJS('http://3.35.229.181:8080/signal');
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {

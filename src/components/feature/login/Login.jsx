@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useEffect, forwardRef, useRef } from 'react';
 import styled from 'styled-components';
@@ -65,7 +64,7 @@ function Login() {
       setRefreshToken(response.headers.refreshtoken);
       setAccessToken(response.headers.accesstoken);
       setNicknameCookie(response.data);
-      useToast('카카오 로그인 성공', 'success');
+      useToast('카카오 로그인 되었습니다.', 'success');
       navigate('/');
     });
   };
