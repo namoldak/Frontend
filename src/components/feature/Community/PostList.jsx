@@ -13,6 +13,7 @@ import {
 } from 'redux/modules/postSlice';
 import postMy from 'assets/images/postMy.svg';
 import postWrite from 'assets/images/postWrite.svg';
+import usePreventGoBack from 'hooks/usePreventGoBack';
 import Pagination from './Pagination';
 import Post from './Post/Post';
 import PostCategory from './PostCategoryAndSearch/PostCategory';
@@ -47,6 +48,8 @@ function PostList() {
       dispatch(readPostsByCategory({ category, page }));
     }
   }, [category, page, isMyPost]);
+
+  usePreventGoBack();
 
   return (
     <>

@@ -4,14 +4,17 @@
 // 외부모듈
 import styled from 'styled-components';
 import React, { useRef, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
+import { createBrowserHistory } from 'history';
 
 // 내부모듈
 import useToast from 'hooks/useToast';
+import usePreventGoBack from 'hooks/usePreventGoBack';
+import usePreventRefresh from 'hooks/usePreventRefesh';
 
 // 이미지 파일
 import voiceOn from 'assets/images/voiceOn.svg';
@@ -90,10 +93,8 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      console.log('data', data);
       switch (data.type) {
         case 'ENTER': {
-          console.log('enter', data);
           break;
         }
         case 'CHAT': {
@@ -101,12 +102,13 @@ function GameRoomRTC() {
           break;
         }
         case 'START': {
+          console.log('keyword', data.content.keyword);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = false;
             });
           } catch (erorr) {
-            console.log(erorr);
+            // console.log(error)
           }
           setIsStartModal(true);
           setCategory(data.content.category);
@@ -140,7 +142,7 @@ function GameRoomRTC() {
                 track.enabled = true;
               });
             } catch (e) {
-              console.log(e);
+              // console.log(e);
             }
           } else {
             try {
@@ -148,7 +150,7 @@ function GameRoomRTC() {
                 track.enabled = false;
               });
             } catch (e) {
-              console.log(e);
+              // console.log(e);
             }
             setIsVoiceOn(false);
             setIsTimer(true);
@@ -207,7 +209,7 @@ function GameRoomRTC() {
               track.enabled = true;
             });
           } catch (e) {
-            console.log(e);
+            // console.log(e);
           }
           setIsVoiceOn(true);
           setUsers((users) =>
@@ -219,6 +221,11 @@ function GameRoomRTC() {
 
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
+            console.log(data);
+            sendChat({
+              message: JSON.parse(data.content),
+              sender: data.sender,
+            });
           }
 
           break;
@@ -257,7 +264,7 @@ function GameRoomRTC() {
               track.enabled = true;
             });
           } catch (e) {
-            console.log(e);
+            // console.log(e);
           }
           setIsVoiceOn(true);
           setUsers((users) =>
@@ -271,6 +278,37 @@ function GameRoomRTC() {
             startBtn.current.style.visibility = 'visible';
             sendChat({ message: data.content, sender: data.sender });
           }
+          break;
+        }
+        case 'FORCEDENDGAME': {
+          muteBtn.current.style.display = 'block';
+          leaveBtn.current.disabled = false;
+          setNotice('');
+          setCategory('');
+          setKeyword('');
+          setMyKeyword('');
+          setIsSpotTimer(false);
+          setIsTimer(false);
+          try {
+            stream.getAudioTracks().forEach((track) => {
+              track.enabled = true;
+            });
+          } catch (e) {
+            // console.log(e);
+          }
+          setIsVoiceOn(true);
+          setUsers((users) =>
+            users.map((user) => {
+              return { ...user, isMyTurn: false };
+            }),
+          );
+          setIsMyTurn(false);
+
+          if (myNickName === sessionStorage.getItem('owner')) {
+            startBtn.current.style.visibility = 'visible';
+            sendChat({ message: data.content, sender: data.sender });
+          }
+
           break;
         }
         default: {
@@ -289,8 +327,8 @@ function GameRoomRTC() {
         subscribe();
       },
       onStompError: (frame) => {
-        console.log(`Broker reported error: ${frame.headers.message}`);
-        console.log(`Additional details: ${frame.body}`);
+        // console.log(`Broker reported error: ${frame.headers.message}`);
+        // console.log(`Additional details: ${frame.body}`);
       },
     });
     client.current.activate();
@@ -458,10 +496,10 @@ function GameRoomRTC() {
           pc.addTrack(track, peerConnectionLocalStream);
         });
       } else {
-        console.log('no local stream');
+        // console.log('no local stream');
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     return pc;
   }
@@ -536,7 +574,7 @@ function GameRoomRTC() {
         .catch((error) => {
           userCardImgRef.current.style.display = 'block';
           videoRef.current.style.display = 'none';
-          console.log(`getUserMedia error: ${error}`);
+          // console.log(`getUserMedia error: ${error}`);
         });
 
       socketRef.current?.send(
@@ -581,7 +619,7 @@ function GameRoomRTC() {
                   );
                 })
                 .catch((error) => {
-                  console.log(error);
+                  // console.log(error);
                 });
             }
           }
@@ -612,7 +650,7 @@ function GameRoomRTC() {
                   );
                 })
                 .catch((error) => {
-                  console.log(error);
+                  // console.log(error);
                 });
             });
           }
@@ -639,13 +677,8 @@ function GameRoomRTC() {
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
             .then((res) => {
-              // console.log('leave', res);
               sessionStorage.setItem('owner', res.data.ownerNickname);
-              // console.log('leave owner', sessionStorage.getItem('owner'));
-              // console.log('leave mynick ', myNickName);
               if (sessionStorage.getItem('owner') === myNickName) {
-                // console.log('leave owner 1', sessionStorage.getItem('owner'));
-                // console.log('leave mynick 1', myNickName);
                 setIsOwner(true);
               } else {
                 setUsers((oldUsers) =>
@@ -658,7 +691,7 @@ function GameRoomRTC() {
               }
             })
             .catch((error) => {
-              console.log(error);
+              // console.log(error);
             });
 
           setUsers((oldUsers) =>
@@ -678,7 +711,6 @@ function GameRoomRTC() {
         .delete(`rooms/${param.roomId}/exit`)
         .then(async (res) => {
           socketRef.current.close();
-          console.log('클라이언트', client.current);
           client.current.deactivate();
         })
         .catch(async (error) => {

@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 // 외부 모듈
 import axios from 'axios';
 import { useToast } from 'react-toastify';
@@ -32,6 +33,8 @@ instance.interceptors.request.use((config) => {
 axios.interceptors.response.use((error) => {
   if (error.response.status === 403) {
     useToast('로그인이 만료되었습니다.', 'error');
-    window.location.href('/login');
+    setTimeout(function () {
+      window.location.href('/login');
+    }, 2000);
   }
 });
