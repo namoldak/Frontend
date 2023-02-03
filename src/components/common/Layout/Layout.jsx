@@ -7,9 +7,6 @@ import usePreventRefresh from 'hooks/usePreventRefesh';
 import Container from './Container';
 
 function Layout() {
-  usePreventGoBack();
-  usePreventRefresh();
-
   return (
     <StLayout>
       <Container />
