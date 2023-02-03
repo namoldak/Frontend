@@ -9,7 +9,6 @@ import SockJS from 'sockjs-client';
 import { useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
-import { createBrowserHistory } from 'history';
 
 // 내부모듈
 import useToast from 'hooks/useToast';
