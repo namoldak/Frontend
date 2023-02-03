@@ -2,7 +2,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react/no-array-index-key */
 // 외부 모듈
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
@@ -24,7 +24,13 @@ function Pagination({ page, setPage, currPage, setCurrPage }) {
         <img src={arrow} alt="왼쪽 화살표" />
       </StArrowBtn>
       <StPageNum>
-        {currPage}/{totalPage}
+        {totalPage === 0 ? (
+          <div>1/1</div>
+        ) : (
+          <div>
+            {currPage} / {totalPage}
+          </div>
+        )}
       </StPageNum>
       <StArrowBtn
         onClick={() => {
@@ -50,8 +56,8 @@ const StPageNum = styled.button`
   line-height: 19px;
   letter-spacing: 0.1em;
   color: ${({ theme }) => theme.colors.white};
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 12px;
+  margin-right: 12px;
 `;
 
 const StArrowBtn = styled.button`

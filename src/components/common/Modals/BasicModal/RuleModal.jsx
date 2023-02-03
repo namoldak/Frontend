@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
-import { getCookie } from 'utils/cookies';
+import { getAccessToken } from 'utils/cookies';
 import closeBtn from 'assets/images/closeBtn.svg';
 import landingToGameBtn from 'assets/images/landingToGameBtn.svg';
 import landingBack from 'assets/images/landingBack.png';
@@ -15,10 +15,10 @@ function RuleModal({ onClose, content }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (getCookie('my_token')) {
+    if (getAccessToken('AccessToken')) {
       setIsLoggedIn(true);
     }
-  }, [getCookie]);
+  }, [getAccessToken]);
 
   return (
     <ModalPortal>
@@ -72,6 +72,10 @@ const StModalBorder = styled.div`
   background-repeat: no-repeat;
   background-position: bottom;
   margin-top: 46px;
+
+  @media ${(props) => props.theme.laptop} {
+    margin-top: 0;
+  }
 `;
 
 const StCloseBtn = styled.button`

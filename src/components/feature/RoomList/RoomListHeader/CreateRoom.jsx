@@ -32,10 +32,21 @@ function CreateRoom() {
 }
 
 const StCreateRoomBtn = styled.button`
-  width: 238px;
+  /* width: 238px; */
   height: 78px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   margin-left: 30px;
+
+  img {
+    width: unset;
+    height: unset;
+  }
+
+  @media ${(props) => props.theme.laptop} {
+    img {
+      height: 78px;
+    }
+  }
 `;
 
 export default CreateRoom;

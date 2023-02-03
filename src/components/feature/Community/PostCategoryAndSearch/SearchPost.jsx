@@ -58,9 +58,9 @@ function SearchPost({
           <img src={search} alt="검색버튼" />
         </SearchBtn>
       ) : (
-        <SearchBtn onClick={onClickResetKeyword}>
+        <CloseBtn onClick={onClickResetKeyword}>
           <img src={smallClose} alt="검색 초기화" />
-        </SearchBtn>
+        </CloseBtn>
       )}
     </StSearchPost>
   );
@@ -99,6 +99,13 @@ const SearchBtn = styled.button`
   top: 15px;
   right: 15px;
   height: 24px;
+`;
+
+const CloseBtn = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 15px;
+  height: 20px;
 `;
 
 export default SearchPost;

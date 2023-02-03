@@ -22,14 +22,13 @@ function PostDetail() {
   const { posts } = useSelector((state) => state.posts);
   const [isWriter, setIsWriter] = useState(false);
   const [comment, setComment] = useState('');
+
   // initial state
   const [comments, setComments] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [commentPage, setCommentPage] = useState(0); // 스크롤이 닿았을 때 새롭게 데이터 페이지를 바꿀 state
   const pageEnd = useRef(); // 페이지의 마지막 요소(infinite scroll의 탐색 타겟)
-
-  console.log('1');
 
   const loadMore = () => {
     if (commentPage < totalPage) {
@@ -64,7 +63,7 @@ function PostDetail() {
 
   const getComment = async () => {
     await instance
-      .get(`/posts/${id}/comments/all?page=${commentPage}&size=10`)
+      .get(`/posts/${id}/comments/all?page=${commentPage}&size=5`)
       .then((res) => {
         const { totalPage, commentResponseDtoList } = res.data;
         setComments((prev) => [...prev, ...commentResponseDtoList]);
@@ -91,15 +90,6 @@ function PostDetail() {
       observer.observe(pageEnd.current);
     }
   }, [isLoading]);
-
-  // console.log(comments);
-  // console.log('commentPage', commentPage);
-  // console.log('totalPage', totalPage);
-  // console.log(isLoading);
-
-  // useEffect(() => {
-  //   getComment();
-  // }, [setComment]);
 
   return (
     <StPostDetail>
@@ -136,14 +126,16 @@ function PostDetail() {
           />
           {comments?.map((i) => {
             return (
-              <Comment
-                id={id}
-                key={i.id}
-                commentId={i.id}
-                comment={i.comment}
-                nickname={i.nickname}
-                createdAt={i.createdAt}
-              />
+              <div key={i.id}>
+                <Comment
+                  commentId={i.id}
+                  comment={i.comment}
+                  nickname={i.nickname}
+                  createdAt={i.createdAt}
+                  comments={comments}
+                  setComments={setComments}
+                />
+              </div>
             );
           })}
           <Target ref={pageEnd} />
@@ -235,7 +227,14 @@ const StModify = styled.button`
 
 const ImgDiv = styled.div`
   max-width: 300px;
-  margin-bottom: 20px;
+  margin: 20px auto;
+  transition: all 0.1s;
+
+  img {
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
 `;
 
 const Content = styled.div`

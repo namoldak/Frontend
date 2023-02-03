@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // 외부 모듈
 import React, { useState } from 'react';
@@ -5,9 +6,12 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 // 내부 모듈
+import useToast from 'hooks/useToast';
 import { createPost } from 'redux/modules/postSlice';
 import postBtn from 'assets/images/postBtn.svg';
 import ImgUpload from 'components/common/ImgUpload';
+import select from 'assets/images/select.svg';
+import usePreventRefresh from 'hooks/usePreventRefesh';
 
 function WritePost() {
   const dispatch = useDispatch();
@@ -59,6 +63,16 @@ function WritePost() {
   }
 
   function sendPost() {
+    if (title === '') {
+      useToast('제목을 입력하지 않았닭!', 'warning');
+      return;
+    }
+
+    if (content === '') {
+      useToast('내용을 입력하지 않았닭!', 'warning');
+      return;
+    }
+
     const post = {
       category: categoryCheck,
       content,
@@ -66,6 +80,8 @@ function WritePost() {
     };
     dispatch(createPost({ post, imgs }));
   }
+
+  usePreventRefresh();
 
   return (
     <>
@@ -78,25 +94,25 @@ function WritePost() {
         />
         <StCategorySelect onChange={onChangeCheck}>
           <StOption value="freeBoard">자유게시판</StOption>
-          <StOption value="feedbackBoard">유저 피드백</StOption>
+          <StOption value="feedbackBoard">피드백 남기기</StOption>
         </StCategorySelect>
-        {categoryCheck === 'feedbackBoard' ? (
-          <StWriteContent
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
-            defaultValue={feedbackFormat}
-          />
-        ) : (
-          <StWriteContent
-            onChange={(e) => {
-              setContent(e.target.value);
-            }}
-            placeholder="내용을 입력해주세요."
-            defaultValue=""
-          />
-        )}
       </StTitleCategory>
+      {categoryCheck === 'feedbackBoard' ? (
+        <StWriteContent
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+          defaultValue={feedbackFormat}
+        />
+      ) : (
+        <StWriteContent
+          onChange={(e) => {
+            setContent(e.target.value);
+          }}
+          placeholder="내용을 입력해주세요."
+          defaultValue=""
+        />
+      )}
       <ImgUpload setImgs={setImgs} />
       <StWritePostBtn type="button" onClick={sendPost}>
         <img src={postBtn} alt="확인" />
@@ -105,8 +121,8 @@ function WritePost() {
   );
 }
 
-const StTitleCategory = styled.div`
-  display: inline-block;
+const StTitleCategory = styled.form`
+  display: flex;
   height: 54px;
   margin-bottom: 12px;
 `;
@@ -148,7 +164,13 @@ const StCategorySelect = styled.select`
   line-height: 21px;
   letter-spacing: 0.2em;
   color: ${({ theme }) => theme.colors.text3};
-  text-align: center;
+  text-align: left;
+  padding-left: 30px;
+  cursor: pointer;
+
+  background-image: url(${select}); // arrow
+  background-repeat: no-repeat;
+  background-position: 90% center;
 
   &:focus {
     outline: none;

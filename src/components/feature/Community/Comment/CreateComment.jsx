@@ -12,8 +12,6 @@ import { readOnePost } from 'redux/modules/postSlice';
 // import { readComments } from 'redux/modules/commentSlice';
 
 function CreateComment({ comment, setComment, comments }) {
-  // const [comment, setComment] = useState('');
-  const dispatch = useDispatch();
   const { id } = useParams();
 
   async function postComment() {
@@ -21,13 +19,11 @@ function CreateComment({ comment, setComment, comments }) {
 
     if (comment === '') {
       useToast('댓글 내용이 없닭!', 'warning');
+      return;
     }
 
     await instance.post(`/posts/${id}/comments`, data).then((res) => {
-      const { comment, id } = res.data;
-      setComment(data.comment);
-      console.log(data.comment);
-      comments.push(data.comment);
+      comments.unshift(res.data);
     });
     setComment('');
   }

@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
-import { getCookie, getNicknameCookie } from 'utils/cookies';
+import { getAccessToken, getNicknameCookie } from 'utils/cookies';
 import ModalForSetting from 'components/common/Modals/BasicModal/ModalForSetting';
 import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import backBtn from 'assets/images/backBtn.svg';
 import settingBtn from 'assets/images/settingBtn.svg';
+import coummunityBtn from 'assets/images/communityBtn.svg';
 
 function RoomListTopBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,10 +17,10 @@ function RoomListTopBar() {
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
   useEffect(() => {
-    if (getCookie('my_token')) {
+    if (getAccessToken('AccessToken')) {
       setIsLoggedIn(true);
     }
-  }, [getCookie]);
+  }, [getAccessToken]);
 
   return (
     <StRoomListTopBar>
@@ -41,7 +42,7 @@ function RoomListTopBar() {
       </StUserName>
       <Link to="/posts/all">
         <StCommunityBtn>
-          <p>커뮤니티</p>
+          <img src={coummunityBtn} alt="커뮤니티" />
         </StCommunityBtn>
       </Link>
       {isSettingModalOn && (
@@ -91,13 +92,9 @@ const StUserName = styled.div`
 `;
 
 const StCommunityBtn = styled.button`
-  font-family: MapoBackpacking;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 35px;
-  color: #fff;
-  margin-bottom: 12px;
-  margin-right: 20px;
+  width: 217px;
+  height: 71px;
+  margin: 8px 20px 0 0;
 `;
 
 const StSettingBtn = styled.button`

@@ -57,8 +57,8 @@ const StSelect = styled.select`
   -webkit-appearance: none; /* for chrome */
   -moz-appearance: none; /*for firefox*/
   appearance: none; // select 태그 기본 css reset
-  cursor: pointer;
   border: 0;
+  cursor: pointer;
 
   font-weight: 500;
   font-size: 18px;
@@ -75,6 +75,8 @@ const StSelect = styled.select`
   }
 `;
 
-const StOption = styled.option``;
+const StOption = styled.option`
+  width: 100%;
+`;
 
 export default PostCategory;

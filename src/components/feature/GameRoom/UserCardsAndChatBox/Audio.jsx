@@ -59,8 +59,6 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
             id="myFace"
             autoPlay
             playsInline
-            // width={200}
-            // height={200}
           >
             비디오
           </video>
@@ -70,8 +68,6 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
           ref={userCardImgRef}
           src={playerImg}
           alt="닭 이미지"
-          // width={200}
-          // height={200}
         />
       </StVideoBox>
       <StNickName className={isMyTurn ? 'spotLight' : ''}>
