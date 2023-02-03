@@ -14,6 +14,9 @@ import * as StompJs from '@stomp/stompjs';
 import useToast from 'hooks/useToast';
 import usePreventGoBack from 'hooks/usePreventGoBack';
 import usePreventRefresh from 'hooks/usePreventRefesh';
+import useSound from 'hooks/useSound';
+import endSound from 'assets/audio/endSound.mp3';
+import startSound from 'assets/audio/startSound.mp3';
 
 // 이미지 파일
 import voiceOn from 'assets/images/voiceOn.svg';
@@ -82,6 +85,8 @@ function GameRoomRTC() {
   const [category, setCategory] = useState('');
   const [keyword, setKeyword] = useState('');
   const [myKeyword, setMyKeyword] = useState('');
+  const startEffect = useSound(startSound, 1);
+  const endEffect = useSound(endSound, 1);
 
   const connectHeaders = {
     Authorization: cookie.access_token,
@@ -101,7 +106,6 @@ function GameRoomRTC() {
           break;
         }
         case 'START': {
-          console.log('keyword', data.content.keyword);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = false;
@@ -114,6 +118,7 @@ function GameRoomRTC() {
           setKeyword(data.content.keyword);
           setMyKeyword('???');
           if (myNickName === sessionStorage.getItem('owner')) {
+            startEffect.play();
             startBtn.current.style.visibility = 'hidden';
             leaveBtn.current.disabled = true;
             sendChat({ message: data.content.startAlert, sender: data.sender });
@@ -186,6 +191,7 @@ function GameRoomRTC() {
         case 'SUCCESS': {
           setNotice(data.content);
           if (myNickName === data.nickname) {
+            endEffect.play();
             setTimeout(function () {
               endGame();
             }, 2000);
@@ -217,16 +223,13 @@ function GameRoomRTC() {
             }),
           );
           setIsMyTurn(false);
-
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
-            console.log(data);
-            sendChat({
-              message: JSON.parse(data.content),
-              sender: data.sender,
-            });
+            // sendChat({
+            //   message: JSON.parse(data.content),
+            //   sender: data.sender,
+            // });
           }
-
           break;
         }
         case 'CAMERAON': {
@@ -280,6 +283,11 @@ function GameRoomRTC() {
           break;
         }
         case 'FORCEDENDGAME': {
+          if (myNickName === sessionStorage.getItem('owner')) {
+            endEffect.play();
+            startBtn.current.style.visibility = 'visible';
+            sendChat({ message: data.content, sender: data.sender });
+          }
           muteBtn.current.style.display = 'block';
           leaveBtn.current.disabled = false;
           setNotice('');
@@ -302,11 +310,6 @@ function GameRoomRTC() {
             }),
           );
           setIsMyTurn(false);
-
-          if (myNickName === sessionStorage.getItem('owner')) {
-            startBtn.current.style.visibility = 'visible';
-            sendChat({ message: data.content, sender: data.sender });
-          }
 
           break;
         }
