@@ -63,6 +63,7 @@ export const roomSlice = createSlice({
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
       sessionStorage.setItem('owner', action.payload.owner);
+      sessionStorage.setItem('normalEnter', true);
       state.rooms.gameRoomResponseDtoList.push(action.payload);
       window.location.href = `/gameroom/${action.payload.roomId}`;
     },
@@ -71,7 +72,9 @@ export const roomSlice = createSlice({
     },
     [enterRoom.fulfilled]: (state, action) => {
       sessionStorage.setItem('owner', action.payload.owner);
+      sessionStorage.setItem('normalEnter', true);
       state.rooms = action.payload;
+      window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [readAllRooms.fulfilled]: (state, action) => {
       state.rooms = action.payload;

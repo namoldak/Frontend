@@ -560,15 +560,23 @@ function GameRoomRTC() {
 
   // WebRTC signaling section
   useEffect(() => {
+    if (!sessionStorage.getItem('normalEnter')) {
+      console.log(sessionStorage.getItem('normalEnter'));
+      alert('정상적인 접근이 아닙니다');
+      navigate('/rooms');
+    }
     connect();
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
     // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
-
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {
           if (videoRef.current) {
             videoRef.current.srcObject = streamMedia;
+            streamMedia.getVideoTracks().forEach((track) => {
+              track.enabled = !track.enabled;
+            });
+            setIsCameraOn(false);
           }
         })
         .catch((error) => {
@@ -1037,7 +1045,7 @@ const StVideo = styled.div`
   video {
     width: 150px;
     height: 143px;
-
+    display: none;
     .spotLight {
       position: absolute;
       left: 0;
@@ -1047,7 +1055,6 @@ const StVideo = styled.div`
 `;
 
 const Stimg = styled.img`
-  display: none;
   height: unset;
 
   .spotLight {
