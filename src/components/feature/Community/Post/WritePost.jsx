@@ -81,8 +81,6 @@ function WritePost() {
     dispatch(createPost({ post, imgs }));
   }
 
-  usePreventRefresh();
-
   return (
     <>
       <StTitleCategory>

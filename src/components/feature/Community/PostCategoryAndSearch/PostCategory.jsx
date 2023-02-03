@@ -6,23 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 // 내부 모듈
 import select from 'assets/images/select.svg';
 
-function PostCategory({
-  setCategory,
-  setPage,
-  setCurrPage,
-  setKeyword,
-  setIsMyPost,
-}) {
+function PostCategory({ setCategory, setPage, setCurrPage, setKeyword }) {
   function changeValue(target) {
     setCategory(target.target.value);
-    setIsMyPost(false);
     setPage(0);
     setCurrPage(1);
   }
 
-  function onClickCategory() {
-    setIsMyPost(false);
-    setCategory('freeBoard');
+  function onClickCategory(target) {
+    setCategory(target.target.value);
     setKeyword('');
     setPage(0);
     setCurrPage(1);
@@ -33,6 +25,7 @@ function PostCategory({
       <StSelect onChange={changeValue} onClick={onClickCategory}>
         <StOption value="freeBoard">자유 게시판</StOption>
         <StOption value="feedBackBoard">내가 쓴 피드백</StOption>
+        <StOption value="myBoard">내가 쓴 게시글</StOption>
       </StSelect>
     </StPostCategory>
   );
