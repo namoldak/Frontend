@@ -46,8 +46,14 @@ const StPostBox = styled.div`
 `;
 
 const PostTitle = styled.div`
+  width: 600px;
   font-size: 16px;
   line-height: 19px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+  padding-left: 10px;
 `;
 
 const CmtCnt = styled.div`

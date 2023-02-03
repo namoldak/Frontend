@@ -39,7 +39,7 @@ function SearchRoom({ page, setPage, keyword, setKeyword, setIsSearch }) {
     <StSearchRoom>
       <input
         ref={input}
-        placeholder="방 제목으로 검색이 가능하닭."
+        placeholder="방 제목으로 검색이 가능하닭"
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         onKeyUp={onKeyUpEnter}
