@@ -1,9 +1,9 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // 내부 모듈
 import search from 'assets/images/postSearch.svg';
@@ -33,15 +33,12 @@ function SearchPost({
 
   function onKeyUpEnter(event) {
     if (event.keyCode === 13) {
-      document.activeElement.blur();
       onClickSearchPost();
-      input.current.focus();
     }
   }
 
   function onClickResetKeyword() {
     setKeyword('');
-    setCategory('freeBoard');
   }
 
   return (
@@ -108,4 +105,4 @@ const CloseBtn = styled.button`
   height: 20px;
 `;
 
-export default SearchPost;
+export default React.memo(SearchPost);

@@ -105,8 +105,6 @@ function WritePost() {
     }
   }
 
-  usePreventRefresh();
-
   return (
     <>
       <StTitleCategory>
