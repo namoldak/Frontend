@@ -24,7 +24,13 @@ function Pagination({ page, setPage, currPage, setCurrPage }) {
         <img src={arrow} alt="왼쪽 화살표" />
       </StArrowBtn>
       <StPageNum>
-        {currPage} / {totalPage}
+        {totalPage === 0 ? (
+          <div>1/1</div>
+        ) : (
+          <div>
+            {currPage} / {totalPage}
+          </div>
+        )}
       </StPageNum>
       <StArrowBtn
         onClick={() => {

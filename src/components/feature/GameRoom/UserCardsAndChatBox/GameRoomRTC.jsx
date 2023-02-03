@@ -101,6 +101,7 @@ function GameRoomRTC() {
           break;
         }
         case 'START': {
+          console.log('keyword', data.content.keyword);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = false;
@@ -219,6 +220,11 @@ function GameRoomRTC() {
 
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
+            console.log(data);
+            sendChat({
+              message: JSON.parse(data.content),
+              sender: data.sender,
+            });
           }
 
           break;
@@ -271,6 +277,37 @@ function GameRoomRTC() {
             startBtn.current.style.visibility = 'visible';
             sendChat({ message: data.content, sender: data.sender });
           }
+          break;
+        }
+        case 'FORCEDENDGAME': {
+          muteBtn.current.style.display = 'block';
+          leaveBtn.current.disabled = false;
+          setNotice('');
+          setCategory('');
+          setKeyword('');
+          setMyKeyword('');
+          setIsSpotTimer(false);
+          setIsTimer(false);
+          try {
+            stream.getAudioTracks().forEach((track) => {
+              track.enabled = true;
+            });
+          } catch (e) {
+            // console.log(e);
+          }
+          setIsVoiceOn(true);
+          setUsers((users) =>
+            users.map((user) => {
+              return { ...user, isMyTurn: false };
+            }),
+          );
+          setIsMyTurn(false);
+
+          if (myNickName === sessionStorage.getItem('owner')) {
+            startBtn.current.style.visibility = 'visible';
+            sendChat({ message: data.content, sender: data.sender });
+          }
+
           break;
         }
         default: {
