@@ -41,6 +41,7 @@ import ChatBox from './ChatBox';
 let stream = null;
 let pcs = {};
 let myPeerConnection;
+let viewKeyWord = '';
 
 function GameRoomRTC() {
   // const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
@@ -113,6 +114,10 @@ function GameRoomRTC() {
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
           setMyKeyword('???');
+
+          viewKeyWord = data.content.keyword[`${myNickName}`];
+          // setViewKeyWord(data.content.keyword[`${myNickName}`]);
+          console.log(viewKeyWord);
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'hidden';
             leaveBtn.current.disabled = true;
@@ -203,6 +208,14 @@ function GameRoomRTC() {
           setMyKeyword('');
           setIsSpotTimer(false);
           setIsTimer(false);
+          console.log(viewKeyWord);
+          setChatMessages((chatMessages) => [
+            ...chatMessages,
+            {
+              sender: '양계장 주인',
+              message: `"${myNickName}"의 키워드는 "${viewKeyWord}" (이)닭`,
+            },
+          ]);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
@@ -220,11 +233,6 @@ function GameRoomRTC() {
 
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
-            console.log(data);
-            sendChat({
-              message: JSON.parse(data.content),
-              sender: data.sender,
-            });
           }
 
           break;
@@ -258,6 +266,14 @@ function GameRoomRTC() {
           setMyKeyword('');
           setIsSpotTimer(false);
           setIsTimer(false);
+          setChatMessages((chatMessages) => [
+            ...chatMessages,
+            {
+              sender: '양계장 주인',
+              message: ` 너희들은 모두 바보닭!!
+              "${myNickName}"의 키워드는 "${viewKeyWord}" (이)닭`,
+            },
+          ]);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
@@ -275,7 +291,6 @@ function GameRoomRTC() {
 
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
-            sendChat({ message: data.content, sender: data.sender });
           }
           break;
         }
