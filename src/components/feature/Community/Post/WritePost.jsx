@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // 외부 모듈
 import React, { useState } from 'react';
@@ -64,12 +63,12 @@ function WritePost() {
 
   function sendPost() {
     if (title === '') {
-      useToast('제목을 입력하지 않았닭!', 'warning');
+      useToast('제목이 없닭!', 'warning');
       return;
     }
 
     if (content === '') {
-      useToast('내용을 입력하지 않았닭!', 'warning');
+      useToast('내용이 없닭!', 'warning');
       return;
     }
 

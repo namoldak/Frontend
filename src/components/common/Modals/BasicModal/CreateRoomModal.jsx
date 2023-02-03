@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -20,7 +19,7 @@ function CreateRoomModal() {
   function onClickRoomCreate() {
     const newRoom = { gameRoomName, gameRoomPassword: '1234' };
     if (gameRoomName.trim() === '') {
-      useToast('제목을 입력해주세요', 'warning');
+      useToast('방 제목을 입력해야 한닭', 'warning');
     } else {
       dispatch(createRoom(newRoom));
     }
@@ -37,7 +36,7 @@ function CreateRoomModal() {
     <StModalContainer onKeyUp={onKeyUpEnter}>
       <StTitle>방 만들기</StTitle>
       <Input
-        placeholder="방 제목을 입력해주세요."
+        placeholder="방 제목은 7글자 이하로 입력 가능하닭"
         value={gameRoomName}
         onChange={(e) => {
           setGameRoomName(e.target.value);
