@@ -9,21 +9,25 @@ import useToast from 'hooks/useToast';
 import logout from 'assets/images/logout.svg';
 import { instance } from 'api/core/axios';
 import { settingDate } from 'utils/date';
+import { useNavigate } from 'react-router';
 
 function LogOutTab({ setting }) {
   const [createAt, setCreateAt] = useState('');
   const [myEmail, setMyEmail] = useState('');
   const nickname = getNicknameCookie('nickname');
+  const navigate = useNavigate();
 
   function onClickLogOut() {
     if (nickname === undefined) {
       useToast('로그인 하지도 않았닭!!');
     } else {
-      removeCookie('my_token', 'nickname');
-      useToast('재밌었닭!');
-      setTimeout(() => {
-        window.location.href = `/`;
-      }, 2500);
+      instance.post('/auth/logout').then((res) => {
+        if (res.status === 200) {
+          removeCookie();
+          useToast('로그아웃되었닭! 재밌었닭!', 'success');
+          navigate('/login');
+        }
+      });
     }
   }
 

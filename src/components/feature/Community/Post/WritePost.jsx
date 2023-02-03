@@ -91,7 +91,7 @@ function WritePost() {
         />
         <StCategorySelect onChange={onChangeCheck}>
           <StOption value="freeBoard">자유게시판</StOption>
-          <StOption value="feedbackBoard">유저 피드백</StOption>
+          <StOption value="feedbackBoard">피드백 남기기</StOption>
         </StCategorySelect>
       </StTitleCategory>
       {categoryCheck === 'feedbackBoard' ? (

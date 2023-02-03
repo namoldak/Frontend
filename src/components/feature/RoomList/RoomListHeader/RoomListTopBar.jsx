@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // 내부 모듈
-import { getCookie, getNicknameCookie } from 'utils/cookies';
+import { getAccessToken, getNicknameCookie } from 'utils/cookies';
 import ModalForSetting from 'components/common/Modals/BasicModal/ModalForSetting';
 import SettingModal from 'components/common/Modals/BasicModal/SettingModal';
 import backBtn from 'assets/images/backBtn.svg';
@@ -17,10 +17,10 @@ function RoomListTopBar() {
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
 
   useEffect(() => {
-    if (getCookie('my_token')) {
+    if (getAccessToken('AccessToken')) {
       setIsLoggedIn(true);
     }
-  }, [getCookie]);
+  }, [getAccessToken]);
 
   return (
     <StRoomListTopBar>
