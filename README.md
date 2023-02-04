@@ -13,8 +13,7 @@
 | 차이진 |BE| [https://github.com/leejincha](https://github.com/leejincha) |
 | 홍윤재 |BE| [https://github.com/PigletHong](https://github.com/PigletHong) |
 
-```
-```
+<summary> 토글 </summary>
   
 <br /> <br />
 
