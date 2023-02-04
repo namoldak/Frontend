@@ -1,70 +1,102 @@
-# Getting Started with Create React App
+![header](https://capsule-render.vercel.app/api?type=waving&color=0:ffbc52,100:ff1800&height=200&text=NAMOLDAK&fontSize=70&fontColor=ffffff&desc=나만%20모른%20닭&descSize=20&descAlign=70&fontAlignY=30&descAlignY=50)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🧑🏻‍💻 개발 기간 & 조원
+<li>2022.12.30 - </li> <br />
 
-## Available Scripts
+|  이름  |포지션| 깃 허브 주소  |
+|:-----:|:---:|:--------------------------------:|
+| 김현빈 |FE| [https://github.com/kimmy199535](https://github.com/kimmy199535) |
+| 이정민 |FE| [https://github.com/kkookk55](https://github.com/kkookk55)    |
+| 최수빈 |FE| [https://github.com/123456soobin-choi](https://github.com/123456soobin-choi) |
+| 김아영 |BE| [https://github.com/isladaisy](https://github.com/isladaisy)     |
+| 조소영 |BE| [https://github.com/littlezero48](https://github.com/littlezero48)  |
+| 차이진 |BE| [https://github.com/leejincha](https://github.com/leejincha) |
+| 홍윤재 |BE| [https://github.com/PigletHong](https://github.com/PigletHong) |
+  
+<br /> <br />
 
-In the project directory, you can run:
+## 🐣 GITHUB
+> FRONTEND
+  >> https://github.com/namoldak/Frontend
+<br />
 
-### `yarn start`
+> BACKEND
+  >> https://github.com/namoldak/Backend
+<br />
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠 기술 스택
+<div align=center> 
+  
+## Frontend Tech Stack
+<br />
+    <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+    <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
+    <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+    <br>
+    <img src="https://img.shields.io/badge/react router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=black">
+    <img src="https://img.shields.io/badge/styled components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=black">
+<br />
+    <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
+    <img src="https://img.shields.io/badge/redux-764ABC?style=for-the-badge&logo=redux&logoColor=white">
+    <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
+<br />
+    <img src="https://img.shields.io/badge/sockJS-010101?style=for-the-badge&logo=socket.io&logoColor=white">
+    <img src="https://img.shields.io/badge/webrtc-333333?style=for-the-badge&logo=webrtc&logoColor=white">
+<br /><br />
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `yarn test`
+## Backend Tech Stack
+<br />
+    <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
+    <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+    <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+    <img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
+<br />
+    <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+    <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+    <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=black">
+    <img src="https://img.shields.io/badge/apache tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=white">
+<br />
+    <img src="https://img.shields.io/badge/amazon s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
+    <img src="https://img.shields.io/badge/amazon rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white"> 
+    <img src="https://img.shields.io/badge/amazon aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"> 
+<br />
+    <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+    <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white">
+    <img src="https://img.shields.io/badge/websocket-FFCD00?style=for-the-badge&logo=websocket&logoColor=white">
+<br />
+  
+## Tool
+<br />
+    <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+    <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+    <img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
+</div>
+<br />
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📢 주요 기능
+<ul>
+<li> 런닝맨의 양세찬 게임(aka. call my name 게임)을 온라인에서도 즐길 수 있게 구현하였습니닭🐔</li>
+<li> 텍스트 채팅뿐만 아니라 음성/화상 채팅으로도 서로 대화를 나누며 게임을 즐길 수 있습니닭🐔</li>
+</ul>
+<br /> <br />
 
-### `yarn build`
+## ⚙️ 서비스 아키텍쳐
+![나몰닭-아키텍쳐](https://user-images.githubusercontent.com/117756400/213685143-17dd2364-15d8-4751-ab0c-6bf20cc3ffd0.jpg)
+<br /> <br />
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📽 시연 영상
+[나만모른닭](https://user-images.githubusercontent.com/117756400/213690147-377a9f2d-2096-4e5a-b37e-e7cd30773e64.mp4)
+<br /> <br />
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## WHAT WE MAKE
+![나만모른닭](https://user-images.githubusercontent.com/117756400/213388162-feee2e08-174e-45b5-bdbb-0aadb88942cc.png)
+<br /> <br />
 
-### `yarn eject`
+## ⚽ 트러블 슈팅
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## ⌛ 시간이 더 있었다면 도전했을 기술들
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 📔 팀 노션
+[🐥노션🐥](https://holly-pruner-fba.notion.site/ad96dfad0856455c922e9d0f756a7f60)
