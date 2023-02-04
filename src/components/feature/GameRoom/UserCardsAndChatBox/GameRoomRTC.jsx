@@ -105,6 +105,7 @@ function GameRoomRTC() {
           break;
         }
         case 'START': {
+          startEffect.play();
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = false;
@@ -118,7 +119,6 @@ function GameRoomRTC() {
           setMyKeyword('???');
           viewKeyWord = data.content.keyword[`${myNickName}`];
           if (myNickName === sessionStorage.getItem('owner')) {
-            startEffect.play();
             startBtn.current.style.visibility = 'hidden';
             leaveBtn.current.disabled = true;
             sendChat({ message: data.content.startAlert, sender: data.sender });
@@ -201,6 +201,7 @@ function GameRoomRTC() {
           break;
         }
         case 'ENDGAME': {
+          endEffect.play();
           muteBtn.current.style.display = 'block';
           leaveBtn.current.disabled = false;
           setNotice('');
@@ -256,6 +257,7 @@ function GameRoomRTC() {
           break;
         }
         case 'STUPID': {
+          endEffect.play();
           muteBtn.current.style.display = 'block';
           leaveBtn.current.disabled = false;
           setNotice('');
@@ -289,16 +291,16 @@ function GameRoomRTC() {
 
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
-            endEffect.play();
           }
           break;
         }
         case 'FORCEDENDGAME': {
+          endEffect.play();
           if (myNickName === sessionStorage.getItem('owner')) {
-            endEffect.play();
             startBtn.current.style.visibility = 'visible';
             sendChat({ message: data.content, sender: data.sender });
           }
+          endEffect.play();
           muteBtn.current.style.display = 'block';
           leaveBtn.current.disabled = false;
           setNotice('');
