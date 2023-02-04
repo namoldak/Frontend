@@ -2,28 +2,32 @@
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 // 내부 모듈
-import { removeCookie } from 'utils/cookies';
-import { instance } from 'api/core/axios';
-import Input from 'components/common/Input';
+import { getKakaoToken, removeCookie } from 'utils/cookies';
 import deleteAccount from 'assets/images/deleteAccount.svg';
 import useToast from 'hooks/useToast';
 
 function DeleteKaKaoAccountModal({ setting }) {
-  const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
   async function onClickDeleteKakaoAccount() {
-    console.log('click');
-    window.Kakao.API.request({
-      url: '/v1/user/unlink',
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    const kakao = getKakaoToken('KakaoToken');
+    const url = `https://kapi.kakao.com/v1/user/unlink`;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${kakao}`,
+      },
+    };
+    try {
+      await axios.post(url, null, config);
+      useToast('다시 돌아올거라 믿는닭...🐓', 'success');
+      removeCookie('KakaoToken');
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
