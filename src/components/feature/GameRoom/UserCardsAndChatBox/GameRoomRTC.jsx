@@ -116,10 +116,7 @@ function GameRoomRTC() {
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
           setMyKeyword('???');
-
           viewKeyWord = data.content.keyword[`${myNickName}`];
-          // setViewKeyWord(data.content.keyword[`${myNickName}`]);
-          console.log(viewKeyWord);
           if (myNickName === sessionStorage.getItem('owner')) {
             startEffect.play();
             startBtn.current.style.visibility = 'hidden';
@@ -212,7 +209,6 @@ function GameRoomRTC() {
           setMyKeyword('');
           setIsSpotTimer(false);
           setIsTimer(false);
-          console.log(viewKeyWord);
           setChatMessages((chatMessages) => [
             ...chatMessages,
             {
@@ -293,6 +289,7 @@ function GameRoomRTC() {
 
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
+            endEffect.play();
           }
           break;
         }
@@ -577,8 +574,7 @@ function GameRoomRTC() {
   // WebRTC signaling section
   useEffect(() => {
     if (!sessionStorage.getItem('normalEnter')) {
-      console.log(sessionStorage.getItem('normalEnter'));
-      alert('정상적인 접근이 아닙니다');
+      useToast('정상적인 접근이 아닙니다', 'warning');
       navigate('/rooms');
     }
     connect();
