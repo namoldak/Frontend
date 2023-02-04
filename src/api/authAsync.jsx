@@ -27,7 +27,6 @@ const Login = async (data) => {
 // code: 카카오 인증 코드
 const KakaoLogin = async (code) => {
   try {
-    console.log(code);
     const response = await instance.get(`auth/kakao/callback?code=${code}`);
     console.log(response);
     return response;
