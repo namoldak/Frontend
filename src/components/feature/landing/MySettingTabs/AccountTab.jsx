@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -9,9 +8,11 @@ import Input from 'components/common/Input';
 import Modal from 'components/common/Modals/BasicModal/Modal';
 import DeleteAccountModal from 'components/common/Modals/BasicModal/DeleteAccountModal';
 import useToast from 'hooks/useToast';
+import DeleteKaKaoAccountModal from 'components/common/Modals/BasicModal/DeleteKaKaoAccountModal';
 
 function AccountTab({ setting }) {
   const [isModalOn, setIsModalOn] = useState(false);
+  const [isKakaoModalOn, setIsKakaoModalOn] = useState(false);
   const [input, setInput] = useState('');
 
   function onClickConfirm() {
@@ -26,6 +27,10 @@ function AccountTab({ setting }) {
     if (event.key === 'Enter') {
       onClickConfirm();
     }
+  }
+
+  function onClickKakao() {
+    setIsKakaoModalOn(true);
   }
 
   return (
@@ -52,6 +57,21 @@ function AccountTab({ setting }) {
       <StConfirmBtn onClick={onClickConfirm}>
         <img src={accountTabBtn} alt="탈퇴 진행하기" />
       </StConfirmBtn>
+      <div
+        role="presentation"
+        onClick={onClickKakao}
+        style={{ textAlign: 'center', cursor: 'pointer' }}
+      >
+        카카오로 가입 하셨다면: 카카오 탈퇴하기
+      </div>
+      {isKakaoModalOn && (
+        <Modal
+          onClose={() => {
+            setIsKakaoModalOn(false);
+          }}
+          content={<DeleteKaKaoAccountModal setting={setting} />}
+        />
+      )}
       {isModalOn && (
         <Modal
           onClose={() => {
@@ -66,7 +86,7 @@ function AccountTab({ setting }) {
 
 const StAccountTab = styled.div`
   font-weight: 500;
-  font-size: 21px;
+  font-size: 18px;
   line-height: 43px;
   letter-spacing: 0.08em;
   color: #ffffff;
@@ -75,10 +95,10 @@ const StAccountTab = styled.div`
 const StText = styled.div``;
 
 const StNotice = styled.div`
-  font-size: 26px;
+  font-size: 22px;
   line-height: 42px;
   margin-top: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 `;
 
 const StInputBox = styled.div`
@@ -95,7 +115,7 @@ const StConfirmBtn = styled.button`
   width: 272px;
   display: block;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 export default AccountTab;

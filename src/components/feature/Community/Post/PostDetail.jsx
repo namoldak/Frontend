@@ -91,15 +91,6 @@ function PostDetail() {
     }
   }, [isLoading]);
 
-  // console.log(comments);
-  // console.log('commentPage', commentPage);
-  // console.log('totalPage', totalPage);
-  // console.log(isLoading);
-
-  // useEffect(() => {
-  //   getComment();
-  // }, [setComment]);
-
   return (
     <StPostDetail>
       <StTitleBox>

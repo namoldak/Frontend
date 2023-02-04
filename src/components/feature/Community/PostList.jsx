@@ -13,6 +13,7 @@ import {
 } from 'redux/modules/postSlice';
 import postMy from 'assets/images/postMy.svg';
 import postWrite from 'assets/images/postWrite.svg';
+import usePreventGoBack from 'hooks/usePreventGoBack';
 import Pagination from './Pagination';
 import Post from './Post/Post';
 import PostCategory from './PostCategoryAndSearch/PostCategory';
@@ -23,30 +24,23 @@ function PostList() {
   const [currPage, setCurrPage] = useState(page + 1);
   const [category, setCategory] = useState('freeBoard');
   const [keyword, setKeyword] = useState('');
-  const [isMyPost, setIsMyPost] = useState(false);
   const { postResponseDtoList } = useSelector((state) => state.posts.posts);
 
   const dispatch = useDispatch();
 
-  function onClickMyPosts() {
-    setIsMyPost(true);
-    setCategory('freeBoard');
-    setPage(0);
-    setCurrPage(1);
-    dispatch(readPostsByCategory({ category, page }));
-  }
-
   useEffect(() => {
-    if (isMyPost === false && category === 'freeBoard') {
+    if (category === 'freeBoard') {
       dispatch(readAllPosts(page));
     } else if (category === 'feedBackBoard') {
       dispatch(readPostsByCategory({ category, page }));
     } else if (category === 'search') {
       dispatch(searchPosts({ keyword, page }));
-    } else if (isMyPost === true && category === 'freeBoard') {
-      dispatch(readPostsByCategory({ category, page }));
+    } else if (category === 'myBoard') {
+      dispatch(readPostsByCategory({ category: 'freeBoard', page }));
     }
-  }, [category, page, isMyPost]);
+  }, [category, page]);
+
+  usePreventGoBack();
 
   return (
     <>
@@ -56,7 +50,6 @@ function PostList() {
           setPage={setPage}
           setKeyword={setKeyword}
           setCurrPage={setCurrPage}
-          setIsMyPost={setIsMyPost}
         />
         <SearchPost
           keyword={keyword}
@@ -84,15 +77,17 @@ function PostList() {
           })}
       </StPostBox>
       <StCommunityBottom>
-        <StMyPost onClick={onClickMyPosts}>
+        {/* <StMyPost>
           <img src={postMy} alt="내가 쓴 게시글 확인하기" />
+        </StMyPost> */}
+        <StMyPost>
+          <Pagination
+            page={page}
+            setPage={setPage}
+            currPage={currPage}
+            setCurrPage={setCurrPage}
+          />
         </StMyPost>
-        <Pagination
-          page={page}
-          setPage={setPage}
-          currPage={currPage}
-          setCurrPage={setCurrPage}
-        />
         <StWritePost>
           <Link to="/posts/write">
             <img src={postWrite} alt="글 작성하기" />
@@ -136,6 +131,7 @@ const StPostContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.lightBeige};
   border-radius: 4px;
   margin-bottom: 12px;
+  cursor: pointer;
 `;
 
 const StCommunityBottom = styled.div`

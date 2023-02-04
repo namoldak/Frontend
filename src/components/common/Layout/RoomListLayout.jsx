@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import roomsBack from 'assets/images/roomsBack.png';
 import roomsBackLaptop from 'assets/images/roomsBackLaptop.png';
+import usePreventGoBack from 'hooks/usePreventGoBack';
 import Container from './Container';
 
 function RoomListLayout() {
+  usePreventGoBack();
   return (
     <StLayout>
       <Container />

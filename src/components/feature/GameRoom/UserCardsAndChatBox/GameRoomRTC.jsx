@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable func-names */
 /* eslint-disable no-use-before-define */
 // 외부모듈
 import styled from 'styled-components';
 import React, { useRef, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { useDispatch } from 'react-redux';
 import { useCookies } from 'react-cookie';
@@ -12,6 +11,11 @@ import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
 import useToast from 'hooks/useToast';
+import usePreventGoBack from 'hooks/usePreventGoBack';
+import usePreventRefresh from 'hooks/usePreventRefesh';
+import useSound from 'hooks/useSound';
+import endSound from 'assets/audio/endSound.mp3';
+import startSound from 'assets/audio/startSound.mp3';
 
 // 이미지 파일
 import voiceOn from 'assets/images/voiceOn.svg';
@@ -39,11 +43,11 @@ import ChatBox from './ChatBox';
 let stream = null;
 let pcs = {};
 let myPeerConnection;
+let viewKeyWord = '';
 
 function GameRoomRTC() {
   const SockJs = new SockJS('https://api.namoldak.com/ws-stomp');
-
-  // const SockJs = new SockJS('http://13.209.84.31:8080/ws-stomp');
+  // const SockJs = new SockJS('http://3.35.229.181:8080/ws-stomp');
 
   const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
@@ -80,6 +84,8 @@ function GameRoomRTC() {
   const [category, setCategory] = useState('');
   const [keyword, setKeyword] = useState('');
   const [myKeyword, setMyKeyword] = useState('');
+  const startEffect = useSound(startSound, 1);
+  const endEffect = useSound(endSound, 1);
 
   const connectHeaders = {
     Authorization: cookie.access_token,
@@ -90,10 +96,8 @@ function GameRoomRTC() {
   const subscribe = async () => {
     client.current.subscribe(`/sub/gameRoom/${param.roomId}`, ({ body }) => {
       const data = JSON.parse(body);
-      console.log('data', data);
       switch (data.type) {
         case 'ENTER': {
-          console.log('enter', data);
           break;
         }
         case 'CHAT': {
@@ -106,13 +110,18 @@ function GameRoomRTC() {
               track.enabled = false;
             });
           } catch (erorr) {
-            console.log(erorr);
+            // console.log(error)
           }
           setIsStartModal(true);
           setCategory(data.content.category);
           setKeyword(data.content.keyword);
           setMyKeyword('???');
+
+          viewKeyWord = data.content.keyword[`${myNickName}`];
+          // setViewKeyWord(data.content.keyword[`${myNickName}`]);
+          console.log(viewKeyWord);
           if (myNickName === sessionStorage.getItem('owner')) {
+            startEffect.play();
             startBtn.current.style.visibility = 'hidden';
             leaveBtn.current.disabled = true;
             sendChat({ message: data.content.startAlert, sender: data.sender });
@@ -140,7 +149,7 @@ function GameRoomRTC() {
                 track.enabled = true;
               });
             } catch (e) {
-              console.log(e);
+              // console.log(e);
             }
           } else {
             try {
@@ -148,7 +157,7 @@ function GameRoomRTC() {
                 track.enabled = false;
               });
             } catch (e) {
-              console.log(e);
+              // console.log(e);
             }
             setIsVoiceOn(false);
             setIsTimer(true);
@@ -185,6 +194,7 @@ function GameRoomRTC() {
         case 'SUCCESS': {
           setNotice(data.content);
           if (myNickName === data.nickname) {
+            endEffect.play();
             setTimeout(function () {
               endGame();
             }, 2000);
@@ -202,12 +212,20 @@ function GameRoomRTC() {
           setMyKeyword('');
           setIsSpotTimer(false);
           setIsTimer(false);
+          console.log(viewKeyWord);
+          setChatMessages((chatMessages) => [
+            ...chatMessages,
+            {
+              sender: '양계장 주인',
+              message: `"${myNickName}"의 키워드는 "${viewKeyWord}" (이)닭`,
+            },
+          ]);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
             });
           } catch (e) {
-            console.log(e);
+            // console.log(e);
           }
           setIsVoiceOn(true);
           setUsers((users) =>
@@ -216,11 +234,9 @@ function GameRoomRTC() {
             }),
           );
           setIsMyTurn(false);
-
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
           }
-
           break;
         }
         case 'CAMERAON': {
@@ -252,12 +268,20 @@ function GameRoomRTC() {
           setMyKeyword('');
           setIsSpotTimer(false);
           setIsTimer(false);
+          setChatMessages((chatMessages) => [
+            ...chatMessages,
+            {
+              sender: '양계장 주인',
+              message: ` 너희들은 모두 바보닭!!
+              "${myNickName}"의 키워드는 "${viewKeyWord}" (이)닭`,
+            },
+          ]);
           try {
             stream.getAudioTracks().forEach((track) => {
               track.enabled = true;
             });
           } catch (e) {
-            console.log(e);
+            // console.log(e);
           }
           setIsVoiceOn(true);
           setUsers((users) =>
@@ -269,8 +293,38 @@ function GameRoomRTC() {
 
           if (myNickName === sessionStorage.getItem('owner')) {
             startBtn.current.style.visibility = 'visible';
+          }
+          break;
+        }
+        case 'FORCEDENDGAME': {
+          if (myNickName === sessionStorage.getItem('owner')) {
+            endEffect.play();
+            startBtn.current.style.visibility = 'visible';
             sendChat({ message: data.content, sender: data.sender });
           }
+          muteBtn.current.style.display = 'block';
+          leaveBtn.current.disabled = false;
+          setNotice('');
+          setCategory('');
+          setKeyword('');
+          setMyKeyword('');
+          setIsSpotTimer(false);
+          setIsTimer(false);
+          try {
+            stream.getAudioTracks().forEach((track) => {
+              track.enabled = true;
+            });
+          } catch (e) {
+            // console.log(e);
+          }
+          setIsVoiceOn(true);
+          setUsers((users) =>
+            users.map((user) => {
+              return { ...user, isMyTurn: false };
+            }),
+          );
+          setIsMyTurn(false);
+
           break;
         }
         default: {
@@ -289,8 +343,8 @@ function GameRoomRTC() {
         subscribe();
       },
       onStompError: (frame) => {
-        console.log(`Broker reported error: ${frame.headers.message}`);
-        console.log(`Additional details: ${frame.body}`);
+        // console.log(`Broker reported error: ${frame.headers.message}`);
+        // console.log(`Additional details: ${frame.body}`);
       },
     });
     client.current.activate();
@@ -458,10 +512,10 @@ function GameRoomRTC() {
           pc.addTrack(track, peerConnectionLocalStream);
         });
       } else {
-        console.log('no local stream');
+        // console.log('no local stream');
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     return pc;
   }
@@ -522,21 +576,29 @@ function GameRoomRTC() {
 
   // WebRTC signaling section
   useEffect(() => {
+    if (!sessionStorage.getItem('normalEnter')) {
+      console.log(sessionStorage.getItem('normalEnter'));
+      alert('정상적인 접근이 아닙니다');
+      navigate('/rooms');
+    }
     connect();
     socketRef.current = new SockJS('https://api.namoldak.com/signal');
-    // socketRef.current = new SockJS('http://13.209.84.31:8080/signal');
-
+    // socketRef.current = new SockJS('http://3.35.229.181:8080/signal');
     socketRef.current.onopen = async () => {
       await getUserMedias()
         .then((streamMedia) => {
           if (videoRef.current) {
             videoRef.current.srcObject = streamMedia;
+            streamMedia.getVideoTracks().forEach((track) => {
+              track.enabled = !track.enabled;
+            });
+            setIsCameraOn(false);
           }
         })
         .catch((error) => {
           userCardImgRef.current.style.display = 'block';
           videoRef.current.style.display = 'none';
-          console.log(`getUserMedia error: ${error}`);
+          // console.log(`getUserMedia error: ${error}`);
         });
 
       socketRef.current?.send(
@@ -581,7 +643,7 @@ function GameRoomRTC() {
                   );
                 })
                 .catch((error) => {
-                  console.log(error);
+                  // console.log(error);
                 });
             }
           }
@@ -612,7 +674,7 @@ function GameRoomRTC() {
                   );
                 })
                 .catch((error) => {
-                  console.log(error);
+                  // console.log(error);
                 });
             });
           }
@@ -639,13 +701,8 @@ function GameRoomRTC() {
           instance
             .get(`/rooms/${param.roomId}/ownerInfo`)
             .then((res) => {
-              // console.log('leave', res);
               sessionStorage.setItem('owner', res.data.ownerNickname);
-              // console.log('leave owner', sessionStorage.getItem('owner'));
-              // console.log('leave mynick ', myNickName);
               if (sessionStorage.getItem('owner') === myNickName) {
-                // console.log('leave owner 1', sessionStorage.getItem('owner'));
-                // console.log('leave mynick 1', myNickName);
                 setIsOwner(true);
               } else {
                 setUsers((oldUsers) =>
@@ -658,7 +715,7 @@ function GameRoomRTC() {
               }
             })
             .catch((error) => {
-              console.log(error);
+              // console.log(error);
             });
 
           setUsers((oldUsers) =>
@@ -678,7 +735,6 @@ function GameRoomRTC() {
         .delete(`rooms/${param.roomId}/exit`)
         .then(async (res) => {
           socketRef.current.close();
-          console.log('클라이언트', client.current);
           client.current.deactivate();
         })
         .catch(async (error) => {
@@ -708,6 +764,9 @@ function GameRoomRTC() {
     }
   }, [isOwner, sessionStorage.getItem('owner')]);
   useEffect(() => {}, [stream, socketRef.current]);
+
+  usePreventGoBack();
+  usePreventRefresh();
 
   return (
     <StGameRoomRTC>
@@ -1005,7 +1064,7 @@ const StVideo = styled.div`
   video {
     width: 150px;
     height: 143px;
-
+    display: none;
     .spotLight {
       position: absolute;
       left: 0;
@@ -1015,7 +1074,6 @@ const StVideo = styled.div`
 `;
 
 const Stimg = styled.img`
-  display: none;
   height: unset;
 
   .spotLight {

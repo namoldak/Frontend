@@ -1,5 +1,4 @@
 /* eslint-disable func-names */
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable consistent-return */
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
@@ -28,7 +27,6 @@ function Room({ roomInfo }) {
     }
     setTimeout(function () {
       dispatch(enterRoom(roomInfo));
-      navigate(`/gameroom/${roomInfo.id}`);
     }, 500);
   }
 

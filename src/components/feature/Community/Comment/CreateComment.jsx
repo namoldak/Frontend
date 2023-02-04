@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -12,8 +11,6 @@ import { readOnePost } from 'redux/modules/postSlice';
 // import { readComments } from 'redux/modules/commentSlice';
 
 function CreateComment({ comment, setComment, comments }) {
-  // const [comment, setComment] = useState('');
-  const dispatch = useDispatch();
   const { id } = useParams();
 
   async function postComment() {
@@ -25,7 +22,6 @@ function CreateComment({ comment, setComment, comments }) {
     }
 
     await instance.post(`/posts/${id}/comments`, data).then((res) => {
-      console.log('comment res', res);
       comments.unshift(res.data);
     });
     setComment('');

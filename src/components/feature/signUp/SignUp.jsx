@@ -69,12 +69,15 @@ function SignUp() {
 
   // 회원가입 api
   async function onClickSignup(data) {
-    if (nickValid === false) {
+    if (nickValid === false && emailValid === false) {
+      useToast('닉네임과 이메일 모두 중복 확인을 해주세요.', 'warning');
+      return;
+    }
+    if (nickValid === false && emailValid === true) {
       useToast('닉네임 중복 확인을 해주세요.', 'warning');
       return;
     }
-
-    if (emailValid === false) {
+    if ((nickValid === true && emailValid) === false) {
       useToast('이메일 중복 확인을 해주세요.', 'warning');
       return;
     }
@@ -91,7 +94,8 @@ function SignUp() {
   }
 
   // 닉네임 중복확인
-  function onClickCheckNickName() {
+  function onClickCheckNickName(event) {
+    event.preventDefault();
     const data = getValues('nickname');
 
     authAPI.checkNickName(data).then((response) => {
@@ -105,7 +109,8 @@ function SignUp() {
   }
 
   // 이메일 중복 확인
-  function onClickCheckEmail() {
+  function onClickCheckEmail(event) {
+    event.preventDefault();
     const data = getValues('email');
 
     authAPI.checkEmail(data).then((response) => {

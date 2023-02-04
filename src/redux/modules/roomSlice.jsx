@@ -35,7 +35,6 @@ export const readAllRooms = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await instance.get(`/rooms?page=${payload}`);
-      // console.log('rooms', response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -63,29 +62,27 @@ export const roomSlice = createSlice({
   reducers: {},
   extraReducers: {
     [createRoom.fulfilled]: (state, action) => {
-      // console.log('action payload', action.payload.owner);
       sessionStorage.setItem('owner', action.payload.owner);
+      sessionStorage.setItem('normalEnter', true);
       state.rooms.gameRoomResponseDtoList.push(action.payload);
-      // 세션스토리지에 오너저장
       window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [createRoom.rejected]: (state, action) => {
       state.error = action.payload;
     },
     [enterRoom.fulfilled]: (state, action) => {
-      // console.log(action.payload);
       sessionStorage.setItem('owner', action.payload.owner);
+      sessionStorage.setItem('normalEnter', true);
       state.rooms = action.payload;
+      window.location.href = `/gameroom/${action.payload.roomId}`;
     },
     [readAllRooms.fulfilled]: (state, action) => {
-      // console.log('action payload readAllRooms', action.payload);
       state.rooms = action.payload;
     },
     [readAllRooms.rejected]: (state, action) => {
       state.error = action.payload;
     },
     [searchRoom.fulfilled]: (state, action) => {
-      // console.log('action payload searchRoom', action);
       state.rooms.gameRoomResponseDtoList = action.payload;
     },
     [searchRoom.rejected]: (state, action) => {

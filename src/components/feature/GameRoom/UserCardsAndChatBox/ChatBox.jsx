@@ -57,7 +57,16 @@ function ChatBox({ notice, sendChat, chatMessages }) {
                       : 'other'
                   }
                 >
-                  <div>{`${message.sender}: ${message.message}`}</div>
+                  <div>{`${message.sender}`}</div>
+                  <StChatBubble
+                    className={
+                      message.sender === nickname
+                        ? 'my'
+                        : message.sender === '양계장 주인'
+                        ? 'chickenLord'
+                        : 'other'
+                    }
+                  >{`${message.message}`}</StChatBubble>
                 </Chat>
               );
             })}
@@ -147,19 +156,39 @@ const Chat = styled.div`
   font-weight: 600;
   line-height: 22px;
   color: ${({ theme }) => theme.colors.text};
-  /* padding: 4px 0 4px 0; */
+
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 
   &.my {
     text-align: right;
+    align-items: flex-end;
   }
 
   &.other {
     text-align: left;
+    justify-content: flex-start;
   }
 
   &.chickenLord {
+    /* padding: none; */
     text-align: left;
+    justify-content: flex-start;
     color: rgb(205, 21, 22);
+  }
+`;
+
+const StChatBubble = styled.div`
+  // backgroundColor: '#fffff5',
+  border: 1px solid ${({ theme }) => theme.colors.text};
+  border-radius: 5px;
+  padding: 8px;
+  width: fit-content;
+
+  &.chickenLord {
+    border: 1px solid rgb(205, 21, 22);
+    padding: 8px;
   }
 `;
 

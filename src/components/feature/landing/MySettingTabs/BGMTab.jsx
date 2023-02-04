@@ -16,7 +16,7 @@ function BGMTab() {
     loop: true,
     volume: 0.1,
     onseek() {
-      console.log('Finished!');
+      // console.log('Finished!');
     },
   });
 
@@ -28,15 +28,6 @@ function BGMTab() {
   function onClickClose() {
     // setIsSettingModalOn(false);
   }
-
-  // function start() {
-  //   const history = createBrowserHistory();
-  //   if (history.location.pathname === '/rooms') {
-  //     sound.play();
-  //   } else {
-  //     sound.stop();
-  //   }
-  // }
 
   return (
     <StBGMTab>

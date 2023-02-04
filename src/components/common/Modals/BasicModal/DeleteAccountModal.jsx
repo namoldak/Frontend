@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -24,15 +23,17 @@ function DeleteAccountModal({ input, setting }) {
         .then((response) => {
           removeCookie('my_token', 'nickname');
           useToast(`${response.data.statusMsg}`, 'success');
+          setting(false);
           setTimeout(() => {
             window.location.href = `/`;
           }, 1500);
         })
         .catch((error) => {
-          if (error.response.data.statusCode === 401) {
-            useToast(`${error.response.data.statusMsg}`, 'error');
-          } else {
-            useToast('오류가 발생했습니다. 다시 시도해주세요.', 'error');
+          if (error.response.data.statusCode === 400) {
+            useToast(
+              '회원가입 시 입력하신 비밀번호와 일치하지 않습니다.',
+              'error',
+            );
           }
         });
     }
@@ -58,7 +59,6 @@ function DeleteAccountModal({ input, setting }) {
       <StDeleteAccountBtn
         onClick={() => {
           onClickDeleteAccount();
-          setting(false);
         }}
       >
         <img src={deleteAccount} alt="탈퇴 진행하기" />

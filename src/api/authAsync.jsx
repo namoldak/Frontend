@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-// 외부 모듈
-
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import { instance } from './core/axios';
