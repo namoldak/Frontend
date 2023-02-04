@@ -12,12 +12,9 @@
 | 조소영 |BE| [https://github.com/littlezero48](https://github.com/littlezero48)  |
 | 차이진 |BE| [https://github.com/leejincha](https://github.com/leejincha) |
 | 홍윤재 |BE| [https://github.com/PigletHong](https://github.com/PigletHong) |
-<details>
-<summary> 토글 </summary>
-  dsfsdfsdfsdsdf
-</details>
   
 <br /> <br />
+
 
 ## 🐣 GITHUB
 > FRONTEND
