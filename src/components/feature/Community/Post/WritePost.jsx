@@ -1,18 +1,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 // 외부 모듈
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { Navigate, useNavigate } from 'react-router';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
-import { createPost } from 'redux/modules/postSlice';
 import postBtn from 'assets/images/postBtn.svg';
 import ImgUpload from 'components/common/ImgUpload';
 import select from 'assets/images/select.svg';
-import usePreventRefresh from 'hooks/usePreventRefesh';
 import { instance } from 'api/core/axios';
+import useDebounce from 'hooks/useDebounce';
 
 function WritePost() {
   const dispatch = useDispatch();
@@ -60,11 +59,7 @@ function WritePost() {
 
 `;
 
-  function onChangeCheck(e) {
-    setCategoryCheck(e.target.value);
-  }
-
-  async function sendPost() {
+  const sendPost = useDebounce(async () => {
     if (title === '') {
       useToast('제목이 없닭!', 'warning');
       return;
@@ -96,12 +91,16 @@ function WritePost() {
           },
         })
         .then((res) => {
-          console.log(res);
           navigate(`/posts/${res.data.id}`);
         });
     } catch (error) {
-      console.log(error);
+      console.log('error', error);
+      useToast(`${error.response.data.message}`, 'error');
     }
+  }, 200);
+
+  function onChangeCheck(e) {
+    setCategoryCheck(e.target.value);
   }
 
   return (
