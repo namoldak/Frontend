@@ -86,7 +86,6 @@ const StUserName = styled.div`
   em {
     font-size: 34px;
     line-height: 37px;
-    text-decoration: underline;
     margin-right: 5px;
   }
 `;
