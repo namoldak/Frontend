@@ -9,11 +9,7 @@ import * as yup from 'yup';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
-import {
-  setRefreshToken,
-  setAccessToken,
-  setNicknameCookie,
-} from 'utils/cookies';
+import { setAccessToken, setNicknameCookie } from 'utils/cookies';
 import authAPI from 'api/authAsync';
 import popUp from 'assets/images/popUp.svg';
 import loginTitleBtn from 'assets/images/loginTitleBtn.svg';
@@ -51,7 +47,6 @@ function Login() {
   // 로그인 api
   async function onClickLogin(data) {
     await authAPI.Login(data).then((response) => {
-      setRefreshToken(response.headers.refreshtoken);
       setAccessToken(response.headers.accesstoken);
       setNicknameCookie(response.data.nickname);
       useToast('로그인 되었습니다.', 'success');
@@ -61,8 +56,8 @@ function Login() {
 
   // 카카오 로그인 api
   const KakaoLogin = async (code) => {
+    console.log('code', code);
     await authAPI.KakaoLogin(code).then((response) => {
-      setRefreshToken(response.headers.refreshtoken);
       setAccessToken(response.headers.accesstoken);
       setNicknameCookie(response.data);
       useToast('카카오 로그인 성공', 'success');

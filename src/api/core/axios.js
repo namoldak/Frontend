@@ -9,8 +9,6 @@ import { getAccessToken } from '../../utils/cookies';
 // eslint-disable-next-line import/prefer-default-export
 export const instance = axios.create({
   baseURL: 'https://api.namoldak.com',
-  // baseURL: 'http://3.35.229.181:8080',
-
   withCredentials: true,
 });
 
