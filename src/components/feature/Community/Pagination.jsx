@@ -48,6 +48,7 @@ function Pagination({ page, setPage, currPage, setCurrPage }) {
 const StPagination = styled.div`
   display: flex;
   height: 18px;
+  margin-left: auto;
 `;
 
 const StPageNum = styled.button`

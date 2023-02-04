@@ -77,17 +77,12 @@ function PostList() {
           })}
       </StPostBox>
       <StCommunityBottom>
-        {/* <StMyPost>
-          <img src={postMy} alt="내가 쓴 게시글 확인하기" />
-        </StMyPost> */}
-        <StMyPost>
-          <Pagination
-            page={page}
-            setPage={setPage}
-            currPage={currPage}
-            setCurrPage={setCurrPage}
-          />
-        </StMyPost>
+        <Pagination
+          page={page}
+          setPage={setPage}
+          currPage={currPage}
+          setCurrPage={setCurrPage}
+        />
         <StWritePost>
           <Link to="/posts/write">
             <img src={postWrite} alt="글 작성하기" />
@@ -135,12 +130,14 @@ const StPostContainer = styled.div`
 `;
 
 const StCommunityBottom = styled.div`
-  ${({ theme }) => theme.common.flexBetween}
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 46px;
 `;
 
-const StMyPost = styled.button``;
-
-const StWritePost = styled.button``;
+const StWritePost = styled.button`
+  margin-left: 260px;
+`;
 
 export default PostList;
