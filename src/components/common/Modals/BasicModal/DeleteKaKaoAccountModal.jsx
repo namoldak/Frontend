@@ -26,7 +26,7 @@ function DeleteKaKaoAccountModal({ setting }) {
       removeCookie('KakaoToken');
       navigate('/');
     } catch (e) {
-      console.log(e);
+      useToast('회원탈퇴에 실패했닭! 다시 시도해야한닭!', 'error');
     }
   }
 
