@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import RoomListTopBar from 'components/RoomList/RoomListHeader/RoomListTopBar';
 import SearchRoom from 'components/RoomList/RoomListHeader/SearchRoom';
 import CreateRoom from 'components/RoomList/RoomListHeader/CreateRoom';
-import RoomListCard from 'components/RoomList/RoomListMain/RoomList';
+import RoomListCard from 'components/RoomList/RoomListMain/RoomListCard';
 
 function RoomList() {
   const [page, setPage] = useState(0);
