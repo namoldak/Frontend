@@ -10,7 +10,7 @@ import {
   readAllPosts,
   readPostsByCategory,
   searchPosts,
-} from 'redux/modules/postSlice';
+} from 'redux/postSlice';
 import postMy from 'assets/images/postMy.svg';
 import postWrite from 'assets/images/postWrite.svg';
 import usePreventGoBack from 'hooks/usePreventGoBack';
