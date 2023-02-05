@@ -8,7 +8,7 @@ import { Navigate, useNavigate } from 'react-router';
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import postBtn from 'assets/images/postBtn.svg';
-import ImgUpload from 'components/common/ImgUpload';
+import ImgUpload from 'components/common/ImgUpload/ImgUpload';
 import select from 'assets/images/select.svg';
 import { instance } from 'api/core/axios';
 import useDebounce from 'hooks/useDebounce';

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { searchRoom } from 'redux/modules/roomSlice';
+import { searchRoom } from 'redux/roomSlice';
 import search from 'assets/images/search.svg';
 import smallClose from 'assets/images/smallClose.svg';
 

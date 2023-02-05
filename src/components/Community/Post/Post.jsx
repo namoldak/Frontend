@@ -2,7 +2,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { readOnePost } from 'redux/modules/postSlice';
+import { readOnePost } from 'redux/postSlice';
 import styled from 'styled-components';
 
 // 내부 모듈

@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 
 // 내부 모듈
 import { formatTime } from 'utils/date';
-import { readOnePost } from 'redux/modules/postSlice';
+import { readOnePost } from 'redux/postSlice';
 import { getNicknameCookie } from 'utils/cookies';
 import { instance } from 'api/core/axios';
 import Comment from '../Comment/Comment';

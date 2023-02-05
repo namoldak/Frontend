@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import { instance } from 'api/core/axios';
-import { readOnePost } from 'redux/modules/postSlice';
+import { readOnePost } from 'redux/postSlice';
 // import { readComments } from 'redux/modules/commentSlice';
 
 function CreateComment({ comment, setComment, comments }) {

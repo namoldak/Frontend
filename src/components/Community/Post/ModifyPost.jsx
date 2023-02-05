@@ -5,11 +5,11 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // 내부 모듈
-import { updatePost, readOnePost } from 'redux/modules/postSlice';
+import { updatePost, readOnePost } from 'redux/postSlice';
 
 // 이피지 파일
 import postBtn from 'assets/images/postBtn.svg';
-import ImgUpload from 'components/common/ImgUpload';
+import ImgUpload from 'components/common/ImgUpload/ImgUpload';
 
 function ModifyPost() {
   const dispatch = useDispatch();

@@ -34,10 +34,10 @@ import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModa
 import ToastMessage from 'components/common/Toast/ToastMessage';
 import { instance } from 'api/core/axios';
 import { getNicknameCookie } from 'utils/cookies';
-import Timer from '../Timer/Timer';
-import SpotTimer from '../Timer/SpotTimer';
-import Audio from './Audio';
-import ChatBox from './ChatBox';
+import Timer from './Timer/Timer';
+import SpotTimer from './Timer/SpotTimer';
+import Audio from './UserCardsAndChatBox/Audio';
+import ChatBox from './UserCardsAndChatBox/ChatBox';
 
 // let 전역변수
 let stream = null;

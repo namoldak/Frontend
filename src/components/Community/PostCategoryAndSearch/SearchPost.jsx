@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 // 내부 모듈
 import search from 'assets/images/postSearch.svg';
 import smallClose from 'assets/images/smallClose.svg';
-import { searchPosts } from 'redux/modules/postSlice';
+import { searchPosts } from 'redux/postSlice';
 
 function SearchPost({
   keyword,
