@@ -1,6 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/no-array-index-key */
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';

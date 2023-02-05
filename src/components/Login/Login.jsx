@@ -91,7 +91,6 @@ function Login() {
             <input
               type="text"
               placeholder="이메일을 입력해주세요"
-              // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('email', { required: true })}
             />
             {errors.email && (
@@ -105,7 +104,6 @@ function Login() {
             <input
               type="password"
               placeholder="비밀번호를 입력해주세요."
-              // eslint-disable-next-line react/jsx-props-no-spreading
               {...register('password', { required: true })}
             />
             {errors.password && (

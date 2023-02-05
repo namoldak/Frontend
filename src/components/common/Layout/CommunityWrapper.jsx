@@ -10,7 +10,7 @@ import communityBack from 'assets/images/communityBack.png';
 
 function CommunityWrapper() {
   return (
-    <StPostTopBar>
+    <StCommunityWrapper>
       <StTopBar>
         <Link to="/rooms">
           <StBackBtn>
@@ -24,11 +24,11 @@ function CommunityWrapper() {
           <Outlet />
         </StBlackBack>
       </StCommunityBack>
-    </StPostTopBar>
+    </StCommunityWrapper>
   );
 }
 
-const StPostTopBar = styled.div`
+const StCommunityWrapper = styled.div`
   padding-top: 85px;
 
   @media ${(props) => props.theme.laptop} {

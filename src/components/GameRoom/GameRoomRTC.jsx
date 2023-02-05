@@ -1,5 +1,3 @@
-/* eslint-disable func-names */
-/* eslint-disable no-use-before-define */
 // 외부모듈
 import styled from 'styled-components';
 import React, { useRef, useEffect, useState } from 'react';
@@ -398,7 +396,6 @@ function GameRoomRTC() {
     });
   }
 
-  // eslint-disable-next-line consistent-return
   function gameStart() {
     if (users.length < 2) {
       useToast('최소 3마리가 필요하닭!', 'warning');
@@ -448,7 +445,6 @@ function GameRoomRTC() {
     pc.oniceconnectionstatechange = (e) => {
       // console.log(e);
     };
-    // eslint-disable-next-line no-unused-expressions
 
     if (userNickName === sessionStorage.getItem('owner')) {
       setUsers((oldUsers) => [
@@ -478,7 +474,6 @@ function GameRoomRTC() {
 
     pc.ontrack = (e) => {
       setUsers((oldUsers) => oldUsers.filter((user) => user.id !== socketID));
-      // eslint-disable-next-line no-unused-expressions
       if (userNickName === sessionStorage.getItem('owner')) {
         setUsers((oldUsers) => [
           ...oldUsers,
@@ -837,7 +832,6 @@ function GameRoomRTC() {
               </StKeywordBack>
               <StVideoBox>
                 <StVideo className={isMyTurn ? 'spotLight' : ''}>
-                  {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
                   <video
                     className={isMyTurn ? 'spotLight' : ''}
                     muted

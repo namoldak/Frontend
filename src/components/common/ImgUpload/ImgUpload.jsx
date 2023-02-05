@@ -2,11 +2,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 
-// 내부 모듈
-import imageUploadBtn from 'assets/images/imageUploadBtn.svg';
-
 function ImgUpload({ setImgs }) {
-  //   const [imgs, setImgs] = useState([]);
   const inputRef = useRef(null);
 
   const handleImage = (event) => {
@@ -14,7 +10,6 @@ function ImgUpload({ setImgs }) {
     let fileNames = '';
     for (let i = 0; i < event.target.files.length; i += 1) {
       imageLists.push(event.target.files[i]);
-      // eslint-disable-next-line no-const-assign
       fileNames += `${event.target.files[i].name},`;
     }
     inputRef.current.value = fileNames;

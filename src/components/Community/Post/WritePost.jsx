@@ -1,9 +1,7 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 // 외부 모듈
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
@@ -14,7 +12,6 @@ import { instance } from 'api/core/axios';
 import useDebounce from 'hooks/useDebounce';
 
 function WritePost() {
-  const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [categoryCheck, setCategoryCheck] = useState('freeBoard');
   const [content, setContent] = useState('');

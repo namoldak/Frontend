@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable react/jsx-props-no-spreading */
 // 외부 모듈
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';

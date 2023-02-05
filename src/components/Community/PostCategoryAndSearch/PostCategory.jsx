@@ -1,7 +1,6 @@
 // 외부 모듈
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
 import select from 'assets/images/select.svg';

@@ -41,7 +41,6 @@ function ChatBox({ notice, sendChat, chatMessages }) {
         <StNoticeBack>
           <StNoticeText>{notice}</StNoticeText>
         </StNoticeBack>
-        {/* <StNotice>공지사항</StNotice> */}
         <StUserChatBox ref={scrollRef}>
           <div>
             {chatMessages?.map((message, index) => {
@@ -148,7 +147,6 @@ const StUserChatBox = styled.div`
     border-radius: 2px;
     background-color: #f5c86f;
   }
-  /* border: 1px solid black; */
 `;
 
 const Chat = styled.div`

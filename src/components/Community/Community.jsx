@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -11,7 +10,6 @@ import {
   readPostsByCategory,
   searchPosts,
 } from 'redux/postSlice';
-import postMy from 'assets/images/postMy.svg';
 import postWrite from 'assets/images/postWrite.svg';
 import usePreventGoBack from 'hooks/usePreventGoBack';
 import Pagination from './Pagination';

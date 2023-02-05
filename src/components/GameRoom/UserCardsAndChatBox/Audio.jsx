@@ -1,3 +1,4 @@
+// 외부 모듈
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
@@ -10,7 +11,6 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
   const videoRef = useRef(null);
   const userCardImgRef = useRef(null);
   const [userkeyword, setUserKeyword] = useState('키워드');
-  const [userList, setUserList] = useState('');
 
   function cameraOnHandler() {
     if (isCameraOn === true) {
@@ -52,7 +52,6 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
       )}
       <StVideoBox>
         <StVideo className={isMyTurn ? 'spotLight' : ''}>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <video
             className={isMyTurn ? 'spotLight' : ''}
             ref={videoRef}

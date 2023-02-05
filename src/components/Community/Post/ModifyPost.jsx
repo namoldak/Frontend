@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';

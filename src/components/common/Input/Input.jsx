@@ -1,3 +1,4 @@
+// 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
 
@@ -11,7 +12,7 @@ function Input({
   maxLength,
 }) {
   return (
-    <StyledInput
+    <StInput
       width={width}
       height={height}
       placeholder={placeholder}
@@ -26,7 +27,7 @@ function Input({
 
 export default Input;
 
-const StyledInput = styled.input`
+const StInput = styled.input`
   width: ${(props) => props.width || '484px'};
   height: ${(props) => props.width || '64px'};
   background: ${({ theme }) => theme.colors.lightBeige};

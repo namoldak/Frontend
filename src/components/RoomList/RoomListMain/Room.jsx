@@ -1,9 +1,8 @@
 /* eslint-disable func-names */
 /* eslint-disable consistent-return */
 // 외부 모듈
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 // 내부 모듈
@@ -13,7 +12,6 @@ import inprogress from 'assets/images/inprogress.svg';
 import useToast from 'hooks/useToast';
 
 function Room({ roomInfo }) {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   function clickRoom(roomInfo) {

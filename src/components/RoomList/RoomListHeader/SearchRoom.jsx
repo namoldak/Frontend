@@ -1,5 +1,5 @@
 // 외부 모듈
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -12,7 +12,6 @@ function SearchRoom({ page, setPage, keyword, setKeyword, setIsSearch }) {
   const dispatch = useDispatch();
   const input = useRef(null);
 
-  // eslint-disable-next-line consistent-return
   function onClickSearchRoom() {
     if (keyword.trim() === '') {
       return null;

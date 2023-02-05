@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -8,7 +7,6 @@ import authAPI from 'api/authAsync';
 import useDidMountEffect from 'hooks/useDidMountEffect';
 import useToast from 'hooks/useToast';
 import changeNick from 'assets/images/changeNick.svg';
-import doubleCheckBtn from 'assets/images/doubleCheckBtn.svg';
 import { instance } from 'api/core/axios';
 import { setNicknameCookie } from 'utils/cookies';
 import { useForm } from 'react-hook-form';
@@ -87,19 +85,19 @@ function ChangeNameModal({ setting }) {
           {...register('nickname', { required: true })}
         />
         {errors.nickname?.message && (
-          <StHelpText>
+          <HelpText>
             <img src={check} alt="체크" />
             {errors.nickname?.message}
-          </StHelpText>
+          </HelpText>
         )}
       </StInputBox>
-      <StChangeNameBtn
+      <ChangeNameBtn
         type="submit"
         disabled={!isValid}
         onClick={onClickCheckName}
       >
         <img src={changeNick} alt="닉네임 변경" />
-      </StChangeNameBtn>
+      </ChangeNameBtn>
     </StChangeNameModal>
   );
 }
@@ -151,7 +149,7 @@ const StInputBox = styled.div`
   }
 `;
 
-const StHelpText = styled.div`
+const HelpText = styled.div`
   display: flex;
   align-items: center;
   position: absolute;
@@ -170,7 +168,7 @@ const StHelpText = styled.div`
   }
 `;
 
-const StChangeNameBtn = styled.button`
+const ChangeNameBtn = styled.button`
   width: 200px;
 `;
 

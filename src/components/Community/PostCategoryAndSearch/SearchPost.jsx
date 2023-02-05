@@ -1,5 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useRef } from 'react';
 import styled from 'styled-components';
