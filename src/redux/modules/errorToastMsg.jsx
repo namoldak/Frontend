@@ -23,7 +23,6 @@ const errorToastMsg = (MiddlewareAPI) => (next) => (action) => {
         window.location.href = '/login';
       }, 2000);
     } else if (action.payload.response.data.statusCode !== '400') {
-      console.log(action.payload.response);
       useToast(`${action.payload.response.data.statusMsg}`, 'error');
       // setTimeout(function () {
       //   window.location.href = '/rooms';

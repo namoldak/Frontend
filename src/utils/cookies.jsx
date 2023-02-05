@@ -12,6 +12,7 @@ export const setAccessToken = (token) => {
   const expireDate = new Date();
   expireDate.setMinutes(expireDate.getMinutes() + 30);
 
+  // 만료 5분 전 재발급 요청 보냄
   setTimeout(() => {
     instance.post('/auth/issue/token').then((response) => {
       setAccessToken(response.headers.accesstoken);

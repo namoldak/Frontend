@@ -57,7 +57,6 @@ function ChangeNameModal({ setting }) {
       }
       setNickValid(response.data);
     });
-    // setNickValid(false);
   }
 
   function onEventPrevent(event) {
@@ -104,7 +103,10 @@ function ChangeNameModal({ setting }) {
           placeholder="닉네임을 입력해주세요"
           {...register('nickname', { required: true })}
         />
-        <StDbCheckBtn disabled={errors.nickname} onClick={onClickCheckName}>
+        <StDbCheckBtn
+          disabled={errors.nickname || !nickValid}
+          onClick={onClickCheckName}
+        >
           <img src={doubleCheckBtn} alt="닉네임 중복확인" />
         </StDbCheckBtn>
         {errors.nickname?.message && (

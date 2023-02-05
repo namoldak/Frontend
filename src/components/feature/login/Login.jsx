@@ -55,7 +55,6 @@ function Login() {
 
   // 카카오 로그인 api
   const KakaoLogin = async (code) => {
-    console.log('code', code);
     await authAPI.KakaoLogin(code).then((response) => {
       setAccessToken(response.headers.accesstoken);
       setNicknameCookie(response.data);

@@ -14,7 +14,6 @@ function DeleteKaKaoAccountModal({ setting }) {
   const [password, setPassword] = useState('');
 
   async function onClickDeleteKakaoAccount() {
-    console.log('click');
     window.Kakao.API.request({
       url: '/v1/user/unlink',
     })
