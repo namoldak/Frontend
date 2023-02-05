@@ -6,6 +6,8 @@ const ACCESS_TOKEN = 'AccessToken';
 
 const NICKNAME = 'nickname';
 
+const KAKAO_TOKEN = 'KakaoToken';
+
 const cookies = new Cookies();
 
 export const setAccessToken = (token) => {
@@ -25,6 +27,12 @@ export const setAccessToken = (token) => {
   });
 };
 
+export const setKakaoToken = (token) => {
+  cookies.set(KAKAO_TOKEN, token, {
+    path: '/',
+  });
+};
+
 export const setNicknameCookie = (nick) => {
   const today = new Date();
   const expireDate = today.setDate(today.getDate() + 7);
@@ -39,11 +47,16 @@ export const getAccessToken = () => {
   return cookies.get(ACCESS_TOKEN);
 };
 
+export const getKakaoToken = () => {
+  return cookies.get(KAKAO_TOKEN);
+};
+
 export const getNicknameCookie = () => {
   return cookies.get(NICKNAME);
 };
 
 export const removeCookie = () => {
   cookies.remove(ACCESS_TOKEN);
+  cookies.remove(KAKAO_TOKEN);
   cookies.remove(NICKNAME);
 };

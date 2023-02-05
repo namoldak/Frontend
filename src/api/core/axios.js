@@ -26,13 +26,3 @@ instance.interceptors.request.use((config) => {
   // eslint-disable-next-line consistent-return
   return config;
 });
-
-// Unauthorized Error 처리
-axios.interceptors.response.use((error) => {
-  if (error.response.status === 403) {
-    useToast('로그인이 만료되었습니다.', 'error');
-    setTimeout(function () {
-      window.location.href('/login');
-    }, 2000);
-  }
-});
