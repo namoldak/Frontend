@@ -50,6 +50,9 @@ const common = {
     left: 50%;
     transform: translate(-50%, -50%);
   `,
+  border: `
+    border: 4px solid #965e2e;
+  `,
 };
 
 const size = {
