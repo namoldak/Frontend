@@ -1,12 +1,10 @@
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable react/jsx-no-comment-textnodes */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import LogOutTab from 'components/common/SettingModal/LogOut/LogOutTab';
+import LogOutTabV2 from 'components/common/SettingModal/LogOut/LotOutTabV2';
+// import LogOutTab from 'components/common/SettingModal/LogOut/LogOutTab';
 import AccountTab from 'components/common/SettingModal/DeleteAccount/DeleteAccountTab';
 // import BGMTab from 'components/feature/Landing/MySettingTabs/BGMTab';
 
@@ -17,15 +15,16 @@ function SettingModal({ setting }) {
     {
       id: 0,
       name: '계정',
-      content: <LogOutTab setting={setting} />,
+      content: <LogOutTabV2 setting={setting} />,
+      // content: <LogOutTab setting={setting} />,
     },
     { id: 1, name: '탈퇴', content: <AccountTab setting={setting} /> },
     // { id: 2, name: '사운드', content: <BGMTab /> },
   ];
 
+  // parameter로 현재 선택한 인덱스 값을 전달해야 하며, 이벤트 객체(event)는 쓰지 않는다
+  // 해당 함수가 실행되면 현재 선택된 Tab Menu 가 갱신.
   const selectMenuHandler = (index) => {
-    // parameter로 현재 선택한 인덱스 값을 전달해야 하며, 이벤트 객체(event)는 쓰지 않는다
-    // 해당 함수가 실행되면 현재 선택된 Tab Menu 가 갱신.
     setCurrentTab(index);
   };
 
