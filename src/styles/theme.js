@@ -12,6 +12,7 @@ const colors = {
   darkGray: '#333333', // 진한 회색
   gray: '#666666', // 기본 회색
   lightGray: '#939393', // 연한 회색
+  paperGray: '#d9d9d9', // 배경 회색
   lightBeige: '#F5ECD9', // 베이지색
   yellowBeige: '#F6D5A1', // 옅은 베이지색
   yellow: '#f0a430', // 노란색
