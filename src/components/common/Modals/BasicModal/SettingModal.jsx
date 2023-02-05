@@ -6,8 +6,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import LogOutTab from 'components/feature/Landing/MySettingTabs/LogOutTab';
-import AccountTab from 'components/feature/Landing/MySettingTabs/AccountTab';
+import LogOutTab from 'components/common/SettingModal/LogOut/LogOutTab';
+import AccountTab from 'components/common/SettingModal/DeleteAccount/DeleteAccountTab';
 // import BGMTab from 'components/feature/Landing/MySettingTabs/BGMTab';
 
 function SettingModal({ setting }) {

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 // 내부 모듈
 import skipBtn from 'assets/images/skipBtn.svg';
 import okBtn from 'assets/images/okBtn.svg';
-import Input from 'components/common/Input';
+import Input from 'components/common/Input/Input';
 
 function GameAnswerModal({
   skipAnswer,

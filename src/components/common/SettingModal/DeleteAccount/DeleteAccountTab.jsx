@@ -4,13 +4,13 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import accountTabBtn from 'assets/images/accountTabBtn.svg';
-import Input from 'components/common/Input';
+import Input from 'components/common/Input/Input';
 import Modal from 'components/common/Modals/BasicModal/Modal';
 import DeleteAccountModal from 'components/common/Modals/BasicModal/DeleteAccountModal';
 import useToast from 'hooks/useToast';
 import DeleteKaKaoAccountModal from 'components/common/Modals/BasicModal/DeleteKaKaoAccountModal';
 
-function AccountTab({ setting }) {
+function DeleteAccountTab({ setting }) {
   const [isModalOn, setIsModalOn] = useState(false);
   const [isKakaoModalOn, setIsKakaoModalOn] = useState(false);
   const [input, setInput] = useState('');
@@ -118,4 +118,4 @@ const StConfirmBtn = styled.button`
   margin-top: 20px;
 `;
 
-export default AccountTab;
+export default DeleteAccountTab;

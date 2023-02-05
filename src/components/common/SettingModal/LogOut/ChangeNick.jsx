@@ -14,7 +14,7 @@ function ChangeNick({ setting }) {
   return (
     <StChangeNick>
       <StChangeNickBox>
-        <ChangeUserName onClick={onClickChange}>닉네임 변경</ChangeUserName>
+        <ChangeNickName onClick={onClickChange}>닉네임 변경</ChangeNickName>
         {isModalOn && (
           <Modal
             onClose={() => {
@@ -34,7 +34,7 @@ const StChangeNick = styled.div`
 
 const StChangeNickBox = styled.div``;
 
-const ChangeUserName = styled.button`
+const ChangeNickName = styled.button`
   width: 120px;
   height: 36px;
   background: ${({ theme }) => theme.colors.lightBrown};
