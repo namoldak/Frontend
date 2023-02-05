@@ -28,7 +28,6 @@ const Login = async (data) => {
 const KakaoLogin = async (code) => {
   try {
     const response = await instance.get(`auth/kakao/callback?code=${code}`);
-    console.log(response);
     return response;
   } catch (error) {
     useToast('에러가 발생했습니다', 'error');
