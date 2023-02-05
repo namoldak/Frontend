@@ -183,7 +183,9 @@ const StTitleBox = styled.div`
   color: ${({ theme }) => theme.colors.text3};
 `;
 
-const Title = styled.div``;
+const Title = styled.div`
+  max-width: 916px;
+`;
 
 const StInfoBox = styled.div`
   display: flex;

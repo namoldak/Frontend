@@ -54,7 +54,7 @@ function Comment(props) {
             }}
           />
         ) : (
-          <div>{content}</div>
+          <StComment>{content}</StComment>
         )}
         <StInfoBox>
           <Nickname>{nickname}</Nickname>
@@ -113,6 +113,12 @@ const StEditComment = styled.input`
   :focus {
     outline: none;
   }
+`;
+
+const StComment = styled.div`
+  max-width: 700px;
+  max-height: 20px;
+  word-wrap: break-word;
 `;
 
 const StInfoBox = styled.div`
