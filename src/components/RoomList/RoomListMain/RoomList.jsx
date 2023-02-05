@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { readAllRooms, searchRoom } from 'redux/modules/roomSlice';
+import { readAllRooms, searchRoom } from 'redux/roomSlice';
 import useSound from 'hooks/useSound';
 import bgm from 'assets/audio/bg.mp3';
 import roomListBanner from 'assets/images/roomListBanner.svg';
