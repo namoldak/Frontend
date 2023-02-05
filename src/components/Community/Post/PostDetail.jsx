@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 // 외부 모듈
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -111,6 +110,7 @@ function PostDetail() {
         <ImgDiv>
           {posts.imageList?.map((image, index) => {
             return (
+              // eslint-disable-next-line react/no-array-index-key
               <div key={index}>
                 <img src={image} alt="이미지" />
               </div>
