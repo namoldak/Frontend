@@ -29,12 +29,10 @@ const schema = yup.object().shape({
 });
 
 function ChangeNameModal({ setting }) {
-  const [input, setInput] = useState('');
   const [nickValid, setNickValid] = useState(false);
 
   const {
     register,
-    handleSubmit,
     getValues,
     setError,
     clearErrors,
@@ -52,33 +50,21 @@ function ChangeNameModal({ setting }) {
     await authAPI.checkNickName(data).then((response) => {
       if (response.data) {
         useToast('유효한 닉네임입니다.', 'success');
+
+        const newNick = { nickname: data };
+        instance.put('/auth/changeNickname', newNick).then((res) => {
+          if (res.status === 200) {
+            setNicknameCookie(newNick.nickname);
+            setTimeout(() => {
+              setting(false);
+            }, 5000);
+            useToast('닉네임이 변경되었습니닭!', 'success');
+          }
+        });
       } else {
         useToast('이미 사용 중인 닉네임입니다.', 'error');
       }
       setNickValid(response.data);
-    });
-    // setNickValid(false);
-  }
-
-  function onEventPrevent(event) {
-    event.preventDefault();
-  }
-
-  // 닉네임 변경
-  async function onChangeName(data) {
-    if (nickValid === false) {
-      useToast('닉네임 중복 확인을 해주세요.', 'warning');
-      return;
-    }
-
-    await instance.put('/auth/changeNickname', data).then((res) => {
-      if (res.status === 200) {
-        setNicknameCookie(data.nickname);
-        useToast('닉네임이 변경되었습니닭!', 'success');
-        setTimeout(() => {
-          setting(false);
-        }, 3000);
-      }
     });
   }
 
@@ -93,20 +79,13 @@ function ChangeNameModal({ setting }) {
   }, [nickValid]);
 
   return (
-    <StChangeNameModal onSubmit={handleSubmit(onChangeName, onEventPrevent)}>
+    <StChangeNameModal>
       <StTitle>새로운 닉네임을 설정할 수 있닭!</StTitle>
       <StInputBox>
         <input
-          // value={input}
-          // onChange={(e) => {
-          //   setInput(e.target.value);
-          // }}
           placeholder="닉네임을 입력해주세요"
           {...register('nickname', { required: true })}
         />
-        <StDbCheckBtn disabled={errors.nickname} onClick={onClickCheckName}>
-          <img src={doubleCheckBtn} alt="닉네임 중복확인" />
-        </StDbCheckBtn>
         {errors.nickname?.message && (
           <StHelpText>
             <img src={check} alt="체크" />
@@ -114,7 +93,11 @@ function ChangeNameModal({ setting }) {
           </StHelpText>
         )}
       </StInputBox>
-      <StChangeNameBtn type="submit" disabled={!isValid}>
+      <StChangeNameBtn
+        type="submit"
+        disabled={!isValid}
+        onClick={onClickCheckName}
+      >
         <img src={changeNick} alt="닉네임 변경" />
       </StChangeNameBtn>
     </StChangeNameModal>
@@ -143,7 +126,7 @@ const StInputBox = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  margin: 30px 0;
+  margin: 30px 0 40px 0;
 
   input {
     width: 240px;
@@ -168,12 +151,6 @@ const StInputBox = styled.div`
   }
 `;
 
-const StDbCheckBtn = styled.button`
-  height: 60px;
-  margin-left: 16px;
-  margin-bottom: 6px;
-`;
-
 const StHelpText = styled.div`
   display: flex;
   align-items: center;
@@ -185,7 +162,7 @@ const StHelpText = styled.div`
   line-height: 24px;
   color: #fff;
   width: 454px;
-  margin-left: 40px;
+  margin-left: 30px;
 
   img {
     width: 18px;
