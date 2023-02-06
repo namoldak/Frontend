@@ -6,13 +6,13 @@ import PostContainer from './PostContainer';
 
 function PostLayout() {
   return (
-    <StLayout>
+    <StPostLayout>
       <PostContainer />
-    </StLayout>
+    </StPostLayout>
   );
 }
 
-const StLayout = styled.div`
+const StPostLayout = styled.div`
   width: 100%;
   height: 100vh;
   background-image: url(${pageBack});

@@ -4,9 +4,9 @@ import { Cookies } from 'react-cookie';
 
 const ACCESS_TOKEN = 'AccessToken';
 
-const NICKNAME = 'nickname';
-
 const KAKAO_TOKEN = 'KakaoToken';
+
+const NICKNAME = 'nickname';
 
 const cookies = new Cookies();
 

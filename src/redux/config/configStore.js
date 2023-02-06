@@ -1,11 +1,11 @@
 // 외부 모듈
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import errorToastMsg from 'redux/modules/errorToastMsg';
+import errorToastMsg from 'redux/errorToastMsg';
 
 // 내부 모듈
-import posts from 'redux/modules/postSlice';
-import rooms from '../modules/roomSlice';
+import posts from 'redux/postSlice';
+import rooms from '../roomSlice';
 
 const rootReducer = combineReducers({
   rooms,
