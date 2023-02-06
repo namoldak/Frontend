@@ -1,7 +1,7 @@
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // 내부 모듈
 import { getAccessToken } from 'utils/cookies';
@@ -13,7 +13,7 @@ import ModalPortal from '../ModalPortal';
 
 function RuleModal({ onClose, content }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (getAccessToken('AccessToken')) {
       setIsLoggedIn(true);
@@ -35,13 +35,23 @@ function RuleModal({ onClose, content }) {
           <StRuleText>{content}</StRuleText>
           <StToGo>
             {isLoggedIn ? (
-              <Link to="/rooms">
-                <img src={landingToGameBtn} alt="게임하러가기" />
-              </Link>
+              <img
+                role="presentation"
+                src={landingToGameBtn}
+                onClick={() => {
+                  navigate('/rooms');
+                }}
+                alt="게임하러가기"
+              />
             ) : (
-              <Link to="/login">
-                <img src={landingToLoginBtn} alt="로그인하러가기" />
-              </Link>
+              <img
+                role="presentation"
+                onClick={() => {
+                  navigate('/login');
+                }}
+                src={landingToLoginBtn}
+                alt="로그인하러가기"
+              />
             )}
           </StToGo>
         </StModalBorder>

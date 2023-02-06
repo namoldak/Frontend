@@ -222,7 +222,7 @@ function SignUp() {
             </StSignUpBtn>
             <StLogin>
               <p>아이디가 있으신가요?</p>
-              <Link to="/login">
+              <Link to="/login" draggable="false">
                 <button>
                   <img src={miniLoginBtn} alt="로그인" />
                 </button>

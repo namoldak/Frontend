@@ -124,7 +124,7 @@ function Login() {
             <KaKaoBtn />
             <StSignUp>
               <p>회원이 아니신가요?</p>
-              <Link to="/signup">
+              <Link to="/signup" draggable="false">
                 <button>
                   <img src={miniSignUpBtn} alt="회원가입" />
                 </button>

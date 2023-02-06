@@ -1,7 +1,7 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 // 내부 모듈
 import SettingBtn from 'components/common/SettingBtn';
@@ -9,14 +9,19 @@ import backBtn from 'assets/images/backBtn.svg';
 import communityBack from 'assets/images/communityBack.png';
 
 function PostWrapper() {
+  const navigate = useNavigate();
+
   return (
     <StPostTopBar>
       <StTopBar>
-        <Link to="/posts/all">
-          <StBackBtn>
-            <img src={backBtn} alt="뒤로 가기" />
-          </StBackBtn>
-        </Link>
+        <StBackBtn
+          onClick={() => {
+            navigate('/posts/all');
+          }}
+        >
+          <img src={backBtn} alt="뒤로 가기" />
+        </StBackBtn>
+
         <SettingBtn />
       </StTopBar>
       <StCommunityBack>

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -26,6 +26,7 @@ function PostList() {
   const [keyword, setKeyword] = useState('');
   const [isMyPost, setIsMyPost] = useState(false);
   const { postResponseDtoList } = useSelector((state) => state.posts.posts);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -96,10 +97,12 @@ function PostList() {
           currPage={currPage}
           setCurrPage={setCurrPage}
         />
-        <StWritePost>
-          <Link to="/posts/write">
-            <img src={postWrite} alt="글 작성하기" />
-          </Link>
+        <StWritePost
+          onClick={() => {
+            navigate('/posts/write');
+          }}
+        >
+          <img src={postWrite} alt="글 작성하기" />
         </StWritePost>
       </StCommunityBottom>
     </>
