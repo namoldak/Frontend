@@ -11,6 +11,7 @@ import roomListBanner from 'assets/images/roomListBanner.svg';
 import leftArrow from 'assets/images/leftArrow.svg';
 import rightArrow from 'assets/images/rightArrow.svg';
 import refreshBtn from 'assets/images/refreshBtn.svg';
+import chickenSurprised from 'assets/images/chickenSurprised.svg';
 import Room from './Room';
 
 function RoomListCard({ page, setPage, keyword, isSearch }) {
@@ -49,14 +50,26 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
           <StEmptyDiv />
         )}
         <StRoomBox>
-          {gameRoomResponseDtoList &&
-            gameRoomResponseDtoList.map((room) => {
+          {gameRoomResponseDtoList?.length === 0 ? (
+            <StNoList>
+              <img
+                style={{ width: '250px', height: '250px' }}
+                src={chickenSurprised}
+                alt="글 작성하기"
+              />
+              <StNoListText>
+                아직 아무 방이 없닭! 처음으로 방을 만들어 볼 수 있닭!
+              </StNoListText>
+            </StNoList>
+          ) : (
+            gameRoomResponseDtoList?.map((room) => {
               return (
                 <div key={room.id}>
                   <Room roomInfo={room} />
                 </div>
               );
-            })}
+            })
+          )}
         </StRoomBox>
         {page < totalPage - 1 ? (
           <StRightBtn
@@ -142,5 +155,31 @@ const StRefreshBtn = styled.button`
     bottom: -62px;
     left: -12px;
   }
+`;
+
+const StNoList = styled.div`
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+  position: relative;
+  color: ${({ theme }) => theme.colors.lightBeige};
+  font-size: 30px;
+
+  width: auto;
+  height: 300px;
+`;
+
+const StNoListText = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.lightBeige};
+  font-size: 20px;
+  line-height: 2.5rem;
+
+  width: 100%;
 `;
 export default RoomListCard;

@@ -1,8 +1,7 @@
 // 외부 모듈
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Howl } from 'howler';
-import { createBrowserHistory } from 'history';
 
 // 내부 모듈
 import useSound from 'hooks/useSound';
@@ -14,9 +13,6 @@ function BGMTab() {
     src: [bgm],
     loop: true,
     volume: 0.1,
-    onseek() {
-      // console.log('Finished!');
-    },
   });
 
   function changeVolume() {
