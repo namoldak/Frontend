@@ -5,11 +5,13 @@ import errorToastMsg from 'redux/errorToastMsg';
 
 // 내부 모듈
 import posts from 'redux/postSlice';
+import bgmVolume from 'redux/soundSlice';
 import rooms from '../roomSlice';
 
 const rootReducer = combineReducers({
   rooms,
   posts,
+  bgmVolume,
 });
 
 const store = configureStore({

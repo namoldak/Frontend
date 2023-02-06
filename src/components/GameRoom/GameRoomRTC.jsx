@@ -11,7 +11,7 @@ import * as StompJs from '@stomp/stompjs';
 import useToast from 'hooks/useToast';
 import usePreventGoBack from 'hooks/usePreventGoBack';
 import usePreventRefresh from 'hooks/usePreventRefesh';
-import useSound from 'hooks/useSound';
+import useEffectSound from 'hooks/useEffectSound';
 import endSound from 'assets/audio/endSound.mp3';
 import startSound from 'assets/audio/startSound.mp3';
 
@@ -85,8 +85,8 @@ function GameRoomRTC() {
   const [category, setCategory] = useState('');
   const [keyword, setKeyword] = useState('');
   const [myKeyword, setMyKeyword] = useState('');
-  const startEffect = useSound(startSound, 1);
-  const endEffect = useSound(endSound, 1);
+  const startEffect = useEffectSound(startSound, 1);
+  const endEffect = useEffectSound(endSound, 1);
 
   const connectHeaders = {
     Authorization: cookie.access_token,

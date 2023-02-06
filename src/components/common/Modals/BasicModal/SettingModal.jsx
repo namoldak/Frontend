@@ -6,20 +6,30 @@ import styled from 'styled-components';
 import LogOutTabV2 from 'components/common/SettingModal/LogOut/LotOutTabV2';
 // import LogOutTab from 'components/common/SettingModal/LogOut/LogOutTab';
 import AccountTab from 'components/common/SettingModal/DeleteAccount/DeleteAccountTab';
-// import BGMTab from 'components/feature/Landing/MySettingTabs/BGMTab';
+import BGMTab from 'components/common/SettingModal/BGM/BGMTab';
+import { createBrowserHistory } from 'history';
 
 function SettingModal({ setting }) {
   const [currentTab, setCurrentTab] = useState(0);
+  const history = createBrowserHistory();
 
   const menuArr = [
     {
       id: 0,
       name: '계정',
       content: <LogOutTabV2 setting={setting} />,
-      // content: <LogOutTab setting={setting} />,
     },
     { id: 1, name: '탈퇴', content: <AccountTab setting={setting} /> },
-    // { id: 2, name: '사운드', content: <BGMTab /> },
+  ];
+
+  const lobbyMenuArr = [
+    {
+      id: 0,
+      name: '계정',
+      content: <LogOutTabV2 setting={setting} />,
+    },
+    { id: 1, name: '탈퇴', content: <AccountTab setting={setting} /> },
+    { id: 2, name: '사운드', content: <BGMTab setting={setting} /> },
   ];
 
   // parameter로 현재 선택한 인덱스 값을 전달해야 하며, 이벤트 객체(event)는 쓰지 않는다
@@ -30,20 +40,41 @@ function SettingModal({ setting }) {
 
   return (
     <StSettingModal>
-      <TabMenu>
-        {menuArr.map((el, index) => (
-          <li
-            key={el.id}
-            className={index === currentTab ? 'submenu focused' : 'submenu'}
-            onClick={() => selectMenuHandler(index)}
-          >
-            {el.name}
-          </li>
-        ))}
-      </TabMenu>
-      <StContentBack>
-        <div>{menuArr[currentTab].content}</div>
-      </StContentBack>
+      {history.location.pathname === '/rooms' ? (
+        <>
+          <TabMenu>
+            {lobbyMenuArr.map((el, index) => (
+              <li
+                key={el.id}
+                className={index === currentTab ? 'submenu focused' : 'submenu'}
+                onClick={() => selectMenuHandler(index)}
+              >
+                {el.name}
+              </li>
+            ))}
+          </TabMenu>
+          <StContentBack>
+            <div>{lobbyMenuArr[currentTab].content}</div>
+          </StContentBack>
+        </>
+      ) : (
+        <>
+          <TabMenu>
+            {menuArr.map((el, index) => (
+              <li
+                key={el.id}
+                className={index === currentTab ? 'submenu focused' : 'submenu'}
+                onClick={() => selectMenuHandler(index)}
+              >
+                {el.name}
+              </li>
+            ))}
+          </TabMenu>
+          <StContentBack>
+            <div>{menuArr[currentTab].content}</div>
+          </StContentBack>
+        </>
+      )}
     </StSettingModal>
   );
 }

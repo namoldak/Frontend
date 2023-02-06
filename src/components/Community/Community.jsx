@@ -11,6 +11,7 @@ import {
   searchPosts,
 } from 'redux/postSlice';
 import postWrite from 'assets/images/postWrite.svg';
+import chickenSurprised from 'assets/images/chickenSurprised.svg';
 import usePreventGoBack from 'hooks/usePreventGoBack';
 import Pagination from './Pagination';
 import Post from './Post/Post';
@@ -65,14 +66,26 @@ function PostList() {
           <div>작성일</div>
           <div>닉네임</div>
         </StInfoBanner>
-        {postResponseDtoList &&
-          postResponseDtoList.map((post) => {
+        {postResponseDtoList?.length === 0 ? (
+          <StNoList>
+            <img
+              style={{ width: '250px', height: '250px' }}
+              src={chickenSurprised}
+              alt="글 작성하기"
+            />
+            <StNoListText>
+              아직 아무 글이 없닭! 처음으로 작성자가 되어볼 수 있닭!
+            </StNoListText>
+          </StNoList>
+        ) : (
+          postResponseDtoList?.map((post) => {
             return (
               <StPostContainer key={post.id}>
                 <Post postInfo={post} />
               </StPostContainer>
             );
-          })}
+          })
+        )}
       </StPostBox>
       <StCommunityBottom>
         <Pagination
@@ -136,6 +149,33 @@ const StCommunityBottom = styled.div`
 
 const StWritePost = styled.button`
   margin-left: 260px;
+`;
+
+const StNoList = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.lightBeige};
+  font-size: 30px;
+
+  width: 100%;
+  height: 300px;
+
+  position: relative;
+`;
+
+const StNoListText = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.lightBeige};
+  font-size: 20px;
+  line-height: 2.5rem;
+
+  width: 100%;
 `;
 
 export default PostList;
