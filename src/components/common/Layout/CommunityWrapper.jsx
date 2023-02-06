@@ -4,31 +4,31 @@ import styled from 'styled-components';
 import { Link, Outlet } from 'react-router-dom';
 
 // 내부 모듈
-import SettingBtn from 'components/common/SettingBtn';
+import SettingButton from 'components/common/Button/SettingButton';
 import backBtn from 'assets/images/backBtn.svg';
 import communityBack from 'assets/images/communityBack.png';
 
 function CommunityWrapper() {
   return (
-    <StPostTopBar>
+    <StCommunityWrapper>
       <StTopBar>
         <Link to="/rooms">
           <StBackBtn>
             <img src={backBtn} alt="뒤로 가기" />
           </StBackBtn>
         </Link>
-        <SettingBtn />
+        <SettingButton />
       </StTopBar>
       <StCommunityBack>
         <StBlackBack>
           <Outlet />
         </StBlackBack>
       </StCommunityBack>
-    </StPostTopBar>
+    </StCommunityWrapper>
   );
 }
 
-const StPostTopBar = styled.div`
+const StCommunityWrapper = styled.div`
   padding-top: 85px;
 
   @media ${(props) => props.theme.laptop} {

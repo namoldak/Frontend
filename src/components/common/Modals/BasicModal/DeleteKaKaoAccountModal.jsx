@@ -1,30 +1,40 @@
 /* eslint-disable func-names */
-/* eslint-disable react-hooks/rules-of-hooks */
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 // 내부 모듈
-import { removeCookie } from 'utils/cookies';
-import { instance } from 'api/core/axios';
-import Input from 'components/common/Input';
+import { getKakaoToken, getNicknameCookie, removeCookie } from 'utils/cookies';
 import deleteAccount from 'assets/images/deleteAccount.svg';
 import useToast from 'hooks/useToast';
+import { instance } from 'api/core/axios';
 
 function DeleteKaKaoAccountModal({ setting }) {
-  const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
   async function onClickDeleteKakaoAccount() {
-    console.log('click');
-    window.Kakao.API.request({
-      url: '/v1/user/unlink',
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
+    const kakao = getKakaoToken('KakaoToken');
+    const nickname = getNicknameCookie('nickname');
+    const url = `https://kapi.kakao.com/v1/user/unlink`;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${kakao}`,
+      },
+    };
+    try {
+      await axios.post(url, null, config).then((res) => {
+        instance
+          .delete(`/auth/deleteKakaoMember`, { data: { nickname } })
+          .then((res) => {
+            useToast('다시 돌아올거라 믿는닭...🐓', 'success');
+            removeCookie('KakaoToken');
+            navigate('/');
+          });
       });
+    } catch (e) {
+      useToast('회원탈퇴에 실패했닭! 다시 시도해야한닭!', 'error');
+    }
   }
 
   return (

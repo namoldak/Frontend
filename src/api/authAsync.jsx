@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-// 외부 모듈
-
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import { instance } from './core/axios';
@@ -21,7 +18,7 @@ const Login = async (data) => {
     const response = await instance.post('/auth/login', data);
     return response;
   } catch (error) {
-    useToast('로그인에 실패했습니다. 다시 한번 시도해주세요.', 'error');
+    useToast(`${error.response.data.statusMsg}`, 'error');
   }
   return null;
 };
