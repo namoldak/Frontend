@@ -9,8 +9,7 @@ import { getAccessToken } from '../../utils/cookies';
 // 인스턴스 생성
 // eslint-disable-next-line import/prefer-default-export
 export const instance = axios.create({
-  baseURL: 'https://api.namoldak.com',
-  // baseURL: 'http://13.209.84.31:8080',
+  baseURL: process.env.REACT_APP_API_URL,
   withCredentials: true,
 });
 

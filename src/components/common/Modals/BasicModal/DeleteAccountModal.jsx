@@ -5,7 +5,7 @@ import styled from 'styled-components';
 // 내부 모듈
 import { removeCookie } from 'utils/cookies';
 import { instance } from 'api/core/axios';
-import Input from 'components/common/Input';
+import Input from 'components/common/Input/Input';
 import deleteAccount from 'assets/images/deleteAccount.svg';
 import useToast from 'hooks/useToast';
 

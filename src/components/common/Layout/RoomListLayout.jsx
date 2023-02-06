@@ -7,14 +7,15 @@ import Container from './Container';
 
 function RoomListLayout() {
   usePreventGoBack();
+
   return (
-    <StLayout>
+    <StPostLayout>
       <Container />
-    </StLayout>
+    </StPostLayout>
   );
 }
 
-const StLayout = styled.div`
+const StPostLayout = styled.div`
   width: 100%;
   height: 100vh;
   background-image: url(${roomsBack});
