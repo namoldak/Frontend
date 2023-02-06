@@ -7,9 +7,9 @@ import kakao from 'assets/images/kakaoLoginBtn.svg';
 function KaKaoBtn() {
   return (
     <KakaoBox>
-      <Sta href={process.env.REACT_APP_KAKAO_AUTH_URL} draggable="false">
+      <a href={process.env.REACT_APP_KAKAO_AUTH_URL} draggable="false">
         <img src={kakao} alt="카카오 로그인" />
-      </Sta>
+      </a>
     </KakaoBox>
   );
 }
@@ -22,5 +22,4 @@ const KakaoBox = styled.div`
   }
 `;
 
-const Sta = styled.a``;
 export default KaKaoBtn;

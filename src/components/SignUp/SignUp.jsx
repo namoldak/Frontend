@@ -145,7 +145,7 @@ function SignUp() {
   return (
     <StSignUp>
       <StBackBtn>
-        <Link to="/">
+        <Link to="/" draggable="false">
           <img src={backBtn} alt="뒤로가기" />
         </Link>
       </StBackBtn>

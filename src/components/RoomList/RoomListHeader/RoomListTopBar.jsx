@@ -25,7 +25,7 @@ function RoomListTopBar() {
 
   return (
     <StRoomListTopBar>
-      <Link to="/">
+      <Link to="/" draggable="false">
         <StBackBtn>
           <img src={backBtn} alt="뒤로 가기" />
         </StBackBtn>
