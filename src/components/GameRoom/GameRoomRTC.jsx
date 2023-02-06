@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import SockJS from 'sockjs-client';
 import { useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
+import { useCookies, Cookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
 
 // 내부모듈
@@ -31,7 +31,11 @@ import GameModal from 'components/common/Modals/InGameModal/GameModal';
 import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModal';
 import ToastMessage from 'components/common/Toast/ToastMessage';
 import { instance } from 'api/core/axios';
-import { getNicknameCookie } from 'utils/cookies';
+import {
+  setAccessToken,
+  getAccessToken,
+  getNicknameCookie,
+} from 'utils/cookies';
 import Timer from './Timer/Timer';
 import SpotTimer from './Timer/SpotTimer';
 import Audio from './UserCardsAndChatBox/Audio';
@@ -86,7 +90,6 @@ function GameRoomRTC() {
 
   const connectHeaders = {
     Authorization: cookie.access_token,
-    'Refresh-Token': cookie.refresh_token,
   };
 
   // stomp client section
@@ -569,6 +572,7 @@ function GameRoomRTC() {
 
   // WebRTC signaling section
   useEffect(() => {
+    setAccessToken(getAccessToken('AccessToken'));
     if (!sessionStorage.getItem('normalEnter')) {
       useToast('정상적인 접근이 아닙니다', 'warning');
       navigate('/rooms');
