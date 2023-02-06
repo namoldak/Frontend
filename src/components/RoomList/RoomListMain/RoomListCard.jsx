@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { readAllRooms, searchRoom } from 'redux/roomSlice';
-import useSound from 'hooks/useSound';
+import useBGMSound from 'hooks/useBGMSound';
 import bgm from 'assets/audio/bg.mp3';
 import roomListBanner from 'assets/images/roomListBanner.svg';
 import leftArrow from 'assets/images/leftArrow.svg';
@@ -19,7 +19,7 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
     (state) => state.rooms.rooms,
   );
 
-  // useSound(bgm, 0.01);
+  useBGMSound(bgm, 0.1);
 
   const dispatch = useDispatch();
 

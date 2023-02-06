@@ -1,7 +1,6 @@
 /* eslint-disable func-names */
 // 외부 모듈
 import axios from 'axios';
-import { useToast } from 'react-toastify';
 
 // 내부 모듈
 import { getAccessToken } from '../../utils/cookies';
