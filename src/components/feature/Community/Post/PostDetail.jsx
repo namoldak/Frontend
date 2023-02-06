@@ -11,6 +11,7 @@ import { formatTime } from 'utils/date';
 import { readOnePost } from 'redux/modules/postSlice';
 import { getNicknameCookie } from 'utils/cookies';
 import { instance } from 'api/core/axios';
+import useToast from 'hooks/useToast';
 import Comment from '../Comment/Comment';
 import CreateComment from '../Comment/CreateComment';
 
@@ -40,9 +41,18 @@ function PostDetail() {
   };
 
   function deletePost() {
-    instance.delete(`/posts/${id}`).then((res) => {
-      navigate('/posts/all');
-    });
+    instance
+      .delete(`/posts/${id}`)
+      .then((res) => {
+        navigate('/posts/all');
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          useToast(`${error.response.data.message}`, 'error');
+        } else {
+          useToast('에러가 발생했닭! 다시 시도해야한닭!', 'error');
+        }
+      });
   }
 
   function updatePost() {
@@ -69,6 +79,13 @@ function PostDetail() {
         setComments((prev) => [...prev, ...commentResponseDtoList]);
         setTotalPage(totalPage);
         setIsLoading(true);
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          useToast(`${error.response.data.message}`, 'error');
+        } else {
+          useToast('에러가 발생했닭! 다시 시도해야한닭!', 'error');
+        }
       });
   };
 
