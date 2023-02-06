@@ -1,28 +1,26 @@
 // 외부 모듈
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Howl } from 'howler';
+import { useDispatch, useSelector } from 'react-redux';
 
 // 내부 모듈
-import useSound from 'hooks/useSound';
-import bgm from 'assets/audio/bg.mp3';
 import confirm from 'assets/images/confirm.svg';
+import { setVolume } from 'redux/soundSlice';
 
-function BGMTab() {
-  const sound = new Howl({
-    src: [bgm],
-    loop: true,
-    volume: 0.1,
-  });
+function BGMTab({ setting }) {
+  const sound = useSelector((state) => state.bgmVolume);
 
-  function changeVolume() {
-    const currentVolume = document.activeElement.value;
-    sound.volume(currentVolume);
-  }
+  const [range, setRange] = useState(sound.volume);
+
+  const dispatch = useDispatch();
 
   function onClickClose() {
-    // setIsSettingModalOn(false);
+    setting(false);
   }
+
+  useEffect(() => {
+    dispatch(setVolume(range));
+  }, [dispatch, range]);
 
   return (
     <StBGMTab>
@@ -40,26 +38,12 @@ function BGMTab() {
             min={0}
             max={0.1}
             step={0.001}
-            onChange={changeVolume}
+            value={range}
+            onChange={(e) => setRange(e.target.value)}
           />
         </StVolumeBox>
       </StVolumeCon>
-      <StBtnBox>
-        <button
-          onClick={() => {
-            sound.pause();
-          }}
-        >
-          <span>중지</span>
-        </button>
-        <button
-          onClick={() => {
-            sound.play();
-          }}
-        >
-          <span>재생</span>
-        </button>
-      </StBtnBox>
+      <StBtnBox />
       <StConfirm onClick={onClickClose}>
         <img src={confirm} alt="확인" />
       </StConfirm>

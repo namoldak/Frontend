@@ -1,11 +1,12 @@
 // 외부 모듈
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { Howl, Howler } from 'howler';
+import { createBrowserHistory } from 'history';
 
 // 내부 모듈
 import { readAllRooms, searchRoom } from 'redux/roomSlice';
-import useBGMSound from 'hooks/useBGMSound';
 import bgm from 'assets/audio/bg.mp3';
 import roomListBanner from 'assets/images/roomListBanner.svg';
 import leftArrow from 'assets/images/leftArrow.svg';
@@ -19,13 +20,46 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
     (state) => state.rooms.rooms,
   );
 
-  useBGMSound(bgm, 0.1);
-
   const dispatch = useDispatch();
 
   function refreshRoomList() {
     dispatch(readAllRooms(page));
   }
+  /// /// BGM Section
+  const range = useSelector((state) => state.bgmVolume.volume);
+
+  const sound = new Howl({
+    src: [bgm],
+    loop: true,
+    volume: 1,
+  });
+  const soundStop = () => sound.stop();
+
+  useEffect(() => {
+    sound.play();
+  }, []);
+
+  useEffect(() => {
+    sound.on('play', () => {
+      const history = createBrowserHistory();
+      history.listen(({ action }) => {
+        if (action === 'POP') {
+          sound.stop();
+        }
+      });
+    });
+    return soundStop;
+  }, []);
+
+  useEffect(() => {
+    if (range) {
+      if (range === 0) {
+        sound.mute();
+      } else {
+        Howler.volume(range);
+      }
+    }
+  }, [sound, range]);
 
   useEffect(() => {
     if (!isSearch) {
