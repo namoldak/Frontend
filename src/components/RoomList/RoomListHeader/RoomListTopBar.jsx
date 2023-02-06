@@ -1,7 +1,7 @@
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // 내부 모듈
 import { getAccessToken, getNicknameCookie } from 'utils/cookies';
@@ -15,6 +15,7 @@ function RoomListTopBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const nickname = getNicknameCookie('nickname');
   const [isSettingModalOn, setIsSettingModalOn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (getAccessToken('AccessToken')) {
@@ -24,7 +25,7 @@ function RoomListTopBar() {
 
   return (
     <StRoomListTopBar>
-      <Link to="/">
+      <Link to="/" draggable="false">
         <StBackBtn>
           <img src={backBtn} alt="뒤로 가기" />
         </StBackBtn>
@@ -40,11 +41,13 @@ function RoomListTopBar() {
           </span>
         )}
       </StUserName>
-      <Link to="/posts/all">
-        <StCommunityBtn>
-          <img src={coummunityBtn} alt="커뮤니티" />
-        </StCommunityBtn>
-      </Link>
+      <StCommunityBtn
+        onClick={() => {
+          navigate('/posts/all');
+        }}
+      >
+        <img src={coummunityBtn} alt="커뮤니티" />
+      </StCommunityBtn>
       {isSettingModalOn && (
         <ModalForSetting
           onClose={() => {

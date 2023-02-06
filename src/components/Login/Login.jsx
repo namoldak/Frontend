@@ -78,7 +78,7 @@ function Login() {
   return (
     <StLogin>
       <StBackBtn>
-        <Link to="/">
+        <Link to="/" draggable="false">
           <img src={backBtn} alt="뒤로가기" />
         </Link>
       </StBackBtn>
@@ -120,7 +120,7 @@ function Login() {
             <KaKaoBtn />
             <StSignUp>
               <p>회원이 아니신가요?</p>
-              <Link to="/signup">
+              <Link to="/signup" draggable="false">
                 <button>
                   <img src={miniSignUpBtn} alt="회원가입" />
                 </button>
