@@ -72,28 +72,29 @@ function WritePost() {
       content,
       title,
     };
-    try {
-      const formData = new FormData();
-      const json = JSON.stringify(post);
-      const blob = new Blob([json], { type: 'application/json' });
-      formData.append('data', blob);
-      for (let i = 0; i < imgs.length; i += 1) {
-        formData.append('file', imgs[i]);
-      }
-
-      instance
-        .post(`/posts/write`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          navigate(`/posts/${res.data.id}`);
-        });
-    } catch (error) {
-      console.log('error', error);
-      useToast(`${error.response.data.message}`, 'error');
+    const formData = new FormData();
+    const json = JSON.stringify(post);
+    const blob = new Blob([json], { type: 'application/json' });
+    formData.append('data', blob);
+    for (let i = 0; i < imgs.length; i += 1) {
+      formData.append('file', imgs[i]);
     }
+    instance
+      .post(`/posts/write`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        navigate(`/posts/${res.data.id}`);
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          useToast(`${error.response.data.message}`, 'error');
+        } else {
+          useToast('에러가 발생했닭! 다시 시도해야한닭!', 'error');
+        }
+      });
   }, 200);
 
   function onChangeCheck(e) {

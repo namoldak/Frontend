@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { getNicknameCookie } from 'utils/cookies';
 import { instance } from 'api/core/axios';
 import { formatTime } from 'utils/date';
+import useToast from 'hooks/useToast';
 
 function Comment(props) {
   const { commentId, comment, nickname, createdAt, comments, setComments } =
@@ -29,18 +30,26 @@ function Comment(props) {
       .then((res) => {
         const { comment } = res.data;
         setContent(comment);
+      })
+      .catch((error) => {
+        useToast(`${error.response.data.statusMsg}`, 'error');
       });
     setCommentType('display');
   }
 
   async function onClickDeleteComment() {
-    await instance.delete(`/posts/comments/${commentId}`).then((res) => {
-      setComments(
-        comments.filter((comment) => {
-          return comment.id !== commentId;
-        }),
-      );
-    });
+    await instance
+      .delete(`/posts/comments/${commentId}`)
+      .then(() => {
+        setComments(
+          comments.filter((comment) => {
+            return comment.id !== commentId;
+          }),
+        );
+      })
+      .catch((error) => {
+        useToast(`${error.response.data.statusMsg}`, 'error');
+      });
   }
 
   return (

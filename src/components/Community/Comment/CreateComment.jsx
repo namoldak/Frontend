@@ -1,7 +1,7 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // 내부 모듈
 import useToast from 'hooks/useToast';
@@ -9,6 +9,7 @@ import { instance } from 'api/core/axios';
 
 function CreateComment({ comment, setComment, comments }) {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   async function postComment() {
     const data = { comment, id };
@@ -18,9 +19,19 @@ function CreateComment({ comment, setComment, comments }) {
       return;
     }
 
-    await instance.post(`/posts/${id}/comments`, data).then((res) => {
-      comments.unshift(res.data);
-    });
+    await instance
+      .post(`/posts/${id}/comments`, data)
+      .then((res) => {
+        comments.unshift(res.data);
+      })
+      .catch((error) => {
+        if (error.status === 403) {
+          useToast('로그인이 되어있지 않닭!', 'error');
+          navigate(`/login`);
+        } else {
+          useToast('오류가 발생했닭!.', 'error');
+        }
+      });
     setComment('');
   }
 

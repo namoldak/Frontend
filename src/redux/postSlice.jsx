@@ -7,30 +7,6 @@ const initialState = {
   isLoading: false,
 };
 
-export const createPost = createAsyncThunk(
-  'post/CREATE_POST',
-  async (payload, thunkAPI) => {
-    try {
-      const formData = new FormData();
-      const json = JSON.stringify(payload.post);
-      const blob = new Blob([json], { type: 'application/json' });
-      formData.append('data', blob);
-      for (let i = 0; i < payload.imgs.length; i += 1) {
-        formData.append('file', payload.imgs[i]);
-      }
-
-      const response = await instance.post(`/posts/write`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
 export const updatePost = createAsyncThunk(
   'post/UPDATE_POST',
   async (payload, thunkAPI) => {
@@ -117,17 +93,6 @@ export const postSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [createPost.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [createPost.fulfilled]: (state, action) => {
-      window.location.href = `/posts/${action.payload.id}`;
-      state.isLoading = false;
-    },
-    [createPost.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
     [readAllPosts.fulfilled]: (state, action) => {
       state.posts = action.payload;
     },
