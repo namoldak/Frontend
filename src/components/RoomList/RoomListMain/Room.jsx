@@ -57,8 +57,7 @@ function Room({ roomInfo }) {
 export default Room;
 
 const StRoomCardBox = styled.div`
-  text-align: center;
-  margin: auto;
+  ${({ theme }) => theme.common.flexCenter}
 `;
 
 const StRoomTitle = styled.div`
@@ -72,6 +71,8 @@ const StEgg = styled.div`
   position: relative;
   margin-top: 30px;
   margin-bottom: 10px;
+  width: 150px;
+  height: 200px;
 `;
 
 const StRoomInfo = styled.div`

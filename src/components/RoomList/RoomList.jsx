@@ -42,7 +42,6 @@ function RoomList() {
 }
 
 const StRoomList = styled.div`
-  /* padding-top: 100px; */
   padding-top: 85px;
 `;
 
@@ -59,9 +58,9 @@ const StRoomListHeaderBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  /* justify-content: center; */
   align-items: center;
   margin-top: 34px;
+  position: relative;
 `;
 
 export default RoomList;

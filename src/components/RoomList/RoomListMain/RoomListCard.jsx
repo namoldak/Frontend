@@ -25,7 +25,7 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
   function refreshRoomList() {
     dispatch(readAllRooms(page));
   }
-  /// /// BGM Section
+  // BGM Section
   const range = useSelector((state) => state.bgmVolume.volume);
 
   const sound = new Howl({
@@ -70,150 +70,129 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
   }, [page, isSearch]);
 
   return (
-    <StRoomListCardBox>
-      <StRoomCon>
-        {page > 0 ? (
-          <StLeftBtn
-            onClick={() => {
-              setPage(page - 1);
-            }}
-          >
-            <img src={leftArrow} alt="이전" />
-          </StLeftBtn>
-        ) : (
-          <StEmptyDiv />
-        )}
-        <StRoomBox>
-          {gameRoomResponseDtoList?.length === 0 ? (
-            <StNoList>
-              <img
-                style={{ width: '250px', height: '250px' }}
-                src={chickenSurprised}
-                alt="글 작성하기"
-              />
-              <StNoListText>
-                아직 아무 방이 없닭! 처음으로 방을 만들어 볼 수 있닭!
-              </StNoListText>
-            </StNoList>
-          ) : (
-            gameRoomResponseDtoList?.map((room) => {
-              return (
-                <div key={room.id}>
-                  <Room roomInfo={room} />
-                </div>
-              );
-            })
-          )}
-        </StRoomBox>
-        {page < totalPage - 1 ? (
-          <StRightBtn
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          >
-            <img src={rightArrow} alt="다음" />
-          </StRightBtn>
-        ) : (
-          <StEmptyDiv />
-        )}
-        <StRefreshBtn onClick={refreshRoomList}>
-          <img src={refreshBtn} alt="새로고침" />
-        </StRefreshBtn>
-      </StRoomCon>
-    </StRoomListCardBox>
+    <StRoomListCard>
+      {page > 0 && (
+        <StLeftBtn
+          onClick={() => {
+            setPage(page - 1);
+          }}
+        >
+          <img src={leftArrow} alt="이전" />
+        </StLeftBtn>
+      )}
+      <StRoomBox>
+        {gameRoomResponseDtoList?.map((room) => {
+          return (
+            <div key={room.id}>
+              <Room roomInfo={room} />
+            </div>
+          );
+        })}
+      </StRoomBox>
+      {page < totalPage - 1 && (
+        <StRightBtn
+          onClick={() => {
+            setPage(page + 1);
+          }}
+        >
+          <img src={rightArrow} alt="다음" />
+        </StRightBtn>
+      )}
+      {gameRoomResponseDtoList?.length === 0 && (
+        <StNoList>
+          <img
+            style={{ width: '154px', height: '218px' }}
+            src={chickenSurprised}
+            alt="글 작성하기"
+          />
+          <StNoListText>아무것도 없닭...🐓</StNoListText>
+        </StNoList>
+      )}
+      <StRefreshBtn onClick={refreshRoomList}>
+        <img src={refreshBtn} alt="새로고침" />
+      </StRefreshBtn>
+    </StRoomListCard>
   );
 }
 
-const StRoomListCardBox = styled.div`
+const StRoomListCard = styled.div`
   ${({ theme }) => theme.common.flexCenter}
-  position: relative;
-  height: calc(100vh - 300px);
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 1180px;
+  min-height: 680px;
+  margin: 0 auto;
   background-image: url(${roomListBanner});
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom;
+  background-position: center center;
 
   @media ${(props) => props.theme.laptop} {
-    height: calc(100vh - 285px);
-  }
-`;
-
-const StRoomCon = styled.div`
-  position: absolute;
-  top: 155px;
-  /* left: 0; */
-  left: 40px;
-  display: flex;
-  /* justify-content: space-between; */
-  align-items: center;
-  margin-left: 55px;
-  width: 1070px;
-  height: 327px;
-
-  @media ${(props) => props.theme.laptop} {
-    top: 90px;
-    left: 70px;
-    width: 850px;
-    height: 300px;
+    min-width: 1000px;
+    min-height: 532px;
   }
 `;
 
 const StRoomBox = styled.div`
-  max-width: 930px;
-  display: flex;
-  /* grid-template-columns: repeat(4, 1fr); */
-  column-gap: 110px;
+  display: grid;
+  min-width: 900px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  grid-template-columns: repeat(4, 1fr);
+  text-align: center;
+  padding-bottom: 40px;
+
+  @media ${(props) => props.theme.laptop} {
+    min-width: 770px;
+    padding-bottom: 20px;
+  }
 `;
 
 const StLeftBtn = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translate(-50%, -50%);
+  width: 25px;
   height: 42px;
-  margin-right: 40px;
 `;
 
 const StRightBtn = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  transform: translate(-50%, -50%);
+  width: 25px;
   height: 42px;
-  margin-left: 40px;
-`;
-
-const StEmptyDiv = styled.div`
-  /* width: 100%; */
 `;
 
 const StRefreshBtn = styled.button`
   height: 20px;
   position: absolute;
-  bottom: -68px;
-  left: 15px;
+  bottom: 130px;
+  left: 70px;
 
   @media ${(props) => props.theme.laptop} {
-    bottom: -62px;
-    left: -12px;
+    bottom: 100px;
+    left: 90px;
   }
 `;
 
 const StNoList = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
-  position: relative;
-  color: ${({ theme }) => theme.colors.lightBeige};
-  font-size: 30px;
-
-  width: auto;
-  height: 300px;
+  ${({ theme }) => theme.common.flexCenter};
 `;
 
 const StNoListText = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.lightBeige};
-  font-size: 20px;
-  line-height: 2.5rem;
-
-  width: 100%;
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 36px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.white};
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
+
 export default RoomListCard;

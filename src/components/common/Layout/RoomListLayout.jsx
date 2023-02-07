@@ -21,7 +21,7 @@ const StPostLayout = styled.div`
   background-image: url(${roomsBack});
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center 10%;
 
   @media ${(props) => props.theme.laptop} {
     background-image: url(${roomsBackLaptop});
