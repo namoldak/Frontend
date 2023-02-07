@@ -64,11 +64,13 @@
 <summary>기술적 의사 결정</summary>
 <div markdown="1">
 
-| 기술 | 도입 이유 | 후보군 | 의견 조율 및 기술 결정 |  
-|:---:|---|---|---|
-| Web Socket | 실시간 통신을 위해 도입 | Polling / Long Polling / Web Socket | - 실시간성이 중요한 서비스이므로 한쪽에서 송신을 하면 반대쪽에서는 수신만 할 수 있는 Polling 및 Long Polling은 Web Socket에 비해 실시간성이 떨어짐.<br />- Web Socket을 사용하면 서버와 브라우저 사이에 양방향 소통이 가능함(= 전 이중 통신, 양방향 통신 (Full-Duplex)). 즉, 클라이언트가 먼저 요청하지 않아도 서버가 먼저 데이터를 보낼 수 있고 상대방의 송신 상태와 상관없이 메세지를 보낼 수 있음. 때문에 30초의 제한 시간 내에 많은 질문이 오가는 실시간 채팅이 중요한 우리 서비스에 Web Socket이 더 적절하다고 판단 |
-| WebRTC (Mesh) | 실시간 화상 및 음성 채팅 | Mesh / SFU / MCU | - 실시간성이 가장 낮고 중앙 서버에서 데이터 혼합 및 가공에 많은 비용이 요구되는 MCU는 제외하고 Mesh와 SFU 방식을 놓고 고민<br />- 서비스 특성 상, 한 게임룸의 최대 인원이 4명인 점을 고려했을 때 peer간의 직접 연결이 클라이언트에 부하를 심하게 주지 않을 것이라고 판단했고, 서버를 거치는 일 없이 바로 peer끼리 정보를 주고 받는 것이 실시간성이 중요한 게임 서비스에 적합하다고 판단 |
-| STOMP & SockJS | 텍스트 채팅 및 다양한 브라우저에서의 일관성 | Only WebSocket / SockJS + STOMP | - 여러 브라우저에서 동일한 기능을 안정적으로 제공할 수 있어야 하기에 SockJS를 사용하고, 여러 방을 생성하여 그 방마다의 채팅을 관리해야 하기 때문에 Topic을 구독함으로 별도의 세션 관리가 필요없는 STOMP를 사용해 채팅을 구현하는 것으로 의견 조율<br />- WebSocket Configuration에서 Endpoint에 SockJS를 사용할 수 있게 설정하고, 메시지 브로커를 통해 pub/sub 엔드포인트를 설정하여 url로 간단히 공급과 구독을 적용할 수 있게 구현함. 또한 대상 Topic(게임 방)을 구독한 사람들을 대상으로 게임 진행에 관련한 메세지를 공급하는 방식으로 구현 |
+| 기술 | 도입 이유 | 후보군 | 의견 조율 및 기술 결정 |
+| --- | --- | --- | --- |
+| Redux-Toolkit | 컨포넌트 내에서 관리하는 상태값이 페이지 이동으로 인해 유지되지 않는 문제가 생김.상태의 일관성을 유지하기 위해 전역으로 상태값을 저장할 수 있는 방법이 필요했음. | redux <br /> redux-toolkit | 실시간성이 중요한 서비스이므로 한쪽에서 송신을 하면 반대쪽에서는 수신만 할 수 있는 Polling 및 Long Polling은 Web Socket에 비해 실시간성이 떨어짐.<br /> Web Socket을 사용하면 서버와 브라우저 사이에 양방향 소통이 가능함(= 전 이중 통신, 양방향 통신 (Full-Duplex)). <br /> 즉, 클라이언트가 먼저 요청하지 않아도 서버가 먼저 데이터를 보낼 수 있고 상대방의 송신 상태와 상관없이 메세지를 보낼 수 있음. <br /> 때문에 30초의 제한 시간 내에 많은 질문이 오가는 실시간 채팅이 중요한 우리 서비스에 Web Socket이 더 적절하다고 판단 |
+| Infinite Scroll | 게시글 상세페이지에서 유저가 게시글에 초점을 맞춰 읽다가 댓글을 읽고 싶은 경우 일정한 데이터를 순차적으로 보여주기 위함. | Pagination <br /> Infinite Scroll | scroll height 를 구해서 dabouncing과 throttling을 사용하는 경우 스크롤을 할 때마다 이벤트가 발생하므로 reflow 단계가 계속 일어남. <br />Intersection Observer API 를 사용하는 경우 타겟의 변화를 관찰하여 스크롤시 지정된 수만큼 데이터가 요청되며 렌더링됨.<br /> 타겟이 얼마만큼 보였을 때 콜백함수를 실행할지 지정할 수 있다는 점도 장점임.  <br/>scroll이 일어날 때 마다 특정 element가 화면에 존재하는지에 대한 여부를 계속 계산하는 것은 비효율적이라고 판단하였음. <br /> 따라서 Intersection Observer API 를 사용함 |
+| axios(instance) | API를 연동할 때 axios를 사용하면 자동으로 JSON 데이터 형식으로 변환이 가능하고 XSRF의 보호를 받기 때문 | fetch <br /> axios | axios를 사용하는 경우 JSON 데이터를 자동 변환해줌. 또한 400, 500 대의 에러가 발생한 경우 rejectfh response를 전달해 catch로 잡아낼 수 있음. <br /> axios 를 인스턴스화하여 baseURL 과 token을 사용하는 컴포넌트들에서 instance를 호출하여 사용할 수 있어 편리하므로 axios 를 사용하는 것으로 결정함. |
+| styled-components | JavaScript로 작성된 컴포넌트에 스타일을 바로 정의하는 Css-in-Js 방식을 사용하여 빠르게 프로젝트를 진행시키기 위함. | Sass <br /> Styled-components | styled component를 사용할 경우, Sass의 다양한 스타일링이라는 장점을 props를 참조하여 대체할 수 있음.<br /> 하지만 className 지정은 전역으로 관리될 경우 중복될 가능성이 높아보임.<br /> styled component가 빠른 페이지 로드에 불리하고 하더라도, 동적인 이벤트가 적고 작은 규모의 프로젝트에는 크게 영향이 없을 것이라 판단함. <br />또한, 재사용 측면에 있어서 반복적인 규칙은 theme.js 파일을 작성하여 사용할 수 있다고 생각하여 최종적으로 styled-component를 사용하기로 결정. |
+
 <div>
 </details>
 <br /> <br />
@@ -106,52 +108,32 @@
 </div>
 </details>
 <details>
-<summary>Header에 있는 Refresh Token(1번) /  Access Token 재발급 요청(2번, 3번)</summary>
+<summary></summary>
 <div markdown="1">
 
 - **문제 상황**  
-  1. 리프레시 토큰과 액세스 토큰 모두 클라이언트 쿠키에 노출됨
-  2. access token 이 만료된 경우 재발급 요청을 해야 하는데, 유저가 어떤 action을 취하지 않고 가만히 있어도 서버에게 token 재발급 요청을 보내야 하는 상황
-  3. 게임룸 입장 시 토큰 재발급 API가 정상 작동되지 않음
+  - 
 
 - **이유**  
-  1. 헤더에 리프레시 토큰이 담겨 있었음
-  2. access token 의 만료 시점을 client 측에서 파악할 수 없었기 때문
+  - 
 
 - **해결 방법**  
-  1. 액세스 토큰만 클라이언트 쿠키에 저장, 노출하는 방식으로 변경. 액세스 토큰은 클라이언트 쿠키에 저장하고 유효시간을 30분으로 설정, 리프레시 토큰은 Redis 서버에 저장하고 유효시간을 1주일로 설정하여 보안을 강화함
-  2.  access token을 만드는 함수 안에서 setTimeout으로 만료 전 재발급 요청이 가도록 했음
-  3. 기존의 AccessToken을 getAccessToken으로 가져오고 토큰을 만드는 함수인 setAccessToken에 기존 토큰값을 넣어줌. WebRTC signaling 이 처음 시작되는 useEffect 안에서 setAccessToken을 호출하여 유저의 토큰 정보를 담아서 보내주었고 재발급 요청에 성공함.
+  - 
   <br />
 </div>
 </details>
 <details>
-<summary>무한스크롤 댓글 조회</summary>
+<summary></summary>
 <div markdown="1">
 
 - **문제 상황**  
-  - 게시글 상세 페이지에서 댓글을 무한스크롤로 보여줄 때 다른 게시글에도 똑같은 댓글이 보임
+  - 
 
 - **이유**  
-  - 댓글 데이터를 전역으로 관리했기 때문
+  - 
 
 - **해결 방법**  
-  - redux thunk 를 쓰지 않고 게시글 상세 조회 컴포넌트에서 댓글 전체 조회 api 를 바로 호출하여 데이터를 보여줌
-  <br />
-</div>
-</details>
-<details>
-<summary>닉네임 변경 및 중복 확인</summary>
-<div markdown="1">
-
-- **문제 상황**  
-  - 닉네임 중복 확인 버튼을 눌렀는데 닉네임이 중복 확인 검사 없이 바로 변경됨
-
-- **이유**  
-  - form 태그 안에서는 버튼을 하나만 눌러도 submit function이 실행되었기 때문
-
-- **해결 방법**  
-  - 버튼의 onClick 함수에 event.preventDefault( );  메서드를 써서 기본으로 정의된 이벤트를 작동하지 못하게 막음
+  -  
   <br />
 </div>
 </details>
@@ -164,7 +146,7 @@
 2. 카메라 기본 상태 off로 설정
     - 각각의 유저 정보를 객체로서 저장하여 요소로 가지는 배열에 유저 객체를 처음 할당할 때 카메라 On/Off를 설정하는 프로퍼티의 값을 true에서 false로 변경 
 3. 게임 종료 시 키워드 알림
-    - 컴포넌트 최상단 scope에 키워드를 저장할 let 변수 선언 후 게임 시작 시 서버로부터 받아온 키워드 데이터를 해당 변수에 할당하여 게임종료시 해당 변수 사용하여 키워드 화면에 출력  
+    - 컴포넌트 최상단 scope에 키워드를 저장할 let 변수 선언 후 게임 시작 시 서버로부터 받아온 키워드 데이터를 해당 변수에 할당하여 게임종료시 해당 변수 하여 키워드 화면에 출력  
 4. 커뮤니티 페이지 카테고리 설정 방식 변경
     - 카테고리의 경우 [자유게시판]과 [내가 쓴 피드백]은 drop down으로, [내가 쓴 게시판]의 경우엔 버튼으로 따로 구성되어있어서 불편하다는 피드백을 받음  
     - 모든 카테고리를 drop down으로 변경  
@@ -193,7 +175,7 @@
 <br /> <br />
 
 ### Infrastructure  
-<img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=Yarn&logoColor=white"> <img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/Forever-191A1B.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTYiIGhlaWdodD0iMTI3IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+PHBhdGggZD0iTTAgNjMuMjFjMC0xNy4zMjQgNi4yMDQtMzIuMTkgMTguNjEyLTQ0LjU5OEMzMS4wMiA2LjIwNCA0NS44ODYgMCA2My4yMSAwYzE3LjMyNCAwIDMyLjE5IDYuMjA0IDQ0LjU5OCAxOC42MTJsMjAuMzY4IDE5LjMxNCAyMC4zNjctMTkuNjY1QzE2MC43MTcgNi4wODcgMTc1LjQ2NiAwIDE5Mi43OSAwYzE3LjA5IDAgMzEuODk4IDYuMjA0IDQ0LjQyMyAxOC42MTJDMjQ5LjczOCAzMS4wMiAyNTYgNDUuODg2IDI1NiA2My4yMWMwIDE3LjMyNC02LjI2MiAzMi4xOS0xOC43ODcgNDQuNTk4LTEyLjUyNSAxMi40MDgtMjcuMzMzIDE4LjYxMi00NC40MjMgMTguNjEyLTE3LjMyNCAwLTMyLjE5LTYuMjA0LTQ0LjU5OC0xOC42MTJsLTIwLjAxNi0xOS4zMTQtMjAuNzIgMTkuNjY1Yy0xMi4xNzMgMTIuMTc0LTI2LjkyMiAxOC4yNi00NC4yNDYgMTguMjZzLTMyLjE5LTYuMjAzLTQ0LjU5OC0xOC42MTFDNi4yMDQgOTUuNCAwIDgwLjUzNCAwIDYzLjIxWk02My4yMSAzNi41MmMtNy4yNTggMC0xMy41MiAyLjYzNC0xOC43ODggNy45MDEtNS4yNjcgNS4yNjgtNy45IDExLjUzLTcuOSAxOC43ODggMCA3LjQ5MSAyLjU3NCAxMy44MTIgNy43MjUgMTguOTYzIDUuMTUgNS4xNSAxMS40NzEgNy43MjUgMTguOTYzIDcuNzI1IDcuNDkxIDAgMTMuODEyLTIuNTc1IDE4Ljk2My03LjcyNWwxOS4zMTQtMTguOTYzLTE5LjMxNC0xOC42MTJjLTUuMzg1LTUuMzg0LTExLjcwNi04LjA3Ny0xOC45NjMtOC4wNzdabTE0OC41NDMgNDUuNjUyYzUuMTUtNS4xNSA3LjcyNi0xMS40NzIgNy43MjYtMTguOTYzIDAtNy40OTItMi41NzUtMTMuODEzLTcuNzI2LTE4Ljk2My01LjE1LTUuMTUtMTEuNDEzLTcuNzI2LTE4Ljc4Ny03LjcyNi03LjM3NSAwLTEzLjYzNyAyLjU3NS0xOC43ODggNy43MjZMMTU0LjUxMyA2My4yMWwxOS4zMTQgMTguNjEyYzUuMTUgNS4xNSAxMS40NzIgNy43ODQgMTguOTYzIDcuOSA3LjQ5Mi4xMTggMTMuODEzLTIuMzk5IDE4Ljk2My03LjU1WiIvPjwvc3ZnPg==&style=for-the-badge">
+<img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=Yarn&logoColor=white"> <img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
 <br /> <br />
   
 ### Team Collaboration Tool  
