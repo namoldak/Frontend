@@ -57,13 +57,13 @@ function DeleteAccountTab({ setting }) {
       <StConfirmBtn onClick={onClickConfirm}>
         <img src={accountTabBtn} alt="탈퇴 진행하기" />
       </StConfirmBtn>
-      <div
+      <KakaoAccount
         role="presentation"
         onClick={onClickKakao}
         style={{ textAlign: 'center', cursor: 'pointer' }}
       >
-        카카오로 가입 하셨다면: 카카오 탈퇴하기
-      </div>
+        카카오 탈퇴하기
+      </KakaoAccount>
       {isKakaoModalOn && (
         <Modal
           onClose={() => {
@@ -116,6 +116,10 @@ const StConfirmBtn = styled.button`
   display: block;
   margin: 0 auto;
   margin-top: 20px;
+`;
+
+const KakaoAccount = styled.div`
+  font-size: 18px;
 `;
 
 export default DeleteAccountTab;

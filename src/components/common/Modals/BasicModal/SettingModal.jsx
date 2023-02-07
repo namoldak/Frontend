@@ -107,14 +107,14 @@ const TabMenu = styled.ul`
   .submenu {
     display: flex;
     justify-content: center;
-    width: 175px;
+    width: 175.16px;
     /* height: calc(100% / 3); */
     height: 94px;
     background: rgba(4, 2, 0, 0.8);
     border-radius: 30px 0px 0px 30px;
     padding-top: 30px;
     transition: all 0.1s;
-    border: 1px solid #321d07;
+    /* border: 1px solid #321d07; */
   }
 
   .focused {

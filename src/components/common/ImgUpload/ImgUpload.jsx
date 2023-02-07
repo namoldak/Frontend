@@ -54,7 +54,7 @@ const StImgUpload = styled.div`
 `;
 
 const StSpan = styled.span`
-  width: 66px;
+  width: 71px;
   font-size: 16px;
   line-height: 19px;
   color: ${({ theme }) => theme.colors.text3};

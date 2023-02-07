@@ -85,11 +85,13 @@ const StUserName = styled.div`
   margin-right: auto;
   margin-left: 20px;
   margin-bottom: 12px;
+  letter-spacing: 0.04em;
 
   em {
     font-size: 34px;
     line-height: 37px;
     margin-right: 5px;
+    letter-spacing: 0.09em;
   }
 `;
 

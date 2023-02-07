@@ -155,6 +155,7 @@ const StWriteTitle = styled.input`
   line-height: 21px;
   letter-spacing: 0.1em;
   color: ${({ theme }) => theme.colors.text3};
+  border: 0;
 
   ::placeholder {
     font-weight: 500;
@@ -232,6 +233,7 @@ const StWritePostBtn = styled.button`
   width: 136px;
   height: 45px;
   margin-left: auto;
+  border: 0;
 `;
 
 export default WritePost;
