@@ -106,32 +106,52 @@
 </div>
 </details>
 <details>
-<summary></summary>
+<summary>Header에 있는 Refresh Token(1번) /  Access Token 재발급 요청(2번, 3번)</summary>
 <div markdown="1">
 
 - **문제 상황**  
-  - 
+  1. 리프레시 토큰과 액세스 토큰 모두 클라이언트 쿠키에 노출됨
+  2. access token 이 만료된 경우 재발급 요청을 해야 하는데, 유저가 어떤 action을 취하지 않고 가만히 있어도 서버에게 token 재발급 요청을 보내야 하는 상황
+  3. 게임룸 입장 시 토큰 재발급 API가 정상 작동되지 않음
 
 - **이유**  
-  - 
+  1. 헤더에 리프레시 토큰이 담겨 있었음
+  2. access token 의 만료 시점을 client 측에서 파악할 수 없었기 때문
 
 - **해결 방법**  
-  - 
+  1. 액세스 토큰만 클라이언트 쿠키에 저장, 노출하는 방식으로 변경. 액세스 토큰은 클라이언트 쿠키에 저장하고 유효시간을 30분으로 설정, 리프레시 토큰은 Redis 서버에 저장하고 유효시간을 1주일로 설정하여 보안을 강화함
+  2.  access token을 만드는 함수 안에서 setTimeout으로 만료 전 재발급 요청이 가도록 했음
+  3. 기존의 AccessToken을 getAccessToken으로 가져오고 토큰을 만드는 함수인 setAccessToken에 기존 토큰값을 넣어줌. WebRTC signaling 이 처음 시작되는 useEffect 안에서 setAccessToken을 호출하여 유저의 토큰 정보를 담아서 보내주었고 재발급 요청에 성공함.
   <br />
 </div>
 </details>
 <details>
-<summary></summary>
+<summary>무한스크롤 댓글 조회</summary>
 <div markdown="1">
 
 - **문제 상황**  
-  - 
+  - 게시글 상세 페이지에서 댓글을 무한스크롤로 보여줄 때 다른 게시글에도 똑같은 댓글이 보임
 
 - **이유**  
-  - 
+  - 댓글 데이터를 전역으로 관리했기 때문
 
 - **해결 방법**  
-  -  
+  - redux thunk 를 쓰지 않고 게시글 상세 조회 컴포넌트에서 댓글 전체 조회 api 를 바로 호출하여 데이터를 보여줌
+  <br />
+</div>
+</details>
+<details>
+<summary>닉네임 변경 및 중복 확인</summary>
+<div markdown="1">
+
+- **문제 상황**  
+  - 닉네임 중복 확인 버튼을 눌렀는데 닉네임이 중복 확인 검사 없이 바로 변경됨
+
+- **이유**  
+  - form 태그 안에서는 버튼을 하나만 눌러도 submit function이 실행되었기 때문
+
+- **해결 방법**  
+  - 버튼의 onClick 함수에 event.preventDefault( );  메서드를 써서 기본으로 정의된 이벤트를 작동하지 못하게 막음
   <br />
 </div>
 </details>
@@ -173,7 +193,7 @@
 <br /> <br />
 
 ### Infrastructure  
-<img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=Yarn&logoColor=white"> <img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+<img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=Yarn&logoColor=white"> <img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/Forever-191A1B.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTYiIGhlaWdodD0iMTI3IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+PHBhdGggZD0iTTAgNjMuMjFjMC0xNy4zMjQgNi4yMDQtMzIuMTkgMTguNjEyLTQ0LjU5OEMzMS4wMiA2LjIwNCA0NS44ODYgMCA2My4yMSAwYzE3LjMyNCAwIDMyLjE5IDYuMjA0IDQ0LjU5OCAxOC42MTJsMjAuMzY4IDE5LjMxNCAyMC4zNjctMTkuNjY1QzE2MC43MTcgNi4wODcgMTc1LjQ2NiAwIDE5Mi43OSAwYzE3LjA5IDAgMzEuODk4IDYuMjA0IDQ0LjQyMyAxOC42MTJDMjQ5LjczOCAzMS4wMiAyNTYgNDUuODg2IDI1NiA2My4yMWMwIDE3LjMyNC02LjI2MiAzMi4xOS0xOC43ODcgNDQuNTk4LTEyLjUyNSAxMi40MDgtMjcuMzMzIDE4LjYxMi00NC40MjMgMTguNjEyLTE3LjMyNCAwLTMyLjE5LTYuMjA0LTQ0LjU5OC0xOC42MTJsLTIwLjAxNi0xOS4zMTQtMjAuNzIgMTkuNjY1Yy0xMi4xNzMgMTIuMTc0LTI2LjkyMiAxOC4yNi00NC4yNDYgMTguMjZzLTMyLjE5LTYuMjAzLTQ0LjU5OC0xOC42MTFDNi4yMDQgOTUuNCAwIDgwLjUzNCAwIDYzLjIxWk02My4yMSAzNi41MmMtNy4yNTggMC0xMy41MiAyLjYzNC0xOC43ODggNy45MDEtNS4yNjcgNS4yNjgtNy45IDExLjUzLTcuOSAxOC43ODggMCA3LjQ5MSAyLjU3NCAxMy44MTIgNy43MjUgMTguOTYzIDUuMTUgNS4xNSAxMS40NzEgNy43MjUgMTguOTYzIDcuNzI1IDcuNDkxIDAgMTMuODEyLTIuNTc1IDE4Ljk2My03LjcyNWwxOS4zMTQtMTguOTYzLTE5LjMxNC0xOC42MTJjLTUuMzg1LTUuMzg0LTExLjcwNi04LjA3Ny0xOC45NjMtOC4wNzdabTE0OC41NDMgNDUuNjUyYzUuMTUtNS4xNSA3LjcyNi0xMS40NzIgNy43MjYtMTguOTYzIDAtNy40OTItMi41NzUtMTMuODEzLTcuNzI2LTE4Ljk2My01LjE1LTUuMTUtMTEuNDEzLTcuNzI2LTE4Ljc4Ny03LjcyNi03LjM3NSAwLTEzLjYzNyAyLjU3NS0xOC43ODggNy43MjZMMTU0LjUxMyA2My4yMWwxOS4zMTQgMTguNjEyYzUuMTUgNS4xNSAxMS40NzIgNy43ODQgMTguOTYzIDcuOSA3LjQ5Mi4xMTggMTMuODEzLTIuMzk5IDE4Ljk2My03LjU1WiIvPjwvc3ZnPg==&style=for-the-badge">
 <br /> <br />
   
 ### Team Collaboration Tool  
