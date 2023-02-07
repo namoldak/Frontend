@@ -72,7 +72,7 @@ const StVolumeCon = styled.div`
   height: 40px;
   background: #643b11;
   border-radius: 30px;
-  margin: 20px 0;
+  margin-top: 20px;
   padding-top: 5px;
 `;
 
@@ -124,7 +124,7 @@ const StConfirm = styled.button`
   width: 200px;
   display: block;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 136px;
 `;
 
 export default BGMTab;

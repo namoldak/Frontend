@@ -49,7 +49,7 @@ function LogOutTabV2({ setting }) {
         <li>가입일 : {settingDate(createAt)}</li>
       </StUserInfo>
       <hr />
-      <StNotice>게임을 로그아웃하시겠습니까?</StNotice>
+      <StNotice>게임을 로그아웃 하시겠습니까?</StNotice>
       <StLogOut
         onClick={() => {
           onClickLogOut();
