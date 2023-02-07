@@ -15,7 +15,7 @@ import chickenSurprised from 'assets/images/chickenSurprised.svg';
 import usePreventGoBack from 'hooks/usePreventGoBack';
 import Pagination from './Pagination';
 import Post from './Post/Post';
-import PostCategory from './PostCategoryAndSearch/PostCategory';
+import PostSelect from './PostCategoryAndSearch/PostSelect';
 import SearchPost from './PostCategoryAndSearch/SearchPost';
 
 function PostList() {
@@ -45,7 +45,7 @@ function PostList() {
   return (
     <>
       <StCategoryAndSearch>
-        <PostCategory
+        <PostSelect
           setCategory={setCategory}
           setPage={setPage}
           setKeyword={setKeyword}
@@ -111,7 +111,7 @@ const StCategoryAndSearch = styled.div`
 `;
 
 const StPostBox = styled.div`
-  min-height: 384px;
+  min-height: 400px;
 `;
 
 const StInfoBanner = styled.div`
@@ -155,7 +155,7 @@ const StWritePost = styled.button`
 const StNoList = styled.div`
   ${({ theme }) => theme.common.flexCenter};
   width: 100%;
-  height: 300px;
+  min-height: 300px;
 `;
 
 const StNoListText = styled.div`
