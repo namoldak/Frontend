@@ -70,13 +70,11 @@ function PostList() {
         {postResponseDtoList?.length === 0 ? (
           <StNoList>
             <img
-              style={{ width: '250px', height: '250px' }}
+              style={{ width: '154px', height: '218px' }}
               src={chickenSurprised}
               alt="글 작성하기"
             />
-            <StNoListText>
-              아직 아무 글이 없닭! 처음으로 작성자가 되어볼 수 있닭!
-            </StNoListText>
+            <StNoListText>아무것도 없닭...🐓</StNoListText>
           </StNoList>
         ) : (
           postResponseDtoList?.map((post) => {
@@ -155,30 +153,18 @@ const StWritePost = styled.button`
 `;
 
 const StNoList = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.lightBeige};
-  font-size: 30px;
-
+  ${({ theme }) => theme.common.flexCenter};
   width: 100%;
   height: 300px;
-
-  position: relative;
 `;
 
 const StNoListText = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.lightBeige};
-  font-size: 20px;
-  line-height: 2.5rem;
-
-  width: 100%;
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 36px;
+  letter-spacing: 0.1em;
+  color: ${({ theme }) => theme.colors.white};
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 export default PostList;
