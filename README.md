@@ -108,32 +108,32 @@
 </div>
 </details>
 <details>
-<summary></summary>
+<summary>무한스크롤 댓글 조회</summary>
 <div markdown="1">
 
 - **문제 상황**  
-  - 
+  - 게시글 상세 페이지에서 댓글을 무한스크롤로 보여줄 때 다른 게시글에도 똑같은 댓글이 보임
 
 - **이유**  
-  - 
+  - 댓글 데이터를 전역으로 관리했기 때문
 
 - **해결 방법**  
-  - 
+  - redux thunk 를 쓰지 않고 게시글 상세 조회 컴포넌트에서 댓글 전체 조회 api 를 바로 호출하여 데이터를 보여줌
   <br />
 </div>
 </details>
 <details>
-<summary></summary>
+<summary>닉네임 변경 및 중복 확인</summary>
 <div markdown="1">
 
 - **문제 상황**  
-  - 
+  - 닉네임 중복 확인 버튼을 눌렀는데 닉네임이 중복 확인 검사 없이 바로 변경됨
 
 - **이유**  
-  - 
+  - form 태그 안에서는 버튼을 하나만 눌러도 submit function이 실행되었기 때문
 
 - **해결 방법**  
-  -  
+  - 버튼의 onClick 함수에 event.preventDefault( );  메서드를 써서 기본으로 정의된 이벤트를 작동하지 못하게 막음
   <br />
 </div>
 </details>
@@ -160,6 +160,8 @@
 <br /> <br />
 
 ## ⌛ 시간이 더 있었다면 도전했을 기술들
+- Js 타입 에러를 사전에 방지하여 개발 생산성을 향상시키기 위한 typescript
+- 서버 비동기 통신 데이터 관리를 용이하게 하기 위한 react-query
 - github actions 를 이용한 CI/CD
 - 디자인 시스템 atomic design pattern
 - 추가적인 소셜 로그인(네이버, 구글)
