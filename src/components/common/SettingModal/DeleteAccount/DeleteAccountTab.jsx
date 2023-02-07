@@ -99,6 +99,7 @@ const StNotice = styled.div`
   line-height: 42px;
   margin-top: 20px;
   margin-bottom: 15px;
+  font-weight: 600;
 `;
 
 const StInputBox = styled.div`

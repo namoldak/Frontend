@@ -76,6 +76,7 @@ const StSearchRoom = styled.div`
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};
     opacity: 0.8;
+    font-weight: 700;
   }
 
   @media ${(props) => props.theme.laptop} {

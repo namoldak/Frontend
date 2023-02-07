@@ -82,14 +82,13 @@ const StVolumeBox = styled.div`
   margin: 0 auto;
   border-radius: 20px;
   background: #fff4d0;
-  padding-left: 6px;
+  padding-left: 10px;
 `;
 
 const StVolume = styled.input`
   -webkit-appearance: none;
-  width: 99%;
+  width: 98%;
   height: 26px;
-  margin: 0 auto;
   background: #643b11;
   border-radius: 20px;
   outline: none;
@@ -98,7 +97,7 @@ const StVolume = styled.input`
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    border: 2px solid #fff4d0;
+    border: 3px solid #fff4d0;
     background-color: #643b11;
     -webkit-appearance: none;
     cursor: pointer;
