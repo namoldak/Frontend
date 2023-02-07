@@ -11,15 +11,12 @@ const NICKNAME = 'nickname';
 const cookies = new Cookies();
 
 export const setAccessToken = (token) => {
-  console.log('cookie만들기');
   const expireDate = new Date();
   expireDate.setMinutes(expireDate.getMinutes() + 30);
 
   // 만료 5분 전 재발급 요청 보냄
   setTimeout(() => {
-    console.log('1');
     instance.post('/auth/issue/token').then((response) => {
-      console.log('response', response);
       setAccessToken(response.headers.accesstoken);
     });
   }, 25 * 60 * 1000);
