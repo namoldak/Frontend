@@ -86,6 +86,7 @@ const StUserName = styled.div`
   margin-left: 20px;
   margin-bottom: 12px;
   letter-spacing: 0.04em;
+  margin-top: 12px;
 
   em {
     font-size: 34px;
@@ -96,9 +97,15 @@ const StUserName = styled.div`
 `;
 
 const StCommunityBtn = styled.button`
-  width: 217px;
-  height: 71px;
+  /* width: 217px; */
+  /* height: 71px; */
   margin: 8px 20px 0 0;
+
+  @media ${(props) => props.theme.laptop} {
+    img {
+      height: 78px;
+    }
+  }
 `;
 
 const StSettingBtn = styled.button`
