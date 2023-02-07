@@ -70,10 +70,8 @@ const StRoomTitle = styled.div`
 
 const StEgg = styled.div`
   position: relative;
-  width: 150px;
-  height: 200px;
   margin-top: 30px;
-  margin-bottom: 34px;
+  margin-bottom: 10px;
 `;
 
 const StRoomInfo = styled.div`
