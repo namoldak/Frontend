@@ -33,7 +33,7 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
   }, [stream, keyword]);
 
   return (
-    <StAudio>
+    <>
       {isMyTurn && (
         <>
           <StCardSpotLight />
@@ -72,15 +72,11 @@ function Audio({ stream, nickName, isCameraOn, keyword, isMyTurn, isOwner }) {
       <StNickName className={isMyTurn ? 'spotLight' : ''}>
         {nickName}
       </StNickName>
-    </StAudio>
+    </>
   );
 }
 
 export default Audio;
-
-const StAudio = styled.div`
-  /* position: relative; */
-`;
 
 const StCardSpotLight = styled.div`
   position: absolute;

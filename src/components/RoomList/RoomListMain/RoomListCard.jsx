@@ -1,5 +1,5 @@
 // 외부 모듈
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Howl, Howler } from 'howler';
@@ -138,10 +138,7 @@ const StRoomListCard = styled.div`
 const StRoomBox = styled.div`
   display: grid;
   min-width: 900px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  ${({ theme }) => theme.common.absoluteCenter}
   grid-template-columns: repeat(4, 1fr);
   text-align: center;
   padding-bottom: 40px;

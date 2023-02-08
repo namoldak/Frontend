@@ -104,7 +104,7 @@ const StCommentBox = styled.div`
   font-size: 14px;
   line-height: 17px;
   letter-spacing: 0.1em;
-  color: #020202;
+  color: #${({ theme }) => theme.colors.text3};
 `;
 
 const StEditComment = styled.input`

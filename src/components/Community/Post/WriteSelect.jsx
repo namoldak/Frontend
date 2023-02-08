@@ -76,7 +76,7 @@ const SelectOptions = styled.ul`
   background: ${({ theme }) => theme.colors.lightBeige};
   border-width: ${(props) => (props.show ? '6px' : '0')};
   border-style: solid;
-  border-color: #e7aa47;
+  border-color: ${({ theme }) => theme.colors.yellowBrown};
   border-radius: 0 0 10px 10px;
 `;
 

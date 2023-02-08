@@ -1,7 +1,7 @@
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // 내부 모듈
 import { getAccessToken } from 'utils/cookies';
@@ -72,12 +72,12 @@ const StLanding = styled.div`
 
 // background image 적용
 const StLadingMain = styled.div`
+  position: relative;
   height: calc(100vh - 84px);
   background-image: url(${landingBack});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;
-  position: relative;
 
   @media ${(props) => props.theme.laptop} {
     height: calc(100vh - 42px);

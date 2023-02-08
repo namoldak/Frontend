@@ -108,7 +108,6 @@ const StChatBoxCon = styled.div`
   background-size: contain;
   background-repeat: no-repeat;
   padding: 20px 18px 20px 18px;
-  /* border: 1px solid black; */
 `;
 
 const StNoticeBack = styled.div`
@@ -139,7 +138,7 @@ const StUserChatBox = styled.div`
   overflow: auto;
   max-height: 500px;
   padding-right: 10px;
-  /* overflow-y: hidden; */
+
   &::-webkit-scrollbar {
     width: 10px;
   }
@@ -150,14 +149,13 @@ const StUserChatBox = styled.div`
 `;
 
 const Chat = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
   font-size: 18px;
   font-weight: 600;
   line-height: 22px;
   color: ${({ theme }) => theme.colors.text};
-
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
 
   &.my {
     text-align: right;
@@ -170,7 +168,6 @@ const Chat = styled.div`
   }
 
   &.chickenLord {
-    /* padding: none; */
     text-align: left;
     justify-content: flex-start;
     color: rgb(205, 21, 22);
@@ -178,11 +175,10 @@ const Chat = styled.div`
 `;
 
 const StChatBubble = styled.div`
-  // backgroundColor: '#fffff5',
+  width: fit-content;
   border: 1px solid ${({ theme }) => theme.colors.text};
   border-radius: 5px;
   padding: 8px;
-  width: fit-content;
 
   &.chickenLord {
     border: 1px solid rgb(205, 21, 22);
@@ -192,9 +188,7 @@ const StChatBubble = styled.div`
 
 const StSendChat = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  ${({ theme }) => theme.common.flexBetween}
   position: absolute;
   top: 645px;
   left: 0;

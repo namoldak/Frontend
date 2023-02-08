@@ -89,7 +89,7 @@ const StTitle = styled.div`
 const StTimer = styled.div`
   font-size: 20px;
   font-weight: 900;
-  color: #ffffff;
+  color: ${({ theme }) => theme.colors.white};
   margin-top: 20px;
 `;
 

@@ -52,7 +52,7 @@ function BGMTab({ setting }) {
 }
 
 const StBGMTab = styled.div`
-  color: #fff;
+  color: #${({ theme }) => theme.colors.white};
   font-weight: 600;
   letter-spacing: 0.08em;
   font-size: 26px;
@@ -98,7 +98,7 @@ const StVolume = styled.input`
     width: 30px;
     border-radius: 50%;
     border: 3px solid #fff4d0;
-    background-color: #643b11;
+    background-color: ${({ theme }) => theme.colors.brown};
     -webkit-appearance: none;
     cursor: pointer;
   }
@@ -108,7 +108,7 @@ const StBtnBox = styled.div`
   display: flex;
 
   span {
-    color: #fff;
+    color: #${({ theme }) => theme.colors.white};
     font-weight: 600;
     letter-spacing: 0.08em;
     font-size: 26px;

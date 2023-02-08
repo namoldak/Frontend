@@ -21,7 +21,7 @@ const StModalContainer = styled.div`
   opacity: 0.8;
   border-radius: 30px;
   gap: 30px;
-  color: white;
+  color: #${({ theme }) => theme.colors.white};
 `;
 
 export default GameRuleModal;

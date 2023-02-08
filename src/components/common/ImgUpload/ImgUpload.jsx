@@ -73,8 +73,7 @@ const StFileName = styled.input`
 `;
 
 const StLabel = styled.label`
-  display: flex;
-  justify-content: center;
+  ${({ theme }) => theme.common.flexCenter}
   width: 78px;
   height: 27px;
   background: ${({ theme }) => theme.colors.lightBrown};
@@ -86,7 +85,6 @@ const StLabel = styled.label`
   font-size: 14px;
   line-height: 27px;
   letter-spacing: 0.1em;
-  align-items: center;
 `;
 
 const StinputImg = styled.input`
