@@ -2,7 +2,7 @@
 // 외부 모듈
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -15,9 +15,9 @@ import popUp from 'assets/images/popUp.svg';
 import signUpTitleBtn from 'assets/images/signUpTitleBtn.svg';
 import doubleCheckBtn from 'assets/images/doubleCheckBtn.svg';
 import signUpBtn from 'assets/images/signUpBtn.svg';
-import backBtn from 'assets/images/backBtn.svg';
 import miniLoginBtn from 'assets/images/miniLoginBtn.svg';
 import check from 'assets/images/check.svg';
+import BackButton from 'components/common/Button/BackButton';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -144,11 +144,7 @@ function SignUp() {
 
   return (
     <StSignUp>
-      <StBackBtn>
-        <Link to="/" draggable="false">
-          <img src={backBtn} alt="뒤로가기" />
-        </Link>
-      </StBackBtn>
+      <BackButton url="/" />
       <StSignUpWrapper>
         <StSignUpContainer onSubmit={handleSubmit(onClickSignup)}>
           <StTitle>
@@ -180,7 +176,6 @@ function SignUp() {
               />
               <StDbCheckBtn
                 disabled={errors.email || !getValues('email')}
-                // eslint-disable-next-line react/jsx-no-bind
                 onClick={onClickCheckEmail}
               >
                 <img src={doubleCheckBtn} alt="이메일 중복확인" />
@@ -226,11 +221,13 @@ function SignUp() {
             </StSignUpBtn>
             <StLogin>
               <p>아이디가 있으신가요?</p>
-              <Link to="/login" draggable="false">
-                <button>
-                  <img src={miniLoginBtn} alt="로그인" />
-                </button>
-              </Link>
+              <button
+                onClick={() => {
+                  navigate('/login');
+                }}
+              >
+                <img src={miniLoginBtn} alt="로그인" />
+              </button>
             </StLogin>
           </StBtnBox>
         </StSignUpContainer>
@@ -245,10 +242,6 @@ const StSignUp = styled.div`
   @media ${(props) => props.theme.laptop} {
     padding-top: 30px;
   }
-`;
-
-const StBackBtn = styled.button`
-  width: 78px;
 `;
 
 const StSignUpWrapper = styled.div`
@@ -356,14 +349,16 @@ const StBtnBox = styled.div`
 `;
 
 const StSignUpBtn = styled.button`
-  margin-top: 40px;
-  margin-bottom: 6px;
+  width: 160px;
+  height: 60px;
+  margin-top: 20px;
+  margin-bottom: 7px;
 `;
 
 const StLogin = styled.div`
   display: flex;
   align-items: center;
-  color: #fff;
+  color: ${({ theme }) => theme.colors.white};
   font-size: ${({ theme }) => theme.fontSizes.paragraph};
   font-weight: 500;
   line-height: 19px;

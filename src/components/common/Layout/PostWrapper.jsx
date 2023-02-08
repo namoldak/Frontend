@@ -1,24 +1,18 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 // 내부 모듈
 import SettingButton from 'components/common/Button/SettingButton';
-import backBtn from 'assets/images/backBtn.svg';
+import BackButton from 'components/common/Button/BackButton';
 import communityBack from 'assets/images/communityBack.png';
 
 function PostWrapper() {
-  const navigate = useNavigate();
-
   return (
     <StPostWrapper>
       <StTopBar>
-        <Link to="/posts/all" draggable="false">
-          <StBackBtn>
-            <img src={backBtn} alt="뒤로 가기" />
-          </StBackBtn>
-        </Link>
+        <BackButton url="/posts/all" />
         <SettingButton />
       </StTopBar>
       <StCommunityBack>
@@ -48,19 +42,12 @@ const StTopBar = styled.div`
   }
 `;
 
-const StBackBtn = styled.button`
-  width: 78px;
-  height: 78px;
-`;
-
 const StCommunityBack = styled.div`
+  ${({ theme }) => theme.common.flexCenter}
   height: 713px;
   background-image: url(${communityBack});
   background-repeat: no-repeat;
   background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const StBlackBack = styled.div`
