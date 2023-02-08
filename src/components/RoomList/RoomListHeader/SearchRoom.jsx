@@ -58,10 +58,11 @@ function SearchRoom({ page, setPage, keyword, setKeyword, setIsSearch }) {
 
 const StSearchRoom = styled.div`
   position: relative;
+  margin-left: 6px;
 
   input {
-    width: 913px;
-    height: 78px;
+    width: 901px;
+    height: 72px;
     background: ${({ theme }) => theme.colors.lightBeige};
     border: 6px solid ${({ theme }) => theme.colors.yellowBrown};
     outline: 6px solid ${({ theme }) => theme.colors.brown};
@@ -69,12 +70,14 @@ const StSearchRoom = styled.div`
     font-weight: 700;
     font-size: 22px;
     line-height: 26px;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.text2};
     text-indent: 16px;
+    filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.8));
   }
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};
     opacity: 0.8;
+    font-weight: 700;
   }
 
   @media ${(props) => props.theme.laptop} {
@@ -87,8 +90,8 @@ const StSearchRoom = styled.div`
 
 const SearchBtn = styled.button`
   position: absolute;
-  top: 19px;
-  right: 26px;
+  top: 17px;
+  right: 22px;
 
   @media ${(props) => props.theme.laptop} {
     top: 14px;

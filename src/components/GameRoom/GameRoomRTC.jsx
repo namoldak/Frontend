@@ -7,15 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useCookies, Cookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
 
-// 내부모듈
-import useToast from 'hooks/useToast';
-import usePreventGoBack from 'hooks/usePreventGoBack';
-import usePreventRefresh from 'hooks/usePreventRefesh';
-import useEffectSound from 'hooks/useEffectSound';
-import endSound from 'assets/audio/endSound.mp3';
-import startSound from 'assets/audio/startSound.mp3';
-
-// 이미지 파일
+// assets - 이미지, 효과음
 import voiceOn from 'assets/images/voiceOn.svg';
 import voiceOff from 'assets/images/voiceOff.svg';
 import cameraOff from 'assets/images/cameraOff.svg';
@@ -27,15 +19,23 @@ import star from 'assets/images/star.svg';
 import keywordImg from 'assets/images/keyword.svg';
 import userCardImg from 'assets/images/userCardImg.svg';
 import playerImg from 'assets/images/playerImg.svg';
-import GameModal from 'components/common/Modals/InGameModal/GameModal';
-import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModal';
-import ToastMessage from 'components/common/Toast/ToastMessage';
+import endSound from 'assets/audio/endSound.mp3';
+import startSound from 'assets/audio/startSound.mp3';
+
+// 내부모듈
 import { instance } from 'api/core/axios';
+import useToast from 'hooks/useToast';
+import usePreventGoBack from 'hooks/usePreventGoBack';
+import usePreventRefresh from 'hooks/usePreventRefesh';
+import useEffectSound from 'hooks/useEffectSound';
 import {
   setAccessToken,
   getAccessToken,
   getNicknameCookie,
 } from 'utils/cookies';
+import GameModal from 'components/common/Modals/InGameModal/GameModal';
+import GameAnswerModal from 'components/common/Modals/InGameModal/GameAnswerModal';
+import ToastMessage from 'components/common/Toast/ToastMessage';
 import Timer from './Timer/Timer';
 import SpotTimer from './Timer/SpotTimer';
 import Audio from './UserCardsAndChatBox/Audio';
@@ -74,6 +74,7 @@ function GameRoomRTC() {
   const [isTimer, setIsTimer] = useState(false);
   const [isMyTurnModal, setIsMyTurnModal] = useState(false);
   const [isEndGameModal, setIsEndGameModal] = useState(false);
+  const [isWrongAnswerModal, setIsWrongAnswerModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [users, setUsers] = useState([]);
   const [winner, setWinner] = useState('');
@@ -186,6 +187,7 @@ function GameRoomRTC() {
               sendSpotlight();
             }, 2000);
           }
+          setIsWrongAnswerModal(true);
           break;
         }
         case 'SUCCESS': {
@@ -772,6 +774,9 @@ function GameRoomRTC() {
         )}
         {isEndGameModal && (
           <ToastMessage setToastState={setIsEndGameModal} type="end" />
+        )}
+        {isWrongAnswerModal && (
+          <ToastMessage setToastState={setIsWrongAnswerModal} type="fail" />
         )}
       </div>
       <StGameRoomHeader>

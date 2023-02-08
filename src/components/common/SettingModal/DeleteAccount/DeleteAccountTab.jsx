@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import accountTabBtn from 'assets/images/accountTabBtn.svg';
+import kakaoDelelteBtn from 'assets/images/kakaoDeleteBtn.svg';
 import Input from 'components/common/Input/Input';
 import Modal from 'components/common/Modals/BasicModal/Modal';
 import DeleteAccountModal from 'components/common/Modals/BasicModal/DeleteAccountModal';
@@ -57,13 +58,16 @@ function DeleteAccountTab({ setting }) {
       <StConfirmBtn onClick={onClickConfirm}>
         <img src={accountTabBtn} alt="탈퇴 진행하기" />
       </StConfirmBtn>
-      <div
-        role="presentation"
-        onClick={onClickKakao}
-        style={{ textAlign: 'center', cursor: 'pointer' }}
-      >
-        카카오로 가입 하셨다면: 카카오 탈퇴하기
-      </div>
+      <StKakaoBox>
+        카카오로 가입하셨다면
+        <KakaoAccount
+          role="presentation"
+          onClick={onClickKakao}
+          style={{ textAlign: 'center', cursor: 'pointer' }}
+        >
+          <img src={kakaoDelelteBtn} alt="카카오 탈퇴하기" />
+        </KakaoAccount>
+      </StKakaoBox>
       {isKakaoModalOn && (
         <Modal
           onClose={() => {
@@ -99,6 +103,7 @@ const StNotice = styled.div`
   line-height: 42px;
   margin-top: 20px;
   margin-bottom: 15px;
+  font-weight: 600;
 `;
 
 const StInputBox = styled.div`
@@ -116,6 +121,22 @@ const StConfirmBtn = styled.button`
   display: block;
   margin: 0 auto;
   margin-top: 20px;
+`;
+
+const StKakaoBox = styled.div`
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 42px;
+  text-align: center;
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.white};
+  margin-top: 17px;
+`;
+
+const KakaoAccount = styled.button`
+  margin-left: 10px;
 `;
 
 export default DeleteAccountTab;

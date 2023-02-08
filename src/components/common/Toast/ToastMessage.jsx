@@ -5,6 +5,7 @@ import styled from 'styled-components';
 // 내부 모듈
 import gameStart from 'assets/images/gameStart.svg';
 import gameAnswer from 'assets/images/gameAnswer.svg';
+import wrongAnswer from 'assets/images/wrongAnswer.svg';
 
 function Toast({ setToastState, type }) {
   useEffect(() => {
@@ -19,14 +20,20 @@ function Toast({ setToastState, type }) {
   return (
     <StBackground>
       <StToastBorder>
-        {type === 'start' ? (
+        {type === 'start' && (
           <StToastMessage>
             <img src={gameStart} alt="게임 시작" />
           </StToastMessage>
-        ) : (
+        )}
+        {type === 'end' && (
           <StToastAnswer>
             <img src={gameAnswer} alt="게임 끝" />
           </StToastAnswer>
+        )}
+        {type === 'fail' && (
+          <StToastWrong>
+            <img src={wrongAnswer} alt="땡" />
+          </StToastWrong>
         )}
       </StToastBorder>
     </StBackground>
@@ -62,6 +69,11 @@ const StToastMessage = styled.div`
 `;
 
 const StToastAnswer = styled.div`
+  width: 618px;
+  height: 453px;
+`;
+
+const StToastWrong = styled.div`
   width: 618px;
   height: 453px;
 `;

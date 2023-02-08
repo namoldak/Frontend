@@ -17,9 +17,9 @@ function ModalForSetting({ onClose, content }) {
             event.stopPropagation();
           }}
         >
-          <StCloseBtn onClick={onClose}>
+          {/* <StCloseBtn onClick={onClose}>
             <img src={closeBtn} alt="방 닫기" />
-          </StCloseBtn>
+          </StCloseBtn> */}
           <div>{content}</div>
         </StModalBorder>
       </StBackground>

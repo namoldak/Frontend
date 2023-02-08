@@ -47,7 +47,7 @@ function DeleteAccountModal({ input, setting }) {
 
   return (
     <StDeleteAccountModal onKeyUp={onKeyUpEnter}>
-      <StTitle>정말로 가는거닭?</StTitle>
+      <StTitle>정말로 가는거닭?...🐓</StTitle>
       <Input
         placeholder="비밀번호를 입력해주세요"
         type="password"

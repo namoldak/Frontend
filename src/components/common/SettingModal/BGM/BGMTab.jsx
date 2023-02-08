@@ -72,7 +72,7 @@ const StVolumeCon = styled.div`
   height: 40px;
   background: #643b11;
   border-radius: 30px;
-  margin: 20px 0;
+  margin-top: 20px;
   padding-top: 5px;
 `;
 
@@ -82,14 +82,13 @@ const StVolumeBox = styled.div`
   margin: 0 auto;
   border-radius: 20px;
   background: #fff4d0;
-  padding-left: 6px;
+  padding-left: 10px;
 `;
 
 const StVolume = styled.input`
   -webkit-appearance: none;
-  width: 99%;
+  width: 98%;
   height: 26px;
-  margin: 0 auto;
   background: #643b11;
   border-radius: 20px;
   outline: none;
@@ -98,7 +97,7 @@ const StVolume = styled.input`
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    border: 2px solid #fff4d0;
+    border: 3px solid #fff4d0;
     background-color: #643b11;
     -webkit-appearance: none;
     cursor: pointer;
@@ -125,7 +124,7 @@ const StConfirm = styled.button`
   width: 200px;
   display: block;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 136px;
 `;
 
 export default BGMTab;

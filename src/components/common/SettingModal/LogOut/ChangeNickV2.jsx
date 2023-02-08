@@ -121,10 +121,9 @@ const StInputBox = styled.div`
 const StChangeNickInput = styled.input`
   width: 198px;
   height: 36px;
-  background: ${({ theme }) => theme.colors.paperGray};
+  background: ${({ theme }) => theme.colors.lightBeige};
   border-radius: 10px;
   margin: 0 14px 0 30px;
-  color: ${({ theme }) => theme.colors.paperGray};
   font-weight: 200;
   font-size: 12px;
   line-height: 56px;
@@ -156,7 +155,7 @@ const HelpText = styled.div`
   line-height: 24px;
   color: #fff;
   width: 454px;
-  margin-left: 50px;
+  margin-left: 56px;
 
   img {
     width: 18px;

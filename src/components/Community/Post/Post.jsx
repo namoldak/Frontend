@@ -1,5 +1,5 @@
 // 외부 모듈
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { readOnePost } from 'redux/postSlice';
@@ -7,20 +7,36 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import { formatTime } from 'utils/date';
+import postPhoto from 'assets/images/postPhoto.svg';
 
 function Post({ postInfo }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isPhoto, setIsPhoto] = useState(false);
+  const { imageList } = postInfo;
 
   function clickPost() {
     dispatch(readOnePost(postInfo.id));
     navigate(`/posts/${postInfo.id}`);
   }
 
+  useEffect(() => {
+    if (imageList !== null) {
+      setIsPhoto(true);
+    }
+  }, [imageList]);
+
   return (
     <StPost>
       <StPostBox key={postInfo.id} onClick={clickPost}>
-        <PostTitle>{postInfo.title}</PostTitle>
+        <PostTitleBox>
+          <PostTitle>{postInfo.title}</PostTitle>
+          {isPhoto && (
+            <PhotoImg>
+              <img src={postPhoto} alt="사진" />
+            </PhotoImg>
+          )}
+        </PostTitleBox>
         <CmtCnt>{postInfo.cmtCnt}</CmtCnt>
         <CreatedAt>{formatTime(postInfo?.createdAt)}</CreatedAt>
         <div>{postInfo.nickname}</div>
@@ -45,8 +61,13 @@ const StPostBox = styled.div`
   color: ${({ theme }) => theme.colors.text3};
 `;
 
-const PostTitle = styled.div`
+const PostTitleBox = styled.div`
+  display: flex;
   width: 600px;
+  max-width: 600px;
+`;
+
+const PostTitle = styled.div`
   font-size: 16px;
   line-height: 19px;
   overflow: hidden;
@@ -54,6 +75,12 @@ const PostTitle = styled.div`
   white-space: nowrap;
   word-break: break-all;
   padding-left: 10px;
+`;
+
+const PhotoImg = styled.div`
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
 `;
 
 const CmtCnt = styled.div`

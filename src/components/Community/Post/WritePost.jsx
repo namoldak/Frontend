@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router';
 import useToast from 'hooks/useToast';
 import postBtn from 'assets/images/postBtn.svg';
 import ImgUpload from 'components/common/ImgUpload/ImgUpload';
-import select from 'assets/images/select.svg';
 import { instance } from 'api/core/axios';
 import useDebounce from 'hooks/useDebounce';
+import WriteSelect from './WriteSelect';
 
 function WritePost() {
   const [title, setTitle] = useState('');
@@ -97,10 +97,6 @@ function WritePost() {
       });
   }, 200);
 
-  function onChangeCheck(e) {
-    setCategoryCheck(e.target.value);
-  }
-
   return (
     <>
       <StTitleCategory>
@@ -110,10 +106,7 @@ function WritePost() {
           }}
           placeholder="제목을 입력해주세요."
         />
-        <StCategorySelect onChange={onChangeCheck}>
-          <StOption value="freeBoard">자유게시판</StOption>
-          <StOption value="feedbackBoard">피드백 남기기</StOption>
-        </StCategorySelect>
+        <WriteSelect setCategoryCheck={setCategoryCheck} />
       </StTitleCategory>
       {categoryCheck === 'feedbackBoard' ? (
         <StWriteContent
@@ -155,6 +148,7 @@ const StWriteTitle = styled.input`
   line-height: 21px;
   letter-spacing: 0.1em;
   color: ${({ theme }) => theme.colors.text3};
+  border: 0;
 
   ::placeholder {
     font-weight: 500;
@@ -170,35 +164,6 @@ const StWriteTitle = styled.input`
   white-space: pre-wrap;
 `;
 
-const StCategorySelect = styled.select`
-  width: 205px;
-  background: ${({ theme }) => theme.colors.lightBeige};
-  border: 6px solid ${({ theme }) => theme.colors.yellow};
-  border-radius: 10px;
-  margin-left: 12px;
-  appearance: none;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
-  letter-spacing: 0.2em;
-  color: ${({ theme }) => theme.colors.text3};
-  text-align: left;
-  padding-left: 30px;
-  cursor: pointer;
-
-  background-image: url(${select}); // arrow
-  background-repeat: no-repeat;
-  background-position: 90% center;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const StOption = styled.option`
-  border: 2px solid black;
-`;
-
 const StWriteContent = styled.textarea`
   width: 934px;
   height: 340px;
@@ -211,6 +176,7 @@ const StWriteContent = styled.textarea`
   line-height: 21px;
   letter-spacing: 0.1em;
   color: ${({ theme }) => theme.colors.text3};
+  resize: none;
 
   ::placeholder {
     font-family: 'CoreDream';
@@ -224,6 +190,17 @@ const StWriteContent = styled.textarea`
   &:focus {
     outline: none;
   }
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: ${({ theme }) => theme.colors.yellowBrown};
+  }
+  &::-webkit-scrollbar-track {
+    background-color: ${({ theme }) => theme.colors.yellowBeige};
+  }
 `;
 
 const StWritePostBtn = styled.button`
@@ -232,6 +209,7 @@ const StWritePostBtn = styled.button`
   width: 136px;
   height: 45px;
   margin-left: auto;
+  border: 0;
 `;
 
 export default WritePost;
