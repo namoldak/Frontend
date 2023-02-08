@@ -366,9 +366,9 @@ const StLogin = styled.div`
   text-align: center;
   margin-left: 30px;
 
-  a {
-    height: 39px;
+  button {
     margin-left: -16px;
+    height: 39px;
   }
 `;
 

@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import LogOutTab from 'components/common/SettingModal/LogOut/LotOutTab';
-import AccountTab from 'components/common/SettingModal/DeleteAccount/DeleteAccountTab';
-import BGMTab from 'components/common/SettingModal/BGM/BGMTab';
+import LogOutTab from 'components/common/SettingTab/LogOut/LotOutTab';
+import AccountTab from 'components/common/SettingTab/DeleteAccount/DeleteAccountTab';
+import BGMTab from 'components/common/SettingTab/BGM/BGMTab';
 import { createBrowserHistory } from 'history';
 
 function SettingModal({ setting }) {

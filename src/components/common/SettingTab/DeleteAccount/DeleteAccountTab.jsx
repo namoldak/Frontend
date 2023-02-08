@@ -93,7 +93,7 @@ const StAccountTab = styled.div`
   font-size: 18px;
   line-height: 43px;
   letter-spacing: 0.08em;
-  color: #${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 const StText = styled.div``;

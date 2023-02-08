@@ -52,7 +52,7 @@ function BGMTab({ setting }) {
 }
 
 const StBGMTab = styled.div`
-  color: #${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   font-weight: 600;
   letter-spacing: 0.08em;
   font-size: 26px;
@@ -108,7 +108,7 @@ const StBtnBox = styled.div`
   display: flex;
 
   span {
-    color: #${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
     font-weight: 600;
     letter-spacing: 0.08em;
     font-size: 26px;
