@@ -21,7 +21,8 @@ const colors = {
   brown: '#643B11', // 갈색
   text: '#321D07', // 짙은 갈색
   text2: '#212121', // 연한 검정
-  text3: '#020202', //
+  text3: '#020202', // 검정
+  text4: '#787878', // 연한 회색
   lightGreen: '#BEDC8A', // 연한 연두색
   green: '#93BF45', // 연두색
   deepGreen: '#76A427', // 초록색
@@ -52,6 +53,17 @@ const common = {
   `,
   border: `
     border: 4px solid #965e2e;
+  `,
+  modalBack: `
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
   `,
 };
 
