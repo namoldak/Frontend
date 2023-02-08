@@ -7,6 +7,7 @@ import App from './App';
 import theme from './styles/theme';
 import store from './redux/config/configStore';
 import Globalstyle from './styles/GlobalStyle';
+import 'styles/font.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
