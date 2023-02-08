@@ -1,10 +1,9 @@
 // 외부모듈
 import styled from 'styled-components';
-import React, { useRef, useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import SockJS from 'sockjs-client';
-import { useDispatch } from 'react-redux';
-import { useCookies, Cookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 import * as StompJs from '@stomp/stompjs';
 
 // assets - 이미지, 효과음
@@ -44,18 +43,15 @@ import ChatBox from './UserCardsAndChatBox/ChatBox';
 // let 전역변수
 let stream = null;
 let pcs = {};
-let myPeerConnection;
 let viewKeyWord = '';
 
 function GameRoomRTC() {
   const SockJs = new SockJS(`${process.env.REACT_APP_WEBSOKET_URL}`);
 
-  const dispatch = useDispatch();
   const myNickName = getNicknameCookie('nickname');
   const navigate = useNavigate();
-  const owner = sessionStorage.getItem('owner');
+
   const param = useParams();
-  const { roomId } = param;
   const [cookie] = useCookies();
 
   const socketRef = useRef();
@@ -63,8 +59,6 @@ function GameRoomRTC() {
   const videoRef = useRef(null);
   const muteBtn = useRef(null);
   const cameraBtn = useRef(null);
-  const camerasSelect = useRef(null);
-  const cameraOption = useRef(null);
   const startBtn = useRef(null);
   const leaveBtn = useRef(null);
   const client = useRef({});
@@ -335,7 +329,7 @@ function GameRoomRTC() {
       }
     });
   };
-  const connect = () => {
+  const connect = useCallback(() => {
     client.current = new StompJs.Client({
       webSocketFactory: () => SockJs,
       connectHeaders,
@@ -349,12 +343,27 @@ function GameRoomRTC() {
       },
     });
     client.current.activate();
-  };
+  }, []);
+  // const connect = () => {
+  //   client.current = new StompJs.Client({
+  //     webSocketFactory: () => SockJs,
+  //     connectHeaders,
+  //     debug() {},
+  //     onConnect: () => {
+  //       subscribe();
+  //     },
+  //     onStompError: (frame) => {
+  //       // console.log(`Broker reported error: ${frame.headers.message}`);
+  //       // console.log(`Additional details: ${frame.body}`);
+  //     },
+  //   });
+  //   client.current.activate();
+  // };
 
   // end stomp client section
 
   // stomp client method
-  function sendChat({ message, sender }) {
+  const sendChat = useCallback(({ message, sender }) => {
     if (message.trim() === '') {
       return;
     }
@@ -367,24 +376,24 @@ function GameRoomRTC() {
         message,
       }),
     });
-  }
+  }, []);
 
-  function endGame() {
+  const endGame = useCallback(() => {
     client.current.publish({
       destination: `/pub/game/${param.roomId}/endGame`,
     });
-  }
+  }, []);
 
-  function skipAnswer(nickName) {
+  const skipAnswer = useCallback((nickName) => {
     client.current.publish({
       destination: `/pub/game/${param.roomId}/skip`,
       body: JSON.stringify({
         nickname: nickName,
       }),
     });
-  }
+  }, []);
 
-  function sendAnswer(answerValue, nickName) {
+  const sendAnswer = useCallback((answerValue, nickName) => {
     client.current.publish({
       destination: `/pub/game/${param.roomId}/answer`,
       body: JSON.stringify({
@@ -392,15 +401,15 @@ function GameRoomRTC() {
         nickname: nickName,
       }),
     });
-  }
+  }, []);
 
-  function sendSpotlight() {
+  const sendSpotlight = useCallback(() => {
     client.current.publish({
       destination: `/pub/game/${param.roomId}/spotlight`,
     });
-  }
+  }, []);
 
-  function gameStart() {
+  const gameStart = useCallback(() => {
     if (users.length < 2) {
       useToast('최소 3마리가 필요하닭!', 'warning');
     }
@@ -414,78 +423,107 @@ function GameRoomRTC() {
     setTimeout(function () {
       sendSpotlight();
     }, 5000);
-  }
+  }, []);
+  // function sendChat({ message, sender }) {
+  //   if (message.trim() === '') {
+  //     return;
+  //   }
+  //   client.current.publish({
+  //     destination: `/sub/gameRoom/${param.roomId}`,
+  //     body: JSON.stringify({
+  //       type: 'CHAT',
+  //       roomId: param.roomId,
+  //       sender,
+  //       message,
+  //     }),
+  //   });
+  // }
+
+  // function endGame() {
+  //   client.current.publish({
+  //     destination: `/pub/game/${param.roomId}/endGame`,
+  //   });
+  // }
+
+  // function skipAnswer(nickName) {
+  //   client.current.publish({
+  //     destination: `/pub/game/${param.roomId}/skip`,
+  //     body: JSON.stringify({
+  //       nickname: nickName,
+  //     }),
+  //   });
+  // }
+
+  // function sendAnswer(answerValue, nickName) {
+  //   client.current.publish({
+  //     destination: `/pub/game/${param.roomId}/answer`,
+  //     body: JSON.stringify({
+  //       answer: answerValue,
+  //       nickname: nickName,
+  //     }),
+  //   });
+  // }
+
+  // function sendSpotlight() {
+  //   client.current.publish({
+  //     destination: `/pub/game/${param.roomId}/spotlight`,
+  //   });
+  // }
+
+  // function gameStart() {
+  //   if (users.length < 2) {
+  //     useToast('최소 3마리가 필요하닭!', 'warning');
+  //   }
+  //   client.current.publish({
+  //     destination: `/pub/game/${param.roomId}/start`,
+  //     body: JSON.stringify({
+  //       roomId: param.roomId,
+  //       nickname: myNickName,
+  //     }),
+  //   });
+  //   setTimeout(function () {
+  //     sendSpotlight();
+  //   }, 5000);
+  // }
   // end stomp client method
 
   // WebRTC createPeerConnection method for using WebRTC, section
-  function createPeerConnection(
-    socketID,
-    socket,
-    peerConnectionLocalStream,
-    userNickName,
-  ) {
-    const pc = new RTCPeerConnection({
-      iceServers: [
-        {
-          urls: 'stun:stun.l.google.com:19302',
-        },
-      ],
-    });
-    // add pc to peerConnections object
-    const keyName = socketID;
-    pcs = { ...pcs, [`${keyName}`]: pc };
-    pc.onicecandidate = (e) => {
-      if (e.candidate) {
-        socket.send(
-          JSON.stringify({
-            type: 'candidate',
-            candidate: e.candidate,
-            receiver: socketID,
-            roomId: param.roomId,
-          }),
-        );
-      }
-    };
-    pc.oniceconnectionstatechange = (e) => {
-      // console.log(e);
-    };
+  const createPeerConnection = useCallback(
+    (socketID, socket, peerConnectionLocalStream, userNickName) => {
+      const pc = new RTCPeerConnection({
+        iceServers: [
+          {
+            urls: 'stun:stun.l.google.com:19302',
+          },
+        ],
+      });
+      // add pc to peerConnections object
+      const keyName = socketID;
+      pcs = { ...pcs, [`${keyName}`]: pc };
+      pc.onicecandidate = (e) => {
+        if (e.candidate) {
+          socket.send(
+            JSON.stringify({
+              type: 'candidate',
+              candidate: e.candidate,
+              receiver: socketID,
+              roomId: param.roomId,
+            }),
+          );
+        }
+      };
+      pc.oniceconnectionstatechange = (e) => {
+        // console.log(e);
+      };
 
-    if (userNickName === sessionStorage.getItem('owner')) {
-      setUsers((oldUsers) => [
-        ...oldUsers,
-        {
-          id: socketID,
-          stream: null,
-          nickName: userNickName,
-          isCameraOn: false,
-          isMyTurn: false,
-          isOwner: true,
-        },
-      ]);
-    } else {
-      setUsers((oldUsers) => [
-        ...oldUsers,
-        {
-          id: socketID,
-          stream: null,
-          nickName: userNickName,
-          isCameraOn: false,
-          isMyTurn: false,
-          isOwner: false,
-        },
-      ]);
-    }
-
-    pc.ontrack = (e) => {
-      setUsers((oldUsers) => oldUsers.filter((user) => user.id !== socketID));
       if (userNickName === sessionStorage.getItem('owner')) {
         setUsers((oldUsers) => [
           ...oldUsers,
           {
             id: socketID,
-            stream: e.streams[0],
+            stream: null,
             nickName: userNickName,
-            isCameraOn: true,
+            isCameraOn: false,
             isMyTurn: false,
             isOwner: true,
           },
@@ -495,33 +533,62 @@ function GameRoomRTC() {
           ...oldUsers,
           {
             id: socketID,
-            stream: e.streams[0],
+            stream: null,
             nickName: userNickName,
-            isCameraOn: true,
+            isCameraOn: false,
             isMyTurn: false,
             isOwner: false,
           },
         ]);
       }
-    };
-    try {
-      if (peerConnectionLocalStream) {
-        peerConnectionLocalStream.getTracks().forEach((track) => {
-          pc.addTrack(track, peerConnectionLocalStream);
-        });
-      } else {
-        // console.log('no local stream');
-      }
-    } catch (error) {
-      // console.log(error);
-    }
-    return pc;
-  }
 
+      pc.ontrack = (e) => {
+        setUsers((oldUsers) => oldUsers.filter((user) => user.id !== socketID));
+        if (userNickName === sessionStorage.getItem('owner')) {
+          setUsers((oldUsers) => [
+            ...oldUsers,
+            {
+              id: socketID,
+              stream: e.streams[0],
+              nickName: userNickName,
+              isCameraOn: true,
+              isMyTurn: false,
+              isOwner: true,
+            },
+          ]);
+        } else {
+          setUsers((oldUsers) => [
+            ...oldUsers,
+            {
+              id: socketID,
+              stream: e.streams[0],
+              nickName: userNickName,
+              isCameraOn: true,
+              isMyTurn: false,
+              isOwner: false,
+            },
+          ]);
+        }
+      };
+      try {
+        if (peerConnectionLocalStream) {
+          peerConnectionLocalStream.getTracks().forEach((track) => {
+            pc.addTrack(track, peerConnectionLocalStream);
+          });
+        } else {
+          // console.log('no local stream');
+        }
+      } catch (error) {
+        // console.log(error);
+      }
+      return pc;
+    },
+    [users],
+  );
   // end WebRTC createPeerConnection method for using WebRTC, section
 
   // section about user's media
-  function onClickCameraOffHandler() {
+  const onClickCameraOffHandler = useCallback(() => {
     stream.getVideoTracks().forEach((track) => {
       track.enabled = !track.enabled;
     });
@@ -550,7 +617,8 @@ function GameRoomRTC() {
       });
       setIsCameraOn(true);
     }
-  }
+  }, []);
+
   function onClickMuteHandler() {
     stream.getAudioTracks().forEach((track) => {
       track.enabled = !track.enabled;
@@ -562,14 +630,22 @@ function GameRoomRTC() {
     }
   }
 
-  async function getUserMedias() {
+  const getUserMedias = useCallback(async () => {
     const initialConstrains = {
       video: true,
       audio: true,
     };
     stream = await navigator.mediaDevices.getUserMedia(initialConstrains);
     return stream;
-  }
+  }, []);
+  // async function getUserMedias() {
+  //   const initialConstrains = {
+  //     video: true,
+  //     audio: true,
+  //   };
+  //   stream = await navigator.mediaDevices.getUserMedia(initialConstrains);
+  //   return stream;
+  // }
   // end section about user's media
 
   // WebRTC signaling section
