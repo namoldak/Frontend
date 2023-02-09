@@ -24,9 +24,9 @@ const errorToastMsg = (MiddlewareAPI) => (next) => (action) => {
       }, 2000);
     } else if (action.payload.response.data.statusCode !== '400') {
       useToast(`${action.payload.response.data.statusMsg}`, 'error');
-      // setTimeout(function () {
-      //   window.location.href = '/rooms';
-      // }, 2000);
+      setTimeout(function () {
+        window.location.href = '/rooms';
+      }, 2000);
     }
   }
   return next(action);

@@ -25,7 +25,7 @@ export const searchRoom = createAsyncThunk(
       const response = await instance.get(
         `/rooms/search?page=${payload.page}&keyword=${payload.keyword}`,
       );
-      return thunkAPI.fulfillWithValue(response.data.gameRoomResponseDtoList);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -44,7 +44,7 @@ export const roomSlice = createSlice({
       state.error = action.payload;
     },
     [searchRoom.fulfilled]: (state, action) => {
-      state.rooms.gameRoomResponseDtoList = action.payload;
+      state.rooms = action.payload;
     },
     [searchRoom.rejected]: (state, action) => {
       state.error = action.payload;
