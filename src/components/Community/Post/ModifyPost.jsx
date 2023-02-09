@@ -1,10 +1,13 @@
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 // 내부 모듈
-import { updatePost, readOnePost } from 'redux/postSlice';
+import { readOnePost } from 'redux/postSlice';
+import useDebounce from 'hooks/useDebounce';
+import { instance } from 'api/core/axios';
+import { useToast } from 'react-toastify';
 
 // 이피지 파일
 import postBtn from 'assets/images/postBtn.svg';
@@ -13,18 +16,41 @@ import ImgUpload from 'components/common/ImgUpload/ImgUpload';
 function ModifyPost() {
   const dispatch = useDispatch();
   const param = useParams();
+  const navigate = useNavigate();
   const post = useSelector((state) => state.posts.posts);
   const [content, setContent] = useState(post.content);
   const [title, setTitle] = useState(post.title);
   const [imgs, setImgs] = useState([]);
 
-  function modifyPost() {
+  const modifyPost = useDebounce(async () => {
     const post = {
       content,
       title,
     };
-    dispatch(updatePost({ post, imgs, postId: param.id }));
-  }
+    const formData = new FormData();
+    const json = JSON.stringify(post);
+    const blob = new Blob([json], { type: 'application/json' });
+    formData.append('data', blob);
+    for (let i = 0; i < imgs.length; i += 1) {
+      formData.append('file', imgs[i]);
+    }
+    await instance
+      .put(`/posts/${param.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        navigate(`/posts/${res.data.id}`);
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          useToast(`${error.response.data.message}`, 'error');
+        } else {
+          useToast('에러가 발생했닭! 다시 시도해야한닭!', 'error');
+        }
+      });
+  }, 200);
 
   useEffect(() => {
     dispatch(readOnePost(param.id));

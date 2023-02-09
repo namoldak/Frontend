@@ -79,7 +79,7 @@ function WritePost() {
     for (let i = 0; i < imgs.length; i += 1) {
       formData.append('file', imgs[i]);
     }
-    instance
+    await instance
       .post(`/posts/write`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
