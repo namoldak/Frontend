@@ -23,10 +23,10 @@ function DeleteKaKaoAccountModal({ setting }) {
       },
     };
     try {
-      await axios.post(url, null, config).then((res) => {
+      await axios.post(url, null, config).then(() => {
         instance
           .delete(`/auth/deleteKakaoMember`, { data: { nickname } })
-          .then((res) => {
+          .then(() => {
             useToast('다시 돌아올거라 믿는닭...🐓', 'success');
             removeCookie('KakaoToken');
             navigate('/');

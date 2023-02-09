@@ -1,7 +1,7 @@
 // 외부 모듈
 import React from 'react';
 import styled from 'styled-components';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 // 내부 모듈
 import SettingButton from 'components/common/Button/SettingButton';
@@ -9,8 +9,6 @@ import backBtn from 'assets/images/backBtn.svg';
 import communityBack from 'assets/images/communityBack.png';
 
 function PostWrapper() {
-  const navigate = useNavigate();
-
   return (
     <StPostWrapper>
       <StTopBar>
