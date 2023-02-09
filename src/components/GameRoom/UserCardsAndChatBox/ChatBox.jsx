@@ -176,7 +176,8 @@ const Chat = styled.div`
 `;
 
 const StChatBubble = styled.div`
-  width: fit-content;
+  max-width: 420px;
+  word-wrap: break-word;
   border: 1px solid ${({ theme }) => theme.colors.text};
   border-radius: 5px;
   padding: 8px;

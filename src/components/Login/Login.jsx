@@ -9,6 +9,7 @@ import * as yup from 'yup';
 // 내부 모듈
 import useToast from 'hooks/useToast';
 import {
+  setRefreshToken,
   setAccessToken,
   setKakaoToken,
   setNicknameCookie,
@@ -51,6 +52,7 @@ function Login() {
   // 로그인 api
   async function onClickLogin(data) {
     await authAPI.Login(data).then((response) => {
+      setRefreshToken(response.headers.refreshtoken);
       setAccessToken(response.headers.accesstoken);
       setNicknameCookie(response.data.nickname);
       useToast('로그인 되었습니다.', 'success');
