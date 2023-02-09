@@ -4,20 +4,15 @@ import { Cookies } from 'react-cookie';
 import axios from 'axios';
 
 const REFRESH_TOKEN = 'RefreshToken';
-
 const ACCESS_TOKEN = 'AccessToken';
-
 const KAKAO_TOKEN = 'KakaoToken';
-
 const NICKNAME = 'nickname';
-
 const cookies = new Cookies();
 
 export const setRefreshToken = (refreshToken) => {
   const today = new Date();
   const expireDate = today.setDate(today.getDate() + 7);
 
-  console.log(refreshToken);
   setTimeout(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/auth/issue/token`, {

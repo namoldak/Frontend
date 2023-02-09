@@ -573,6 +573,7 @@ function GameRoomRTC() {
   // WebRTC signaling section
   useEffect(() => {
     setRefreshToken(getRefreshToken('RefreshToken'));
+    // setAccessToken(getAccessToken('AccessToken'));
     if (!sessionStorage.getItem('normalEnter')) {
       useToast('정상적인 접근이 아닙니다', 'warning');
       navigate('/rooms');
