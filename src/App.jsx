@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import React from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import Router from './shared/Router';
 
 function App() {
