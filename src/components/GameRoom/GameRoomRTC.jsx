@@ -29,8 +29,8 @@ import usePreventGoBack from 'hooks/usePreventGoBack';
 import usePreventRefresh from 'hooks/usePreventRefesh';
 import useEffectSound from 'hooks/useEffectSound';
 import {
-  setAccessToken,
-  getAccessToken,
+  setRefreshToken,
+  getRefreshToken,
   getNicknameCookie,
 } from 'utils/cookies';
 import GameModal from 'components/common/Modals/InGameModal/GameModal';
@@ -572,7 +572,7 @@ function GameRoomRTC() {
 
   // WebRTC signaling section
   useEffect(() => {
-    setAccessToken(getAccessToken('AccessToken'));
+    setRefreshToken(getRefreshToken('RefreshToken'));
     if (!sessionStorage.getItem('normalEnter')) {
       useToast('정상적인 접근이 아닙니다', 'warning');
       navigate('/rooms');

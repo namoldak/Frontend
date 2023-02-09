@@ -22,6 +22,5 @@ instance.interceptors.request.use((config) => {
   if (token) {
     config.headers.AccessToken = `${token}`;
   }
-  // eslint-disable-next-line consistent-return
   return config;
 });
