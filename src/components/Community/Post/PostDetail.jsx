@@ -42,7 +42,7 @@ function PostDetail() {
   function deletePost() {
     instance
       .delete(`/posts/${id}`)
-      .then((res) => {
+      .then(() => {
         navigate('/posts/all');
       })
       .catch((error) => {

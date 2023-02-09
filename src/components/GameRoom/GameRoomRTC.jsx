@@ -509,8 +509,6 @@ function GameRoomRTC() {
         peerConnectionLocalStream.getTracks().forEach((track) => {
           pc.addTrack(track, peerConnectionLocalStream);
         });
-      } else {
-        // console.log('no local stream');
       }
     } catch (error) {
       // console.log(error);
@@ -731,11 +729,11 @@ function GameRoomRTC() {
       sessionStorage.clear();
       instance
         .delete(`rooms/${param.roomId}/exit`)
-        .then(async (res) => {
+        .then(async () => {
           socketRef.current.close();
           client.current.deactivate();
         })
-        .catch(async (error) => {
+        .catch(async () => {
           socketRef.current.close();
           client.current.deactivate();
         });
