@@ -23,22 +23,22 @@ function PostList() {
   const [currPage, setCurrPage] = useState(page + 1);
   const [category, setCategory] = useState('freeBoard');
   const [keyword, setKeyword] = useState('');
+  const [showOptions, setShowOptions] = useState(false);
   const { postResponseDtoList } = useSelector((state) => state.posts.posts);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-
   useEffect(() => {
-    if (category === 'freeBoard') {
+    if (category === 'freeBoard' && keyword === '') {
       dispatch(readAllPosts(page));
     } else if (category === 'feedBackBoard') {
       dispatch(readPostsByCategory({ category, page }));
-    } else if (category === 'search') {
-      dispatch(searchPosts({ keyword, page }));
     } else if (category === 'myBoard') {
       dispatch(readPostsByCategory({ category: 'freeBoard', page }));
+    } else if (keyword !== '') {
+      dispatch(searchPosts({ keyword, page }));
     }
-  }, [category, page]);
+  }, [category, page, showOptions]);
 
   usePreventGoBack();
 
@@ -50,6 +50,8 @@ function PostList() {
           setPage={setPage}
           setKeyword={setKeyword}
           setCurrPage={setCurrPage}
+          showOptions={showOptions}
+          setShowOptions={setShowOptions}
         />
         <SearchPost
           keyword={keyword}
