@@ -18,6 +18,7 @@ import signUpBtn from 'assets/images/signUpBtn.svg';
 import miniLoginBtn from 'assets/images/miniLoginBtn.svg';
 import check from 'assets/images/check.svg';
 import BackButton from 'components/common/Button/BackButton';
+import Input from 'components/common/Input/Input';
 
 const schema = yup.object().shape({
   nickname: yup
@@ -152,7 +153,7 @@ function SignUp() {
           </StTitle>
           <StInputCon>
             <StInputBox>
-              <input
+              <Input
                 placeholder="닉네임을 입력해주세요."
                 {...register('nickname', { required: true })}
               />
@@ -170,7 +171,7 @@ function SignUp() {
               )}
             </StInputBox>
             <StInputBox className="emailBox">
-              <input
+              <Input
                 placeholder="이메일을 입력해주세요"
                 {...register('email', { required: true })}
               />
@@ -188,7 +189,7 @@ function SignUp() {
               )}
             </StInputBox>
             <StPwInputBox>
-              <input
+              <Input
                 className="pwInput"
                 type="password"
                 placeholder="비밀번호를 입력해주세요."
@@ -202,7 +203,7 @@ function SignUp() {
               )}
             </StPwInputBox>
             <StCfPwInputBox>
-              <input
+              <Input
                 type="password"
                 placeholder="비밀번호를 다시 입력해주세요."
                 {...register('confirmPw', { required: true })}

@@ -7,17 +7,10 @@ import { useDispatch } from 'react-redux';
 import search from 'assets/images/postSearch.svg';
 import smallClose from 'assets/images/smallClose.svg';
 import { searchPosts } from 'redux/postSlice';
+import Input from 'components/common/Input/Input';
 
-function SearchPost({
-  keyword,
-  setKeyword,
-  page,
-  setPage,
-  setCurrPage,
-  setCategory,
-}) {
+function SearchPost({ keyword, setKeyword, page, setPage, setCurrPage }) {
   const dispatch = useDispatch();
-  const input = useRef(null);
 
   function onClickSearchPost() {
     if (keyword.trim() === '') {
@@ -40,8 +33,7 @@ function SearchPost({
 
   return (
     <StSearchPost>
-      <StPostInput
-        ref={input}
+      <Input
         placeholder="키워드로 검색이 가능하닭."
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
@@ -62,27 +54,26 @@ function SearchPost({
 
 const StSearchPost = styled.div`
   position: relative;
-`;
 
-const StPostInput = styled.input`
-  width: 284px;
-  height: 54px;
-  background: ${({ theme }) => theme.colors.lightBeige};
-  border: 6px solid ${({ theme }) => theme.colors.yellowBrown};
-  border-radius: 10px;
-  color: ${({ theme }) => theme.colors.text3};
-  font-weight: 300;
-  line-height: 19px;
-  letter-spacing: 0.1em;
-  text-indent: 15px;
-
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
+  input {
+    width: 284px;
+    height: 54px;
+    border-radius: 10px;
     color: ${({ theme }) => theme.colors.text3};
-    font-family: CoreDream;
+    font-weight: 300;
+    line-height: 19px;
+    letter-spacing: 0.1em;
+    text-indent: 15px;
+    outline: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: ${({ theme }) => theme.colors.text3};
+      font-family: CoreDream;
+    }
   }
 `;
 

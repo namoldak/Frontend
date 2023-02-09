@@ -4,11 +4,12 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 // 내부 모듈
-import { searchRoom } from 'redux/roomSlice';
+import { readAllRooms, searchRoom } from 'redux/roomSlice';
 import search from 'assets/images/search.svg';
 import smallClose from 'assets/images/smallClose.svg';
+import Input from 'components/common/Input/Input';
 
-function SearchRoom({ page, setPage, keyword, setKeyword, setIsSearch }) {
+function SearchRoom({ page, setPage, keyword, setKeyword }) {
   const dispatch = useDispatch();
   const input = useRef(null);
 
@@ -17,26 +18,23 @@ function SearchRoom({ page, setPage, keyword, setKeyword, setIsSearch }) {
       return null;
     }
     setPage(0);
-    dispatch(searchRoom({ keyword, page }));
-    setIsSearch(true);
+    dispatch(searchRoom({ keyword, page: 0 }));
   }
 
   function onKeyUpEnter(event) {
     if (event.keyCode === 13) {
-      document.activeElement.blur();
       onClickSearchRoom();
-      input.current.focus();
     }
   }
 
   function onClickResetKeyword() {
     setKeyword('');
-    setIsSearch(false);
+    dispatch(readAllRooms(page));
   }
 
   return (
     <StSearchRoom>
-      <input
+      <Input
         ref={input}
         placeholder="방 제목으로 검색이 가능하닭"
         value={keyword}
@@ -63,15 +61,11 @@ const StSearchRoom = styled.div`
   input {
     width: 901px;
     height: 72px;
-    background: ${({ theme }) => theme.colors.lightBeige};
     border: 6px solid ${({ theme }) => theme.colors.yellowBrown};
     outline: 6px solid ${({ theme }) => theme.colors.brown};
-    border-radius: 30px;
     font-weight: 700;
     font-size: 22px;
-    line-height: 26px;
     color: ${({ theme }) => theme.colors.text2};
-    text-indent: 16px;
     filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.8));
   }
   input::placeholder {

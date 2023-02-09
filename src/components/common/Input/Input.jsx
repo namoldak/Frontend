@@ -1,29 +1,27 @@
 // 외부 모듈
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
-function Input({
-  width,
-  height,
-  placeholder,
-  onChange,
-  value,
-  type,
-  maxLength,
-}) {
-  return (
-    <StInput
-      width={width}
-      height={height}
-      placeholder={placeholder}
-      onChange={onChange}
-      value={value}
-      type={type}
-      maxLength={maxLength}
-      // onFocus={onFocus}
-    />
-  );
-}
+const Input = forwardRef(
+  (
+    { width, height, placeholder, onChange, value, type, maxLength, ...rests },
+    ref,
+  ) => {
+    return (
+      <StInput
+        width={width}
+        height={height}
+        placeholder={placeholder}
+        onChange={onChange}
+        value={value}
+        type={type}
+        maxLength={maxLength}
+        ref={ref}
+        {...rests}
+      />
+    );
+  },
+);
 
 export default Input;
 
