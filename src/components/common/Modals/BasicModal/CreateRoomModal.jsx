@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import useToast from 'hooks/useToast';
 import modalCreateBtn from 'assets/images/modalCreateBtn.svg';
 import Input from 'components/common/Input/Input';
-import { createRoom } from 'redux/roomSlice';
+import { instance } from 'api/core/axios';
 
 function CreateRoomModal() {
   const [gameRoomName, setGameRoomName] = useState('');
@@ -16,12 +16,25 @@ function CreateRoomModal() {
   const navigate = useNavigate();
   const [inputCount, setInputCount] = useState(0);
 
-  function onClickRoomCreate() {
+  async function onClickRoomCreate() {
     const newRoom = { gameRoomName, gameRoomPassword: '1234' };
     if (gameRoomName.trim() === '') {
       useToast('방 제목을 입력해야 한닭', 'warning');
     } else {
-      dispatch(createRoom(newRoom));
+      await instance
+        .post(`/rooms`, newRoom)
+        .then((res) => {
+          sessionStorage.setItem('owner', res.owner);
+          sessionStorage.setItem('normalEnter', true);
+          navigate(`/gameroom/${res.data.roomId}`);
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            useToast(`${error.response.data.message}`, 'error');
+          } else {
+            useToast('에러가 발생했닭! 다시 시도해야한닭!', 'error');
+          }
+        });
     }
   }
 

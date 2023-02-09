@@ -5,12 +5,13 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import egg from 'assets/images/egg.svg';
-import { enterRoom } from 'redux/roomSlice';
 import inprogress from 'assets/images/inprogress.svg';
 import useToast from 'hooks/useToast';
+import { instance } from 'api/core/axios';
+import { useNavigate } from 'react-router';
 
 function Room({ roomInfo }) {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function clickRoom(roomInfo) {
     if (roomInfo.memberCnt >= 4) {
@@ -21,8 +22,21 @@ function Room({ roomInfo }) {
       useToast('지금은 끼어들 수 없닭!', 'warning');
       return null;
     }
-    setTimeout(function () {
-      dispatch(enterRoom(roomInfo));
+    setTimeout(async function () {
+      await instance
+        .post(`/rooms/${roomInfo.id}`)
+        .then((res) => {
+          sessionStorage.setItem('owner', res.data.owner);
+          sessionStorage.setItem('normalEnter', true);
+          navigate(`/gameroom/${res.data.roomId}`);
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            useToast(`${error.response.data.message}`, 'error');
+          } else {
+            useToast(`${error.response.data.statusMsg}`, 'error');
+          }
+        });
     }, 500);
   }
 

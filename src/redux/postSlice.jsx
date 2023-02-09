@@ -7,33 +7,6 @@ const initialState = {
   isLoading: false,
 };
 
-export const updatePost = createAsyncThunk(
-  'post/UPDATE_POST',
-  async (payload, thunkAPI) => {
-    try {
-      const formData = new FormData();
-      const json = JSON.stringify(payload.post);
-      const blob = new Blob([json], { type: 'application/json' });
-      formData.append('data', blob);
-      for (let i = 0; i < payload.imgs.length; i += 1) {
-        formData.append('file', payload.imgs[i]);
-      }
-      const response = await instance.put(
-        `/posts/${payload.postId}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
 export const readAllPosts = createAsyncThunk(
   'post/READ_ALL_POST',
   async (payload, thunkAPI) => {
@@ -106,17 +79,6 @@ export const postSlice = createSlice({
       state.posts = action.payload;
     },
     [readPostsByCategory.rejected]: (state, action) => {
-      state.error = action.payload;
-    },
-    [updatePost.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [updatePost.fulfilled]: (state, action) => {
-      window.location.href = `/posts/${action.payload.id}`;
-      state.isLoading = false;
-    },
-    [updatePost.rejected]: (state, action) => {
-      state.isLoading = false;
       state.error = action.payload;
     },
     [searchPosts.fulfilled]: (state, action) => {

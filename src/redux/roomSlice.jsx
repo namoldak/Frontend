@@ -6,30 +6,6 @@ const initialState = {
   error: null,
 };
 
-export const createRoom = createAsyncThunk(
-  'room/createRoom',
-  async (newRoom, thunkAPI) => {
-    try {
-      const response = await instance.post(`/rooms`, newRoom);
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
-export const enterRoom = createAsyncThunk(
-  'room/enterRoom',
-  async (roomInfo, thunkAPI) => {
-    try {
-      const response = await instance.post(`/rooms/${roomInfo.id}`);
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
-  },
-);
-
 export const readAllRooms = createAsyncThunk(
   'room/readAllRooms',
   async (payload, thunkAPI) => {
@@ -61,21 +37,6 @@ export const roomSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [createRoom.fulfilled]: (state, action) => {
-      sessionStorage.setItem('owner', action.payload.owner);
-      sessionStorage.setItem('normalEnter', true);
-      state.rooms.gameRoomResponseDtoList.push(action.payload);
-      window.location.href = `/gameroom/${action.payload.roomId}`;
-    },
-    [createRoom.rejected]: (state, action) => {
-      state.error = action.payload;
-    },
-    [enterRoom.fulfilled]: (state, action) => {
-      sessionStorage.setItem('owner', action.payload.owner);
-      sessionStorage.setItem('normalEnter', true);
-      state.rooms = action.payload;
-      window.location.href = `/gameroom/${action.payload.roomId}`;
-    },
     [readAllRooms.fulfilled]: (state, action) => {
       state.rooms = action.payload;
     },
