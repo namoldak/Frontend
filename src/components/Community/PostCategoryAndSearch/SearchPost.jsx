@@ -26,7 +26,6 @@ function SearchPost({
     setPage(0);
     setCurrPage(1);
     dispatch(searchPosts({ keyword, page }));
-    setCategory('search');
   }
 
   function onKeyUpEnter(event) {

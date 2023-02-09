@@ -5,9 +5,15 @@ import styled from 'styled-components';
 // 내부 모듈
 import select from 'assets/images/select.svg';
 
-function PostSelect({ setCategory, setPage, setCurrPage, setKeyword }) {
+function PostSelect({
+  setCategory,
+  setPage,
+  setCurrPage,
+  setKeyword,
+  showOptions,
+  setShowOptions,
+}) {
   const [currentValue, setCurrentValue] = useState('자유 게시판');
-  const [showOptions, setShowOptions] = useState(false);
 
   function onClickSelect(e) {
     const { innerText } = e.target;
