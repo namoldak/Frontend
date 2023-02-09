@@ -22,7 +22,6 @@ function RoomList() {
             keyword={keyword}
             setKeyword={setKeyword}
             isSearch={isSearch}
-            setIsSearch={setIsSearch}
             page={page}
             setPage={setPage}
           />
@@ -32,7 +31,6 @@ function RoomList() {
       <RoomListCard
         keyword={keyword}
         setKeyword={setKeyword}
-        isSearch={isSearch}
         setIsSearch={setIsSearch}
         page={page}
         setPage={setPage}

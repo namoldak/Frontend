@@ -62,9 +62,9 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
   }, [sound, range]);
 
   useEffect(() => {
-    if (!isSearch) {
+    if (keyword === '') {
       dispatch(readAllRooms(page));
-    } else {
+    } else if (keyword !== '') {
       dispatch(searchRoom({ keyword, page }));
     }
   }, [page, isSearch]);
