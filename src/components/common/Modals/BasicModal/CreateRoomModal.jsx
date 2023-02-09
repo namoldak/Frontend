@@ -9,6 +9,7 @@ import useToast from 'hooks/useToast';
 import modalCreateBtn from 'assets/images/modalCreateBtn.svg';
 import Input from 'components/common/Input/Input';
 import { instance } from 'api/core/axios';
+import useDebounce from 'hooks/useDebounce';
 
 function CreateRoomModal() {
   const [gameRoomName, setGameRoomName] = useState('');
@@ -16,7 +17,7 @@ function CreateRoomModal() {
   const navigate = useNavigate();
   const [inputCount, setInputCount] = useState(0);
 
-  async function onClickRoomCreate() {
+  const onClickRoomCreate = useDebounce(async () => {
     const newRoom = { gameRoomName, gameRoomPassword: '1234' };
     if (gameRoomName.trim() === '') {
       useToast('방 제목을 입력해야 한닭', 'warning');
@@ -36,7 +37,7 @@ function CreateRoomModal() {
           }
         });
     }
-  }
+  }, 300);
 
   function onKeyUpEnter(event) {
     if (event.key === 'Enter') {

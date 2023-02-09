@@ -7,6 +7,7 @@ import chatBack2 from 'assets/images/chatBack2.svg';
 import chatEnterBtn from 'assets/images/chatEnterBtn.svg';
 import chatNotice from 'assets/images/chatNotice.svg';
 import { getNicknameCookie } from 'utils/cookies';
+import Input from 'components/common/Input/Input';
 
 function ChatBox({ notice, sendChat, chatMessages }) {
   const nickname = getNicknameCookie('nickname');
@@ -72,7 +73,7 @@ function ChatBox({ notice, sendChat, chatMessages }) {
           </div>
         </StUserChatBox>
         <StSendChat>
-          <input
+          <Input
             ref={input}
             type="text"
             placeholder="채팅을 입력해주세요."
@@ -196,19 +197,9 @@ const StSendChat = styled.div`
   input {
     width: 374px;
     height: 76px;
-    background: ${({ theme }) => theme.colors.lightBeige};
-    border: 4px solid ${({ theme }) => theme.colors.yellowBrown};
-    outline: 4px solid ${({ theme }) => theme.colors.brown};
     border-radius: 10px;
     font-size: 18px;
-    font-weight: 500;
-    color: ${({ theme }) => theme.colors.text};
-    line-height: 21px;
-    text-indent: 16px;
-    margin-right: 20px;
-  }
-  input::placeholder {
-    color: ${({ theme }) => theme.colors.text};
+    /* margin-right: 20px; */
   }
 `;
 

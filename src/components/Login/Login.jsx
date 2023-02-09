@@ -1,5 +1,5 @@
 // 외부 모듈
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -20,6 +20,7 @@ import loginBtn from 'assets/images/loginBtn.svg';
 import miniSignUpBtn from 'assets/images/miniSignUpBtn.svg';
 import check from 'assets/images/check.svg';
 import BackButton from 'components/common/Button/BackButton';
+import Input from 'components/common/Input/Input';
 import KaKaoBtn from './KaKaoBtn';
 
 // useForm
@@ -84,10 +85,12 @@ function Login() {
             <img src={loginTitleBtn} alt="로그인" />
           </StTitle>
           <StInputBox className="emailBox">
-            <input
+            <Input
+              name="email"
               type="text"
               placeholder="이메일을 입력해주세요"
               {...register('email', { required: true })}
+              // {...rest}
             />
             {errors.email && (
               <StHelpText>
@@ -97,7 +100,7 @@ function Login() {
             )}
           </StInputBox>
           <StInputBox>
-            <input
+            <Input
               type="password"
               placeholder="비밀번호를 입력해주세요."
               {...register('password', { required: true })}
