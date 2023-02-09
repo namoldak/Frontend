@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { nanoid } from '@reduxjs/toolkit';
 // 내부 모듈
 import chatBack from 'assets/images/chatBack.svg';
 import chatBack2 from 'assets/images/chatBack2.svg';
@@ -44,11 +45,10 @@ function ChatBox({ notice, sendChat, chatMessages }) {
         </StNoticeBack>
         <StUserChatBox ref={scrollRef}>
           <div>
-            {chatMessages?.map((message, index) => {
+            {chatMessages?.map((message) => {
               return (
                 <Chat
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={String(index)}
+                  key={nanoid()}
                   className={
                     message.sender === nickname
                       ? 'my'
