@@ -10,7 +10,6 @@ import RoomListCard from 'components/RoomList/RoomListMain/RoomListCard';
 
 function RoomList() {
   const [page, setPage] = useState(0);
-  const [isSearch, setIsSearch] = useState(false);
   const [keyword, setKeyword] = useState('');
 
   return (
@@ -21,7 +20,6 @@ function RoomList() {
           <SearchRoom
             keyword={keyword}
             setKeyword={setKeyword}
-            isSearch={isSearch}
             page={page}
             setPage={setPage}
           />
@@ -31,7 +29,6 @@ function RoomList() {
       <RoomListCard
         keyword={keyword}
         setKeyword={setKeyword}
-        setIsSearch={setIsSearch}
         page={page}
         setPage={setPage}
       />

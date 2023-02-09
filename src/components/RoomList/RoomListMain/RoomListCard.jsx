@@ -15,16 +15,17 @@ import refreshBtn from 'assets/images/refreshBtn.svg';
 import chickenSurprised from 'assets/images/chickenSurprised.svg';
 import Room from './Room';
 
-function RoomListCard({ page, setPage, keyword, isSearch }) {
+function RoomListCard({ page, setPage, keyword, setKeyword }) {
   const { totalPage, gameRoomResponseDtoList } = useSelector(
     (state) => state.rooms.rooms,
   );
-
   const dispatch = useDispatch();
 
   function refreshRoomList() {
     dispatch(readAllRooms(page));
+    setKeyword('');
   }
+
   // BGM Section
   const range = useSelector((state) => state.bgmVolume.volume);
 
@@ -37,9 +38,6 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
 
   useEffect(() => {
     sound.play();
-  }, []);
-
-  useEffect(() => {
     sound.on('play', () => {
       const history = createBrowserHistory();
       history.listen(({ action }) => {
@@ -61,13 +59,15 @@ function RoomListCard({ page, setPage, keyword, isSearch }) {
     }
   }, [sound, range]);
 
+  // End BGM Section
+
   useEffect(() => {
     if (keyword === '') {
       dispatch(readAllRooms(page));
     } else if (keyword !== '') {
       dispatch(searchRoom({ keyword, page }));
     }
-  }, [page, isSearch]);
+  }, [page]);
 
   return (
     <StRoomListCard>
