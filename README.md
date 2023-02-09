@@ -66,6 +66,199 @@
 
 <br /> <br />
 
+## 🗂️ 컴포넌트 구성
+
+<details>
+<summary>api</summary>
+
+```
+📦 api
+ ┣ 📂 core
+ ┃ ┗ 📜 axios.js
+ ┗ 📜 authAsync.jsx
+```
+</details>
+
+<details>
+<summary>components</summary>
+
+```
+📦 components
+ ┣ 📂 Community
+ ┃ ┣ 📂 Comment
+ ┃ ┃ ┣ 📜 Comment.jsx
+ ┃ ┃ ┗ 📜 CreateComment.jsx
+ ┃ ┣ 📂 Post
+ ┃ ┃ ┣ 📜 ModifyPost.jsx
+ ┃ ┃ ┣ 📜 Post.jsx
+ ┃ ┃ ┣ 📜 PostDetail.jsx
+ ┃ ┃ ┣ 📜 WritePost.jsx
+ ┃ ┃ ┗ 📜 WriteSelect.jsx
+ ┃ ┣ 📂 PostCategoryAndSearch
+ ┃ ┃ ┣ 📜 PostSelect.jsx
+ ┃ ┃ ┗ 📜 SearchPost.jsx
+ ┃ ┣ 📜 Community.jsx
+ ┃ ┗ 📜 Pagination.jsx
+ ┣ 📂 GameRoom
+ ┃ ┣ 📂 Timer
+ ┃ ┃ ┣ 📜 SpotTimer.jsx
+ ┃ ┃ ┗ 📜 Timer.jsx
+ ┃ ┣ 📂 UserCardsAndChatBox
+ ┃ ┃ ┣ 📜 Audio.jsx
+ ┃ ┃ ┗ 📜 ChatBox.jsx
+ ┃ ┗ 📜 GameRoomRTC.jsx
+ ┣ 📂 Landing
+ ┃ ┣ 📜 GameRule.jsx
+ ┃ ┗ 📜 Landing.jsx
+ ┣ 📂 Login
+ ┃ ┣ 📜 KaKaoBtn.jsx
+ ┃ ┗ 📜 Login.jsx
+ ┣ 📂 RoomList
+ ┃ ┣ 📂 RoomListHeader
+ ┃ ┃ ┣ 📜 CreateRoom.jsx
+ ┃ ┃ ┣ 📜 RoomListTopBar.jsx
+ ┃ ┃ ┗ 📜 SearchRoom.jsx
+ ┃ ┣ 📂 RoomListMain
+ ┃ ┃ ┣ 📜 Room.jsx
+ ┃ ┃ ┗ 📜 RoomListCard.jsx
+ ┃ ┗ 📜 RoomList.jsx
+ ┣ 📂 SignUp
+ ┃ ┗ 📜 SignUp.jsx
+ ┗ 📂 common
+ ┃ ┣ 📂 Button
+ ┃ ┃ ┣ 📜 BackButton.jsx
+ ┃ ┃ ┣ 📜 Button.jsx
+ ┃ ┃ ┣ 📜 SettingButton.jsx
+ ┃ ┃ ┗ 📜 TextButton.jsx
+ ┃ ┣ 📂 ImgUpload
+ ┃ ┃ ┗ 📜 ImgUpload.jsx
+ ┃ ┣ 📂 Input
+ ┃ ┃ ┣ 📜 ChangeNickInput.jsx
+ ┃ ┃ ┗ 📜 Input.jsx
+ ┃ ┣ 📂 Layout
+ ┃ ┃ ┣ 📜 CommunityContainer.jsx
+ ┃ ┃ ┣ 📜 CommunityLayout.jsx
+ ┃ ┃ ┣ 📜 CommunityWrapper.jsx
+ ┃ ┃ ┣ 📜 Container.jsx
+ ┃ ┃ ┣ 📜 Layout.jsx
+ ┃ ┃ ┣ 📜 PostContainer.jsx
+ ┃ ┃ ┣ 📜 PostLayout.jsx
+ ┃ ┃ ┣ 📜 PostWrapper.jsx
+ ┃ ┃ ┗ 📜 RoomListLayout.jsx
+ ┃ ┣ 📂 Modals
+ ┃ ┃ ┣ 📂 BasicModal
+ ┃ ┃ ┃ ┣ 📜 CreateRoomModal.jsx
+ ┃ ┃ ┃ ┣ 📜 DeleteAccountModal.jsx
+ ┃ ┃ ┃ ┣ 📜 DeleteKaKaoAccountModal.jsx
+ ┃ ┃ ┃ ┣ 📜 GameRuleModal.jsx
+ ┃ ┃ ┃ ┣ 📜 Modal.jsx
+ ┃ ┃ ┃ ┣ 📜 ModalForSetting.jsx
+ ┃ ┃ ┃ ┣ 📜 RuleModal.jsx
+ ┃ ┃ ┃ ┗ 📜 SettingModal.jsx
+ ┃ ┃ ┣ 📂 InGameModal
+ ┃ ┃ ┃ ┣ 📜 GameAnswerModal.jsx
+ ┃ ┃ ┃ ┗ 📜 GameModal.jsx
+ ┃ ┃ ┗ 📜 ModalPortal.jsx
+ ┃ ┣ 📂 SettingTab
+ ┃ ┃ ┣ 📂 BGM
+ ┃ ┃ ┃ ┗ 📜 BGMTab.jsx
+ ┃ ┃ ┣ 📂 DeleteAccount
+ ┃ ┃ ┃ ┗ 📜 DeleteAccountTab.jsx
+ ┃ ┃ ┗ 📂 LogOut
+ ┃ ┃ ┃ ┣ 📜 ChangeNick.jsx
+ ┃ ┃ ┃ ┗ 📜 LogOutTab.jsx
+ ┃ ┗ 📂 Toast
+ ┃ ┃ ┗ 📜 ToastMessage.jsx
+ 
+```
+
+</details>
+
+<details>
+<summary>hooks</summary>
+
+```
+📦 hooks
+ ┣ 📜 useDebounce.jsx
+ ┣ 📜 useDidMountEffect.jsx
+ ┣ 📜 useEffectSound.jsx
+ ┣ 📜 usePreventGoBack.jsx
+ ┣ 📜 usePreventRefesh.jsx
+ ┗ 📜 useToast.jsx
+ 
+```
+
+</details>
+
+<details>
+<summary>pages</summary>
+
+```
+📦pages
+ ┣ 📜 CommunityPage.jsx
+ ┣ 📜 GameRoomPage.jsx
+ ┣ 📜 LandingPage.jsx
+ ┣ 📜 LoginPage.jsx
+ ┣ 📜 ModifyPostPage.jsx
+ ┣ 📜 PostPage.jsx
+ ┣ 📜 RoomListPage.jsx
+ ┣ 📜 SignupPage.jsx
+ ┗ 📜 WritePostPage.jsx
+ 
+```
+
+</details>
+
+<details>
+<summary>redux</summary>
+
+```
+📦 redux
+ ┣ 📂 config
+ ┃ ┗ 📜 configStore.js
+ ┣ 📜 errorToastMsg.jsx
+ ┣ 📜 postSlice.jsx
+ ┣ 📜 roomSlice.jsx
+ ┗ 📜 soundSlice.jsx
+```
+
+</details>
+
+<details>
+<summary>shared</summary>
+
+```
+📦 shared
+ ┗ 📜 Router.jsx
+```
+
+</details>
+
+<details>
+<summary>styles</summary>
+
+```
+📦 styles
+ ┣ 📜 GlobalStyle.js
+ ┣ 📜 font.css
+ ┗ 📜 theme.js
+```
+
+</details>
+
+<details>
+<summary>utils</summary>
+
+```
+📦 utils
+ ┣ 📜 cookies.jsx
+ ┗ 📜 date.js
+```
+
+</details>
+
+<br /> <br />
+
 ## 🪄 핵심 기술
 - 실시간 채팅을 위한 Web Socket
   - 화상 및 음성 채팅을 위한 WebRTC
