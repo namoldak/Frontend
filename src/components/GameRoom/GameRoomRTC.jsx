@@ -1054,7 +1054,6 @@ const StVideoBox = styled.div`
   height: 140px;
   overflow: hidden;
   margin: 0 auto;
-
   .spotLight {
     position: relative;
   }
@@ -1075,7 +1074,6 @@ const StVideo = styled.div`
 
 const Stimg = styled.img`
   height: unset;
-
   .spotLight {
     position: absolute;
     left: 0;
@@ -1117,7 +1115,6 @@ const StNickName = styled.span`
   height: 23%;
   border-radius: 0 0 17px 17px;
   padding-bottom: 17px;
-
   font-family: MapoBackpacking;
   font-size: 22px;
   font-weight: 400;

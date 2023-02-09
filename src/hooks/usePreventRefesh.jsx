@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect } from 'react';
-import useToast from './useToast';
 
 const usePreventRefresh = () => {
   const preventClose = (e) => {
