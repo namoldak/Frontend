@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // 내부 모듈
-import LogOutTabV2 from 'components/common/SettingModal/LogOut/LotOutTabV2';
-// import LogOutTab from 'components/common/SettingModal/LogOut/LogOutTab';
-import AccountTab from 'components/common/SettingModal/DeleteAccount/DeleteAccountTab';
-import BGMTab from 'components/common/SettingModal/BGM/BGMTab';
+import LogOutTab from 'components/common/SettingTab/LogOut/LotOutTab';
+import AccountTab from 'components/common/SettingTab/DeleteAccount/DeleteAccountTab';
+import BGMTab from 'components/common/SettingTab/BGM/BGMTab';
 import { createBrowserHistory } from 'history';
 
 function SettingModal({ setting }) {
@@ -17,7 +16,7 @@ function SettingModal({ setting }) {
     {
       id: 0,
       name: '계정',
-      content: <LogOutTabV2 setting={setting} />,
+      content: <LogOutTab setting={setting} />,
     },
     { id: 1, name: '탈퇴', content: <AccountTab setting={setting} /> },
   ];
@@ -26,7 +25,7 @@ function SettingModal({ setting }) {
     {
       id: 0,
       name: '계정',
-      content: <LogOutTabV2 setting={setting} />,
+      content: <LogOutTab setting={setting} />,
     },
     { id: 1, name: '탈퇴', content: <AccountTab setting={setting} /> },
     { id: 2, name: '사운드', content: <BGMTab setting={setting} /> },
@@ -107,19 +106,17 @@ const TabMenu = styled.ul`
   .submenu {
     display: flex;
     justify-content: center;
-    width: 175.16px;
-    /* height: calc(100% / 3); */
+    width: 175px;
     height: 94px;
     background: rgba(4, 2, 0, 0.8);
     border-radius: 30px 0px 0px 30px;
     padding-top: 30px;
     transition: all 0.1s;
-    /* border: 1px solid #321d07; */
   }
 
   .focused {
     background: rgba(4, 2, 0, 0.6);
-    color: #fff;
+    color: #${({ theme }) => theme.colors.white};
     font-size: 30px;
     line-height: 36px;
   }

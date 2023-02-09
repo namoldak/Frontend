@@ -1,7 +1,7 @@
 // 외부 모듈
-import React, { useEffect, forwardRef, useRef } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -17,9 +17,9 @@ import authAPI from 'api/authAsync';
 import popUp from 'assets/images/popUp.svg';
 import loginTitleBtn from 'assets/images/loginTitleBtn.svg';
 import loginBtn from 'assets/images/loginBtn.svg';
-import backBtn from 'assets/images/backBtn.svg';
 import miniSignUpBtn from 'assets/images/miniSignUpBtn.svg';
 import check from 'assets/images/check.svg';
+import BackButton from 'components/common/Button/BackButton';
 import KaKaoBtn from './KaKaoBtn';
 
 // useForm
@@ -77,11 +77,7 @@ function Login() {
 
   return (
     <StLogin>
-      <StBackBtn>
-        <Link to="/" draggable="false">
-          <img src={backBtn} alt="뒤로가기" />
-        </Link>
-      </StBackBtn>
+      <BackButton url="/" />
       <StLoginWrapper>
         <StLoginContainer onSubmit={handleSubmit(onClickLogin)}>
           <StTitle>
@@ -120,11 +116,13 @@ function Login() {
             <KaKaoBtn />
             <StSignUp>
               <p>회원이 아니신가요?</p>
-              <Link to="/signup" draggable="false">
-                <button>
-                  <img src={miniSignUpBtn} alt="회원가입" />
-                </button>
-              </Link>
+              <button
+                onClick={() => {
+                  navigate('/signup');
+                }}
+              >
+                <img src={miniSignUpBtn} alt="회원가입" />
+              </button>
             </StSignUp>
           </StBtnBox>
         </StLoginContainer>
@@ -139,10 +137,6 @@ const StLogin = styled.div`
   @media ${(props) => props.theme.laptop} {
     padding-top: 30px;
   }
-`;
-
-const StBackBtn = styled.button`
-  width: 78px;
 `;
 
 const StLoginWrapper = styled.div`
@@ -160,7 +154,6 @@ const StLoginWrapper = styled.div`
 `;
 
 const StLoginContainer = styled.form`
-  /* ${({ theme }) => theme.common.flexCenterColumn}; */
   padding-top: 85px;
 
   input {
@@ -227,8 +220,9 @@ const StBtnBox = styled.div`
 
 const StLoginBtn = styled.button`
   width: 160px;
+  height: 60px;
   margin-top: 74px;
-  margin-bottom: 28px;
+  margin-bottom: 16px;
 `;
 
 const StSignUp = styled.div`
@@ -240,10 +234,10 @@ const StSignUp = styled.div`
   line-height: 19px;
   letter-spacing: 0.05em;
   text-align: center;
-  margin-top: 22px;
+  margin-top: 34px;
   margin-left: 30px;
 
-  a {
+  button {
     height: 39px;
     margin-left: -12px;
   }

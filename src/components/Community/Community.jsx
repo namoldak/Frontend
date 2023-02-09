@@ -1,6 +1,6 @@
 // 외부 모듈
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -142,9 +142,7 @@ const StPostContainer = styled.div`
 `;
 
 const StCommunityBottom = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${({ theme }) => theme.common.flexCenter}
   height: 46px;
 `;
 

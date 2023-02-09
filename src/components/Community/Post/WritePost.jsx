@@ -149,8 +149,10 @@ const StWriteTitle = styled.input`
   letter-spacing: 0.1em;
   color: ${({ theme }) => theme.colors.text3};
   border: 0;
+  font-family: 'CoreDream';
 
   ::placeholder {
+    font-family: 'CoreDream';
     font-weight: 500;
     font-size: 18px;
     line-height: 21px;

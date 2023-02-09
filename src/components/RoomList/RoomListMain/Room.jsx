@@ -1,5 +1,3 @@
-/* eslint-disable func-names */
-/* eslint-disable consistent-return */
 // 외부 모듈
 import React from 'react';
 import { useDispatch } from 'react-redux';
@@ -73,6 +71,7 @@ const StEgg = styled.div`
   margin-bottom: 10px;
   width: 150px;
   height: 200px;
+  cursor: pointer;
 `;
 
 const StRoomInfo = styled.div`
@@ -86,7 +85,7 @@ const StRoomInfo = styled.div`
     font-size: 18px;
     line-height: 21px;
     font-weight: 600;
-    color: #000;
+    color: ${({ theme }) => theme.colors.black};
     text-align: center;
     padding-top: 8px;
   }

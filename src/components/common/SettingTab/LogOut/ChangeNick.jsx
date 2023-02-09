@@ -50,15 +50,15 @@ function ChangeNickV2({ setting }) {
         useToast('유효한 닉네임입니다.', 'success');
 
         const newNick = { nickname: data };
-        instance.put('/auth/changeNickname', newNick).then((res) => {
-          if (res.status === 200) {
-            setNicknameCookie(newNick.nickname);
-            useToast('닉네임이 변경되었습니닭!', 'success');
-            setTimeout(() => {
+        setTimeout(() => {
+          instance.put('/auth/changeNickname', newNick).then((res) => {
+            if (res.status === 200) {
+              setNicknameCookie(newNick.nickname);
+              useToast('닉네임이 변경되었습니닭!', 'success');
               setting(false);
-            }, 5000);
-          }
-        });
+            }
+          });
+        }, 5000);
       } else {
         useToast('이미 사용 중인 닉네임입니다.', 'error');
       }
@@ -130,6 +130,7 @@ const StChangeNickInput = styled.input`
   letter-spacing: 0.08em;
   color: ${({ theme }) => theme.colors.text2};
   text-indent: 11px;
+  border: 0;
 
   ::placeholder {
     font-weight: 200;

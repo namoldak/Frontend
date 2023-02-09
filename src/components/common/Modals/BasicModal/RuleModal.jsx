@@ -1,7 +1,7 @@
 // 외부 모듈
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // 내부 모듈
 import { getAccessToken } from 'utils/cookies';
@@ -61,20 +61,11 @@ function RuleModal({ onClose, content }) {
 }
 
 const StBackground = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  background-color: rgba(0, 0, 0, 0.7);
+  ${({ theme }) => theme.common.modalBack}
 `;
 
 const StModalBorder = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  ${({ theme }) => theme.common.absoluteCenter}
   width: 1180px;
   height: 800px;
   background-image: url(${landingBack});

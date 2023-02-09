@@ -69,13 +69,13 @@ const StTitle = styled.div`
   line-height: 38px;
   text-align: center;
   letter-spacing: 0.04em;
-  color: #321d07;
+  color: #${({ theme }) => theme.colors.text};
   margin-bottom: 20px;
 `;
 
 const StLonelyChicken = styled.div`
   margin-bottom: 40px;
-  color: #321d07;
+  color: #${({ theme }) => theme.colors.text};
   font-size: 18px;
   font-weight: 700;
 `;

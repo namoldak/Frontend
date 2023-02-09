@@ -79,7 +79,7 @@ const StDeleteAccountModal = styled.div`
     font-size: 18px;
     line-height: 21px;
     letter-spacing: 0.06em;
-    color: #787878;
+    color: ${({ theme }) => theme.colors.text4};
   }
 
   input::placeholder {
@@ -87,7 +87,7 @@ const StDeleteAccountModal = styled.div`
     font-size: 18px;
     line-height: 21px;
     letter-spacing: 0.06em;
-    color: #787878;
+    color: ${({ theme }) => theme.colors.text4};
   }
 `;
 
@@ -97,7 +97,7 @@ const StTitle = styled.div`
   line-height: 38px;
   text-align: center;
   letter-spacing: 0.04em;
-  color: #321d07;
+  color: #${({ theme }) => theme.colors.text};
 `;
 
 const StDeleteAccountBtn = styled.button``;

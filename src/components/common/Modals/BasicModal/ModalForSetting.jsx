@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 // 내부 모듈
 import settingBack from 'assets/images/settingBack.png';
-import closeBtn from 'assets/images/closeBtn.svg';
 import ModalPortal from '../ModalPortal';
 
 function ModalForSetting({ onClose, content }) {
@@ -17,9 +16,6 @@ function ModalForSetting({ onClose, content }) {
             event.stopPropagation();
           }}
         >
-          {/* <StCloseBtn onClick={onClose}>
-            <img src={closeBtn} alt="방 닫기" />
-          </StCloseBtn> */}
           <div>{content}</div>
         </StModalBorder>
       </StBackground>
@@ -28,15 +24,7 @@ function ModalForSetting({ onClose, content }) {
 }
 
 const StBackground = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 999;
+  ${({ theme }) => theme.common.modalBack}
 `;
 
 const StModalBorder = styled.div`

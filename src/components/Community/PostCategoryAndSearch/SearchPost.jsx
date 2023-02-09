@@ -83,9 +83,7 @@ const StPostInput = styled.input`
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.text3};
-    font-weight: 600;
-    line-height: 19px;
-    letter-spacing: 0.1em;
+    font-family: CoreDream;
   }
 `;
 

@@ -15,7 +15,8 @@ function KaKaoBtn() {
 }
 
 const KakaoBox = styled.div`
-  width: 202px;
+  width: 181px;
+  height: 41px;
 
   img {
     width: 100%;

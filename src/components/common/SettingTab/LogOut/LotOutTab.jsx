@@ -9,7 +9,7 @@ import logout from 'assets/images/logout.svg';
 import { instance } from 'api/core/axios';
 import { settingDate } from 'utils/date';
 import { useNavigate } from 'react-router';
-import ChangeNickV2 from './ChangeNickV2';
+import ChangeNick from './ChangeNick';
 
 function LogOutTabV2({ setting }) {
   const [createAt, setCreateAt] = useState('');
@@ -43,7 +43,7 @@ function LogOutTabV2({ setting }) {
       <StUserInfo>
         <StUserName>
           <li>계정 : {nickname}님</li>
-          <ChangeNickV2 setting={setting} />
+          <ChangeNick setting={setting} />
         </StUserName>
         <li>가입 이메일 : {myEmail} </li>
         <li>가입일 : {settingDate(createAt)}</li>

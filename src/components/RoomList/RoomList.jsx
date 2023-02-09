@@ -55,12 +55,10 @@ const StRoomListHeader = styled.div`
 `;
 
 const StRoomListHeaderBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 34px;
   position: relative;
+  ${({ theme }) => theme.common.flexBetween}
+  width: 100%;
+  margin-top: 34px;
 `;
 
 export default RoomList;

@@ -29,6 +29,7 @@ const StChangeNickInput = styled.input`
   letter-spacing: 0.08em;
   color: ${({ theme }) => theme.colors.text2};
   text-indent: 11px;
+  border: 0;
 
   ::placeholder {
     font-weight: 200;

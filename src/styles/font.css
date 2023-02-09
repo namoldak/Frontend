@@ -1,7 +1,9 @@
 @font-face {
   font-family: 'MapoBackpacking';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoBackpackingA.woff')
-    format('woff');
+  src: url('assets/font/MapoBackpacking.woff2') format('woff2'),
+    url('assets/font/MapoBackpacking.woff') format('woff'),
+    url('assets/font/MapoBackpacking.ttf') format('truetype'),
+    url('assets/font/MapoBackpacking.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -12,10 +14,6 @@
     format('woff');
   font-weight: normal;
   font-style: normal;
-}
-
-* {
-  font-family: 'CoreDream', sans-serif;
 }
 
 body {

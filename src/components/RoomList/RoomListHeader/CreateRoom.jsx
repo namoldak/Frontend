@@ -32,9 +32,8 @@ function CreateRoom() {
 }
 
 const StCreateRoomBtn = styled.button`
-  /* width: 238px; */
+  width: 238px;
   height: 78px;
-  /* margin-top: 10px; */
   margin-left: 30px;
 
   img {
