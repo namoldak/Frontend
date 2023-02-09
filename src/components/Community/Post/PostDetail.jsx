@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
+import { nanoid } from '@reduxjs/toolkit';
 
 // 내부 모듈
 import { formatTime } from 'utils/date';
@@ -125,10 +126,9 @@ function PostDetail() {
           </StBtnBox>
         )}
         <ImgDiv>
-          {posts.imageList?.map((image, index) => {
+          {posts.imageList?.map((image) => {
             return (
-              // eslint-disable-next-line react/no-array-index-key
-              <div key={index}>
+              <div key={nanoid()}>
                 <img src={image} alt="이미지" />
               </div>
             );
