@@ -48,7 +48,7 @@ function ChatBox({ notice, sendChat, chatMessages }) {
               return (
                 <Chat
                   // eslint-disable-next-line react/no-array-index-key
-                  key={String(index)}
+                  key={index}
                   className={
                     message.sender === nickname
                       ? 'my'
