@@ -73,7 +73,7 @@ const StRoomCardBox = styled.div`
 `;
 
 const StRoomTitle = styled.div`
-  font-weight: 600;
+  font-weight: 900;
   font-size: 20px;
   line-height: 24px;
   ${({ theme }) => theme.colors.text2}

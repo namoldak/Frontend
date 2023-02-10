@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import authAPI from 'api/authAsync';
 import useDidMountEffect from 'hooks/useDidMountEffect';
 import useToast from 'hooks/useToast';
+import { useNavigate } from 'react-router';
 import ChangeNickInput from 'components/common/Input/ChangeNickInput';
 import { instance } from 'api/core/axios';
 import { setNicknameCookie } from 'utils/cookies';
@@ -28,6 +29,7 @@ const schema = yup.object().shape({
 
 function ChangeNickV2({ setting }) {
   const [nickValid, setNickValid] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -55,7 +57,10 @@ function ChangeNickV2({ setting }) {
             if (res.status === 200) {
               setNicknameCookie(newNick.nickname);
               useToast('닉네임이 변경되었습니닭!', 'success');
-              setting(false);
+              setTimeout(() => {
+                setting(false);
+                navigate('/rooms');
+              }, 3000);
             }
           });
         }, 5000);
@@ -76,17 +81,11 @@ function ChangeNickV2({ setting }) {
     }
   }, [nickValid]);
 
-  // const ref = React.createRef();
-
   return (
     <StChangeNick>
       <StChangeNickBox>
         <StInputBox>
-          <StChangeNickInput
-            // <ChangeNickInput
-            // ref={ref}
-            {...register('nickname', { required: true })}
-          />
+          <ChangeNickInput {...register('nickname', { required: true })} />
           {errors.nickname?.message && (
             <HelpText>
               <img src={check} alt="체크" />
