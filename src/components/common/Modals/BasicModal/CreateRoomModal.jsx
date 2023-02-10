@@ -25,7 +25,7 @@ function CreateRoomModal() {
       await instance
         .post(`/rooms`, newRoom)
         .then((res) => {
-          sessionStorage.setItem('owner', res.owner);
+          sessionStorage.setItem('owner', res.data.owner);
           sessionStorage.setItem('normalEnter', true);
           navigate(`/gameroom/${res.data.roomId}`);
         })

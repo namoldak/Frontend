@@ -1032,7 +1032,7 @@ const StKeywordBack = styled.div`
 
 const StKeyword = styled.div`
   font-family: MapoBackpacking;
-  font-weight: 400;
+  font-weight: bold;
   font-size: 22px;
   line-height: 24px;
   color: #fff;
