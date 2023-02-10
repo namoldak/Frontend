@@ -123,7 +123,7 @@ const StNoticeText = styled.span`
   display: block;
   width: 100%;
   color: ${({ theme }) => theme.colors.text};
-  font-weight: 600;
+  font-weight: bold;
   line-height: 19px;
   letter-spacing: 0.08em;
   text-align: center;
@@ -176,6 +176,7 @@ const Chat = styled.div`
 `;
 
 const StChatBubble = styled.div`
+  width: fit-content;
   max-width: 420px;
   word-wrap: break-word;
   border: 1px solid ${({ theme }) => theme.colors.text};
