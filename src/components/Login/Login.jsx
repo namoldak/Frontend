@@ -171,7 +171,7 @@ const StLoginContainer = styled.form`
     border-radius: 30px;
     color: ${({ theme }) => theme.colors.text};
     font-size: 16px;
-    font-weight: 200;
+    font-weight: 500;
     line-height: 19px;
     letter-spacing: 0.06em;
     text-indent: 17px;
@@ -179,7 +179,7 @@ const StLoginContainer = styled.form`
   input::placeholder {
     color: ${({ theme }) => theme.colors.text};
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 19px;
     letter-spacing: 0.06em;
   }

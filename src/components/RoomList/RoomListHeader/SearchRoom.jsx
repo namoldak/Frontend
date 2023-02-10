@@ -69,6 +69,7 @@ const StSearchRoom = styled.div`
     filter: drop-shadow(0px 6px 4px rgba(0, 0, 0, 0.8));
   }
   input::placeholder {
+    font-weight: 700;
     color: ${({ theme }) => theme.colors.text2};
   }
 

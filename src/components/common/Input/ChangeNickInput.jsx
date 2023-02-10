@@ -12,7 +12,7 @@ const StChangeNickInput = styled.input`
   background: ${({ theme }) => theme.colors.lightBeige};
   border-radius: 10px;
   margin: 0 14px 0 30px;
-  font-weight: 200;
+  font-weight: 500;
   font-size: 12px;
   line-height: 56px;
   letter-spacing: 0.08em;
@@ -21,7 +21,7 @@ const StChangeNickInput = styled.input`
   border: 0;
 
   ::placeholder {
-    font-weight: 200;
+    font-weight: 500;
     font-size: 12px;
     line-height: 56px;
     letter-spacing: 0.08em;
