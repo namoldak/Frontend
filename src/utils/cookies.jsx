@@ -14,10 +14,11 @@ export const setRefreshToken = (refreshToken) => {
   const expireDate = today.setDate(today.getDate() + 7);
 
   setTimeout(() => {
+    console.log('refreshToken', refreshToken);
     axios
       .get(`${process.env.REACT_APP_API_URL}/auth/issue/token`, {
         headers: {
-          RefreshToken: refreshToken,
+          refreshtoken: refreshToken,
         },
       })
       .then((response) => {
