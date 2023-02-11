@@ -264,9 +264,7 @@
   - 화상 및 음성 채팅을 위한 WebRTC
   - 다양한 브라우저 환경을 지원하기 위한 SockJS
   - pub/sub 기반의 편리한 웹소켓 관리를 위한 메세징 프로토콜 STOMP
-- Refresh Token의 생명 주기 관리를 위한 서브 데이터베이스로의 Redis 사용
-- 개발자 편의 및 생산성 증가를 위한 자동화 배포 CI/CD
-- AWS CloudFront를 이용한 S3 이미지 엔드포인트 보안 강화
+- Access Token과 Refresh Token을 이용한 JWT 인증
 - Intersection-observer API를 사용한 댓글 무한 스크롤
 - OAuth 2.0 소셜 로그인을 통한 편리한 접근성
 
