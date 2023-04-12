@@ -335,6 +335,7 @@ function GameRoomRTC() {
       }
     });
   };
+
   const connect = () => {
     client.current = new StompJs.Client({
       webSocketFactory: () => SockJs,
